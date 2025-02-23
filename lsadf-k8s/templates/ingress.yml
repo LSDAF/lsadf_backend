@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: keycloak.local
+    - host: keycloak.lsadf.ovh # Use keycloak.local for local development
       http:
         paths:
           - path: /
@@ -16,7 +16,7 @@ spec:
                 name: keycloak-service
                 port:
                   number: {{ .Values.KEYCLOAK_PORT }}
-    - host: api.local
+    - host: api.lsadf.ovh # Use api.local for local development
       http:
         paths:
           - path: /
