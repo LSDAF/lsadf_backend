@@ -35,8 +35,8 @@ spec:
               name: lsadf-api-volume
           resources:
             limits:
-              memory: "256Mi"
-              cpu: "100m"
+              memory: "512Mi"
+              cpu: "200m"
       volumes:
         - name: lsadf-api-volume
           persistentVolumeClaim:
