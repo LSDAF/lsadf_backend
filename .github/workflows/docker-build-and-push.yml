@@ -96,12 +96,14 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_PAT }}
 
-      - name: 🚀 Tag and Push to DockerHub
+      - name: 🚀 Tag and Push to GHCR
         run: |
-          # Tag the images
-          docker tag ghcr.io/lsdaf/lsadf_api-dev:latest lsdaf/lsadf_api-dev:latest
-          docker tag ghcr.io/lsdaf/lsadf_api-dev:latest lsdaf/lsadf_api-dev:${{ github.sha }}
+          # Get the commit SHA
+          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-40)
           
-          # Push the images
+          # Tag the image with commit SHA
+          docker tag ghcr.io/lsdaf/lsadf_api-dev:latest ghcr.io/lsdaf/lsadf_api-dev:$COMMIT_SHA
+          
+          # Push both tags
           docker push ghcr.io/lsdaf/lsadf_api-dev:latest
-          docker push ghcr.io/lsdaf/lsadf_api-dev:${{ github.sha }}
+          docker push ghcr.io/lsdaf/lsadf_api-dev:$COMMIT_SHA
