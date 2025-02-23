@@ -20,7 +20,7 @@ spec:
       containers:
         - name: lsadf-api
           image: {{ .Values.LSADF_API_DOCKER_IMAGE }}
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           env:
             - name: SLEEP_ENABLED
               value: "true"
