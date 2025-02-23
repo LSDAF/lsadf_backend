@@ -74,9 +74,9 @@ jobs:
       - name: 🚀 Tag and Push to DockerHub
         run: |
           # Tag the images
-          docker tag lsadf-api:latest ${{ github.GHCR_USERNAME }}/lsadf-api:latest
-          docker tag lsadf-api:latest ${{ github.GHCR_USERNAME }}/lsadf-api:${{ github.sha }}
+          docker tag ghcr.io/LSDAF/lsadf_api-dev:latest LSDAF/lsadf_api-dev:latest
+          docker tag ghcr.io/LSDAF/lsadf_api-dev:latest LSDAF/lsadf_api-dev:${{ github.sha }}
           
           # Push the images
-          docker push ${{ github.GHCR_USERNAME }}/lsadf-api:latest
-          docker push ${{ github.GHCR_USERNAME }}/lsadf-api:${{ github.sha }}
+          docker push LSDAF/lsadf_api-dev:latest
+          docker push LSDAF/lsadf_api-dev:${{ github.sha }}
