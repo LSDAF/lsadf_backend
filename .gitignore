@@ -45,5 +45,5 @@ keycloak_realm/**
 
 .venv/
 
-**/values-secret.yaml
 **/values-secret.yml
+**/values-secret.yaml
