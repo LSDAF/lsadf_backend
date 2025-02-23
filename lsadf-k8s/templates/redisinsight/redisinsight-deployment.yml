@@ -22,4 +22,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: redisinsight-config
+          resources:
+            limits:
+              memory: "50Mi"
+              cpu: "50m"
 {{ end }}
