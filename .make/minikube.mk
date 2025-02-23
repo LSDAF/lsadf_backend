@@ -1,9 +1,8 @@
 
 
-up: secret ministart
-	helm upgrade --install local lsadf-k8s/ -f lsadf-k8s/values.yml -f lsadf-k8s/values-local.yml -f lsadf-k8s/values-secret.yml
+miniup: secret ministart helmup
 
-down:
+minidown:
 	helm uninstall local
 
 
@@ -25,5 +24,4 @@ minidelete: ministop
 	minikube delete --all --purge
 
 
-monitorup: ministart
-	helm upgrade --install local lsadf-k8s/ -f lsadf-k8s/values.yml -f lsadf-k8s/values-monitor.yml -f lsadf-k8s/values-secret.yml
+monitorup: ministart helmup
