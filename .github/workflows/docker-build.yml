@@ -5,6 +5,7 @@ run-name: ${{ github.head_ref || github.ref_name }}-docker-build
 on:
   pull_request:
   workflow_dispatch:
+  workflow_call:
 
 concurrency:
   group: docker-build-${{ github.event.number }}
