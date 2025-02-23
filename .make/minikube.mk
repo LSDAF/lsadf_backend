@@ -3,7 +3,7 @@
 miniup: secret ministart helmup
 
 minidown:
-	helm uninstall local
+	helm uninstall lsadf
 
 
 miniload:
@@ -12,7 +12,8 @@ miniload:
         minikube image load lsadf/lsadf-api-dev-arm64:latest
 
 ministart:
-	minikube start --driver=docker --container-runtime=containerd --cpus=4 --memory=8192 --disk-size=20g --addons ingress
+	minikube start --driver=docker --container-runtime=containerd --cpus=2 --memory=2048 --disk-size=5g --addons ingress
+	minikube addons enable metrics-server
 	make build-api-dev build-keycloak build-redisinsight
 	make miniload
 
