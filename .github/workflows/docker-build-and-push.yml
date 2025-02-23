@@ -46,7 +46,10 @@ jobs:
 
       - name: 🚧 Build Package & LSADF API Docker Image
         run: |
+          set -x  # Enable debug output
           make build-ci-ghcr
+          echo "=== Listing all Docker images ==="
+          docker images
 
       - name: 💾 Save Docker image
         run: |
