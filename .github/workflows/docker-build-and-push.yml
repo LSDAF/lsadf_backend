@@ -53,6 +53,7 @@ jobs:
 
       - name: 💾 Save Docker image
         run: |
+          docker images
           docker save ghcr.io/lsdaf/lsadf_api-dev:latest > /tmp/image.tar
 
       - name: 📦 Upload Docker image artifact
