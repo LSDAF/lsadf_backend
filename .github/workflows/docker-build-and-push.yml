@@ -5,12 +5,19 @@ run-name: ${{ github.head_ref || github.ref_name }}-docker-build-push
 on:
   push:
     branches:
-      - '*'  # TODO: Change to only master branch later
-
+      - master
+  pull_request:
+    
 jobs:
   # Reuse the build job from docker-build.yml
   docker-build:
     uses: ./.github/workflows/docker-build.yml
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      pull-requests: write
+      statuses: write
 
   # Add push job that depends on successful build
   docker-push:
