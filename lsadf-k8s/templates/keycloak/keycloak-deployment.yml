@@ -25,4 +25,8 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.KEYCLOAK_PORT }}
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
 {{ end }}

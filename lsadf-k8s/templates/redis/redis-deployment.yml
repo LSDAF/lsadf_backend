@@ -24,4 +24,8 @@ spec:
           ports:
             - containerPort: {{ .Values.REDIS_PORT }}
               name: http
+          resources:
+            limits:
+              memory: "50Mi"
+              cpu: "50m"
 {{ end }}
