@@ -19,7 +19,7 @@ spec:
             - "keycloak.local"
       containers:
         - name: lsadf-api
-          image: lsadf/lsadf-api-dev-arm64:latest
+          image: {{ .Values.LSADF_API_DOCKER_IMAGE }}
           imagePullPolicy: Never
           env:
             - name: SLEEP_ENABLED
