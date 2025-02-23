@@ -103,5 +103,5 @@ jobs:
           docker tag ghcr.io/lsdaf/lsadf_api-dev:latest lsdaf/lsadf_api-dev:${{ github.sha }}
           
           # Push the images
-          docker push lsdaf/lsadf_api-dev:latest
-          docker push lsdaf/lsadf_api-dev:${{ github.sha }}
+          docker push ghcr.io/lsdaf/lsadf_api-dev:latest
+          docker push ghcr.io/lsdaf/lsadf_api-dev:${{ github.sha }}
