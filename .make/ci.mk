@@ -13,6 +13,9 @@ build-ci:
 	@echo "Using GIT_BRANCH=$(GIT_BRANCH)"
 	BRANCH_NAME=$(GIT_BRANCH) COMPOSE_PROFILES=backend docker-compose --env-file env/env.properties -f dc-local.yml --progress quiet build
 
+build-ci-ghcr: build-api-dev-ghcr
+	
+
 build-dev-ci: install-ci
 	@echo "Using GIT_BRANCH=$(GIT_BRANCH)"
 	BRANCH_NAME=$(GIT_BRANCH) COMPOSE_PROFILES=backend_dev docker-compose --env-file env/env.properties -f dc-local.yml --progress quiet build
