@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: keycloak
-          image: quay.io/keycloak/keycloak:26.0.0-arm64
+          image: {{ .Values.KEYCLOAK_DOCKER_IMAGE}}
           args: [ "start-dev", "--http-port", "{{ .Values.KEYCLOAK_PORT}}" ]
           envFrom:
             - secretRef:
