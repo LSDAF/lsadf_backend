@@ -2,9 +2,5 @@ postgres:
   enabled: true
 redis:
   enabled: true
-redisinsight:
-  enabled: true
-pgadmin:
-  enabled: true
 keycloak:
   enabled: true
