@@ -12,3 +12,5 @@ lsadf_api:
   enabled: false
 lsadf_admin_api:
   enabled: false
+nginx_ingress:
+  enabled: true
