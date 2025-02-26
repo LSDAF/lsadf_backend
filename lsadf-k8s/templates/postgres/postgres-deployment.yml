@@ -28,8 +28,8 @@ spec:
               mountPath: /var/lib/postgresql/data
           resources:
             limits:
-              memory: "512Mi"
-              cpu: "250m"
+              memory: "{{ .Values.POSTGRES_RESOURCE_LIMIT_MEMORY }}"
+              cpu: "{{ .Values.POSTGRES_RESOURCE_LIMIT_CPU }}"
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:

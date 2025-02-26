@@ -35,8 +35,9 @@ spec:
               name: lsadf-api-volume
           resources:
             limits:
-              memory: "512Mi"
-              cpu: "1000m"
+              memory: "{{ .Values.LSADF_API_RESOURCE_LIMIT_MEMORY }}"
+              cpu: "{{ .Values.LSADF_API_RESOURCE_LIMIT_CPU }}"
+
       volumes:
         - name: lsadf-api-volume
           persistentVolumeClaim:

@@ -27,6 +27,7 @@ spec:
               containerPort: {{ .Values.KEYCLOAK_PORT }}
           resources:
             limits:
-              memory: "512Mi"
-              cpu: "250m"
+              memory: "{{ .Values.KEYCLOAK_RESOURCE_LIMIT_MEMORY }}"
+              cpu: "{{ .Values.KEYCLOAK_RESOURCE_LIMIT_CPU }}"
+
 {{ end }}
