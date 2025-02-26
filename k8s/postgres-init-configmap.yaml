@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-scripts
+data:
+  init.sql: |
+    CREATE USER lsadf WITH PASSWORD 'lsadf';
+    CREATE DATABASE lsadf;
+    GRANT ALL PRIVILEGES ON DATABASE lsadf TO lsadf;

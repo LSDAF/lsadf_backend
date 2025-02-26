@@ -1,0 +1,3 @@
+# Docker
+
+Our Docker compose files are located in the docker folder. There is the Dockerfile and Dockerfile-dev files.

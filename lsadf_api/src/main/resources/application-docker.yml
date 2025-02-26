@@ -10,6 +10,7 @@ logging:
 cache:
   redis:
     host: ${REDIS_HOST_DOCKER}
+    port: ${REDIS_PORT_DOCKER}
 
 keycloak:
   url: ${KEYCLOAK_URI_DOCKER}
