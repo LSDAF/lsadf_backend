@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lsadf-ingress
+  namespace: lsadf
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api.lsadf.ovh # Use api.local for local development
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lsadf-api-service
+                port:
+                  number: {{ .Values.LSADF_API_PORT }}
