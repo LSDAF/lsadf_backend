@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: lsadf-api-volume
+  namespace: lsadf
   labels:
     type: local
     app: lsadf-api
