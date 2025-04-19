@@ -3,27 +3,34 @@ version_settings(constraint=">=0.33.22")
 
 profiles = os.getenv("TILT_PROFILES", "").split()
 
-if sys.argv[1] == 'up':
-    if (profiles == []):
-        profiles = ["db", "monitoring", "backend_dev", "backend_admin_dev"]
-    print(profiles)
-    print('Docker Compose running')
 
-elif sys.argv[1] == 'down':
-    profiles = ["db", "monitoring", "backend_dev", "backend", "backend_admin_dev"]
-    print("Killing Docker Compose")
+# Read service selection from env or CLI args
+allowed_services = str(os.getenv("SERVICES", "all")).split(",")
 
-docker_compose("./dc-local.yml", env_file='env/env.properties', project_name='lsadf_backend', profiles=profiles)
-docker_build('lsadf/lsadf-api-dev',
-    '.',
-    dockerfile='docker/Dockerfile-dev',
-    build_args={'module_folder':'lsadf_api'},
-    ignore=['env', 'keycloak_realm', '.make', '.idea', '.github', 'docker/data'])
+def is_enabled(name):
+    return "all" in allowed_services or name in allowed_services
 
-docker_build('lsadf/lsadf-admin-dev',
-    '.',
-    dockerfile='docker/Dockerfile-dev',
-    build_args={'module_folder':'lsadf_admin'},
-    ignore=['env', 'keycloak_realm', '.make', '.idea', '.github', 'docker/data'])
+# Postgres
+if is_enabled("postgres"):
+    #local_resource(
+    #    name="postgres",
+    #    cmd="helm upgrade --install postgres /Users/louissantucci/Documents/projects/lsadf_infra/apps/postgres",
 
-update_settings(suppress_unused_image_warnings=["lsadf/lsadf-api-dev", "lsadf/lsadf-admin-dev"])
+    #    deps=["/Users/louissantucci/Documents/projects/lsadf_infra/apps/postgres"]
+    #)
+    postgres_helm = helm(
+    "/Users/louissantucci/Documents/projects/lsadf_infra/apps/postgres",
+    name="postgres",
+    namespace="postgres",
+    values=["/Users/louissantucci/Documents/projects/lsadf_infra/apps/postgres/values.yml"])
+    k8s_yaml(postgres_helm)
+
+# API1
+if is_enabled("api1"):
+    k8s_yaml("services/api1/k8s.yaml")
+    k8s_resource("api1", port_forwards=8000)
+
+# API2
+if is_enabled("api2"):
+    k8s_yaml("services/api2/k8s.yaml")
+    k8s_resource("api2", port_forwards=8001)
