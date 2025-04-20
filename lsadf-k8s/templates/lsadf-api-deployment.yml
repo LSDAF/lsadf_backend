@@ -1,4 +1,3 @@
-{{ if .Values.lsadf_api.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,7 +16,7 @@ spec:
       hostAliases:
         - ip: {{ .Values.K8S_IP }}
           hostnames:
-            - "keycloak.local"
+            - {{ .Values.LSADF_API_HOST }}
       containers:
         - name: lsadf-api
           image: {{ .Values.LSADF_API_DOCKER_IMAGE }}
@@ -43,4 +42,3 @@ spec:
         - name: lsadf-api-volume
           persistentVolumeClaim:
             claimName: lsadf-api-volume-claim
-{{ end }}

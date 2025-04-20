@@ -9,7 +9,7 @@ metadata:
 spec:
   storageClassName: fast
   capacity:
-    storage: 100Mi
+    storage: {{ .Values.LSADF_API_STORAGE_CAPACITY }}
   accessModes:
     - ReadWriteMany
   hostPath:
