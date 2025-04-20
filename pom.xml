@@ -91,20 +91,21 @@
                         <version>${exec-maven-plugin.version}</version>
                         <executions>
                             <execution>
-                                <id>run-shaded-jar</id>
+                                <id>run-spring-boot-jar</id>
                                 <phase>install</phase>
                                 <goals>
-                                    <goal>java</goal>
+                                    <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>com.lsadf.yaproc.YaprocApplication</mainClass>
+                                    <executable>java</executable>
                                     <arguments>
+                                        <argument>-jar</argument>
+                                        <argument>${settings.localRepository}/com/lsadf/yaproc/0.0.1-SNAPSHOT/yaproc-0.0.1-SNAPSHOT.jar</argument>
                                         <argument>yaml</argument>
-                                        <argument>-fvd</argument>
+                                        <argument>-f</argument>
                                         <argument>${maven.multiModuleProjectDirectory}/env/env.properties</argument>
                                         <argument>lsadf-k8s/values-secret.yml</argument>
                                     </arguments>
-                                    <classpathScope>runtime</classpathScope>
                                 </configuration>
                             </execution>
                         </executions>
