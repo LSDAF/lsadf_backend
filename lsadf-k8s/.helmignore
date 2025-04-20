@@ -21,4 +21,4 @@
 .idea/
 *.tmproj
 .vscode/
-values-local-EXAMPLE.yml
+values-secret.yml
