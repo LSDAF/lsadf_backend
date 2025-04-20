@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: api.lsadf.ovh # Use api.local for local development
+    - host: {{ .Values.LSADF_API_HOST}} # Use api.local for local development
       http:
         paths:
           - path: /
