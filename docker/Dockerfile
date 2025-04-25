@@ -19,7 +19,7 @@ RUN mvn clean install -DskipTests \
     && mv lsadf_api/target/*.jar lsadf_api/target/lsadf_api.jar
 
 
-FROM openjdk:17-alpine AS builder
+FROM eclipse-temurin:17.0.15_6-jre-noble AS builder
 
 COPY --from=compiler lsadf_api/target/lsadf_api.jar lsadf_api.jar
 COPY --from=compiler lsadf_api/target/classes/logback-docker.xml logback-docker.xml
@@ -28,7 +28,7 @@ RUN java -Djarmode=layertools -jar lsadf_api.jar extract
 COPY --from=compiler startup.sh .
 
 # Stage 3: Create the final image
-FROM openjdk:17-alpine
+FROM eclipse-temurin:17.0.15_6-jre-noble
 
 EXPOSE 8080
 
