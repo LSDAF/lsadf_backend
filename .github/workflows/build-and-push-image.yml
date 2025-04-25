@@ -65,18 +65,18 @@ jobs:
           push: true
           tags: ghcr.io/lsdaf/lsadf_api:${{ github.event.inputs.git_sha }}
 
-      - name: 🚀 Tag and Push to GHCR
-        run: |
-          # Get the input SHA
-          COMMIT_SHA=${{ github.event.inputs.git_sha }}
-
-          # Tag the image with commit SHA
-          docker tag ghcr.io/lsdaf/lsadf_api:latest ghcr.io/lsdaf/lsadf_api:$COMMIT_SHA
-
-          # Push both tags
-          docker push ghcr.io/lsdaf/lsadf_api:latest
-          docker push ghcr.io/lsdaf/lsadf_api:$COMMIT_SHA
-
-          echo "✅ Successfully pushed Docker image with tags:"
-          echo "  - ghcr.io/lsdaf/lsadf_api:latest"
-          echo "  - ghcr.io/lsdaf/lsadf_api:$COMMIT_SHA"
+#      - name: 🚀 Tag and Push to GHCR
+#        run: |
+#          # Get the input SHA
+#          COMMIT_SHA=${{ github.event.inputs.git_sha }}
+#
+#          # Tag the image with commit SHA
+#          docker tag ghcr.io/lsdaf/lsadf_api:latest ghcr.io/lsdaf/lsadf_api:$COMMIT_SHA
+#
+#          # Push both tags
+#          docker push ghcr.io/lsdaf/lsadf_api:latest
+#          docker push ghcr.io/lsdaf/lsadf_api:$COMMIT_SHA
+#
+#          echo "✅ Successfully pushed Docker image with tags:"
+#          echo "  - ghcr.io/lsdaf/lsadf_api:latest"
+#          echo "  - ghcr.io/lsdaf/lsadf_api:$COMMIT_SHA"
