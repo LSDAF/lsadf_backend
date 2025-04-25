@@ -42,4 +42,4 @@ COPY --from=builder logback-docker.xml ./
 
 RUN mkdir logs && chmod +x startup.sh
 
-ENTRYPOINT ["cat startup.sh && ./startup.sh"]
+ENTRYPOINT ["./startup.sh"]
