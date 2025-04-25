@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM maven:3.9.8-eclipse-temurin-17-alpine AS compiler
+FROM maven:3.9.9-eclipse-temurin-17-focal AS compiler
 COPY env env/
 COPY build_parent build_parent/
 COPY lsadf_bom/ lsadf_bom/
