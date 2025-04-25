@@ -14,7 +14,7 @@ COPY ./docker/startup.sh .
 #RUN rm lsadf_api/src/main/resources/application-local.yml
 
 # Delete the test jar to reduce the image size and fix docker build duplicate jar issue
-RUN mvn clean install -DskipTests \
+RUN mvn clean install -DskipTests --quiet \
     && rm lsadf_api/target/*-tests.jar \
     && mv lsadf_api/target/*.jar lsadf_api/target/lsadf_api.jar
 
