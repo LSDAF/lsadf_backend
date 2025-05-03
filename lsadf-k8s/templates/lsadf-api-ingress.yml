@@ -3,8 +3,15 @@ kind: Ingress
 metadata:
   name: lsadf-ingress
   namespace: lsadf
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.lsadf.ovh
+      secretName: tls-lsadf-api-ovh
   rules:
     - host: {{ .Values.LSADF_API_HOST}} # Use api.local for local development
       http:
