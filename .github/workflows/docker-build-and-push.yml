@@ -1,6 +1,6 @@
-name: 🐳 Build and Push Docker images
+name: 🐳 Build Docker image
 
-run-name: ${{ github.head_ref || github.ref_name }}-docker-build-push
+run-name: ${{ github.head_ref || github.ref_name }}-docker-build
 
 on:
   push:
