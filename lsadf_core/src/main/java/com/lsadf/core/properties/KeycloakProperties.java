@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class KeycloakProperties {
   private String adminUrl;
   private String url;
+  private String internalUrl;
   private String realm;
   private String clientId;
   private String clientSecret;

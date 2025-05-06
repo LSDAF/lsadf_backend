@@ -14,12 +14,19 @@ public class KeycloakConfiguration {
   @Bean
   public Keycloak keycloak(
       KeycloakProperties keycloakProperties, KeycloakAdminProperties keycloakAdminProperties) {
-    return KeycloakBuilder.builder()
-        .serverUrl(keycloakProperties.getUrl())
-        .realm(keycloakProperties.getRealm())
-        .clientId(keycloakAdminProperties.getClientId())
-        .clientSecret(keycloakAdminProperties.getClientSecret())
-        .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
-        .build();
+    var builder =
+        KeycloakBuilder.builder()
+            .realm(keycloakProperties.getRealm())
+            .clientId(keycloakAdminProperties.getClientId())
+            .clientSecret(keycloakAdminProperties.getClientSecret())
+            .grantType(OAuth2Constants.CLIENT_CREDENTIALS);
+
+    if (keycloakProperties.getInternalUrl() != null) {
+      builder.serverUrl(keycloakProperties.getInternalUrl());
+    } else {
+      builder.serverUrl(keycloakProperties.getUrl());
+    }
+
+    return builder.build();
   }
 }
