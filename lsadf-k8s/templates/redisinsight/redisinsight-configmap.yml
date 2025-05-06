@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: redisinsight-config
-data:
-  RI_APP_PORT: "{{ .Values.REDISINSIGHT_PORT }}"

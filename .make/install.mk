@@ -12,6 +12,3 @@ admin-install:
 
 javadoc:
 	@mvn javadoc:aggregate
-
-secret:
-	@mvn clean install -U -fae -Dcopy-env -DskipSurefireReport -Dgenerate-yaml-secret

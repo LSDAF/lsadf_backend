@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM maven:3.9.8-eclipse-temurin-17-alpine AS compiler
+FROM maven:3.9.9-eclipse-temurin-17-focal AS compiler
 COPY env env/
 COPY build_parent build_parent/
 COPY lsadf_bom/ lsadf_bom/
@@ -14,12 +14,12 @@ COPY ./docker/startup.sh .
 #RUN rm lsadf_api/src/main/resources/application-local.yml
 
 # Delete the test jar to reduce the image size and fix docker build duplicate jar issue
-RUN mvn clean install -DskipTests \
+RUN mvn clean install -DskipTests --quiet \
     && rm lsadf_api/target/*-tests.jar \
     && mv lsadf_api/target/*.jar lsadf_api/target/lsadf_api.jar
 
 
-FROM openjdk:17-alpine AS builder
+FROM eclipse-temurin:17.0.15_6-jre-noble AS builder
 
 COPY --from=compiler lsadf_api/target/lsadf_api.jar lsadf_api.jar
 COPY --from=compiler lsadf_api/target/classes/logback-docker.xml logback-docker.xml
@@ -28,7 +28,7 @@ RUN java -Djarmode=layertools -jar lsadf_api.jar extract
 COPY --from=compiler startup.sh .
 
 # Stage 3: Create the final image
-FROM openjdk:17-alpine
+FROM eclipse-temurin:17.0.15_6-jre-noble
 
 EXPOSE 8080
 

@@ -23,3 +23,6 @@ build-dev-ci: install-ci
 build-admin-dev-ci: install-ci
 	@echo "Using GIT_BRANCH=$(GIT_BRANCH)"
 	BRANCH_NAME=$(GIT_BRANCH) COMPOSE_PROFILES=backend_admin_dev docker-compose --env-file env/env.properties -f dc-local.yml --progress quiet build
+
+build-api-ghcr: install-no-env
+	docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/lsdaf/lsadf_api:latest -f docker/Dockerfile .

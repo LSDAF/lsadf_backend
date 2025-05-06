@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ "$SLEEP_ENABLED" == "true" ]
+if [ "$SLEEP_ENABLED" = "true" ]
   then
     echo "SLEEP_ENABLED: true";
     echo "Sleeping 10 seconds...";

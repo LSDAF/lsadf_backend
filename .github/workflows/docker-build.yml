@@ -17,12 +17,6 @@ jobs:
     name: "Build Docker Image"
     runs-on: 'ubuntu-22.04'
     timeout-minutes: 10 # The overall timeout
-    permissions:
-      actions: write
-      checks: write
-      contents: write
-      pull-requests: write
-      statuses: write
 
     steps:
       - name: 📥 Checkout
@@ -30,56 +24,19 @@ jobs:
         with:
           lfs: true
 
-      - name: 📦 Setup Docker compose
-        uses: KengoTODA/actions-setup-docker-compose@v1
-        with:
-          version: '2.30.3'
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: 📦 Copy Fake env file
         run: |
           mv env/env.EXAMPLE.properties env/env.properties
 
-      - name: 🚧 Build Docker Image
-        run: |
-          make build-ci
-
-  docker-build-dev:
-    name: "Build Docker Dev Image"
-    runs-on: 'ubuntu-22.04'
-    timeout-minutes: 10 # The overall timeout
-    permissions:
-      actions: write
-      checks: write
-      contents: write
-      pull-requests: write
-      statuses: write
-
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
+      - name: Docker Build
+        uses: docker/build-push-action@v6
         with:
-          lfs: true
-
-      - name: 📦 Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: 📦 Setup Docker compose
-        uses: KengoTODA/actions-setup-docker-compose@v1
-        with:
-          version: '2.30.3'
-
-      - name: 📦 Copy Fake env file
-        run: |
-          mv env/env.EXAMPLE.properties env/env.properties
-
-      - name: 🚧 Build Package & LSADF API Docker Image
-        run: |
-          make build-dev-ci
-
-      - name: 🚧 Build Package & LSADF Admin API Docker Image
-        run: |
-          make build-admin-dev-ci
+          platforms: linux/amd64, linux/arm64
+          file: docker/Dockerfile
+          push: false
