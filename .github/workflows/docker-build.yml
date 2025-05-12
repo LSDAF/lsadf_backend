@@ -17,6 +17,12 @@ jobs:
     name: "Build Docker Image"
     runs-on: 'ubuntu-22.04'
     timeout-minutes: 10 # The overall timeout
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      pull-requests: write
+      statuses: write
 
     steps:
       - name: 📥 Checkout
@@ -73,3 +79,66 @@ jobs:
         with:
           name: trivy-results
           path: trivy-results.json
+
+      - name: Generate Trivy scan summary
+        run: |
+          echo "# 🔒 Docker Image Vulnerability Scan Results" > trivy-summary.md
+          echo "" >> trivy-summary.md
+          echo "## Summary" >> trivy-summary.md
+          echo "" >> trivy-summary.md
+
+          # Extract counts by severity from the JSON file
+          CRITICAL=$(cat trivy-results.json | jq '[.Results[].Vulnerabilities[] | select(.Severity=="CRITICAL")] | length')
+          HIGH=$(cat trivy-results.json | jq '[.Results[].Vulnerabilities[] | select(.Severity=="HIGH")] | length')
+          MEDIUM=$(cat trivy-results.json | jq '[.Results[].Vulnerabilities[] | select(.Severity=="MEDIUM")] | length')
+          LOW=$(cat trivy-results.json | jq '[.Results[].Vulnerabilities[] | select(.Severity=="LOW")] | length')
+
+          echo "| Severity | Count |" >> trivy-summary.md
+          echo "|----------|-------|" >> trivy-summary.md
+          echo "| 🔴 CRITICAL | $CRITICAL |" >> trivy-summary.md
+          echo "| 🟠 HIGH | $HIGH |" >> trivy-summary.md
+          echo "| 🟡 MEDIUM | $MEDIUM |" >> trivy-summary.md
+          echo "| 🟢 LOW | $LOW |" >> trivy-summary.md
+          echo "" >> trivy-summary.md
+
+          echo "## Top Critical & High Vulnerabilities" >> trivy-summary.md
+          echo "" >> trivy-summary.md
+          echo "| ID | Package | Severity | Title | Fixed Version |" >> trivy-summary.md
+          echo "|-------|---------|----------|-------|--------------|" >> trivy-summary.md
+
+          # Extract top 10 critical and high vulnerabilities
+          cat trivy-results.json | jq -r '.Results[].Vulnerabilities[] | select(.Severity=="CRITICAL" or .Severity=="HIGH") | "| \(.VulnerabilityID) | \(.PkgName) | \(.Severity) | \(.Title) | \(.FixedVersion // "N/A") |"' | head -10 >> trivy-summary.md
+
+          echo "" >> trivy-summary.md
+          echo "For complete results, download the trivy-results.json artifact from this workflow run." >> trivy-summary.md
+        if: always()
+
+      - name: 📤 Upload Trivy Summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-summary
+          path: trivy-summary.md
+        if: always()
+
+      - name: 🔎 Find Comment
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '# 🔒 Docker Image Vulnerability Scan Results'
+        if: github.event_name == 'pull_request' && always()
+
+      - name: 🗑️ Delete Comment
+        uses: detomarco/delete-comments@1.1.0
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+        if: github.event_name == 'pull_request' && always()
+
+      - name: ✏️ Create Comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: 'trivy-summary.md'
+          edit-mode: replace
+        if: github.event_name == 'pull_request' && always()
