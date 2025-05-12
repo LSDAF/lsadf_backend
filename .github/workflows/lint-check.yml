@@ -50,3 +50,31 @@ jobs:
       - name: ✍️ Lint check
         run: |
           make lint-check-ci
+  license-check:
+    name: "✍️ Run Lint Check"
+    runs-on: 'ubuntu-22.04'
+    timeout-minutes: 10 # The overall timeout
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      pull-requests: write
+      statuses: write
+
+    steps:
+      # checkout your repository
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: 📦 Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: ✍️ Lint check
+        run: |
+          make license-check-ci
