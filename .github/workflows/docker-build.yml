@@ -49,15 +49,10 @@ jobs:
           tags: lsadf-backend:latest
           outputs: type=docker,dest=/tmp/lsadf-backend-image.tar
 
-      - name: Load Docker image
-        run: |
-          docker load --input /tmp/lsadf-backend-image.tar
-          docker image ls -a
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'lsadf-backend:latest'
+          input: /tmp/lsadf-backend-image.tar
           format: 'table'
           exit-code: '0'
           ignore-unfixed: true
