@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.6</version>
+        <version>3.3.11</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.lsdaf</groupId>
@@ -39,7 +39,7 @@
     </modules>
 
     <properties>
-        <spring-boot.version>3.3.6</spring-boot.version>
+        <spring-boot.version>3.3.11</spring-boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <keycloak-spring-boot-starter.version>25.0.3</keycloak-spring-boot-starter.version>
