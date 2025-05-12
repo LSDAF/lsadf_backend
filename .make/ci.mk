@@ -13,6 +13,12 @@ build-ci:
 	@echo "Using GIT_BRANCH=$(GIT_BRANCH)"
 	BRANCH_NAME=$(GIT_BRANCH) COMPOSE_PROFILES=backend docker-compose --env-file env/env.properties -f dc-local.yml --progress quiet build
 
+lint-check-ci:
+	@mvn spotless:check --batch-mode --no-transfer-progress
+
+license-check-ci:
+	@mvn license:check --batch-mode --no-transfer-progress
+
 build-ci-ghcr: build-api-ghcr
 	
 

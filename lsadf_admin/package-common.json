@@ -1,6 +1,6 @@
 {
   "name": "LSADF Admin",
-  "license": "UNLICENSED",
+  "license": "Apache License 2.0",
   "type": "module",
   "scripts": {
     "lint-check": "eslint .",
