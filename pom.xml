@@ -103,10 +103,11 @@
                                     <exclude>src/test/resources/**</exclude>
                                     <exclude>src/main/resources/**</exclude>
                                     <exclude>**/*/frontend/generated/**</exclude>
+                                    <exclude>**/vite.generated.ts</exclude>
                                     <exclude>.python-version</exclude>
                                     <exclude>.pre-commit-script.sh</exclude>
                                     <exclude>.pre-commit-config.yaml</exclude>
-                                    <exclude>**/*/**.sql</exclude>
+                                    <exclude>**/**.sql</exclude>
                                     <exclude>**/**.txt</exclude>
                                     <exclude>**/**.yml</exclude>
                                 </excludes>
