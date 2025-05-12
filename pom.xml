@@ -76,12 +76,30 @@
                             <licenseSet>
                                 <header>com/mycila/maven/plugin/license/templates/APACHE-2-noemail.txt</header>
                                 <excludes>
-                                    <exclude>**/**.md</exclude>
+                                    <exclude>docker/**</exclude>
+                                    <exclude>env/**</exclude>
+                                    <exclude>.venv/**</exclude>
+                                    <exclude>**/Makefile</exclude>
+                                    <exclude>keycloak_realm/**</exclude>
+                                    <exclude>.make/**</exclude>
+                                    <exclude>.idea/**</exclude>
                                     <exclude>src/test/resources/**</exclude>
                                     <exclude>src/main/resources/**</exclude>
+                                    <exclude>**/*/frontend/generated/**</exclude>
+                                    <exclude>.python-version</exclude>
+                                    <exclude>.pre-commit-script.sh</exclude>
+                                    <exclude>.pre-commit-config.yaml</exclude>
+                                    <exclude>**/*/**.sql</exclude>
+                                    <exclude>**/**.txt</exclude>
+                                    <exclude>**/**.yml</exclude>
                                 </excludes>
                             </licenseSet>
                         </licenseSets>
+                        <mapping>
+                            <tsx>JAVADOC_STYLE</tsx>
+                            <feature>SCRIPT_STYLE</feature>
+                            <mjs>JAVADOC_STYLE</mjs>
+                        </mapping>
                     </configuration>
                 </plugin>
             </plugins>
