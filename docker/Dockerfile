@@ -31,6 +31,8 @@ COPY --from=compiler startup.sh .
 FROM eclipse-temurin:17.0.15_6-jre-noble
 
 EXPOSE 8080
+LABEL org.opencontainers.image.source="https://github.com/LSDAF/lsadf_backend"
+LABEL org.opencontainers.image.description="LSADF API container image."
 
 # Copy layers from the build stage
 COPY --from=builder dependencies/ ./
