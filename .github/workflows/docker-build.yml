@@ -17,6 +17,12 @@ jobs:
     name: "Build Docker Image"
     runs-on: 'ubuntu-22.04'
     timeout-minutes: 10 # The overall timeout
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      pull-requests: write
+      statuses: write
 
     steps:
       - name: 📥 Checkout
@@ -40,3 +46,15 @@ jobs:
           platforms: linux/amd64
           file: docker/Dockerfile
           push: false
+          tags: lsadf-backend:latest
+          outputs: type=docker,dest=/tmp/lsadf-backend-image.tar
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          input: /tmp/lsadf-backend-image.tar
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'MEDIUM,CRITICAL,HIGH'

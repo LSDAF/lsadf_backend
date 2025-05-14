@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.6</version>
+        <version>3.3.11</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.lsdaf</groupId>
@@ -39,7 +39,7 @@
     </modules>
 
     <properties>
-        <spring-boot.version>3.3.6</spring-boot.version>
+        <spring-boot.version>3.3.11</spring-boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <keycloak-spring-boot-starter.version>25.0.3</keycloak-spring-boot-starter.version>
@@ -60,7 +60,7 @@
         <azure-okhttp.version>1.11.18</azure-okhttp.version>
         <springdoc-openapi.version>1.7.0</springdoc-openapi.version>
         <embedded-redis.version>1.4.2</embedded-redis.version>
-        <velocity-engine.version>2.3</velocity-engine.version>
+        <velocity-engine.version>2.4</velocity-engine.version>
         <testcontainers-keycloak.version>3.5.1</testcontainers-keycloak.version>
         <commons-compress.version>1.27.1</commons-compress.version>
         <maven-surefire-report-plugin.version>3.5.2</maven-surefire-report-plugin.version>
