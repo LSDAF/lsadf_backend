@@ -73,12 +73,6 @@ public class PropertiesConfiguration {
   }
 
   @Bean
-  @ConfigurationProperties(prefix = "mail")
-  public EmailProperties mailProperties() {
-    return new EmailProperties();
-  }
-
-  @Bean
   @ConfigurationProperties(prefix = "clock")
   public ClockProperties clockProperties() {
     return new ClockProperties();
