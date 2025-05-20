@@ -48,7 +48,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   RedisCacheConfiguration.class,
   NoRedisCacheConfiguration.class,
   ClockConfiguration.class,
-  VelocityConfiguration.class,
   KeycloakConfiguration.class,
   JpaConfiguration.class,
   LsadfSecurityConfiguration.class

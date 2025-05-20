@@ -113,14 +113,4 @@ public class ServiceConfiguration {
   public ClockService clockService(Clock clock) {
     return new ClockServiceImpl(clock);
   }
-
-  //    @Bean
-  //    public EmailService emailService(VelocityEngine velocityEngine,
-  //                                     JavaMailSender emailSender,
-  //                                     EmailProperties mailProperties,
-  //                                     ServerProperties serverProperties) {
-  //        return new EmailServiceImpl(velocityEngine, emailSender, mailProperties,
-  // serverProperties);
-  //    }
-
 }
