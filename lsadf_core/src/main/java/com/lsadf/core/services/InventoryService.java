@@ -62,4 +62,11 @@ public interface InventoryService {
    */
   ItemEntity updateItemInInventory(String gameSaveId, String itemClientId, ItemRequest itemRequest)
       throws NotFoundException, ForbiddenException;
+
+  /**
+   * Clears all items in the inventory for the specified game save.
+   *
+   * @param gameSaveId the ID of the game save whose inventory will be cleared
+   */
+  void clearInventory(String gameSaveId) throws NotFoundException;
 }

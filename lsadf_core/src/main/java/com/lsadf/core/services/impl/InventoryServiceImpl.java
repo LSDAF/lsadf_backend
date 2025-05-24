@@ -22,7 +22,6 @@ import com.lsadf.core.entities.ItemEntity;
 import com.lsadf.core.exceptions.AlreadyExistingItemClientIdException;
 import com.lsadf.core.exceptions.http.ForbiddenException;
 import com.lsadf.core.exceptions.http.NotFoundException;
-import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.repositories.InventoryRepository;
 import com.lsadf.core.repositories.ItemRepository;
 import com.lsadf.core.requests.item.ItemRequest;
@@ -34,15 +33,14 @@ public class InventoryServiceImpl implements InventoryService {
 
   private final InventoryRepository inventoryRepository;
   private final ItemRepository itemRepository;
-  private final Mapper mapper;
 
   public InventoryServiceImpl(
-      InventoryRepository inventoryRepository, ItemRepository itemRepository, Mapper mapper) {
+      InventoryRepository inventoryRepository, ItemRepository itemRepository) {
     this.inventoryRepository = inventoryRepository;
     this.itemRepository = itemRepository;
-    this.mapper = mapper;
   }
 
+  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public InventoryEntity getInventory(String gameSaveId) throws NotFoundException {
@@ -53,7 +51,9 @@ public class InventoryServiceImpl implements InventoryService {
     return getInventoryEntity(gameSaveId);
   }
 
+  /** {@inheritDoc} */
   @Override
+  @Transactional
   public ItemEntity createItemInInventory(String gameSaveId, ItemRequest itemRequest)
       throws NotFoundException, AlreadyExistingItemClientIdException {
     if (gameSaveId == null) {
@@ -94,7 +94,9 @@ public class InventoryServiceImpl implements InventoryService {
     return saved;
   }
 
+  /** {@inheritDoc} */
   @Override
+  @Transactional
   public void deleteItemFromInventory(String gameSaveId, String itemClientId)
       throws NotFoundException, ForbiddenException {
     if (gameSaveId == null || itemClientId == null) {
@@ -127,7 +129,9 @@ public class InventoryServiceImpl implements InventoryService {
     inventoryRepository.save(inventoryEntity);
   }
 
+  /** {@inheritDoc} */
   @Override
+  @Transactional
   public ItemEntity updateItemInInventory(
       String gameSaveId, String itemClientId, ItemRequest itemRequest)
       throws NotFoundException, ForbiddenException {
@@ -150,7 +154,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     if (!optionalItemEntity.get().getInventoryEntity().getGameSave().getId().equals(gameSaveId)) {
       throw new ForbiddenException(
-          "The given game save id is not the owner of item with the given client id");
+          "The given game save id does not own the item with the given client id");
     }
 
     ItemEntity itemEntity = optionalItemEntity.get();
@@ -168,17 +172,20 @@ public class InventoryServiceImpl implements InventoryService {
     return itemEntity;
   }
 
-  /**
-   * Get the inventory entity in the database or throw an exception if not found
-   *
-   * @param gameSaveId the game save id
-   * @return the inventory entity
-   * @throws NotFoundException if the inventory entity is not found
-   */
+  /** {@inheritDoc} */
   private InventoryEntity getInventoryEntity(String gameSaveId) throws NotFoundException {
     return inventoryRepository
         .findById(gameSaveId)
         .orElseThrow(
             () -> new NotFoundException("Inventory not found for game save id " + gameSaveId));
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  @Transactional
+  public void clearInventory(String gameSaveId) throws NotFoundException {
+    InventoryEntity inventoryEntity = getInventoryEntity(gameSaveId);
+    inventoryEntity.getItems().clear();
+    inventoryRepository.save(inventoryEntity);
   }
 }
