@@ -13,7 +13,6 @@ cache:
 
 keycloak:
   url: ${KEYCLOAK_URI_DOCKER}
-  internal-url: ${KEYCLOAK_INTERNAL_URI_DOCKER}
   admin-url: ${KEYCLOAK_ADMIN_URI_DOCKER}
   issuer-uri: ${keycloak.url}/realms/${keycloak.realm}
 
@@ -23,10 +22,10 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${keycloak.issuer-uri}
-          jwk-set-uri: ${keycloak.internal-url:${keycloak.url}}/realms/${keycloak.realm}/protocol/openid-connect/certs
+          jwk-set-uri: ${keycloak.url}/realms/${keycloak.realm}/protocol/openid-connect/certs
   cloud:
     openfeign:
       client:
         config:
           keycloak:
-            url: ${keycloak.internal-url:${keycloak.url}}
+            url: ${keycloak.url}
