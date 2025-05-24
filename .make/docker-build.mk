@@ -1,3 +1,5 @@
+.PHONY: build build-admin build-admin-dev build-api build-api-dev
+
 build:
 	COMPOSE_PROFILES=backend docker-compose --env-file env/env.properties -f dc-local.yml build
 

@@ -1,3 +1,5 @@
+.PHONY: install-ci test-ci build-ci lint-check-ci license-check-ci build-ci-ghcr build-dev-ci build-admin-dev-ci build-api-ghcr
+
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD | tr '/' '-')
 
 clean-ci:

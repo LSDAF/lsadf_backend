@@ -1,3 +1,5 @@
+.PHONY: test test-unit test-bdd report
+
 test:
 	@mvn verify -DskipSurefireReport
 
