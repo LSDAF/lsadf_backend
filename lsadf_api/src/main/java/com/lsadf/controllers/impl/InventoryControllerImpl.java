@@ -63,7 +63,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> getInventory(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<GenericResponse<Inventory>> getInventory(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -72,11 +72,9 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK, inventory);
   }
 
-  /**
-   * {@inheritDoc
-   */
+  /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> createItemInInventory(
+  public ResponseEntity<GenericResponse<Item>> createItemInInventory(
       Jwt jwt, String gameSaveId, ItemRequest itemRequest) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
@@ -86,9 +84,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK, item);
   }
 
-  /**
-   * {@inheritDoc
-   */
+  /** {@inheritDoc} */
   @Override
   public ResponseEntity<GenericResponse<Void>> deleteItemFromInventory(
       Jwt jwt, String gameSaveId, String itemClientId) {
@@ -99,17 +95,16 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK);
   }
 
-  /**
-   * {@inheritDoc
-   */
+  /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> updateItemInInventory(
+  public ResponseEntity<GenericResponse<Item>> updateItemInInventory(
       Jwt jwt, String gameSaveId, String itemClientId, ItemRequest itemRequest) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
-    inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
-    return generateResponse(HttpStatus.OK);
+    var itemEntity = inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
+    var item = mapper.mapItemEntityToItem(itemEntity);
+    return generateResponse(HttpStatus.OK, item);
   }
 
   /** {@inheritDoc} */
