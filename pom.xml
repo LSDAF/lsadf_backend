@@ -109,6 +109,7 @@
                                     <exclude>**/**.sql</exclude>
                                     <exclude>**/**.txt</exclude>
                                     <exclude>**/**.yml</exclude>
+                                    <exclude>**/**.properties</exclude>
                                 </excludes>
                             </licenseSet>
                         </licenseSets>

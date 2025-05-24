@@ -31,16 +31,11 @@ public class KeycloakConfiguration {
       KeycloakProperties keycloakProperties, KeycloakAdminProperties keycloakAdminProperties) {
     var builder =
         KeycloakBuilder.builder()
+            .serverUrl(keycloakProperties.getUrl())
             .realm(keycloakProperties.getRealm())
             .clientId(keycloakAdminProperties.getClientId())
             .clientSecret(keycloakAdminProperties.getClientSecret())
             .grantType(OAuth2Constants.CLIENT_CREDENTIALS);
-
-    if (keycloakProperties.getInternalUrl() != null) {
-      builder.serverUrl(keycloakProperties.getInternalUrl());
-    } else {
-      builder.serverUrl(keycloakProperties.getUrl());
-    }
 
     return builder.build();
   }
