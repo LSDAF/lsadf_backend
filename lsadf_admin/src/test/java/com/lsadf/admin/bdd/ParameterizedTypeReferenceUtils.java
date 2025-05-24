@@ -86,6 +86,15 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
+   * Builds a ParameterizedTypeReference for a GenericResponse of Item
+   *
+   * @return ParameterizedTypeReference
+   */
+  public static ParameterizedTypeReference<GenericResponse<Item>> buildParameterizedItemResponse() {
+    return new ParameterizedTypeReference<>() {};
+  }
+
+  /**
    * Builds a ParameterizedTypeReference for a GenericResponse of Stage
    *
    * @return ParameterizedTypeReference

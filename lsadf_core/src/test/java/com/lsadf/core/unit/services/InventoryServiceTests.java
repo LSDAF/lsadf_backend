@@ -28,8 +28,6 @@ import com.lsadf.core.entities.GameSaveEntity;
 import com.lsadf.core.entities.InventoryEntity;
 import com.lsadf.core.entities.ItemEntity;
 import com.lsadf.core.exceptions.http.NotFoundException;
-import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.mappers.impl.MapperImpl;
 import com.lsadf.core.models.ItemStat;
 import com.lsadf.core.repositories.InventoryRepository;
 import com.lsadf.core.repositories.ItemRepository;
@@ -55,14 +53,12 @@ class InventoryServiceTests {
 
   @Mock private ItemRepository itemRepository;
 
-  private final Mapper mapper = new MapperImpl();
-
   @BeforeEach
-  public void init() {
+  void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    inventoryService = new InventoryServiceImpl(inventoryRepository, itemRepository, mapper);
+    inventoryService = new InventoryServiceImpl(inventoryRepository, itemRepository);
   }
 
   /* GET */
@@ -418,5 +414,63 @@ class InventoryServiceTests {
 
     ItemEntity capturedItem = itemEntityCaptor.getValue();
     assertThat(capturedItem.getItemType()).isEqualTo(ItemType.SWORD);
+  }
+
+  /* CLEAR */
+  @Test
+  void clearInventory_on_null_gamesave_id() {
+    // Act & Assert
+    assertThrows(NotFoundException.class, () -> inventoryService.clearInventory(null));
+  }
+
+  @Test
+  void clearInventory_on_non_existing_gamesave_id() {
+    // Arrange
+    when(inventoryRepository.findById(anyString())).thenReturn(Optional.empty());
+
+    // Assert
+    assertThrows(NotFoundException.class, () -> inventoryService.clearInventory("1"));
+  }
+
+  @Test
+  void clearInventory_on_existing_gamesave_id_with_empty_inventory() {
+    // Arrange
+    InventoryEntity inventoryEntity = InventoryEntity.builder().items(new HashSet<>()).build();
+
+    when(inventoryRepository.findById(anyString())).thenReturn(Optional.of(inventoryEntity));
+
+    // Act
+    inventoryService.clearInventory("1");
+
+    // Assert
+    ArgumentCaptor<InventoryEntity> inventoryEntityCaptor =
+        ArgumentCaptor.forClass(InventoryEntity.class);
+    verify(inventoryRepository).save(inventoryEntityCaptor.capture());
+
+    InventoryEntity capturedInventory = inventoryEntityCaptor.getValue();
+    assertThat(capturedInventory.getItems()).isEmpty();
+  }
+
+  @Test
+  void clearInventory_on_existing_gamesave_id_with_items() {
+    // Arrange
+    ItemEntity itemEntity = ItemEntity.builder().build();
+    ItemEntity itemEntity2 = ItemEntity.builder().build();
+
+    InventoryEntity inventoryEntity =
+        InventoryEntity.builder().items(new HashSet<>(List.of(itemEntity, itemEntity2))).build();
+
+    when(inventoryRepository.findById(anyString())).thenReturn(Optional.of(inventoryEntity));
+
+    // Act
+    inventoryService.clearInventory("1");
+
+    // Assert
+    ArgumentCaptor<InventoryEntity> inventoryEntityCaptor =
+        ArgumentCaptor.forClass(InventoryEntity.class);
+    verify(inventoryRepository).save(inventoryEntityCaptor.capture());
+
+    InventoryEntity capturedInventory = inventoryEntityCaptor.getValue();
+    assertThat(capturedInventory.getItems()).isEmpty();
   }
 }

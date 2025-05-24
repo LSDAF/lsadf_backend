@@ -1,3 +1,5 @@
+.PHONY: up updev down logs dbup dbdown moitorup monitordown upadmin upadmindev
+
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD | tr '/' '-')
 
 up:

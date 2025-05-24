@@ -93,8 +93,8 @@ public class BddFieldConstants {
     public static final String ID = BddFieldConstants.ID;
     public static final String CLIENT_ID = "clientId";
     public static final String BLUEPRINT_ID = "blueprintId";
-    public static final String TYPE = "type";
-    public static final String RARITY = "rarity";
+    public static final String ITEM_TYPE = "itemType";
+    public static final String ITEM_RARITY = "itemRarity";
     public static final String IS_EQUIPPED = "isEquipped";
     public static final String LEVEL = "level";
     public static final String MAIN_STAT_BASE_VALUE = "mainStatBaseValue";

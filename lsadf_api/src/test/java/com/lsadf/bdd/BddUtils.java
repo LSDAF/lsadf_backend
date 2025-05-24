@@ -20,6 +20,7 @@ import com.lsadf.core.constants.item.ItemStatistic;
 import com.lsadf.core.constants.item.ItemType;
 import com.lsadf.core.entities.*;
 import com.lsadf.core.models.*;
+import com.lsadf.core.models.Currency;
 import com.lsadf.core.requests.admin.AdminGameSaveCreationRequest;
 import com.lsadf.core.requests.admin.AdminGameSaveUpdateRequest;
 import com.lsadf.core.requests.admin.AdminUserCreationRequest;
@@ -36,10 +37,7 @@ import com.lsadf.core.requests.user.UserRefreshLoginRequest;
 import com.lsadf.core.requests.user.UserUpdateRequest;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -187,6 +185,11 @@ public class BddUtils {
             .build();
 
     gameSaveEntity.setStageEntity(stageEntity);
+
+    InventoryEntity inventoryEntity =
+        InventoryEntity.builder().id(id).gameSave(gameSaveEntity).items(new HashSet<>()).build();
+
+    gameSaveEntity.setInventoryEntity(inventoryEntity);
 
     return gameSaveEntity;
   }
@@ -376,18 +379,6 @@ public class BddUtils {
   }
 
   /**
-   * Maps a row from a BDD table to an Inventory
-   *
-   * @param row row from BDD table
-   * @return Inventory
-   */
-  public static Inventory mapToInventory(Map<String, String> row) {
-    // TODO: Implement
-
-    return new Inventory();
-  }
-
-  /**
    * Maps a row from a BDD table to an Item
    *
    * @param row row from BDD table
@@ -396,9 +387,9 @@ public class BddUtils {
   public static Item mapToItem(Map<String, String> row) {
     String id = row.get(BddFieldConstants.Item.ID);
     String clientId = row.get(BddFieldConstants.Item.CLIENT_ID);
-    ItemType itemType = ItemType.fromString(row.get(BddFieldConstants.Item.TYPE));
+    ItemType itemType = ItemType.fromString(row.get(BddFieldConstants.Item.ITEM_TYPE));
     String blueprintId = row.get(BddFieldConstants.Item.BLUEPRINT_ID);
-    ItemRarity itemRarity = ItemRarity.fromString(row.get(BddFieldConstants.Item.RARITY));
+    ItemRarity itemRarity = ItemRarity.fromString(row.get(BddFieldConstants.Item.ITEM_RARITY));
     Boolean isEquipped = Boolean.parseBoolean(row.get(BddFieldConstants.Item.IS_EQUIPPED));
     Integer level = Integer.parseInt(row.get(BddFieldConstants.Item.LEVEL));
 
@@ -455,8 +446,8 @@ public class BddUtils {
     String id = row.get(BddFieldConstants.Item.ID);
     String clientId = row.get(BddFieldConstants.Item.CLIENT_ID);
     String blueprintId = row.get(BddFieldConstants.Item.BLUEPRINT_ID);
-    String itemType = row.get(BddFieldConstants.Item.TYPE);
-    String itemRarity = row.get(BddFieldConstants.Item.RARITY);
+    String itemType = row.get(BddFieldConstants.Item.ITEM_TYPE);
+    String itemRarity = row.get(BddFieldConstants.Item.ITEM_RARITY);
     String isEquipped = row.get(BddFieldConstants.Item.IS_EQUIPPED);
     String level = row.get(BddFieldConstants.Item.LEVEL);
 
@@ -500,9 +491,9 @@ public class BddUtils {
    */
   public static ItemRequest mapToItemRequest(Map<String, String> row) {
     String clientId = row.get(BddFieldConstants.Item.CLIENT_ID);
-    String itemType = row.get(BddFieldConstants.Item.TYPE);
+    String itemType = row.get(BddFieldConstants.Item.ITEM_TYPE);
     String blueprintId = row.get(BddFieldConstants.Item.BLUEPRINT_ID);
-    String itemRarity = row.get(BddFieldConstants.Item.RARITY);
+    String itemRarity = row.get(BddFieldConstants.Item.ITEM_RARITY);
     Boolean isEquipped = Boolean.parseBoolean(row.get(BddFieldConstants.Item.IS_EQUIPPED));
     Integer level = Integer.parseInt(row.get(BddFieldConstants.Item.LEVEL));
 

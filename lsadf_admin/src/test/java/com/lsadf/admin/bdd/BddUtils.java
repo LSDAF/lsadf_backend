@@ -190,6 +190,11 @@ public class BddUtils {
 
     gameSaveEntity.setStageEntity(stageEntity);
 
+    InventoryEntity inventoryEntity =
+        InventoryEntity.builder().id(id).gameSave(gameSaveEntity).items(new HashSet<>()).build();
+
+    gameSaveEntity.setInventoryEntity(inventoryEntity);
+
     return gameSaveEntity;
   }
 
@@ -431,7 +436,7 @@ public class BddUtils {
    * @param baseValue base value as string
    * @return ItemStat
    */
-  public static ItemStat mapToItemStat(String statistic, String baseValue) {
+  public static ItemStat mapToItemStat(String baseValue, String statistic) {
     return new ItemStat(ItemStatistic.fromString(statistic), Float.parseFloat(baseValue));
   }
 
@@ -450,22 +455,21 @@ public class BddUtils {
     String isEquipped = row.get(BddFieldConstants.Item.IS_EQUIPPED);
     String level = row.get(BddFieldConstants.Item.LEVEL);
 
-    ItemStat mainStat =
-        BddUtils.mapToItemStat(
-            row.get(BddFieldConstants.Item.MAIN_STAT_BASE_VALUE),
-            row.get(BddFieldConstants.Item.MAIN_STAT_STATISTIC));
+    String mainStatBaseValue = row.get(BddFieldConstants.Item.MAIN_STAT_BASE_VALUE);
+    String mainStatStatistic = row.get(BddFieldConstants.Item.MAIN_STAT_STATISTIC);
+    ItemStat mainStat = BddUtils.mapToItemStat(mainStatBaseValue, mainStatStatistic);
+    String additionalStat1BaseValue = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_BASE_VALUE);
+    String additionalStat1Statistic = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_STATISTIC);
     ItemStat additionalStat1 =
-        BddUtils.mapToItemStat(
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_BASE_VALUE),
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_STATISTIC));
+        BddUtils.mapToItemStat(additionalStat1BaseValue, additionalStat1Statistic);
+    String additionalStat2BaseValue = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_BASE_VALUE);
+    String additionalStat2Statistic = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_STATISTIC);
     ItemStat additionalStat2 =
-        BddUtils.mapToItemStat(
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_BASE_VALUE),
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_STATISTIC));
+        BddUtils.mapToItemStat(additionalStat2BaseValue, additionalStat2Statistic);
+    String additionalStat3BaseValue = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_BASE_VALUE);
+    String additionalStat3Statistic = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_STATISTIC);
     ItemStat additionalStat3 =
-        BddUtils.mapToItemStat(
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_BASE_VALUE),
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_STATISTIC));
+        BddUtils.mapToItemStat(additionalStat3BaseValue, additionalStat3Statistic);
 
     List<ItemStat> additionalStats = List.of(additionalStat1, additionalStat2, additionalStat3);
 

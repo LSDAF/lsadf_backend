@@ -1,3 +1,5 @@
+.PHONY: clean prune purge purgedb purgelogs
+
 clean:
 	@mvn clean
 

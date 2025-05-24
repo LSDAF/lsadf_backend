@@ -45,10 +45,7 @@ public class ItemEntity extends AEntity {
     super();
   }
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @ToString.Exclude
-  @EqualsAndHashCode.Exclude
-  private InventoryEntity inventoryEntity;
+  @ManyToOne @ToString.Exclude @EqualsAndHashCode.Exclude private InventoryEntity inventoryEntity;
 
   @Column(name = EntityAttributes.Items.ITEM_CLIENT_ID, unique = true)
   private String clientId;

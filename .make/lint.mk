@@ -1,3 +1,5 @@
+.PHONY: lint-check lint license-check license
+
 lint-check:
 	@mvn spotless:check
 

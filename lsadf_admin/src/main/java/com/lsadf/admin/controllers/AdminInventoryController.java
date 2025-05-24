@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.controllers;
+package com.lsadf.admin.controllers;
 
 import static com.lsadf.core.configurations.SwaggerConfiguration.BEARER_AUTHENTICATION;
 import static com.lsadf.core.configurations.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
 
 import com.lsadf.core.annotations.Uuid;
 import com.lsadf.core.constants.ControllerConstants;
+import com.lsadf.core.controllers.Controller;
 import com.lsadf.core.models.Inventory;
 import com.lsadf.core.models.Item;
 import com.lsadf.core.requests.item.ItemRequest;
@@ -35,16 +36,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Controller interface that handles inventory-related operations for game saves. This controller
- * requires bearer token or OAuth2 authentication for all operations.
- */
-@RequestMapping(value = ControllerConstants.INVENTORY)
-@Tag(name = ControllerConstants.Swagger.INVENTORY_CONTROLLER)
+@RequestMapping(value = ControllerConstants.ADMIN_INVENTORIES)
+@Tag(name = ControllerConstants.Swagger.ADMIN_INVENTORIES_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
-public interface InventoryController {
-
+public interface AdminInventoryController extends Controller {
   /** Path variable name for the game save identifier. */
   String GAME_SAVE_ID = "game_save_id";
 
@@ -119,13 +115,13 @@ public interface InventoryController {
       @PathVariable(value = CLIENT_ID) String itemClientId);
 
   /**
-   * Updates an item in the inventory of a specific game save.
+   * Updates an existing item in the inventory of a specific game save.
    *
-   * @param jwt The JWT token of the authenticated user.
-   * @param gameSaveId The UUID of the game save containing the inventory to update.
-   * @param itemClientId The client-side identifier of the item to update.
-   * @param itemRequest The request containing the updated item details.
-   * @return ResponseEntity containing the updated item data.
+   * @param jwt The JWT token of the authenticated user
+   * @param gameSaveId The UUID of the game save containing the item
+   * @param itemClientId The client-side identifier of the item to update
+   * @param itemRequest The request containing the updated item details
+   * @return ResponseEntity containing the updated inventory data
    */
   @PutMapping(value = ControllerConstants.Inventory.CLIENT_ID)
   @Operation(summary = "Updates an item in the inventory of a game save")
@@ -142,4 +138,25 @@ public interface InventoryController {
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @PathVariable(value = CLIENT_ID) String itemClientId,
       @RequestBody @Valid ItemRequest itemRequest);
+
+  /**
+   * Clears the inventory of a specific game save.
+   *
+   * @param jwt The JWT token of the authenticated user
+   * @param gameSaveId The UUID of the game save to clear the inventory of
+   * @return ResponseEntity containing the updated inventory data
+   */
+  @DeleteMapping(value = ControllerConstants.Inventory.GAME_SAVE_ID)
+  @Operation(summary = "Clears the inventory of a specific game save")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+        @ApiResponse(responseCode = "403", description = "Forbidden"),
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "404", description = "Not Found"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+      })
+  ResponseEntity<GenericResponse<Void>> clearInventoryItems(
+      @AuthenticationPrincipal Jwt jwt,
+      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 }

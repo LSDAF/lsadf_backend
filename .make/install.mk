@@ -1,3 +1,5 @@
+.PHONY: install install-docker install-no-env admin-install javadoc
+
 install: clean
 	@mvn install -DskipTests -U -fae -Dcopy-env -DskipSurefireReport
 
