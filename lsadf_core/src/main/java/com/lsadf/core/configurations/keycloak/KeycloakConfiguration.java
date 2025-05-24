@@ -31,6 +31,7 @@ public class KeycloakConfiguration {
       KeycloakProperties keycloakProperties, KeycloakAdminProperties keycloakAdminProperties) {
     var builder =
         KeycloakBuilder.builder()
+            .serverUrl(keycloakProperties.getUrl())
             .realm(keycloakProperties.getRealm())
             .clientId(keycloakAdminProperties.getClientId())
             .clientSecret(keycloakAdminProperties.getClientSecret())
