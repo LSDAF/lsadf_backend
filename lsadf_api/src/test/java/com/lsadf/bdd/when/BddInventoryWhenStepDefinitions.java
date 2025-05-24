@@ -25,6 +25,7 @@ import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.entities.GameSaveEntity;
 import com.lsadf.core.entities.InventoryEntity;
 import com.lsadf.core.entities.ItemEntity;
+import com.lsadf.core.exceptions.http.NotFoundException;
 import com.lsadf.core.models.Inventory;
 import com.lsadf.core.models.Item;
 import com.lsadf.core.models.JwtAuthentication;
@@ -34,7 +35,6 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,11 +43,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 /** Step definitions for the when steps in the BDD scenarios */
 @Slf4j(topic = "[INVENTORY WHEN STEP DEFINITIONS]")
 public class BddInventoryWhenStepDefinitions extends BddLoader {
   @Given("^the following items to the inventory of the game save with id (.*)$")
+  @Transactional
   public void given_the_following_items(String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -55,15 +57,9 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
 
     Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
     if (optionalInventoryEntity.isEmpty()) {
-      log.info("Inventory not found, creating...");
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(gameSaveId);
-      inventoryEntity = InventoryEntity.builder().id(gameSaveId).gameSave(gameSaveEntity).build();
+      throw new NotFoundException("Inventory with id: " + gameSaveId + " not found.");
     } else {
       inventoryEntity = optionalInventoryEntity.get();
-    }
-
-    if (inventoryEntity.getItems() == null) {
-      inventoryEntity.setItems(new HashSet<>());
     }
 
     log.info("Creating items...");
