@@ -76,6 +76,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
       LsadfAdminBddConfiguration.class,
       AdminAuthController.class,
       AdminAuthControllerImpl.class,
+      AdminInventoryController.class,
+      AdminInventoryControllerImpl.class,
       AdminCacheController.class,
       AdminCacheControllerImpl.class,
       AdminUserController.class,
@@ -238,7 +240,7 @@ public class BddLoader {
     registry.add(
         "spring.security.oauth2.resourceserver.jwt.issuer-uri",
         () -> keycloak.getAuthServerUrl() + "/realms/BDD_REALM");
-    registry.add("keycloak.url", () -> keycloak.getAuthServerUrl());
-    registry.add("keycloak.adminUrl", () -> keycloak.getAuthServerUrl());
+    registry.add("keycloak.url", keycloak::getAuthServerUrl);
+    registry.add("keycloak.adminUrl", keycloak::getAuthServerUrl);
   }
 }

@@ -43,11 +43,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 /** Step definitions for the when steps in the BDD scenarios */
 @Slf4j(topic = "[INVENTORY WHEN STEP DEFINITIONS]")
 public class BddInventoryWhenStepDefinitions extends BddLoader {
   @Given("^the following items to the inventory of the game save with id (.*)$")
+  @Transactional
   public void given_the_following_items(String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -55,9 +57,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
 
     Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
     if (optionalInventoryEntity.isEmpty()) {
-      log.info("Inventory not found, creating...");
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(gameSaveId);
-      inventoryEntity = InventoryEntity.builder().id(gameSaveId).gameSave(gameSaveEntity).build();
+      throw new RuntimeException("Inventory not found");
     } else {
       inventoryEntity = optionalInventoryEntity.get();
     }
@@ -70,6 +70,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     rows.forEach(
         row -> {
           ItemEntity itemEntity = BddUtils.mapToItemEntity(row);
+          itemEntity.setInventoryEntity(inventoryEntity);
           inventoryEntity.getItems().add(itemEntity);
         });
 
@@ -79,7 +80,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @Given("^the inventory of the game save with id (.*) is set to empty$")
-  public void when_the_inventory_of_the_game_save_with_id_is_set_to_empty(String gameSaveId) {
+  public void given_the_inventory_of_the_game_save_with_id_is_set_to_empty(String gameSaveId) {
     try {
       InventoryEntity inventoryEntity = InventoryEntity.builder().build();
 

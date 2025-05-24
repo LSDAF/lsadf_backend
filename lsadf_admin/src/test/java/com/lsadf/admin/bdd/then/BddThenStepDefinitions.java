@@ -454,4 +454,48 @@ public class BddThenStepDefinitions extends BddLoader {
     String actual = mime.getAllRecipients()[0].toString();
     assertThat(actual).isEqualTo(email);
   }
+
+  @Then("^the response should have the following items in inventory$")
+  public void then_the_response_should_have_the_following_items_in_inventory(DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+
+    Inventory inventory = inventoryStack.peek();
+    assertThat(inventory).isNotNull();
+    assertThat(inventory.getItems()).isNotNull();
+
+    for (Map<String, String> row : rows) {
+      Item expected = BddUtils.mapToItem(row);
+
+      Item actual =
+          inventory.getItems().stream()
+              .filter(item -> item.getClientId().equals(expected.getClientId()))
+              .findFirst()
+              .orElseThrow(
+                  () ->
+                      new AssertionError(
+                          "Item with clientId "
+                              + expected.getClientId()
+                              + " not found in inventory"));
+
+      assertThat(actual)
+          .usingRecursiveComparison()
+          .ignoringFields("id", "createdAt", "updatedAt")
+          .isEqualTo(expected);
+    }
+  }
+
+  @Then("^the response should have the following item$")
+  public void then_the_response_should_have_the_following_item(DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+    assertThat(rows).hasSize(1);
+
+    Map<String, String> row = rows.get(0);
+    Item expected = BddUtils.mapToItem(row);
+
+    Item actual = (Item) responseStack.peek().getData();
+    assertThat(actual)
+        .usingRecursiveComparison()
+        .ignoringFields("id", "createdAt", "updatedAt")
+        .isEqualTo(expected);
+  }
 }

@@ -78,21 +78,6 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     log.info("Items created");
   }
 
-  @Given("^the inventory of the game save with id (.*) is set to empty$")
-  public void when_the_inventory_of_the_game_save_with_id_is_set_to_empty(String gameSaveId) {
-    try {
-      InventoryEntity inventoryEntity = InventoryEntity.builder().build();
-
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(gameSaveId);
-
-      gameSaveEntity.setInventoryEntity(inventoryEntity);
-
-      gameSaveRepository.save(gameSaveEntity);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
   @When("^the user requests the endpoint to get the inventory of the game save with id (.*)$")
   public void when_the_user_requests_the_endpoint_to_get_the_inventory_of_the_game_save_with_id(
       String gameSaveId) {
