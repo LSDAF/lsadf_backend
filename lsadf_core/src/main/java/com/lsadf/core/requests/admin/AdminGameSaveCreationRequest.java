@@ -19,8 +19,8 @@ import static com.lsadf.core.constants.JsonAttributes.GameSave.*;
 import static com.lsadf.core.constants.JsonAttributes.ID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.annotations.Nickname;
-import com.lsadf.core.annotations.Uuid;
+import com.lsadf.core.common.validators.annotations.Nickname;
+import com.lsadf.core.common.validators.annotations.Uuid;
 import com.lsadf.core.requests.Request;
 import com.lsadf.core.requests.characteristics.CharacteristicsRequest;
 import com.lsadf.core.requests.currency.CurrencyRequest;

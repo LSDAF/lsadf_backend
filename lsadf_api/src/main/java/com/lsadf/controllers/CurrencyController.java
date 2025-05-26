@@ -18,7 +18,7 @@ package com.lsadf.controllers;
 import static com.lsadf.core.configurations.SwaggerConfiguration.BEARER_AUTHENTICATION;
 import static com.lsadf.core.configurations.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
 
-import com.lsadf.core.annotations.Uuid;
+import com.lsadf.core.common.validators.annotations.Uuid;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.requests.currency.CurrencyRequest;
 import com.lsadf.core.responses.GenericResponse;
