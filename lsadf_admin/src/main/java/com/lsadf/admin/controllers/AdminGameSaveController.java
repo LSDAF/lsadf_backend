@@ -20,7 +20,7 @@ import static com.lsadf.core.configurations.SwaggerConfiguration.OAUTH2_AUTHENTI
 import static com.lsadf.core.constants.ControllerConstants.Params.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.annotations.Uuid;
+import com.lsadf.core.common.validators.annotations.Uuid;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.constants.JsonViews;
 import com.lsadf.core.constants.ResponseMessages;

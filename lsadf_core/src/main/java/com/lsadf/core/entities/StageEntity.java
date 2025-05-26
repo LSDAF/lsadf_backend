@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.entities;
 
-import com.lsadf.core.annotations.StageConsistency;
+import com.lsadf.core.common.validators.annotations.StageConsistency;
 import com.lsadf.core.constants.EntityAttributes;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
