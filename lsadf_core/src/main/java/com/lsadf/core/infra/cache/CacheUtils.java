@@ -16,10 +16,9 @@
  */
 package com.lsadf.core.infra.cache;
 
+import com.lsadf.core.common.utils.KeyValueConsumer;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.lsadf.core.utils.KeyValueConsumer;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;

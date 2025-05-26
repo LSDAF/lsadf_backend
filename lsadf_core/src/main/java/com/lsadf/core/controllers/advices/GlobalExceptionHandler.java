@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.controllers.advices;
 
-import static com.lsadf.core.utils.ResponseUtils.generateResponse;
+import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.core.common.exceptions.*;
 import com.lsadf.core.common.exceptions.http.*;

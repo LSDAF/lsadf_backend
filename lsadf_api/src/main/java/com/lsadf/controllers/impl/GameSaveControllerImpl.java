@@ -15,8 +15,8 @@
  */
 package com.lsadf.controllers.impl;
 
-import static com.lsadf.core.utils.ResponseUtils.generateResponse;
-import static com.lsadf.core.utils.TokenUtils.getUsernameFromJwt;
+import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
+import static com.lsadf.core.common.utils.TokenUtils.getUsernameFromJwt;
 
 import com.lsadf.controllers.GameSaveController;
 import com.lsadf.core.controllers.impl.BaseController;

@@ -17,7 +17,7 @@ package com.lsadf.core.unit.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.lsadf.core.utils.StringUtils;
+import com.lsadf.core.common.utils.StringUtils;
 import org.junit.jupiter.api.Test;
 
 class StringUtilsTests {

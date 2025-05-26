@@ -15,7 +15,7 @@
  */
 package com.lsadf.admin.controllers.impl;
 
-import static com.lsadf.core.utils.ResponseUtils.generateResponse;
+import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.controllers.AdminGlobalInfoController;
 import com.lsadf.core.controllers.impl.BaseController;

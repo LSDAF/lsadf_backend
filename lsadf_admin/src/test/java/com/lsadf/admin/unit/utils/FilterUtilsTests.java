@@ -18,8 +18,8 @@ package com.lsadf.admin.unit.utils;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.utils.FilterUtils;
+import com.lsadf.core.common.utils.DateUtils;
 import com.lsadf.core.models.User;
-import com.lsadf.core.utils.DateUtils;
 import com.vaadin.hilla.crud.filter.AndFilter;
 import com.vaadin.hilla.crud.filter.Filter;
 import com.vaadin.hilla.crud.filter.OrFilter;

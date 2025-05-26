@@ -16,7 +16,7 @@
 package com.lsadf.admin;
 
 import com.lsadf.admin.configurations.LsadfAdminConfiguration;
-import com.lsadf.core.utils.ApplicationUtils;
+import com.lsadf.core.common.utils.ApplicationUtils;
 import java.net.UnknownHostException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;

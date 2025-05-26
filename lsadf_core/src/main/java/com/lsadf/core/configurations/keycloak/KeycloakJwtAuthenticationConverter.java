@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.configurations.keycloak;
 
-import com.lsadf.core.utils.TokenUtils;
+import com.lsadf.core.common.utils.TokenUtils;
 import java.util.Collection;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
