@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.services;
 
-import com.lsadf.core.exceptions.http.NotFoundException;
+import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.models.Stage;
 
 /** Service for managing stages. */

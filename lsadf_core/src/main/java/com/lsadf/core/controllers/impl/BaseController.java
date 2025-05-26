@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.controllers.impl;
 
+import com.lsadf.core.common.exceptions.http.UnauthorizedException;
 import com.lsadf.core.controllers.Controller;
-import com.lsadf.core.exceptions.http.UnauthorizedException;
 import org.slf4j.Logger;
 import org.springframework.security.oauth2.jwt.Jwt;
 
