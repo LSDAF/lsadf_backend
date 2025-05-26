@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controllers.StageController;
 import com.lsadf.application.controllers.impl.StageControllerImpl;
 import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
-import com.lsadf.core.requests.stage.StageRequest;
+import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import lombok.SneakyThrows;

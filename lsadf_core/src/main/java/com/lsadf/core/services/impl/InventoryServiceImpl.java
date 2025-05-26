@@ -24,7 +24,7 @@ import com.lsadf.core.infra.persistence.game.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.ItemEntity;
 import com.lsadf.core.infra.persistence.game.ItemRepository;
-import com.lsadf.core.requests.item.ItemRequest;
+import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
 import com.lsadf.core.services.InventoryService;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
