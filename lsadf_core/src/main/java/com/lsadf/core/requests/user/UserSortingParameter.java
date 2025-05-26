@@ -16,8 +16,8 @@
 package com.lsadf.core.requests.user;
 
 import com.lsadf.core.constants.JsonAttributes;
-import com.lsadf.core.models.User;
 import com.lsadf.core.requests.common.SortingParameter;
+import com.lsadf.core.user.User;
 import java.util.Comparator;
 import org.springframework.data.domain.Sort;
 

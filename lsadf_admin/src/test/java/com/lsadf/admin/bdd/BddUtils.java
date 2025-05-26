@@ -40,6 +40,8 @@ import com.lsadf.core.requests.user.UserCreationRequest;
 import com.lsadf.core.requests.user.UserLoginRequest;
 import com.lsadf.core.requests.user.UserRefreshLoginRequest;
 import com.lsadf.core.requests.user.UserUpdateRequest;
+import com.lsadf.core.user.User;
+import com.lsadf.core.user.UserInfo;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;

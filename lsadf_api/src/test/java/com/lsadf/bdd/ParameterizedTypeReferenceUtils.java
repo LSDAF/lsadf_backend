@@ -15,12 +15,15 @@
  */
 package com.lsadf.bdd;
 
+import com.lsadf.core.auth.JwtAuthentication;
 import com.lsadf.core.game.characteristics.Characteristics;
 import com.lsadf.core.game.currency.Currency;
 import com.lsadf.core.game.game_save.GameSave;
 import com.lsadf.core.game.inventory.Inventory;
 import com.lsadf.core.game.stage.Stage;
 import com.lsadf.core.models.*;
+import com.lsadf.core.user.User;
+import com.lsadf.core.user.UserInfo;
 import com.lsadf.core.web.responses.GenericResponse;
 import java.util.List;
 import lombok.experimental.UtilityClass;

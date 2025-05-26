@@ -20,7 +20,7 @@ import static com.lsadf.core.common.utils.TokenUtils.getUserInfoFromJwt;
 
 import com.lsadf.controllers.UserController;
 import com.lsadf.core.controllers.impl.BaseController;
-import com.lsadf.core.models.UserInfo;
+import com.lsadf.core.user.UserInfo;
 import com.lsadf.core.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
