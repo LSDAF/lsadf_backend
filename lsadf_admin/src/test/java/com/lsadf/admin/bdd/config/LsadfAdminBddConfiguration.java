@@ -15,6 +15,7 @@
  */
 package com.lsadf.admin.bdd.config;
 
+import com.lsadf.core.auth.JwtAuthentication;
 import com.lsadf.core.entities.GameSaveEntity;
 import com.lsadf.core.entities.InventoryEntity;
 import com.lsadf.core.game.characteristics.Characteristics;
@@ -24,6 +25,8 @@ import com.lsadf.core.game.inventory.Inventory;
 import com.lsadf.core.game.inventory.item.Item;
 import com.lsadf.core.game.stage.Stage;
 import com.lsadf.core.models.*;
+import com.lsadf.core.user.User;
+import com.lsadf.core.user.UserInfo;
 import com.lsadf.core.web.responses.GenericResponse;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;

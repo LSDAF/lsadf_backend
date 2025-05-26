@@ -15,9 +15,9 @@
  */
 package com.lsadf.controllers;
 
+import com.lsadf.core.auth.JwtAuthentication;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.constants.ResponseMessages;
-import com.lsadf.core.models.JwtAuthentication;
 import com.lsadf.core.requests.user.UserLoginRequest;
 import com.lsadf.core.requests.user.UserRefreshLoginRequest;
 import com.lsadf.core.web.responses.GenericResponse;

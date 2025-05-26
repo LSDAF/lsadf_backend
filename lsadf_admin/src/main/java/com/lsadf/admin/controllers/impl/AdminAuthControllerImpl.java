@@ -18,10 +18,10 @@ package com.lsadf.admin.controllers.impl;
 import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.controllers.AdminAuthController;
+import com.lsadf.core.auth.JwtAuthentication;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.controllers.impl.BaseController;
 import com.lsadf.core.http_clients.KeycloakClient;
-import com.lsadf.core.models.JwtAuthentication;
 import com.lsadf.core.properties.KeycloakProperties;
 import com.lsadf.core.properties.ServerProperties;
 import com.lsadf.core.requests.user.UserLoginRequest;

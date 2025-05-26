@@ -18,7 +18,7 @@ package com.lsadf.core.common.utils;
 
 import static com.lsadf.core.constants.ClaimsConstants.*;
 
-import com.lsadf.core.models.UserInfo;
+import com.lsadf.core.user.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

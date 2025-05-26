@@ -17,9 +17,9 @@
 package com.lsadf.core.common.utils;
 
 import com.lsadf.core.game.game_save.GameSave;
-import com.lsadf.core.models.User;
 import com.lsadf.core.requests.game_save.GameSaveSortingParameter;
 import com.lsadf.core.requests.user.UserSortingParameter;
+import com.lsadf.core.user.User;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
