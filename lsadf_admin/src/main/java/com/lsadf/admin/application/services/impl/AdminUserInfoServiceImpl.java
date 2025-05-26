@@ -18,7 +18,7 @@ package com.lsadf.admin.application.services.impl;
 
 import com.lsadf.admin.application.services.AdminUserInfoService;
 import com.lsadf.core.common.utils.TokenUtils;
-import com.lsadf.core.user.UserInfo;
+import com.lsadf.core.domain.user.UserInfo;
 import com.vaadin.hilla.BrowserCallable;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.core.Authentication;

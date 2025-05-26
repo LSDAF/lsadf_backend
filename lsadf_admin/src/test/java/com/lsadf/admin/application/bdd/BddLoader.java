@@ -29,6 +29,8 @@ import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
+import com.lsadf.core.domain.user.User;
+import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
@@ -41,8 +43,6 @@ import com.lsadf.core.infra.web.config.controllers.advices.DynamicJsonViewAdvice
 import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.services.*;
-import com.lsadf.core.user.User;
-import com.lsadf.core.user.UserInfo;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import jakarta.mail.internet.MimeMessage;
