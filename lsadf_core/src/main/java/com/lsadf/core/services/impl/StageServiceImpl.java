@@ -15,9 +15,9 @@
  */
 package com.lsadf.core.services.impl;
 
-import com.lsadf.core.cache.Cache;
 import com.lsadf.core.entities.StageEntity;
 import com.lsadf.core.exceptions.http.NotFoundException;
+import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.models.Stage;
 import com.lsadf.core.repositories.StageRepository;

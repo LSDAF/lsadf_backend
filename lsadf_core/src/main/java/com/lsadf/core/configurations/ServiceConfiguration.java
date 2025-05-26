@@ -17,8 +17,8 @@ package com.lsadf.core.configurations;
 
 import static com.lsadf.core.constants.BeanConstants.Cache.GAME_SAVE_OWNERSHIP_CACHE;
 
-import com.lsadf.core.cache.Cache;
-import com.lsadf.core.cache.HistoCache;
+import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.mappers.impl.MapperImpl;
 import com.lsadf.core.models.Characteristics;
