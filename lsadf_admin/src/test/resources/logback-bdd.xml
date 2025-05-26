@@ -19,7 +19,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="com.lsadf.core.configurations.logback_filter.MarkerSkippingFilter">
+        <filter class="com.lsadf.core.infra.logging.logback_filter.MarkerSkippingFilter">
             <markerToMatch>CONSOLE</markerToMatch>
         </filter>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">

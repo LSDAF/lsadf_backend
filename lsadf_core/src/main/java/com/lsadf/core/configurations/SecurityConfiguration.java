@@ -17,8 +17,8 @@ package com.lsadf.core.configurations;
 
 import static com.lsadf.core.constants.ControllerConstants.ADMIN;
 
-import com.lsadf.core.configurations.interceptors.RequestLoggerInterceptor;
 import com.lsadf.core.configurations.keycloak.KeycloakJwtAuthenticationConverter;
+import com.lsadf.core.infra.logging.interceptors.RequestLoggerInterceptor;
 import com.lsadf.core.properties.HttpLogProperties;
 import com.lsadf.core.properties.OAuth2Properties;
 import java.util.Collection;
