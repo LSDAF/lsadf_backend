@@ -18,9 +18,9 @@ package com.lsadf.core.infra.listeners;
 
 import com.lsadf.core.configurations.ShutdownListener;
 import com.lsadf.core.infra.application.config.ShutdownProperties;
+import com.lsadf.core.infra.cache.services.CacheFlushService;
 import com.lsadf.core.infra.logging.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.ConfigurationLogger;
-import com.lsadf.core.services.CacheFlushService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;

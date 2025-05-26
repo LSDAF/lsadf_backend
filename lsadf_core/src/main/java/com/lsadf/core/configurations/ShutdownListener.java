@@ -16,7 +16,7 @@
 package com.lsadf.core.configurations;
 
 import com.lsadf.core.infra.application.config.ShutdownProperties;
-import com.lsadf.core.services.CacheFlushService;
+import com.lsadf.core.infra.cache.services.CacheFlushService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
