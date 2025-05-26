@@ -26,7 +26,7 @@ import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.info.GlobalInfo;
-import com.lsadf.core.entities.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.GameSaveEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.requests.admin.AdminGameSaveCreationRequest;

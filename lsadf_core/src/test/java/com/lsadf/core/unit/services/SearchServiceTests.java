@@ -22,12 +22,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.entities.CharacteristicsEntity;
-import com.lsadf.core.entities.CurrencyEntity;
-import com.lsadf.core.entities.GameSaveEntity;
-import com.lsadf.core.entities.StageEntity;
-import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.mappers.impl.MapperImpl;
+import com.lsadf.core.infra.persistence.game.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.CurrencyEntity;
+import com.lsadf.core.infra.persistence.game.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.StageEntity;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.MapperImpl;
 import com.lsadf.core.requests.common.Filter;
 import com.lsadf.core.requests.search.SearchRequest;
 import com.lsadf.core.requests.user.UserSortingParameter;

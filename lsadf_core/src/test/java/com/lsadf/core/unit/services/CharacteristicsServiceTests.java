@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 
 import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.entities.CharacteristicsEntity;
 import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.mappers.impl.MapperImpl;
+import com.lsadf.core.infra.persistence.game.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.MapperImpl;
 import com.lsadf.core.repositories.CharacteristicsRepository;
 import com.lsadf.core.services.CharacteristicsService;
 import com.lsadf.core.services.impl.CharacteristicsServiceImpl;

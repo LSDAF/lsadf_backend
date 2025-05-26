@@ -18,8 +18,8 @@ package com.lsadf.core.services;
 import com.lsadf.core.common.exceptions.AlreadyExistingItemClientIdException;
 import com.lsadf.core.common.exceptions.http.ForbiddenException;
 import com.lsadf.core.common.exceptions.http.NotFoundException;
-import com.lsadf.core.entities.InventoryEntity;
-import com.lsadf.core.entities.ItemEntity;
+import com.lsadf.core.infra.persistence.game.InventoryEntity;
+import com.lsadf.core.infra.persistence.game.ItemEntity;
 import com.lsadf.core.requests.item.ItemRequest;
 
 public interface InventoryService {

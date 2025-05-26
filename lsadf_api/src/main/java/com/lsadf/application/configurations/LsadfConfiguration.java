@@ -17,9 +17,9 @@
 package com.lsadf.application.configurations;
 
 import com.lsadf.core.configurations.*;
-import com.lsadf.core.infra.cache.configuration.NoRedisCacheConfiguration;
-import com.lsadf.core.infra.cache.configuration.RedisCacheConfiguration;
-import com.lsadf.core.infra.cache.configuration.RedisEmbeddedCacheConfiguration;
+import com.lsadf.core.infra.cache.configuration.NoValkeyCacheConfiguration;
+import com.lsadf.core.infra.cache.configuration.ValkeyCacheConfiguration;
+import com.lsadf.core.infra.cache.configuration.ValkeyEmbeddedCacheConfiguration;
 import com.lsadf.core.infra.listeners.ApplicationListenerConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakConfiguration;
@@ -45,11 +45,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   CorsConfiguration.class,
   SecurityConfiguration.class,
   LoggingConfiguration.class,
-  RedisCacheConfiguration.class,
+  ValkeyCacheConfiguration.class,
   ApplicationListenerConfiguration.class,
-  RedisEmbeddedCacheConfiguration.class,
-  RedisCacheConfiguration.class,
-  NoRedisCacheConfiguration.class,
+  ValkeyEmbeddedCacheConfiguration.class,
+  ValkeyCacheConfiguration.class,
+  NoValkeyCacheConfiguration.class,
   ClockConfiguration.class,
   KeycloakConfiguration.class,
   JpaConfiguration.class,

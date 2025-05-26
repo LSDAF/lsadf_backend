@@ -17,7 +17,7 @@
 package com.lsadf.core.infra.cache.configuration;
 
 import static com.lsadf.core.constants.BeanConstants.Cache.*;
-import static com.lsadf.core.infra.cache.configuration.RedisConstants.GAME_SAVE_OWNERSHIP;
+import static com.lsadf.core.infra.cache.RedisConstants.GAME_SAVE_OWNERSHIP;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
@@ -29,7 +29,7 @@ import com.lsadf.core.infra.cache.impl.RedisCache;
 import com.lsadf.core.infra.cache.impl.RedisCharacteristicsCache;
 import com.lsadf.core.infra.cache.impl.RedisCurrencyCache;
 import com.lsadf.core.infra.cache.impl.RedisStageCache;
-import com.lsadf.core.infra.cache.listeners.RedisKeyExpirationListener;
+import com.lsadf.core.infra.cache.listeners.ValkeyKeyExpirationListener;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.properties.RedisProperties;
 import com.lsadf.core.services.*;
@@ -52,7 +52,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @ConditionalOnProperty(prefix = "cache.redis", name = "enabled", havingValue = "true")
-public class RedisCacheConfiguration {
+public class ValkeyCacheConfiguration {
 
   @Bean
   public RedisTemplate<String, String> redisTemplate(
@@ -184,21 +184,21 @@ public class RedisCacheConfiguration {
   @Bean
   public RedisMessageListenerContainer keyExpirationListenerContainer(
       RedisConnectionFactory connectionFactory,
-      RedisKeyExpirationListener redisKeyExpirationListener) {
+      ValkeyKeyExpirationListener valkeyKeyExpirationListener) {
     RedisMessageListenerContainer container = new RedisMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
     container.addMessageListener(
-        redisKeyExpirationListener, new PatternTopic("__keyevent@0__:expired"));
+            valkeyKeyExpirationListener, new PatternTopic("__keyevent@0__:expired"));
     return container;
   }
 
   @Bean
-  MessageListenerAdapter messageListener(RedisKeyExpirationListener redisKeyExpirationListener) {
-    return new MessageListenerAdapter(redisKeyExpirationListener);
+  MessageListenerAdapter messageListener(ValkeyKeyExpirationListener valkeyKeyExpirationListener) {
+    return new MessageListenerAdapter(valkeyKeyExpirationListener);
   }
 
   @Bean
-  public RedisKeyExpirationListener redisKeyExpirationListener(
+  public ValkeyKeyExpirationListener redisKeyExpirationListener(
       CharacteristicsService characteristicsService,
       CurrencyService currencyService,
       InventoryService inventoryService,
@@ -206,7 +206,7 @@ public class RedisCacheConfiguration {
       RedisTemplate<String, Characteristics> characteristicsRedisTemplate,
       RedisTemplate<String, Currency> currencyRedisTemplate,
       RedisTemplate<String, Stage> stageRedisTemplate) {
-    return new RedisKeyExpirationListener(
+    return new ValkeyKeyExpirationListener(
         characteristicsService,
         currencyService,
         inventoryService,

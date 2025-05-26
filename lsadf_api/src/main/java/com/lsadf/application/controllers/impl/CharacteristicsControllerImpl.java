@@ -21,9 +21,9 @@ import static com.lsadf.core.common.utils.TokenUtils.getUsernameFromJwt;
 
 import com.lsadf.application.controllers.CharacteristicsController;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.config.controllers.BaseController;
 import com.lsadf.core.infra.web.responses.GenericResponse;
-import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.requests.characteristics.CharacteristicsRequest;
 import com.lsadf.core.services.CacheService;
 import com.lsadf.core.services.CharacteristicsService;

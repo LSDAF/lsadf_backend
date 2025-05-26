@@ -18,7 +18,7 @@ package com.lsadf.admin.application.unit.config;
 
 import com.lsadf.core.configurations.ShutdownListener;
 import com.lsadf.core.http_clients.KeycloakClient;
-import com.lsadf.core.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.services.*;
 import javax.sql.DataSource;
 import org.springframework.boot.test.context.TestConfiguration;
