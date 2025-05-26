@@ -17,8 +17,8 @@
 package com.lsadf.core.infra.cache.impl;
 
 import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.cache.CacheUtils;
 import com.lsadf.core.properties.RedisProperties;
-import com.lsadf.core.utils.CacheUtils;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
