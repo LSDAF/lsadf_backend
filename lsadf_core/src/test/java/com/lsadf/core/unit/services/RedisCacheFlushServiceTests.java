@@ -17,7 +17,7 @@ package com.lsadf.core.unit.services;
 
 import static org.mockito.Mockito.*;
 
-import com.lsadf.core.cache.Cache;
+import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.models.Characteristics;
 import com.lsadf.core.models.Currency;
 import com.lsadf.core.models.Stage;

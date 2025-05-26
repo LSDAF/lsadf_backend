@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.services.impl;
 
-import com.lsadf.core.cache.Cache;
-import com.lsadf.core.cache.HistoCache;
+import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.models.Characteristics;
 import com.lsadf.core.models.Currency;
 import com.lsadf.core.models.Stage;
