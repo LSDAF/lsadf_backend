@@ -23,7 +23,7 @@ import static com.lsadf.core.infra.cache.RedisConstants.CHARACTERISTICS_HISTO;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.properties.RedisProperties;
+import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -41,8 +41,8 @@ public class RedisCharacteristicsCache extends RedisCache<Characteristics>
   public RedisCharacteristicsCache(
       RedisTemplate<String, Characteristics> redisTemplate,
       int expirationSeconds,
-      RedisProperties redisProperties) {
-    super(redisTemplate, CHARACTERISTICS, expirationSeconds, redisProperties);
+      ValkeyProperties valkeyProperties) {
+    super(redisTemplate, CHARACTERISTICS, expirationSeconds, valkeyProperties);
   }
 
   /** {@inheritDoc} */

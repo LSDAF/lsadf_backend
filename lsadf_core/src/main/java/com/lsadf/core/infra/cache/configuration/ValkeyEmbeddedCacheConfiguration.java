@@ -16,7 +16,6 @@
  */
 package com.lsadf.core.infra.cache.configuration;
 
-import com.lsadf.core.properties.RedisProperties;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
@@ -30,18 +29,18 @@ public class ValkeyEmbeddedCacheConfiguration {
 
   private RedisServer redisServer;
 
-  public ValkeyEmbeddedCacheConfiguration(RedisProperties redisProperties) throws IOException {
-    if (redisProperties.isEnabled() && redisProperties.isEmbedded()) {
-      this.redisServer = initRedisServer(redisProperties);
+  public ValkeyEmbeddedCacheConfiguration(ValkeyProperties valkeyProperties) throws IOException {
+    if (valkeyProperties.isEnabled() && valkeyProperties.isEmbedded()) {
+      this.redisServer = initRedisServer(valkeyProperties);
     }
   }
 
-  public RedisServer initRedisServer(RedisProperties redisProperties) throws IOException {
+  public RedisServer initRedisServer(ValkeyProperties valkeyProperties) throws IOException {
     return RedisServer.newRedisServer()
-        .setting("requirepass " + redisProperties.getPassword())
+        .setting("requirepass " + valkeyProperties.getPassword())
         .setting("bind 127.0.0.1")
         .setting("notify-keyspace-events KEA")
-        .port(redisProperties.getPort())
+        .port(valkeyProperties.getPort())
         .build();
   }
 

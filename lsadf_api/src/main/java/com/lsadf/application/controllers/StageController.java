@@ -16,9 +16,9 @@
  */
 package com.lsadf.application.controllers;
 
-import static com.lsadf.core.configurations.SwaggerConfiguration.BEARER_AUTHENTICATION;
-import static com.lsadf.core.configurations.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
 import static com.lsadf.core.constants.ControllerConstants.STAGE;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
 
 import com.lsadf.core.common.validators.annotations.Uuid;
 import com.lsadf.core.constants.ControllerConstants;

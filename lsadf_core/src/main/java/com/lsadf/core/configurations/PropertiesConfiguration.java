@@ -15,9 +15,23 @@
  */
 package com.lsadf.core.configurations;
 
+import com.lsadf.core.infra.application.config.ServerProperties;
+import com.lsadf.core.infra.application.config.ShutdownProperties;
+import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.cache.properties.CacheProperties;
-import com.lsadf.core.properties.*;
+import com.lsadf.core.infra.clock.ClockProperties;
+import com.lsadf.core.infra.logging.ConfigurationDisplayProperties;
+import com.lsadf.core.infra.logging.HttpLogProperties;
+import com.lsadf.core.infra.persistence.config.JpaProperties;
+import com.lsadf.core.infra.persistence.config.properties.DataSourceProperties;
+import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakAdminProperties;
+import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakProperties;
+import com.lsadf.core.infra.web.config.security.CorsConfigurationProperties;
+import com.lsadf.core.infra.web.config.security.JsonViewProperties;
+import com.lsadf.core.infra.web.config.security.OAuth2Properties;
+import com.lsadf.core.infra.web.config.swagger.SwaggerContactProperties;
+import com.lsadf.core.infra.web.config.swagger.SwaggerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -88,8 +102,8 @@ public class PropertiesConfiguration {
 
   @Bean
   @ConfigurationProperties(prefix = "cache.redis")
-  public RedisProperties redisProperties() {
-    return new RedisProperties();
+  public ValkeyProperties redisProperties() {
+    return new ValkeyProperties();
   }
 
   @Bean

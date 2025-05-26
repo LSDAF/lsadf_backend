@@ -19,7 +19,7 @@ import static com.lsadf.core.constants.JsonAttributes.GameSave.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.common.validators.annotations.Nickname;
-import com.lsadf.core.requests.Request;
+import com.lsadf.core.infra.web.requests.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import lombok.AllArgsConstructor;

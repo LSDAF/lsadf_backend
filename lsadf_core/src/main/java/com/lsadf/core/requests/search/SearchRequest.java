@@ -18,7 +18,7 @@ package com.lsadf.core.requests.search;
 import static com.lsadf.core.constants.JsonAttributes.SearchRequest.FILTERS;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.requests.Request;
+import com.lsadf.core.infra.web.requests.Request;
 import com.lsadf.core.requests.common.Filter;
 import jakarta.validation.Valid;
 import java.io.Serial;

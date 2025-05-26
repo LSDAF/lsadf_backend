@@ -21,7 +21,7 @@ import static com.lsadf.core.common.utils.TokenUtils.getUsernameFromJwt;
 
 import com.lsadf.application.controllers.StageController;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.config.mappers.Mapper;
 import com.lsadf.core.infra.web.config.controllers.BaseController;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.requests.stage.StageRequest;

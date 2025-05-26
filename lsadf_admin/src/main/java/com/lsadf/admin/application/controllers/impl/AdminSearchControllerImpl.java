@@ -20,7 +20,7 @@ import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.application.controllers.AdminSearchController;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.config.mappers.Mapper;
 import com.lsadf.core.infra.web.config.controllers.BaseController;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.requests.game_save.GameSaveSortingParameter;

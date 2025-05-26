@@ -23,7 +23,11 @@ import com.lsadf.core.infra.cache.configuration.ValkeyEmbeddedCacheConfiguration
 import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.listeners.ApplicationListenerConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
+import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
 import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakConfiguration;
+import com.lsadf.core.infra.web.config.security.CorsConfiguration;
+import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
+import com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -37,7 +41,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableScheduling
 @EnableTransactionManagement
-@EnableFeignClients(basePackages = "com.lsadf.core.http_clients")
+@EnableFeignClients(basePackages = "com.lsadf.core.infra.web.http_clients")
 @Import({
   DataSourceConfiguration.class,
   PropertiesConfiguration.class,

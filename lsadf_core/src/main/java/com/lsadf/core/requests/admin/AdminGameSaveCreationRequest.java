@@ -21,7 +21,7 @@ import static com.lsadf.core.constants.JsonAttributes.ID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.common.validators.annotations.Nickname;
 import com.lsadf.core.common.validators.annotations.Uuid;
-import com.lsadf.core.requests.Request;
+import com.lsadf.core.infra.web.requests.Request;
 import com.lsadf.core.requests.characteristics.CharacteristicsRequest;
 import com.lsadf.core.requests.currency.CurrencyRequest;
 import com.lsadf.core.requests.stage.StageRequest;

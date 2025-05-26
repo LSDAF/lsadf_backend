@@ -17,9 +17,9 @@
 package com.lsadf.core.infra.persistence.game;
 
 import com.lsadf.core.constants.EntityAttributes;
-import com.lsadf.core.constants.item.ItemRarity;
-import com.lsadf.core.constants.item.ItemType;
+import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.infra.persistence.AEntity;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;

@@ -16,9 +16,9 @@
  */
 package com.lsadf.application.configurations;
 
-import static com.lsadf.core.configurations.SecurityConfiguration.WHITELIST_URLS;
+import static com.lsadf.core.infra.web.config.security.SecurityConfiguration.WHITELIST_URLS;
 
-import com.lsadf.core.configurations.SecurityConfiguration;
+import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

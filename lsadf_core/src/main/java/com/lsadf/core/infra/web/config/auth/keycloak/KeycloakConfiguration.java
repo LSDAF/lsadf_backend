@@ -16,8 +16,6 @@
  */
 package com.lsadf.core.infra.web.config.auth.keycloak;
 
-import com.lsadf.core.properties.KeycloakAdminProperties;
-import com.lsadf.core.properties.KeycloakProperties;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
