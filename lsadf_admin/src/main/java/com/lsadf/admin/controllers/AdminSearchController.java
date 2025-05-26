@@ -24,7 +24,7 @@ import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.constants.JsonViews;
 import com.lsadf.core.constants.ResponseMessages;
 import com.lsadf.core.controllers.Controller;
-import com.lsadf.core.models.GameSave;
+import com.lsadf.core.game.game_save.GameSave;
 import com.lsadf.core.models.User;
 import com.lsadf.core.requests.search.SearchRequest;
 import com.lsadf.core.web.responses.GenericResponse;

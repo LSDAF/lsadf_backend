@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 
 import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.entities.StageEntity;
+import com.lsadf.core.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.mappers.impl.MapperImpl;
-import com.lsadf.core.models.Stage;
 import com.lsadf.core.repositories.StageRepository;
 import com.lsadf.core.services.StageService;
 import com.lsadf.core.services.impl.StageServiceImpl;
@@ -48,7 +48,7 @@ class StageServiceTests {
   @Mock private Cache<Stage> stageCache;
 
   @BeforeEach
-  public void init() {
+  void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 

@@ -20,8 +20,8 @@ import static com.lsadf.core.common.utils.TokenUtils.getUsernameFromJwt;
 
 import com.lsadf.controllers.CurrencyController;
 import com.lsadf.core.controllers.impl.BaseController;
+import com.lsadf.core.game.currency.Currency;
 import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.models.Currency;
 import com.lsadf.core.requests.currency.CurrencyRequest;
 import com.lsadf.core.services.CacheService;
 import com.lsadf.core.services.CurrencyService;

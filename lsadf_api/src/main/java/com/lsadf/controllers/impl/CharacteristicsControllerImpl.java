@@ -20,8 +20,8 @@ import static com.lsadf.core.common.utils.TokenUtils.getUsernameFromJwt;
 
 import com.lsadf.controllers.CharacteristicsController;
 import com.lsadf.core.controllers.impl.BaseController;
+import com.lsadf.core.game.characteristics.Characteristics;
 import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.models.Characteristics;
 import com.lsadf.core.requests.characteristics.CharacteristicsRequest;
 import com.lsadf.core.services.CacheService;
 import com.lsadf.core.services.CharacteristicsService;

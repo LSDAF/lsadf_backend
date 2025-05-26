@@ -20,8 +20,8 @@ import static com.lsadf.core.common.utils.TokenUtils.getUsernameFromJwt;
 
 import com.lsadf.controllers.StageController;
 import com.lsadf.core.controllers.impl.BaseController;
+import com.lsadf.core.game.stage.Stage;
 import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.models.Stage;
 import com.lsadf.core.requests.stage.StageRequest;
 import com.lsadf.core.services.CacheService;
 import com.lsadf.core.services.GameSaveService;

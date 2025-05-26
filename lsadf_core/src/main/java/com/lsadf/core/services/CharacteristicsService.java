@@ -16,7 +16,7 @@
 package com.lsadf.core.services;
 
 import com.lsadf.core.common.exceptions.http.NotFoundException;
-import com.lsadf.core.models.Characteristics;
+import com.lsadf.core.game.characteristics.Characteristics;
 
 public interface CharacteristicsService {
   /**

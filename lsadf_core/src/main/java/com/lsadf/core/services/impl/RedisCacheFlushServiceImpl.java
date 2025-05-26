@@ -16,10 +16,10 @@
 package com.lsadf.core.services.impl;
 
 import com.lsadf.core.common.exceptions.http.NotFoundException;
+import com.lsadf.core.game.characteristics.Characteristics;
+import com.lsadf.core.game.currency.Currency;
+import com.lsadf.core.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.models.Characteristics;
-import com.lsadf.core.models.Currency;
-import com.lsadf.core.models.Stage;
 import com.lsadf.core.services.*;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;

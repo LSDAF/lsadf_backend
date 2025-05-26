@@ -17,16 +17,14 @@ package com.lsadf.admin.bdd.then;
 
 import static com.lsadf.admin.bdd.BddFieldConstants.GameSave.USER_EMAIL;
 import static com.lsadf.admin.bdd.BddFieldConstants.StageCacheEntry.GAME_SAVE_ID;
-import static com.lsadf.admin.bdd.CacheEntryType.CHARACTERISTICS;
-import static com.lsadf.admin.bdd.CacheEntryType.STAGE_HISTO;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.bdd.BddLoader;
 import com.lsadf.admin.bdd.BddUtils;
 import com.lsadf.admin.bdd.CacheEntryType;
-import com.lsadf.core.models.Characteristics;
-import com.lsadf.core.models.Currency;
-import com.lsadf.core.models.Stage;
+import com.lsadf.core.game.characteristics.Characteristics;
+import com.lsadf.core.game.currency.Currency;
+import com.lsadf.core.game.stage.Stage;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import java.util.List;

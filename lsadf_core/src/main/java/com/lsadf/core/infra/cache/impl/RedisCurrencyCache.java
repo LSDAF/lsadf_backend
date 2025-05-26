@@ -21,8 +21,8 @@ import static com.lsadf.core.infra.cache.CacheUtils.getAllEntries;
 import static com.lsadf.core.infra.cache.configuration.RedisConstants.CURRENCY;
 import static com.lsadf.core.infra.cache.configuration.RedisConstants.CURRENCY_HISTO;
 
+import com.lsadf.core.game.currency.Currency;
 import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.models.Currency;
 import com.lsadf.core.properties.RedisProperties;
 import java.util.Map;
 import java.util.Optional;
