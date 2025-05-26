@@ -16,7 +16,6 @@
  */
 package com.lsadf.admin.application.bdd.config;
 
-import com.lsadf.core.auth.JwtAuthentication;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
@@ -26,6 +25,7 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.entities.GameSaveEntity;
 import com.lsadf.core.entities.InventoryEntity;
+import com.lsadf.core.infra.web.auth.JwtAuthentication;
 import com.lsadf.core.user.User;
 import com.lsadf.core.user.UserInfo;
 import com.lsadf.core.web.responses.GenericResponse;

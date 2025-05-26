@@ -16,8 +16,8 @@
  */
 package com.lsadf.application.controllers;
 
-import com.lsadf.core.auth.JwtAuthentication;
 import com.lsadf.core.constants.ControllerConstants;
+import com.lsadf.core.infra.web.auth.JwtAuthentication;
 import com.lsadf.core.web.responses.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

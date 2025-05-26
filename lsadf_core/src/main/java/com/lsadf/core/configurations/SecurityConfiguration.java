@@ -17,8 +17,8 @@ package com.lsadf.core.configurations;
 
 import static com.lsadf.core.constants.ControllerConstants.ADMIN;
 
-import com.lsadf.core.configurations.keycloak.KeycloakJwtAuthenticationConverter;
 import com.lsadf.core.infra.logging.interceptors.RequestLoggerInterceptor;
+import com.lsadf.core.infra.web.auth.keycloak.KeycloakJwtAuthenticationConverter;
 import com.lsadf.core.properties.HttpLogProperties;
 import com.lsadf.core.properties.OAuth2Properties;
 import java.util.Collection;
@@ -63,7 +63,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     this.httpLogProperties = httpLogProperties;
   }
 
-  public static final String[] WHITELIST_URLS = {
+  protected static final String[] WHITELIST_URLS = {
     "/api-docs/**",
     "/swagger-ui/**",
     "/swagger-ui.html",
