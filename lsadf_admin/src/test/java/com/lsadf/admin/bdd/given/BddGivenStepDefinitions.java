@@ -15,15 +15,14 @@
  */
 package com.lsadf.admin.bdd.given;
 
-import static com.lsadf.admin.bdd.CacheEntryType.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.bdd.BddFieldConstants;
 import com.lsadf.admin.bdd.BddLoader;
 import com.lsadf.admin.bdd.BddUtils;
 import com.lsadf.admin.bdd.CacheEntryType;
+import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.entities.GameSaveEntity;
-import com.lsadf.core.exceptions.http.NotFoundException;
 import com.lsadf.core.models.Characteristics;
 import com.lsadf.core.models.Currency;
 import com.lsadf.core.models.Stage;

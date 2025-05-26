@@ -15,7 +15,7 @@
  */
 package com.lsadf.admin.utils;
 
-import com.lsadf.core.exceptions.FilterProcessingException;
+import com.lsadf.core.common.exceptions.FilterProcessingException;
 import com.lsadf.core.utils.DateUtils;
 import com.lsadf.core.utils.StringUtils;
 import com.vaadin.hilla.crud.filter.AndFilter;

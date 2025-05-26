@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.services.impl;
 
+import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.entities.CharacteristicsEntity;
-import com.lsadf.core.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.models.Characteristics;

@@ -19,9 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.bdd.BddLoader;
 import com.lsadf.bdd.BddUtils;
+import com.lsadf.core.common.exceptions.http.ForbiddenException;
+import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.entities.GameSaveEntity;
-import com.lsadf.core.exceptions.http.ForbiddenException;
-import com.lsadf.core.exceptions.http.NotFoundException;
 import com.lsadf.core.models.*;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;

@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.lsadf.bdd.BddLoader;
 import com.lsadf.bdd.BddUtils;
+import com.lsadf.core.common.exceptions.AlreadyExistingGameSaveException;
+import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.entities.GameSaveEntity;
-import com.lsadf.core.exceptions.AlreadyExistingGameSaveException;
-import com.lsadf.core.exceptions.http.NotFoundException;
 import com.lsadf.core.models.GameSave;
 import com.lsadf.core.models.GlobalInfo;
 import com.lsadf.core.models.JwtAuthentication;

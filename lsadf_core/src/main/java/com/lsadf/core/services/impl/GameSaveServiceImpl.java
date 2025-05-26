@@ -15,11 +15,11 @@
  */
 package com.lsadf.core.services.impl;
 
+import com.lsadf.core.common.exceptions.AlreadyExistingGameSaveException;
+import com.lsadf.core.common.exceptions.AlreadyTakenNicknameException;
+import com.lsadf.core.common.exceptions.http.ForbiddenException;
+import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.entities.*;
-import com.lsadf.core.exceptions.AlreadyExistingGameSaveException;
-import com.lsadf.core.exceptions.AlreadyTakenNicknameException;
-import com.lsadf.core.exceptions.http.ForbiddenException;
-import com.lsadf.core.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.models.Characteristics;

@@ -17,8 +17,8 @@ package com.lsadf.core.controllers.advices;
 
 import static com.lsadf.core.utils.ResponseUtils.generateResponse;
 
-import com.lsadf.core.exceptions.*;
-import com.lsadf.core.exceptions.http.*;
+import com.lsadf.core.common.exceptions.*;
+import com.lsadf.core.common.exceptions.http.*;
 import com.lsadf.core.responses.GenericResponse;
 import java.util.HashMap;
 import java.util.Map;
