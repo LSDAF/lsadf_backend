@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.infra.web.http_clients;
 
-import static com.lsadf.core.constants.HttpClientTypes.DEFAULT;
+import static com.lsadf.core.infra.web.http_clients.HttpClientTypes.DEFAULT;
 
 import feign.Contract;
 import feign.Logger;
