@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.common.exceptions.DynamicJsonViewException;
 import com.lsadf.core.constants.JsonViews;
 import com.lsadf.core.properties.JsonViewProperties;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

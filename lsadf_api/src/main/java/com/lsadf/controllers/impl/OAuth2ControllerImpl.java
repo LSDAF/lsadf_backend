@@ -24,7 +24,7 @@ import com.lsadf.core.http_clients.KeycloakClient;
 import com.lsadf.core.models.JwtAuthentication;
 import com.lsadf.core.properties.KeycloakProperties;
 import com.lsadf.core.properties.ServerProperties;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;

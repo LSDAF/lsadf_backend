@@ -16,7 +16,7 @@
 package com.lsadf.admin.bdd;
 
 import com.lsadf.core.models.*;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import java.util.List;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.ParameterizedTypeReference;

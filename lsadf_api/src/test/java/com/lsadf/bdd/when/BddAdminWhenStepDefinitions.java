@@ -37,7 +37,7 @@ import com.lsadf.core.requests.common.Filter;
 import com.lsadf.core.requests.currency.CurrencyRequest;
 import com.lsadf.core.requests.search.SearchRequest;
 import com.lsadf.core.requests.stage.StageRequest;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;

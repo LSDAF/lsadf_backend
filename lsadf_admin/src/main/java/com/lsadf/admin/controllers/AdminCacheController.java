@@ -21,7 +21,7 @@ import static com.lsadf.core.configurations.SwaggerConfiguration.OAUTH2_AUTHENTI
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.constants.ResponseMessages;
 import com.lsadf.core.controllers.Controller;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

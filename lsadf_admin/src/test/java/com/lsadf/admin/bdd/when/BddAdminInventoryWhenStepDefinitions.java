@@ -25,7 +25,7 @@ import com.lsadf.core.models.Inventory;
 import com.lsadf.core.models.Item;
 import com.lsadf.core.models.JwtAuthentication;
 import com.lsadf.core.requests.item.ItemRequest;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.List;
