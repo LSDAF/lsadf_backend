@@ -20,6 +20,7 @@ import static com.lsadf.core.constants.JsonAttributes.GameSave.USER_EMAIL;
 import static com.lsadf.core.constants.JsonAttributes.ID;
 import static com.lsadf.core.constants.JsonAttributes.User.*;
 
+import com.lsadf.core.common.utils.StreamUtils;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.models.GameSave;
 import com.lsadf.core.models.User;
@@ -30,7 +31,6 @@ import com.lsadf.core.requests.user.UserSortingParameter;
 import com.lsadf.core.services.GameSaveService;
 import com.lsadf.core.services.SearchService;
 import com.lsadf.core.services.UserService;
-import com.lsadf.core.utils.StreamUtils;
 import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.transaction.annotation.Transactional;

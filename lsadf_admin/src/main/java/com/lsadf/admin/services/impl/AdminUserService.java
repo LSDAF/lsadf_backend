@@ -16,11 +16,11 @@
 package com.lsadf.admin.services.impl;
 
 import com.lsadf.admin.utils.FilterUtils;
+import com.lsadf.core.common.utils.StreamUtils;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.models.User;
 import com.lsadf.core.requests.user.UserSortingParameter;
 import com.lsadf.core.services.UserService;
-import com.lsadf.core.utils.StreamUtils;
 import com.vaadin.hilla.BrowserCallable;
 import com.vaadin.hilla.Nonnull;
 import com.vaadin.hilla.Nullable;

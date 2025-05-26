@@ -15,7 +15,7 @@
  */
 package com.lsadf.controllers.impl;
 
-import static com.lsadf.core.utils.ResponseUtils.generateResponse;
+import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.controllers.AuthController;
 import com.lsadf.core.constants.ControllerConstants;

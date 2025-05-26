@@ -15,11 +15,12 @@
  */
 package com.lsadf.admin.controllers.impl;
 
-import static com.lsadf.core.utils.ResponseUtils.generateResponse;
+import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.admin.controllers.AdminGameSaveController;
 import com.lsadf.core.common.exceptions.http.NotFoundException;
+import com.lsadf.core.common.utils.StreamUtils;
 import com.lsadf.core.constants.JsonViews;
 import com.lsadf.core.controllers.impl.BaseController;
 import com.lsadf.core.entities.GameSaveEntity;
@@ -36,7 +37,6 @@ import com.lsadf.core.requests.game_save.GameSaveSortingParameter;
 import com.lsadf.core.requests.stage.StageRequest;
 import com.lsadf.core.responses.GenericResponse;
 import com.lsadf.core.services.*;
-import com.lsadf.core.utils.StreamUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
