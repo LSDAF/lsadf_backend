@@ -20,12 +20,12 @@ import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.application.controllers.OAuth2Controller;
 import com.lsadf.core.constants.ControllerConstants;
-import com.lsadf.core.controllers.impl.BaseController;
 import com.lsadf.core.http_clients.KeycloakClient;
-import com.lsadf.core.infra.web.auth.JwtAuthentication;
+import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
+import com.lsadf.core.infra.web.config.controllers.BaseController;
+import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.properties.KeycloakProperties;
 import com.lsadf.core.properties.ServerProperties;
-import com.lsadf.core.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;

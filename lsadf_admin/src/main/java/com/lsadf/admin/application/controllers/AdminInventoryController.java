@@ -21,11 +21,11 @@ import static com.lsadf.core.configurations.SwaggerConfiguration.OAUTH2_AUTHENTI
 
 import com.lsadf.core.common.validators.annotations.Uuid;
 import com.lsadf.core.constants.ControllerConstants;
-import com.lsadf.core.controllers.Controller;
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
+import com.lsadf.core.infra.web.config.controllers.Controller;
+import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.requests.item.ItemRequest;
-import com.lsadf.core.web.responses.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

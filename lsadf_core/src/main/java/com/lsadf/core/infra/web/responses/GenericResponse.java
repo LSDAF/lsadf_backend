@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.web.responses;
+package com.lsadf.core.infra.web.responses;
 
 import static com.lsadf.core.constants.JsonAttributes.GenericResponse.*;
 

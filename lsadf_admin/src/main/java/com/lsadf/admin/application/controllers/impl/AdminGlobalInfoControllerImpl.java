@@ -19,12 +19,12 @@ package com.lsadf.admin.application.controllers.impl;
 import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.application.controllers.AdminGlobalInfoController;
-import com.lsadf.core.controllers.impl.BaseController;
 import com.lsadf.core.domain.info.GlobalInfo;
+import com.lsadf.core.infra.web.config.controllers.BaseController;
+import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.services.ClockService;
 import com.lsadf.core.services.GameSaveService;
 import com.lsadf.core.services.UserService;
-import com.lsadf.core.web.responses.GenericResponse;
 import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

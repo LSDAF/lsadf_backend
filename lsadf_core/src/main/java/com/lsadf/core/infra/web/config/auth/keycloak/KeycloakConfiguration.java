@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.infra.web.auth.keycloak;
+package com.lsadf.core.infra.web.config.auth.keycloak;
 
 import com.lsadf.core.properties.KeycloakAdminProperties;
 import com.lsadf.core.properties.KeycloakProperties;

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.infra.web.auth;
+package com.lsadf.core.infra.web.config.auth;
 
 import static com.lsadf.core.constants.JsonAttributes.JwtAuthentication.*;
 

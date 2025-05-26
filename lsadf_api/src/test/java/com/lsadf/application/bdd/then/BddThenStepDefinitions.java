@@ -28,7 +28,7 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.entities.GameSaveEntity;
-import com.lsadf.core.infra.web.auth.JwtAuthentication;
+import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.user.User;
 import com.lsadf.core.user.UserInfo;
 import io.cucumber.datatable.DataTable;

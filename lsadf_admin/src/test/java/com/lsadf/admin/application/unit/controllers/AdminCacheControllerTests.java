@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.controllers.AdminCacheController;
 import com.lsadf.admin.application.controllers.impl.AdminCacheControllerImpl;
 import com.lsadf.admin.application.unit.config.UnitTestConfiguration;
-import com.lsadf.core.controllers.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;

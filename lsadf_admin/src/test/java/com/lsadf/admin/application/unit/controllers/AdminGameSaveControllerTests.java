@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.controllers.AdminGameSaveController;
 import com.lsadf.admin.application.controllers.impl.AdminGameSaveControllerImpl;
 import com.lsadf.core.constants.ControllerConstants;
-import com.lsadf.core.controllers.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.requests.admin.AdminGameSaveCreationRequest;
 import com.lsadf.core.requests.admin.AdminGameSaveUpdateRequest;
 import com.lsadf.core.requests.characteristics.CharacteristicsRequest;
