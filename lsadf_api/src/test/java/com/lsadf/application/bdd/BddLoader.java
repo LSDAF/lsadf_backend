@@ -34,6 +34,8 @@ import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.cache.services.CacheFlushService;
+import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.persistence.config.mappers.Mapper;
 import com.lsadf.core.infra.persistence.game.*;

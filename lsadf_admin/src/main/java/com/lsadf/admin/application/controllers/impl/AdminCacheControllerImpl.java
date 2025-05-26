@@ -19,10 +19,10 @@ package com.lsadf.admin.application.controllers.impl;
 import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.application.controllers.AdminCacheController;
+import com.lsadf.core.infra.cache.services.CacheFlushService;
+import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.web.config.controllers.BaseController;
 import com.lsadf.core.infra.web.responses.GenericResponse;
-import com.lsadf.core.services.CacheFlushService;
-import com.lsadf.core.services.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
