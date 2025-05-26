@@ -14,10 +14,9 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.infra.listeners;
+package com.lsadf.core.infra.application.config;
 
 import com.lsadf.core.configurations.ShutdownListener;
-import com.lsadf.core.infra.application.config.ShutdownProperties;
 import com.lsadf.core.infra.cache.services.CacheFlushService;
 import com.lsadf.core.infra.logging.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.ConfigurationLogger;

@@ -17,11 +17,11 @@
 package com.lsadf.admin.application.services.impl;
 
 import com.lsadf.admin.application.utils.FilterUtils;
+import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.common.utils.StreamUtils;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.persistence.config.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
-import com.lsadf.core.services.GameSaveService;
 import com.vaadin.hilla.BrowserCallable;
 import com.vaadin.hilla.Nonnull;
 import com.vaadin.hilla.Nullable;

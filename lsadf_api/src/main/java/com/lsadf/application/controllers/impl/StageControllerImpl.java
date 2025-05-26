@@ -20,14 +20,14 @@ import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 import static com.lsadf.core.common.utils.TokenUtils.getUsernameFromJwt;
 
 import com.lsadf.application.controllers.StageController;
+import com.lsadf.core.application.game.game_save.GameSaveService;
+import com.lsadf.core.application.game.stage.StageService;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.services.CacheService;
-import com.lsadf.core.infra.persistence.config.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.config.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
-import com.lsadf.core.services.GameSaveService;
-import com.lsadf.core.services.StageService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

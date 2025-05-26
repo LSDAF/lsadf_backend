@@ -16,12 +16,15 @@
  */
 package com.lsadf.core.infra.cache.services;
 
+import com.lsadf.core.application.game.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.currency.CurrencyService;
+import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.stage.StageService;
 import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.services.*;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;

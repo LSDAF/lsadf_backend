@@ -1,19 +1,20 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright 2024-2025 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
-package com.lsadf.core.services.impl;
+package com.lsadf.core.application.game.game_save;
 
 import com.lsadf.core.common.exceptions.AlreadyExistingGameSaveException;
 import com.lsadf.core.common.exceptions.AlreadyTakenNicknameException;
@@ -32,8 +33,7 @@ import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
-import com.lsadf.core.services.GameSaveService;
-import com.lsadf.core.services.UserService;
+import com.lsadf.core.application.user.UserService;
 import java.util.*;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;

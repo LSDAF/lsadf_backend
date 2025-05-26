@@ -19,6 +19,10 @@ package com.lsadf.core.infra.cache.configuration;
 import static com.lsadf.core.constants.BeanConstants.Cache.*;
 import static com.lsadf.core.infra.cache.RedisConstants.GAME_SAVE_OWNERSHIP;
 
+import com.lsadf.core.application.game.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.currency.CurrencyService;
+import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.stage.StageService;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.Inventory;
@@ -35,7 +39,6 @@ import com.lsadf.core.infra.cache.services.CacheFlushService;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.cache.services.RedisCacheFlushServiceImpl;
 import com.lsadf.core.infra.cache.services.RedisCacheServiceImpl;
-import com.lsadf.core.services.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
