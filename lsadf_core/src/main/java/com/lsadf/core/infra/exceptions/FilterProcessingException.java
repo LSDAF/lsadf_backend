@@ -14,11 +14,15 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.common.exceptions;
+package com.lsadf.core.infra.exceptions;
 
-/** Exception for when a nickname is already taken */
-public class AlreadyTakenNicknameException extends RuntimeException {
-  public AlreadyTakenNicknameException(String message) {
+/** Exception for when there is an error processing a filter */
+public class FilterProcessingException extends RuntimeException {
+  public FilterProcessingException(String message) {
     super(message);
+  }
+
+  public FilterProcessingException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

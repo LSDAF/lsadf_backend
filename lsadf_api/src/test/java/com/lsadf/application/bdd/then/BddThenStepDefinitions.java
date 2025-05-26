@@ -20,8 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
-import com.lsadf.core.common.exceptions.http.ForbiddenException;
-import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
@@ -29,6 +27,8 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
+import com.lsadf.core.infra.exceptions.http.ForbiddenException;
+import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.GameSaveEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import io.cucumber.datatable.DataTable;

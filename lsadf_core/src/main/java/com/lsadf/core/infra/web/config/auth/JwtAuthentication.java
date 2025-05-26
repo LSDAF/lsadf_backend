@@ -20,7 +20,7 @@ import static com.lsadf.core.constants.JsonAttributes.JwtAuthentication.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.lsadf.core.common.models.Model;
+import com.lsadf.core.domain.Model;
 import java.io.Serial;
 import lombok.AllArgsConstructor;
 import lombok.Data;

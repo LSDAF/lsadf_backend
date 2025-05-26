@@ -14,11 +14,11 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.common.exceptions;
+package com.lsadf.core.infra.exceptions.http;
 
-/** Exception for when a game save already exists */
-public class AlreadyExistingGameSaveException extends RuntimeException {
-  public AlreadyExistingGameSaveException(String message) {
+/** Exception for when a user is not allowed to access a resource. */
+public class ForbiddenException extends RuntimeException {
+  public ForbiddenException(String message) {
     super(message);
   }
 }

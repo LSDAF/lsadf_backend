@@ -23,9 +23,9 @@ import static org.mockito.Mockito.when;
 
 import com.lsadf.core.application.game.stage.StageService;
 import com.lsadf.core.application.game.stage.StageServiceImpl;
-import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.StageEntity;
 import com.lsadf.core.infra.persistence.game.StageRepository;
 import com.lsadf.core.infra.persistence.mappers.Mapper;

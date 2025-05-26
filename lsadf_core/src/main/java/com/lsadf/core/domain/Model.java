@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.common.models;
+package com.lsadf.core.domain;
 
 import java.io.Serializable;
 

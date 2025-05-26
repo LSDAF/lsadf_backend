@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.infra.web.http_clients;
 
-import com.lsadf.core.common.exceptions.http.*;
+import com.lsadf.core.infra.exceptions.http.*;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;

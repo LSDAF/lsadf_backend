@@ -14,11 +14,15 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.common.exceptions.http;
+package com.lsadf.core.infra.exceptions.http;
 
-/** Authentication Exception */
-public class UnauthorizedException extends RuntimeException {
-  public UnauthorizedException(String message) {
+/** Internal Server Error Exception when something goes wrong on the server */
+public class InternalServerErrorException extends RuntimeException {
+  public InternalServerErrorException(String message) {
     super(message);
+  }
+
+  public InternalServerErrorException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

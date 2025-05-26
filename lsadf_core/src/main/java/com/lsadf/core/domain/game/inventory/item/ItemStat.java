@@ -21,7 +21,7 @@ import static com.lsadf.core.constants.JsonAttributes.ItemStat.STATISTIC;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.common.models.Model;
+import com.lsadf.core.domain.Model;
 import com.lsadf.core.infra.web.config.controllers.JsonViews;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Embeddable;

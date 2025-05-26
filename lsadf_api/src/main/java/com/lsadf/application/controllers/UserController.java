@@ -19,9 +19,9 @@ package com.lsadf.application.controllers;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
 
-import com.lsadf.core.common.exceptions.http.UnauthorizedException;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.domain.user.UserInfo;
+import com.lsadf.core.infra.exceptions.http.UnauthorizedException;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import io.swagger.v3.oas.annotations.Operation;

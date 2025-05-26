@@ -14,11 +14,19 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.common.exceptions;
+package com.lsadf.core.infra.exceptions.http;
 
-/** Exception for when an item client id already exists */
-public class AlreadyExistingItemClientIdException extends RuntimeException {
-  public AlreadyExistingItemClientIdException(String message) {
+/** Exception for when a resource is not found. */
+public class NotFoundException extends RuntimeException {
+  public NotFoundException() {
+    super();
+  }
+
+  public NotFoundException(String message) {
     super(message);
+  }
+
+  public NotFoundException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

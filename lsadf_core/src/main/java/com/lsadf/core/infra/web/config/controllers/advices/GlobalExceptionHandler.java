@@ -18,8 +18,8 @@ package com.lsadf.core.infra.web.config.controllers.advices;
 
 import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
-import com.lsadf.core.common.exceptions.*;
-import com.lsadf.core.common.exceptions.http.*;
+import com.lsadf.core.infra.exceptions.*;
+import com.lsadf.core.infra.exceptions.http.*;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import java.util.HashMap;
 import java.util.Map;

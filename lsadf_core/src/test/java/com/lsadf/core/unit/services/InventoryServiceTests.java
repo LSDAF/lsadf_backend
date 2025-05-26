@@ -23,11 +23,11 @@ import static org.mockito.Mockito.when;
 
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.inventory.InventoryServiceImpl;
-import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
+import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.InventoryRepository;

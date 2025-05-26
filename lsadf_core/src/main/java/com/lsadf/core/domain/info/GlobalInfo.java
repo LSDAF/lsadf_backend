@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.domain.info;
 
-import com.lsadf.core.common.models.Model;
+import com.lsadf.core.domain.Model;
 import java.io.Serial;
 import java.time.Instant;
 import lombok.*;

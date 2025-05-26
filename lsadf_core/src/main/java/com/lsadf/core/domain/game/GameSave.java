@@ -20,8 +20,8 @@ import static com.lsadf.core.constants.JsonAttributes.GameSave.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.common.models.Model;
 import com.lsadf.core.constants.JsonAttributes;
+import com.lsadf.core.domain.Model;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;

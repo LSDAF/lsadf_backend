@@ -16,13 +16,12 @@
  */
 package com.lsadf.core.application.game.characteristics;
 
-import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.game.CharacteristicsRepository;
-
+import com.lsadf.core.infra.persistence.mappers.Mapper;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
