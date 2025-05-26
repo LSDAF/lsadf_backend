@@ -15,12 +15,12 @@
  */
 package com.lsadf.core.configurations;
 
-import com.lsadf.core.infra.application.config.ServerProperties;
-import com.lsadf.core.infra.application.config.ShutdownProperties;
 import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.cache.properties.CacheProperties;
 import com.lsadf.core.infra.clock.ClockProperties;
+import com.lsadf.core.infra.config.ServerProperties;
+import com.lsadf.core.infra.config.ShutdownProperties;
 import com.lsadf.core.infra.logging.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.HttpLogProperties;
 import com.lsadf.core.infra.persistence.config.JpaProperties;

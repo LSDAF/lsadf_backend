@@ -20,7 +20,7 @@ import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.application.controllers.OAuth2Controller;
 import com.lsadf.core.constants.ControllerConstants;
-import com.lsadf.core.infra.application.config.ServerProperties;
+import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.config.controllers.BaseController;
