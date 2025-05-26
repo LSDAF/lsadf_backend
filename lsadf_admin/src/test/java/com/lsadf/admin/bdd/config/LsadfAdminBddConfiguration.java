@@ -18,7 +18,7 @@ package com.lsadf.admin.bdd.config;
 import com.lsadf.core.entities.GameSaveEntity;
 import com.lsadf.core.entities.InventoryEntity;
 import com.lsadf.core.models.*;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Stack;

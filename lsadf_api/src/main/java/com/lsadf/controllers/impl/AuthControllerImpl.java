@@ -26,7 +26,7 @@ import com.lsadf.core.properties.KeycloakProperties;
 import com.lsadf.core.properties.ServerProperties;
 import com.lsadf.core.requests.user.UserLoginRequest;
 import com.lsadf.core.requests.user.UserRefreshLoginRequest;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URLEncoder;

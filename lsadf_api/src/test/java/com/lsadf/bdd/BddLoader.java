@@ -32,8 +32,8 @@ import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.models.*;
 import com.lsadf.core.properties.KeycloakProperties;
 import com.lsadf.core.repositories.*;
-import com.lsadf.core.responses.GenericResponse;
 import com.lsadf.core.services.*;
+import com.lsadf.core.web.responses.GenericResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import jakarta.mail.internet.MimeMessage;
@@ -242,7 +242,7 @@ public class BddLoader {
     registry.add(
         "spring.security.oauth2.resourceserver.jwt.issuer-uri",
         () -> keycloak.getAuthServerUrl() + "/realms/BDD_REALM");
-    registry.add("keycloak.url", () -> keycloak.getAuthServerUrl());
-    registry.add("keycloak.adminUrl", () -> keycloak.getAuthServerUrl());
+    registry.add("keycloak.url", keycloak::getAuthServerUrl);
+    registry.add("keycloak.adminUrl", keycloak::getAuthServerUrl);
   }
 }

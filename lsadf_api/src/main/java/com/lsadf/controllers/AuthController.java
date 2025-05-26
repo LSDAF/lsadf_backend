@@ -20,7 +20,7 @@ import com.lsadf.core.constants.ResponseMessages;
 import com.lsadf.core.models.JwtAuthentication;
 import com.lsadf.core.requests.user.UserLoginRequest;
 import com.lsadf.core.requests.user.UserRefreshLoginRequest;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

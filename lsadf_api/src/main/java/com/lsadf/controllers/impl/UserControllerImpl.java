@@ -21,7 +21,7 @@ import static com.lsadf.core.common.utils.TokenUtils.getUserInfoFromJwt;
 import com.lsadf.controllers.UserController;
 import com.lsadf.core.controllers.impl.BaseController;
 import com.lsadf.core.models.UserInfo;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;

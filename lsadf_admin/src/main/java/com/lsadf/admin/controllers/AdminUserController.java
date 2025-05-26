@@ -28,7 +28,7 @@ import com.lsadf.core.controllers.Controller;
 import com.lsadf.core.models.User;
 import com.lsadf.core.requests.admin.AdminUserCreationRequest;
 import com.lsadf.core.requests.admin.AdminUserUpdateRequest;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

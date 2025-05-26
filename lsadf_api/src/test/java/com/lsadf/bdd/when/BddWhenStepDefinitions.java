@@ -31,7 +31,7 @@ import com.lsadf.core.requests.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.requests.user.UserCreationRequest;
 import com.lsadf.core.requests.user.UserLoginRequest;
 import com.lsadf.core.requests.user.UserRefreshLoginRequest;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.*;

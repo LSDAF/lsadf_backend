@@ -25,7 +25,7 @@ import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.models.Currency;
 import com.lsadf.core.models.JwtAuthentication;
 import com.lsadf.core.requests.currency.CurrencyRequest;
-import com.lsadf.core.responses.GenericResponse;
+import com.lsadf.core.web.responses.GenericResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
