@@ -32,6 +32,7 @@ import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.persistence.game.*;
 import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;

@@ -20,6 +20,7 @@ import com.lsadf.core.configurations.*;
 import com.lsadf.core.infra.cache.configuration.NoValkeyCacheConfiguration;
 import com.lsadf.core.infra.cache.configuration.ValkeyCacheConfiguration;
 import com.lsadf.core.infra.cache.configuration.ValkeyEmbeddedCacheConfiguration;
+import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.listeners.ApplicationListenerConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakConfiguration;

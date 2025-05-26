@@ -22,6 +22,8 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
+import com.lsadf.core.infra.clock.ClockService;
+import com.lsadf.core.infra.clock.ClockServiceImpl;
 import com.lsadf.core.infra.persistence.game.*;
 import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.persistence.mappers.MapperImpl;
