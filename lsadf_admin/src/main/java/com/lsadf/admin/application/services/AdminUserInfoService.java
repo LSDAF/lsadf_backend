@@ -16,7 +16,7 @@
  */
 package com.lsadf.admin.application.services;
 
-import com.lsadf.core.user.UserInfo;
+import com.lsadf.core.domain.user.UserInfo;
 
 /** Service for getting user info from the admin UI */
 public interface AdminUserInfoService {

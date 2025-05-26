@@ -21,9 +21,9 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH
 
 import com.lsadf.core.common.exceptions.http.UnauthorizedException;
 import com.lsadf.core.constants.ControllerConstants;
+import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
-import com.lsadf.core.user.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

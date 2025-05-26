@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.utils.FilterUtils;
 import com.lsadf.core.common.utils.DateUtils;
-import com.lsadf.core.user.User;
+import com.lsadf.core.domain.user.User;
 import com.vaadin.hilla.crud.filter.AndFilter;
 import com.vaadin.hilla.crud.filter.Filter;
 import com.vaadin.hilla.crud.filter.OrFilter;

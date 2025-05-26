@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.persistence.config.mappers.Mapper;
 import com.lsadf.core.infra.persistence.config.mappers.MapperImpl;
 import com.lsadf.core.infra.persistence.game.CharacteristicsEntity;
@@ -35,7 +36,6 @@ import com.lsadf.core.services.GameSaveService;
 import com.lsadf.core.services.SearchService;
 import com.lsadf.core.services.UserService;
 import com.lsadf.core.services.impl.SearchServiceImpl;
-import com.lsadf.core.user.User;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;

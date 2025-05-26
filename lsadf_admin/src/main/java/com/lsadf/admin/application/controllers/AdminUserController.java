@@ -23,13 +23,13 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.common.validators.annotations.Uuid;
 import com.lsadf.core.constants.ControllerConstants;
+import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.config.controllers.Controller;
 import com.lsadf.core.infra.web.config.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.admin.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.admin.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
-import com.lsadf.core.user.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

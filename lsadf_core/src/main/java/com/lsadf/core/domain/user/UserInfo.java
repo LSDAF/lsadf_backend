@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.user;
+package com.lsadf.core.domain.user;
 
 import static com.lsadf.core.constants.JsonAttributes.UserInfo.*;
 

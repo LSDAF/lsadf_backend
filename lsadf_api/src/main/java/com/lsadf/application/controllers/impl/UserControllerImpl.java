@@ -20,9 +20,9 @@ import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 import static com.lsadf.core.common.utils.TokenUtils.getUserInfoFromJwt;
 
 import com.lsadf.application.controllers.UserController;
+import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.config.controllers.BaseController;
 import com.lsadf.core.infra.web.responses.GenericResponse;
-import com.lsadf.core.user.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;

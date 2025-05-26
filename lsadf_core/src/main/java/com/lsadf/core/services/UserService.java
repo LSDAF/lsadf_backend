@@ -15,11 +15,11 @@
  */
 package com.lsadf.core.services;
 
+import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.requests.admin.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.admin.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.requests.user.UserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.UserUpdateRequest;
-import com.lsadf.core.user.User;
 import java.util.List;
 import java.util.stream.Stream;
 

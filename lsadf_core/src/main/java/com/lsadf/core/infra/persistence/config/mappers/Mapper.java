@@ -22,13 +22,13 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.persistence.game.*;
 import com.lsadf.core.infra.web.requests.admin.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.requests.user.UserCreationRequest;
-import com.lsadf.core.user.User;
 import org.keycloak.representations.idm.UserRepresentation;
 
 public interface Mapper {
