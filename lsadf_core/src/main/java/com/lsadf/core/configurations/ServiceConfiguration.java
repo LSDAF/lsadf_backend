@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.configurations;
 
-import static com.lsadf.core.constants.BeanConstants.Cache.GAME_SAVE_OWNERSHIP_CACHE;
+import static com.lsadf.core.infra.config.BeanConstants.Cache.GAME_SAVE_OWNERSHIP_CACHE;
 
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.characteristics.CharacteristicsServiceImpl;
