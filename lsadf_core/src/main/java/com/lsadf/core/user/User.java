@@ -26,7 +26,7 @@ import com.lsadf.core.common.models.Model;
 import com.lsadf.core.common.serializers.DateToLongSerializer;
 import com.lsadf.core.common.serializers.LongToDateSerializer;
 import com.lsadf.core.constants.JsonAttributes;
-import com.lsadf.core.constants.JsonViews;
+import com.lsadf.core.infra.web.config.controllers.JsonViews;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.util.Date;

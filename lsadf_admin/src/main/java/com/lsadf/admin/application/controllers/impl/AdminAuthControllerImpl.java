@@ -20,12 +20,12 @@ import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.application.controllers.AdminAuthController;
 import com.lsadf.core.constants.ControllerConstants;
-import com.lsadf.core.http_clients.KeycloakClient;
+import com.lsadf.core.infra.application.config.ServerProperties;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
+import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.config.controllers.BaseController;
+import com.lsadf.core.infra.web.http_clients.KeycloakClient;
 import com.lsadf.core.infra.web.responses.GenericResponse;
-import com.lsadf.core.properties.KeycloakProperties;
-import com.lsadf.core.properties.ServerProperties;
 import com.lsadf.core.requests.user.UserLoginRequest;
 import com.lsadf.core.requests.user.UserRefreshLoginRequest;
 import jakarta.validation.Valid;

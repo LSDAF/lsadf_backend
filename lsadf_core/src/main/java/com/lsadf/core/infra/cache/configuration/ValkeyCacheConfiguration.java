@@ -31,7 +31,6 @@ import com.lsadf.core.infra.cache.impl.RedisCurrencyCache;
 import com.lsadf.core.infra.cache.impl.RedisStageCache;
 import com.lsadf.core.infra.cache.listeners.ValkeyKeyExpirationListener;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.properties.RedisProperties;
 import com.lsadf.core.services.*;
 import com.lsadf.core.services.impl.RedisCacheFlushServiceImpl;
 import com.lsadf.core.services.impl.RedisCacheServiceImpl;
@@ -124,41 +123,41 @@ public class ValkeyCacheConfiguration {
   public RedisCache<String> gameSaveOwnershipCache(
       RedisTemplate<String, String> redisTemplate,
       CacheExpirationProperties cacheExpirationProperties,
-      RedisProperties redisProperties) {
+      ValkeyProperties valkeyProperties) {
     return new RedisCache<>(
         redisTemplate,
         GAME_SAVE_OWNERSHIP,
         cacheExpirationProperties.getGameSaveOwnershipExpirationSeconds(),
-        redisProperties);
+        valkeyProperties);
   }
 
   @Bean(name = CHARACTERISTICS_CACHE)
   public HistoCache<Characteristics> redisCharacteristicsCache(
       RedisTemplate<String, Characteristics> redisTemplate,
       CacheExpirationProperties cacheExpirationProperties,
-      RedisProperties redisProperties) {
+      ValkeyProperties valkeyProperties) {
     return new RedisCharacteristicsCache(
         redisTemplate,
         cacheExpirationProperties.getCharacteristicsExpirationSeconds(),
-        redisProperties);
+        valkeyProperties);
   }
 
   @Bean(name = CURRENCY_CACHE)
   public HistoCache<Currency> redisCurrencyCache(
       RedisTemplate<String, Currency> redisTemplate,
       CacheExpirationProperties cacheExpirationProperties,
-      RedisProperties redisProperties) {
+      ValkeyProperties valkeyProperties) {
     return new RedisCurrencyCache(
-        redisTemplate, cacheExpirationProperties.getCurrencyExpirationSeconds(), redisProperties);
+        redisTemplate, cacheExpirationProperties.getCurrencyExpirationSeconds(), valkeyProperties);
   }
 
   @Bean(name = STAGE_CACHE)
   public HistoCache<Stage> redisStageCache(
       RedisTemplate<String, Stage> redisTemplate,
       CacheExpirationProperties cacheExpirationProperties,
-      RedisProperties redisProperties) {
+      ValkeyProperties valkeyProperties) {
     return new RedisStageCache(
-        redisTemplate, cacheExpirationProperties.getStageExpirationSeconds(), redisProperties);
+        redisTemplate, cacheExpirationProperties.getStageExpirationSeconds(), valkeyProperties);
   }
 
   @Bean
@@ -172,12 +171,12 @@ public class ValkeyCacheConfiguration {
   }
 
   @Bean
-  public LettuceConnectionFactory redisConnectionFactory(RedisProperties redisProperties) {
+  public LettuceConnectionFactory redisConnectionFactory(ValkeyProperties valkeyProperties) {
     RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-    configuration.setHostName(redisProperties.getHost());
-    configuration.setPort(redisProperties.getPort());
-    configuration.setDatabase(redisProperties.getDatabase());
-    configuration.setPassword(redisProperties.getPassword());
+    configuration.setHostName(valkeyProperties.getHost());
+    configuration.setPort(valkeyProperties.getPort());
+    configuration.setDatabase(valkeyProperties.getDatabase());
+    configuration.setPassword(valkeyProperties.getPassword());
     return new LettuceConnectionFactory(configuration);
   }
 
@@ -188,7 +187,7 @@ public class ValkeyCacheConfiguration {
     RedisMessageListenerContainer container = new RedisMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
     container.addMessageListener(
-            valkeyKeyExpirationListener, new PatternTopic("__keyevent@0__:expired"));
+        valkeyKeyExpirationListener, new PatternTopic("__keyevent@0__:expired"));
     return container;
   }
 

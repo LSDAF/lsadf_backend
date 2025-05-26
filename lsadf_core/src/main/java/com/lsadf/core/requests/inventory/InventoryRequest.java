@@ -19,7 +19,7 @@ import static com.lsadf.core.constants.JsonAttributes.Inventory.ITEMS;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.lsadf.core.requests.Request;
+import com.lsadf.core.infra.web.requests.Request;
 import com.lsadf.core.requests.item.ItemRequest;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serial;

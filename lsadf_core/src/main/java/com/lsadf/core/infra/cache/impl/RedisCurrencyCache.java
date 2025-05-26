@@ -23,7 +23,7 @@ import static com.lsadf.core.infra.cache.RedisConstants.CURRENCY_HISTO;
 
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.properties.RedisProperties;
+import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -40,8 +40,8 @@ public class RedisCurrencyCache extends RedisCache<Currency> implements HistoCac
   public RedisCurrencyCache(
       RedisTemplate<String, Currency> redisTemplate,
       int expirationSeconds,
-      RedisProperties redisProperties) {
-    super(redisTemplate, CURRENCY, expirationSeconds, redisProperties);
+      ValkeyProperties valkeyProperties) {
+    super(redisTemplate, CURRENCY, expirationSeconds, valkeyProperties);
   }
 
   /** {@inheritDoc} */

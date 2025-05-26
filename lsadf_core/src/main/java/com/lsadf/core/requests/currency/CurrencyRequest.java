@@ -20,7 +20,7 @@ import static com.lsadf.core.constants.JsonAttributes.Currency.AMETHYST;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.lsadf.core.requests.Request;
+import com.lsadf.core.infra.web.requests.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.io.Serial;

@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.infra.cache.properties;
 
-import com.lsadf.core.properties.RedisProperties;
+import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +25,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CacheProperties {
-  private RedisProperties redisProperties;
+  private ValkeyProperties valkeyProperties;
   private CacheExpirationProperties cacheExpirationProperties;
 }

@@ -16,17 +16,17 @@
  */
 package com.lsadf.admin.application.controllers;
 
-import static com.lsadf.core.configurations.SwaggerConfiguration.BEARER_AUTHENTICATION;
-import static com.lsadf.core.configurations.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
 import static com.lsadf.core.constants.ControllerConstants.Params.ORDER_BY;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.constants.ControllerConstants;
-import com.lsadf.core.constants.JsonViews;
-import com.lsadf.core.constants.ResponseMessages;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.config.controllers.Controller;
+import com.lsadf.core.infra.web.config.controllers.JsonViews;
 import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ResponseMessages;
 import com.lsadf.core.requests.search.SearchRequest;
 import com.lsadf.core.user.User;
 import io.swagger.v3.oas.annotations.Operation;

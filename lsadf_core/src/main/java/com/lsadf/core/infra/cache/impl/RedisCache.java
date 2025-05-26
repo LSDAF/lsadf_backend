@@ -18,7 +18,7 @@ package com.lsadf.core.infra.cache.impl;
 
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.CacheUtils;
-import com.lsadf.core.properties.RedisProperties;
+import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -42,11 +42,11 @@ public class RedisCache<T> implements Cache<T> {
       RedisTemplate<String, T> redisTemplate,
       String keyType,
       int expirationSeconds,
-      RedisProperties redisProperties) {
+      ValkeyProperties valkeyProperties) {
     this.redisTemplate = redisTemplate;
     this.keyType = keyType;
     this.expirationSeconds = expirationSeconds;
-    this.isEnabled = new AtomicBoolean(redisProperties.isEnabled());
+    this.isEnabled = new AtomicBoolean(valkeyProperties.isEnabled());
   }
 
   /** {@inheritDoc} */

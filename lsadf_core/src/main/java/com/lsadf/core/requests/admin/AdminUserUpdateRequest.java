@@ -18,7 +18,7 @@ package com.lsadf.core.requests.admin;
 import static com.lsadf.core.constants.JsonAttributes.User.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.requests.Request;
+import com.lsadf.core.infra.web.requests.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

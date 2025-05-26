@@ -20,7 +20,7 @@ import static com.lsadf.core.constants.JsonAttributes.Item.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
-import com.lsadf.core.requests.Request;
+import com.lsadf.core.infra.web.requests.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serial;

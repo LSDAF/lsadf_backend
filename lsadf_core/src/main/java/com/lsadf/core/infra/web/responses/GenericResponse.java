@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.constants.JsonViews;
+import com.lsadf.core.infra.web.config.controllers.JsonViews;
 import java.io.Serial;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;

@@ -23,7 +23,7 @@ import static com.lsadf.core.infra.cache.RedisConstants.STAGE_HISTO;
 
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.properties.RedisProperties;
+import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -39,8 +39,8 @@ public class RedisStageCache extends RedisCache<Stage> implements HistoCache<Sta
   public RedisStageCache(
       RedisTemplate<String, Stage> redisTemplate,
       int expirationSeconds,
-      RedisProperties redisProperties) {
-    super(redisTemplate, STAGE, expirationSeconds, redisProperties);
+      ValkeyProperties valkeyProperties) {
+    super(redisTemplate, STAGE, expirationSeconds, valkeyProperties);
   }
 
   @Override

@@ -16,14 +16,14 @@
  */
 package com.lsadf.admin.application.bdd;
 
-import com.lsadf.core.constants.item.ItemRarity;
-import com.lsadf.core.constants.item.ItemStatistic;
-import com.lsadf.core.constants.item.ItemType;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.item.Item;
+import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
+import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.infra.persistence.game.*;

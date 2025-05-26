@@ -18,7 +18,7 @@ package com.lsadf.core.requests.user;
 import static com.lsadf.core.constants.JsonAttributes.JwtAuthentication.REFRESH_TOKEN;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.requests.Request;
+import com.lsadf.core.infra.web.requests.Request;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serial;
 import lombok.AllArgsConstructor;

@@ -16,7 +16,6 @@
  */
 package com.lsadf.core.infra.clock;
 
-import com.lsadf.core.properties.ClockProperties;
 import java.time.Clock;
 import java.time.ZoneId;
 import org.springframework.context.annotation.Bean;

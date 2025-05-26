@@ -16,7 +16,6 @@
  */
 package com.lsadf.core.infra.logging;
 
-import com.lsadf.core.properties.ConfigurationDisplayProperties;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
