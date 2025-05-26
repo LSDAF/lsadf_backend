@@ -63,7 +63,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     this.httpLogProperties = httpLogProperties;
   }
 
-  protected static final String[] WHITELIST_URLS = {
+  public static final String[] WHITELIST_URLS = {
     "/api-docs/**",
     "/swagger-ui/**",
     "/swagger-ui.html",
