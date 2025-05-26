@@ -21,8 +21,8 @@ import static com.lsadf.core.infra.cache.CacheUtils.getAllEntries;
 import static com.lsadf.core.infra.cache.configuration.RedisConstants.STAGE;
 import static com.lsadf.core.infra.cache.configuration.RedisConstants.STAGE_HISTO;
 
+import com.lsadf.core.game.stage.Stage;
 import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.models.Stage;
 import com.lsadf.core.properties.RedisProperties;
 import java.util.Map;
 import java.util.Optional;

@@ -28,7 +28,7 @@ import com.lsadf.core.constants.item.ItemType;
 import com.lsadf.core.entities.GameSaveEntity;
 import com.lsadf.core.entities.InventoryEntity;
 import com.lsadf.core.entities.ItemEntity;
-import com.lsadf.core.models.ItemStat;
+import com.lsadf.core.game.inventory.item.ItemStat;
 import com.lsadf.core.repositories.InventoryRepository;
 import com.lsadf.core.repositories.ItemRepository;
 import com.lsadf.core.requests.item.ItemRequest;

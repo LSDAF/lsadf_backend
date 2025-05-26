@@ -18,12 +18,12 @@ package com.lsadf.core.infra.cache.configuration;
 
 import static com.lsadf.core.constants.BeanConstants.Cache.*;
 
+import com.lsadf.core.game.characteristics.Characteristics;
+import com.lsadf.core.game.currency.Currency;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.impl.NoOpCache;
 import com.lsadf.core.infra.cache.impl.NoOpHistoCache;
-import com.lsadf.core.models.Characteristics;
-import com.lsadf.core.models.Currency;
 import com.lsadf.core.services.CacheFlushService;
 import com.lsadf.core.services.CacheService;
 import com.lsadf.core.services.impl.NoOpCacheServiceImpl;

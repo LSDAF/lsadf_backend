@@ -21,8 +21,8 @@ import static com.lsadf.core.infra.cache.CacheUtils.getAllEntries;
 import static com.lsadf.core.infra.cache.configuration.RedisConstants.CHARACTERISTICS;
 import static com.lsadf.core.infra.cache.configuration.RedisConstants.CHARACTERISTICS_HISTO;
 
+import com.lsadf.core.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.models.Characteristics;
 import com.lsadf.core.properties.RedisProperties;
 import java.util.Map;
 import java.util.Optional;

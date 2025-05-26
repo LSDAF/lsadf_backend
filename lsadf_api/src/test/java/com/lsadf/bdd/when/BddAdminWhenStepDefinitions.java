@@ -24,7 +24,7 @@ import com.lsadf.core.common.exceptions.AlreadyExistingGameSaveException;
 import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.entities.GameSaveEntity;
-import com.lsadf.core.models.GameSave;
+import com.lsadf.core.game.game_save.GameSave;
 import com.lsadf.core.models.GlobalInfo;
 import com.lsadf.core.models.JwtAuthentication;
 import com.lsadf.core.models.User;

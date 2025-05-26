@@ -19,7 +19,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 import com.lsadf.core.constants.JsonAttributes;
-import com.lsadf.core.models.GameSave;
+import com.lsadf.core.game.game_save.GameSave;
 import com.lsadf.core.requests.common.SortingParameter;
 import java.util.Comparator;
 import org.springframework.data.domain.Sort;

@@ -16,7 +16,7 @@
 package com.lsadf.core.services;
 
 import com.lsadf.core.common.exceptions.http.NotFoundException;
-import com.lsadf.core.models.Stage;
+import com.lsadf.core.game.stage.Stage;
 
 /** Service for managing stages. */
 public interface StageService {

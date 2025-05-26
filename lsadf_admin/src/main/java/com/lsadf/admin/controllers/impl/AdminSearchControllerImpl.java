@@ -19,8 +19,8 @@ import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.controllers.AdminSearchController;
 import com.lsadf.core.controllers.impl.BaseController;
+import com.lsadf.core.game.game_save.GameSave;
 import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.models.GameSave;
 import com.lsadf.core.models.User;
 import com.lsadf.core.requests.game_save.GameSaveSortingParameter;
 import com.lsadf.core.requests.search.SearchRequest;
