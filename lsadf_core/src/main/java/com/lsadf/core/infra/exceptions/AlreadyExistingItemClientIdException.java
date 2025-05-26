@@ -14,15 +14,11 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.common.exceptions;
+package com.lsadf.core.infra.exceptions;
 
-/** Exception for when there is an error processing a filter */
-public class FilterProcessingException extends RuntimeException {
-  public FilterProcessingException(String message) {
+/** Exception for when an item client id already exists */
+public class AlreadyExistingItemClientIdException extends RuntimeException {
+  public AlreadyExistingItemClientIdException(String message) {
     super(message);
-  }
-
-  public FilterProcessingException(String message, Throwable cause) {
-    super(message, cause);
   }
 }

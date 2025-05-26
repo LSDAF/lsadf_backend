@@ -16,16 +16,17 @@
  */
 package com.lsadf.core.application.game.game_save;
 
-import com.lsadf.core.common.exceptions.AlreadyExistingGameSaveException;
-import com.lsadf.core.common.exceptions.AlreadyTakenNicknameException;
-import com.lsadf.core.common.exceptions.http.ForbiddenException;
-import com.lsadf.core.common.exceptions.http.NotFoundException;
+import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
+import com.lsadf.core.infra.exceptions.AlreadyExistingGameSaveException;
+import com.lsadf.core.infra.exceptions.AlreadyTakenNicknameException;
+import com.lsadf.core.infra.exceptions.http.ForbiddenException;
+import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.*;
 import com.lsadf.core.infra.web.requests.admin.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.admin.AdminGameSaveUpdateRequest;
@@ -33,7 +34,6 @@ import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
-import com.lsadf.core.application.user.UserService;
 import java.util.*;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;

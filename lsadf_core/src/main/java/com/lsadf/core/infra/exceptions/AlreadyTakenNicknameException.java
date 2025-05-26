@@ -14,15 +14,11 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.common.exceptions.http;
+package com.lsadf.core.infra.exceptions;
 
-/** Internal Server Error Exception when something goes wrong on the server */
-public class InternalServerErrorException extends RuntimeException {
-  public InternalServerErrorException(String message) {
+/** Exception for when a nickname is already taken */
+public class AlreadyTakenNicknameException extends RuntimeException {
+  public AlreadyTakenNicknameException(String message) {
     super(message);
-  }
-
-  public InternalServerErrorException(String message, Throwable cause) {
-    super(message, cause);
   }
 }

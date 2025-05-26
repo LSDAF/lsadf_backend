@@ -14,19 +14,11 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.common.exceptions.http;
+package com.lsadf.core.infra.exceptions.http;
 
-/** Exception for when a resource is not found. */
-public class NotFoundException extends RuntimeException {
-  public NotFoundException() {
-    super();
-  }
-
-  public NotFoundException(String message) {
+/** Bad Request Exception */
+public class BadRequestException extends RuntimeException {
+  public BadRequestException(String message) {
     super(message);
-  }
-
-  public NotFoundException(String message, Throwable cause) {
-    super(message, cause);
   }
 }

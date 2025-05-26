@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.common.exceptions;
+package com.lsadf.core.infra.exceptions;
 
 public class DynamicJsonViewException extends RuntimeException {
   public DynamicJsonViewException(String message) {

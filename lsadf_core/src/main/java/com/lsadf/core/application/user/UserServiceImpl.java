@@ -16,18 +16,17 @@
  */
 package com.lsadf.core.application.user;
 
-import com.lsadf.core.common.exceptions.AlreadyExistingUserException;
-import com.lsadf.core.common.exceptions.http.InternalServerErrorException;
-import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.clock.ClockService;
+import com.lsadf.core.infra.exceptions.AlreadyExistingUserException;
+import com.lsadf.core.infra.exceptions.http.InternalServerErrorException;
+import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.requests.admin.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.admin.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.requests.user.UserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.UserUpdateRequest;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;

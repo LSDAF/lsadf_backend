@@ -16,17 +16,16 @@
  */
 package com.lsadf.core.application.game.inventory;
 
-import com.lsadf.core.common.exceptions.AlreadyExistingItemClientIdException;
-import com.lsadf.core.common.exceptions.http.ForbiddenException;
-import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
+import com.lsadf.core.infra.exceptions.AlreadyExistingItemClientIdException;
+import com.lsadf.core.infra.exceptions.http.ForbiddenException;
+import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.ItemEntity;
 import com.lsadf.core.infra.persistence.game.ItemRepository;
 import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
-
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 

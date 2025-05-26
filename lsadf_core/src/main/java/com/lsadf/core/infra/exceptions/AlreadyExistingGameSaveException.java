@@ -14,11 +14,11 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.common.exceptions.http;
+package com.lsadf.core.infra.exceptions;
 
-/** Bad Request Exception */
-public class BadRequestException extends RuntimeException {
-  public BadRequestException(String message) {
+/** Exception for when a game save already exists */
+public class AlreadyExistingGameSaveException extends RuntimeException {
+  public AlreadyExistingGameSaveException(String message) {
     super(message);
   }
 }
