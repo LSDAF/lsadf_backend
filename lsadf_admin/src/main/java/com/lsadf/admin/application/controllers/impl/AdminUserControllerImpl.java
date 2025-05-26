@@ -19,6 +19,7 @@ package com.lsadf.admin.application.controllers.impl;
 import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.application.controllers.AdminUserController;
+import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.common.utils.StreamUtils;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.config.controllers.BaseController;
@@ -26,7 +27,6 @@ import com.lsadf.core.infra.web.requests.admin.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.admin.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
 import com.lsadf.core.infra.web.responses.GenericResponse;
-import com.lsadf.core.services.UserService;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;

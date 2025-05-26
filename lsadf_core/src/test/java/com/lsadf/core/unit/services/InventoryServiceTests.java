@@ -21,6 +21,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.inventory.InventoryServiceImpl;
 import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
@@ -32,8 +34,6 @@ import com.lsadf.core.infra.persistence.game.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.ItemEntity;
 import com.lsadf.core.infra.persistence.game.ItemRepository;
 import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
-import com.lsadf.core.services.InventoryService;
-import com.lsadf.core.services.impl.InventoryServiceImpl;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
