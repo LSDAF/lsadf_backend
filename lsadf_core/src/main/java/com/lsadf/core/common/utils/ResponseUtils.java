@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.common.utils;
 
-import com.lsadf.core.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

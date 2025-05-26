@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.lsadf.application.controllers.UserController;
 import com.lsadf.application.controllers.impl.UserControllerImpl;
-import com.lsadf.core.controllers.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import lombok.SneakyThrows;

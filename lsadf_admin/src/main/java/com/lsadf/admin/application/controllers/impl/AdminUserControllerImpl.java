@@ -20,13 +20,13 @@ import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.application.controllers.AdminUserController;
 import com.lsadf.core.common.utils.StreamUtils;
-import com.lsadf.core.controllers.impl.BaseController;
+import com.lsadf.core.infra.web.config.controllers.BaseController;
+import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.requests.admin.AdminUserCreationRequest;
 import com.lsadf.core.requests.admin.AdminUserUpdateRequest;
 import com.lsadf.core.requests.user.UserSortingParameter;
 import com.lsadf.core.services.UserService;
 import com.lsadf.core.user.User;
-import com.lsadf.core.web.responses.GenericResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
