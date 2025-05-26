@@ -18,7 +18,7 @@ package com.lsadf.admin.application.services.impl;
 
 import com.lsadf.admin.application.utils.FilterUtils;
 import com.lsadf.core.common.utils.StreamUtils;
-import com.lsadf.core.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.requests.user.UserSortingParameter;
 import com.lsadf.core.services.UserService;
 import com.lsadf.core.user.User;

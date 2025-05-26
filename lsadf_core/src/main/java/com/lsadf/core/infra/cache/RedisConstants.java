@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.infra.cache.configuration;
+package com.lsadf.core.infra.cache;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

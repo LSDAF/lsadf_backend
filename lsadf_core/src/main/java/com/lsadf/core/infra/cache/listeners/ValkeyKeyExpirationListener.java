@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.infra.cache.listeners;
 
-import static com.lsadf.core.infra.cache.configuration.RedisConstants.*;
+import static com.lsadf.core.infra.cache.RedisConstants.*;
 
 import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
@@ -34,7 +34,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 /** Listener for Redis key expiration events. */
 @Slf4j
-public class RedisKeyExpirationListener implements MessageListener {
+public class ValkeyKeyExpirationListener implements MessageListener {
 
   private final CharacteristicsService characteristicsService;
   private final CurrencyService currencyService;
@@ -44,7 +44,7 @@ public class RedisKeyExpirationListener implements MessageListener {
   private final RedisTemplate<String, Currency> currencyRedisTemplate;
   private final RedisTemplate<String, Stage> stageRedisTemplate;
 
-  public RedisKeyExpirationListener(
+  public ValkeyKeyExpirationListener(
       CharacteristicsService characteristicsService,
       CurrencyService currencyService,
       InventoryService inventoryService,

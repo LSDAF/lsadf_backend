@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConditionalOnProperty(prefix = "cache.redis", name = "enabled", havingValue = "false")
-public class NoRedisCacheConfiguration {
+public class NoValkeyCacheConfiguration {
 
   @Bean
   public CacheService noOpCacheService() {

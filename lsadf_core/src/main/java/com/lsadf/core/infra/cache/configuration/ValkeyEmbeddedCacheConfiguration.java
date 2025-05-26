@@ -26,11 +26,11 @@ import redis.embedded.RedisServer;
 
 @Configuration
 @ConditionalOnProperty(prefix = "cache.redis", name = "embedded", havingValue = "true")
-public class RedisEmbeddedCacheConfiguration {
+public class ValkeyEmbeddedCacheConfiguration {
 
   private RedisServer redisServer;
 
-  public RedisEmbeddedCacheConfiguration(RedisProperties redisProperties) throws IOException {
+  public ValkeyEmbeddedCacheConfiguration(RedisProperties redisProperties) throws IOException {
     if (redisProperties.isEnabled() && redisProperties.isEmbedded()) {
       this.redisServer = initRedisServer(redisProperties);
     }

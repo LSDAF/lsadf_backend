@@ -18,7 +18,7 @@ package com.lsadf.core.services.impl;
 import com.lsadf.core.common.exceptions.AlreadyExistingUserException;
 import com.lsadf.core.common.exceptions.http.InternalServerErrorException;
 import com.lsadf.core.common.exceptions.http.NotFoundException;
-import com.lsadf.core.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.properties.KeycloakProperties;
 import com.lsadf.core.requests.admin.AdminUserCreationRequest;
 import com.lsadf.core.requests.admin.AdminUserUpdateRequest;

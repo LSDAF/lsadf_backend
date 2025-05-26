@@ -22,7 +22,7 @@ import static com.lsadf.core.constants.JsonAttributes.User.*;
 
 import com.lsadf.core.common.utils.StreamUtils;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.requests.common.Filter;
 import com.lsadf.core.requests.game_save.GameSaveSortingParameter;
 import com.lsadf.core.requests.search.SearchRequest;

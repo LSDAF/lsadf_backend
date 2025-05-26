@@ -29,16 +29,16 @@ import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
-import com.lsadf.core.entities.GameSaveEntity;
-import com.lsadf.core.entities.InventoryEntity;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.persistence.game.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.InventoryEntity;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.config.controllers.advices.DynamicJsonViewAdvice;
 import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.responses.GenericResponse;
-import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.properties.KeycloakProperties;
 import com.lsadf.core.repositories.*;
 import com.lsadf.core.services.*;
@@ -103,7 +103,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @EnableConfigurationProperties
 @CucumberContextConfiguration
 @EnableJpaRepositories(basePackages = "com.lsadf.core.repositories")
-@EntityScan(basePackages = "com.lsadf.core.entities")
+@EntityScan(basePackages = "com.lsadf.core.infra.persistence")
 @EnableAutoConfiguration(
     exclude = {
       SecurityAutoConfiguration.class,

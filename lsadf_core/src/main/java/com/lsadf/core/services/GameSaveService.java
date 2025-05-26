@@ -20,7 +20,7 @@ import com.lsadf.core.common.exceptions.AlreadyTakenNicknameException;
 import com.lsadf.core.common.exceptions.http.ForbiddenException;
 import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.common.exceptions.http.UnauthorizedException;
-import com.lsadf.core.entities.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.GameSaveEntity;
 import com.lsadf.core.requests.admin.AdminGameSaveCreationRequest;
 import com.lsadf.core.requests.admin.AdminGameSaveUpdateRequest;
 import com.lsadf.core.requests.game_save.GameSaveUpdateNicknameRequest;

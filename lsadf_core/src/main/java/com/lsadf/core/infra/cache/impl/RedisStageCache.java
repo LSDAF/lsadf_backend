@@ -18,8 +18,8 @@ package com.lsadf.core.infra.cache.impl;
 
 import static com.lsadf.core.infra.cache.CacheUtils.clearCache;
 import static com.lsadf.core.infra.cache.CacheUtils.getAllEntries;
-import static com.lsadf.core.infra.cache.configuration.RedisConstants.STAGE;
-import static com.lsadf.core.infra.cache.configuration.RedisConstants.STAGE_HISTO;
+import static com.lsadf.core.infra.cache.RedisConstants.STAGE;
+import static com.lsadf.core.infra.cache.RedisConstants.STAGE_HISTO;
 
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.HistoCache;

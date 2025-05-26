@@ -18,8 +18,8 @@ package com.lsadf.core.infra.cache.impl;
 
 import static com.lsadf.core.infra.cache.CacheUtils.clearCache;
 import static com.lsadf.core.infra.cache.CacheUtils.getAllEntries;
-import static com.lsadf.core.infra.cache.configuration.RedisConstants.CURRENCY;
-import static com.lsadf.core.infra.cache.configuration.RedisConstants.CURRENCY_HISTO;
+import static com.lsadf.core.infra.cache.RedisConstants.CURRENCY;
+import static com.lsadf.core.infra.cache.RedisConstants.CURRENCY_HISTO;
 
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.HistoCache;
