@@ -19,8 +19,8 @@ package com.lsadf.admin.application.configurations;
 import static com.lsadf.core.infra.web.config.security.SecurityConfiguration.ADMIN_URLS;
 import static com.lsadf.core.infra.web.config.security.SecurityConfiguration.WHITELIST_URLS;
 
-import com.lsadf.core.constants.UserRole;
 import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
+import com.lsadf.core.user.UserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
