@@ -17,7 +17,7 @@
 package com.lsadf.core.infra.cache.configuration;
 
 import static com.lsadf.core.constants.BeanConstants.Cache.*;
-import static com.lsadf.core.constants.RedisConstants.GAME_SAVE_OWNERSHIP;
+import static com.lsadf.core.infra.cache.configuration.RedisConstants.GAME_SAVE_OWNERSHIP;
 
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
@@ -26,11 +26,11 @@ import com.lsadf.core.infra.cache.impl.RedisCharacteristicsCache;
 import com.lsadf.core.infra.cache.impl.RedisCurrencyCache;
 import com.lsadf.core.infra.cache.impl.RedisStageCache;
 import com.lsadf.core.infra.cache.listeners.RedisKeyExpirationListener;
+import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.models.Characteristics;
 import com.lsadf.core.models.Currency;
 import com.lsadf.core.models.Inventory;
 import com.lsadf.core.models.Stage;
-import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.properties.RedisProperties;
 import com.lsadf.core.services.*;
 import com.lsadf.core.services.impl.RedisCacheFlushServiceImpl;

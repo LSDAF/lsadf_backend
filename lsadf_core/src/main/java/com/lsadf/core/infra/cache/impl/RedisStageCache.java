@@ -16,10 +16,10 @@
  */
 package com.lsadf.core.infra.cache.impl;
 
-import static com.lsadf.core.constants.RedisConstants.STAGE;
-import static com.lsadf.core.constants.RedisConstants.STAGE_HISTO;
 import static com.lsadf.core.infra.cache.CacheUtils.clearCache;
 import static com.lsadf.core.infra.cache.CacheUtils.getAllEntries;
+import static com.lsadf.core.infra.cache.configuration.RedisConstants.STAGE;
+import static com.lsadf.core.infra.cache.configuration.RedisConstants.STAGE_HISTO;
 
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.models.Stage;
