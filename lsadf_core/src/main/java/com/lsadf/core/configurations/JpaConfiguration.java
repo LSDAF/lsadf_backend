@@ -22,6 +22,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @ConditionalOnProperty(name = "jpa.enabled", havingValue = "true")
-@EnableJpaRepositories(basePackages = "com.lsadf.core.repositories")
+@EnableJpaRepositories(basePackages = "com.lsadf.core.infra.persistence")
 @EntityScan(basePackages = "com.lsadf.core.infra.persistence")
 public class JpaConfiguration {}
