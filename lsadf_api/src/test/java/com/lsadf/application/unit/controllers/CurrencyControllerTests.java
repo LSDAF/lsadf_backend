@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controllers.CurrencyController;
 import com.lsadf.application.controllers.impl.CurrencyControllerImpl;
 import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
-import com.lsadf.core.requests.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import lombok.SneakyThrows;

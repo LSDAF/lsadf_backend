@@ -18,10 +18,10 @@ package com.lsadf.application.controllers;
 
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
+import com.lsadf.core.infra.web.requests.user.UserLoginRequest;
+import com.lsadf.core.infra.web.requests.user.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
-import com.lsadf.core.requests.user.UserLoginRequest;
-import com.lsadf.core.requests.user.UserRefreshLoginRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

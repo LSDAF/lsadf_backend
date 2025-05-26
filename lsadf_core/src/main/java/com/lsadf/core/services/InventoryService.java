@@ -20,7 +20,7 @@ import com.lsadf.core.common.exceptions.http.ForbiddenException;
 import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.ItemEntity;
-import com.lsadf.core.requests.item.ItemRequest;
+import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
 
 public interface InventoryService {
 

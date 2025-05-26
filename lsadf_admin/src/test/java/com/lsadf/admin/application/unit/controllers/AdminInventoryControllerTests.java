@@ -23,7 +23,7 @@ import com.lsadf.admin.application.unit.config.UnitTestConfiguration;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
-import com.lsadf.core.requests.item.ItemRequest;
+import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
 import lombok.SneakyThrows;

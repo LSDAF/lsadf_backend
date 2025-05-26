@@ -21,8 +21,8 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH
 
 import com.lsadf.core.common.validators.annotations.Uuid;
 import com.lsadf.core.constants.ControllerConstants;
+import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
-import com.lsadf.core.requests.characteristics.CharacteristicsRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

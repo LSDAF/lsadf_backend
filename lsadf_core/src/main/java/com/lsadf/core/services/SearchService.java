@@ -16,9 +16,9 @@
 package com.lsadf.core.services;
 
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.requests.game_save.GameSaveSortingParameter;
-import com.lsadf.core.requests.search.SearchRequest;
-import com.lsadf.core.requests.user.UserSortingParameter;
+import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
+import com.lsadf.core.infra.web.requests.search.SearchRequest;
+import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
 import com.lsadf.core.user.User;
 import java.util.Collections;
 import java.util.List;
