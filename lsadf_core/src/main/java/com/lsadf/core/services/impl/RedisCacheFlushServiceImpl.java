@@ -16,9 +16,9 @@
 package com.lsadf.core.services.impl;
 
 import com.lsadf.core.common.exceptions.http.NotFoundException;
-import com.lsadf.core.game.characteristics.Characteristics;
-import com.lsadf.core.game.currency.Currency;
-import com.lsadf.core.game.stage.Stage;
+import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.services.*;
 import java.util.Map;

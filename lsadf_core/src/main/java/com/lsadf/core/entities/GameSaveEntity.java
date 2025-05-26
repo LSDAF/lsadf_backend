@@ -16,10 +16,10 @@
 package com.lsadf.core.entities;
 
 import com.lsadf.core.constants.EntityAttributes;
-import com.lsadf.core.game.characteristics.Characteristics;
-import com.lsadf.core.game.currency.Currency;
-import com.lsadf.core.game.inventory.Inventory;
-import com.lsadf.core.game.stage.Stage;
+import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.inventory.Inventory;
+import com.lsadf.core.domain.game.stage.Stage;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import java.io.Serial;

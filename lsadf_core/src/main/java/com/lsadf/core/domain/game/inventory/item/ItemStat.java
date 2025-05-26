@@ -14,39 +14,41 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.game.stage;
+package com.lsadf.core.domain.game.inventory.item;
 
-import static com.lsadf.core.constants.JsonAttributes.Stage.CURRENT_STAGE;
-import static com.lsadf.core.constants.JsonAttributes.Stage.MAX_STAGE;
+import static com.lsadf.core.constants.JsonAttributes.ItemStat.BASE_VALUE;
+import static com.lsadf.core.constants.JsonAttributes.ItemStat.STATISTIC;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.constants.JsonViews;
+import com.lsadf.core.constants.item.ItemStatistic;
 import com.lsadf.core.models.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.io.Serial;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Builder
-@Schema(name = "Stage", description = "Stage object containing the player's game progress")
-@JsonPropertyOrder({CURRENT_STAGE, MAX_STAGE})
-@JsonView(JsonViews.External.class)
-public class Stage implements Model {
+@Valid
+public class ItemStat implements Model {
+  @JsonView(JsonViews.External.class)
+  @JsonProperty(value = STATISTIC)
+  @Schema(description = "Item stat statistic", example = "ATTACK_ADD")
+  @Enumerated(EnumType.STRING)
+  private ItemStatistic statistic;
 
-  @Serial private static final long serialVersionUID = -7126306428235414817L;
-
-  @Schema(description = "The Current game stage", example = "26")
-  @JsonProperty(value = CURRENT_STAGE)
-  private Long currentStage;
-
-  @Schema(description = "The Maximum game stage", example = "26")
-  @JsonProperty(value = MAX_STAGE)
-  private Long maxStage;
+  @JsonView(JsonViews.External.class)
+  @JsonProperty(value = BASE_VALUE)
+  @Schema(description = "Item stat base value", example = "100.0")
+  @Positive
+  private Float baseValue;
 }

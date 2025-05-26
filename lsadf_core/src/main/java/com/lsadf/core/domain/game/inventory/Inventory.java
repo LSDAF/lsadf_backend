@@ -14,41 +14,39 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.game.inventory.item;
+package com.lsadf.core.domain.game.inventory;
 
-import static com.lsadf.core.constants.JsonAttributes.ItemStat.BASE_VALUE;
-import static com.lsadf.core.constants.JsonAttributes.ItemStat.STATISTIC;
+import static com.lsadf.core.constants.JsonAttributes.Inventory.ITEMS;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.constants.JsonViews;
-import com.lsadf.core.constants.item.ItemStatistic;
+import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.models.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
+import java.io.Serial;
+import java.util.Set;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-@Valid
-public class ItemStat implements Model {
-  @JsonView(JsonViews.External.class)
-  @JsonProperty(value = STATISTIC)
-  @Schema(description = "Item stat statistic", example = "ATTACK_ADD")
-  @Enumerated(EnumType.STRING)
-  private ItemStatistic statistic;
+@Schema(name = "Inventory", description = "Inventory object")
+@Data
+@Builder
+@JsonPropertyOrder({ITEMS})
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonView(JsonViews.External.class)
+public class Inventory implements Model {
+
+  @Serial private static final long serialVersionUID = 33494087785391763L;
 
   @JsonView(JsonViews.External.class)
-  @JsonProperty(value = BASE_VALUE)
-  @Schema(description = "Item stat base value", example = "100.0")
-  @Positive
-  private Float baseValue;
+  @JsonProperty(value = ITEMS)
+  @Schema(description = "List of items in the inventory", example = "[\"item1\", \"item2\"]")
+  private Set<Item> items;
 }

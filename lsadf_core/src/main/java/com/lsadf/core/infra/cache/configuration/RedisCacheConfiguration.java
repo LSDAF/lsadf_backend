@@ -19,10 +19,10 @@ package com.lsadf.core.infra.cache.configuration;
 import static com.lsadf.core.constants.BeanConstants.Cache.*;
 import static com.lsadf.core.infra.cache.configuration.RedisConstants.GAME_SAVE_OWNERSHIP;
 
-import com.lsadf.core.game.characteristics.Characteristics;
-import com.lsadf.core.game.currency.Currency;
-import com.lsadf.core.game.inventory.Inventory;
-import com.lsadf.core.game.stage.Stage;
+import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.inventory.Inventory;
+import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.impl.RedisCache;

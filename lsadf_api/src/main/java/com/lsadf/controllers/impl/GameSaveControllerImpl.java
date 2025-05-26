@@ -20,8 +20,8 @@ import static com.lsadf.core.common.utils.TokenUtils.getUsernameFromJwt;
 
 import com.lsadf.controllers.GameSaveController;
 import com.lsadf.core.controllers.impl.BaseController;
+import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.entities.GameSaveEntity;
-import com.lsadf.core.game.game_save.GameSave;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.requests.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.services.GameSaveService;

@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.game.game_save;
+package com.lsadf.core.domain.game;
 
 import static com.lsadf.core.constants.JsonAttributes.GameSave.*;
 
@@ -22,10 +22,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.constants.JsonAttributes;
 import com.lsadf.core.constants.JsonViews;
-import com.lsadf.core.game.characteristics.Characteristics;
-import com.lsadf.core.game.currency.Currency;
+import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.models.Model;
-import com.lsadf.core.game.stage.Stage;
+import com.lsadf.core.domain.game.stage.Stage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.util.Date;

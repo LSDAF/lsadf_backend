@@ -23,7 +23,7 @@ import com.lsadf.bdd.BddLoader;
 import com.lsadf.bdd.BddUtils;
 import com.lsadf.core.auth.JwtAuthentication;
 import com.lsadf.core.constants.ControllerConstants;
-import com.lsadf.core.game.currency.Currency;
+import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.requests.currency.CurrencyRequest;
 import com.lsadf.core.web.responses.GenericResponse;
 import io.cucumber.datatable.DataTable;

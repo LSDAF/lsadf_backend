@@ -17,14 +17,14 @@ package com.lsadf.core.unit.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.entities.CharacteristicsEntity;
 import com.lsadf.core.entities.CurrencyEntity;
 import com.lsadf.core.entities.GameSaveEntity;
 import com.lsadf.core.entities.StageEntity;
-import com.lsadf.core.game.characteristics.Characteristics;
-import com.lsadf.core.game.currency.Currency;
-import com.lsadf.core.game.game_save.GameSave;
-import com.lsadf.core.game.stage.Stage;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.mappers.impl.MapperImpl;
 import com.lsadf.core.requests.admin.AdminUserCreationRequest;

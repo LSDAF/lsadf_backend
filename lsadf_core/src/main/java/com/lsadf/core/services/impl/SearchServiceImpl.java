@@ -21,7 +21,7 @@ import static com.lsadf.core.constants.JsonAttributes.ID;
 import static com.lsadf.core.constants.JsonAttributes.User.*;
 
 import com.lsadf.core.common.utils.StreamUtils;
-import com.lsadf.core.game.game_save.GameSave;
+import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.requests.common.Filter;
 import com.lsadf.core.requests.game_save.GameSaveSortingParameter;

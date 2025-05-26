@@ -23,7 +23,7 @@ import com.lsadf.bdd.BddLoader;
 import com.lsadf.bdd.BddUtils;
 import com.lsadf.core.auth.JwtAuthentication;
 import com.lsadf.core.constants.ControllerConstants;
-import com.lsadf.core.game.stage.Stage;
+import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.requests.stage.StageRequest;
 import com.lsadf.core.web.responses.GenericResponse;
 import io.cucumber.datatable.DataTable;
