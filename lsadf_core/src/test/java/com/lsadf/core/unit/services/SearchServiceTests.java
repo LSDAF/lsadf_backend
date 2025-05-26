@@ -22,6 +22,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import com.lsadf.core.application.game.game_save.GameSaveService;
+import com.lsadf.core.application.search.SearchService;
+import com.lsadf.core.application.search.SearchServiceImpl;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.User;
@@ -34,8 +36,6 @@ import com.lsadf.core.infra.persistence.mappers.MapperImpl;
 import com.lsadf.core.infra.web.requests.common.Filter;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
-import com.lsadf.core.services.SearchService;
-import com.lsadf.core.services.impl.SearchServiceImpl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;

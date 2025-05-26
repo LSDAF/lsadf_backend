@@ -14,17 +14,15 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.infra.application.config;
+package com.lsadf.core.infra.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ServerProperties {
-  private String hostName;
-  private String port;
-  private boolean https;
+@NoArgsConstructor
+public class ShutdownProperties {
+  private boolean flushCacheAtShutdown;
 }
