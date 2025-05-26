@@ -22,7 +22,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${keycloak.issuer-uri}
-          jwk-set-uri: ${keycloak.url}/realms/${keycloak.realm}/protocol/openid-connect/certs
   cloud:
     openfeign:
       client:
