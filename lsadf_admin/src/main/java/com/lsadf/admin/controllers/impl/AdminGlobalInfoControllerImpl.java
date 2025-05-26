@@ -19,7 +19,7 @@ import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.controllers.AdminGlobalInfoController;
 import com.lsadf.core.controllers.impl.BaseController;
-import com.lsadf.core.models.GlobalInfo;
+import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.services.ClockService;
 import com.lsadf.core.services.GameSaveService;
 import com.lsadf.core.services.UserService;

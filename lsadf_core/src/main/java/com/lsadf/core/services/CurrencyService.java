@@ -16,7 +16,7 @@
 package com.lsadf.core.services;
 
 import com.lsadf.core.common.exceptions.http.NotFoundException;
-import com.lsadf.core.game.currency.Currency;
+import com.lsadf.core.domain.game.currency.Currency;
 
 public interface CurrencyService {
 

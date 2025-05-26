@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.game.inventory.item;
+package com.lsadf.core.domain.game.inventory.item;
 
 import static com.lsadf.core.constants.JsonAttributes.Inventory.ITEMS;
 import static com.lsadf.core.constants.JsonAttributes.Item.*;

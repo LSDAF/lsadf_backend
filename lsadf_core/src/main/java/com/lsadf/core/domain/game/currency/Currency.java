@@ -14,20 +14,17 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.game.inventory;
+package com.lsadf.core.domain.game.currency;
 
-import static com.lsadf.core.constants.JsonAttributes.Inventory.ITEMS;
+import static com.lsadf.core.constants.JsonAttributes.Currency.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.constants.JsonViews;
-import com.lsadf.core.game.inventory.item.Item;
 import com.lsadf.core.models.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,18 +32,25 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "Inventory", description = "Inventory object")
+@Schema(name = "Currency", description = "Currency object")
 @Data
 @Builder
-@JsonPropertyOrder({ITEMS})
+@JsonPropertyOrder({GOLD, DIAMOND, EMERALD, AMETHYST})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonView(JsonViews.External.class)
-public class Inventory implements Model {
+public class Currency implements Model {
 
-  @Serial private static final long serialVersionUID = 33494087785391763L;
+  @Serial private static final long serialVersionUID = 3614717300669193588L;
+
+  private Long gold;
 
   @JsonView(JsonViews.External.class)
-  @JsonProperty(value = ITEMS)
-  @Schema(description = "List of items in the inventory", example = "[\"item1\", \"item2\"]")
-  private Set<Item> items;
+  @Schema(description = "The amount of diamond", example = "100")
+  private Long diamond;
+
+  @Schema(description = "The amount of emerald", example = "100")
+  private Long emerald;
+
+  @Schema(description = "The amount of amethyst", example = "100")
+  private Long amethyst;
 }

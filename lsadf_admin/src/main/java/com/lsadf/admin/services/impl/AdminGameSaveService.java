@@ -17,7 +17,7 @@ package com.lsadf.admin.services.impl;
 
 import com.lsadf.admin.utils.FilterUtils;
 import com.lsadf.core.common.utils.StreamUtils;
-import com.lsadf.core.game.game_save.GameSave;
+import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.requests.game_save.GameSaveSortingParameter;
 import com.lsadf.core.services.GameSaveService;

@@ -23,7 +23,7 @@ import com.lsadf.core.common.validators.annotations.Uuid;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.constants.JsonViews;
 import com.lsadf.core.constants.ResponseMessages;
-import com.lsadf.core.game.game_save.GameSave;
+import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.requests.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.web.responses.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;

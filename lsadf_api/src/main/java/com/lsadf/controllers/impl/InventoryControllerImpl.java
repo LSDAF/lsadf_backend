@@ -20,10 +20,10 @@ import static com.lsadf.core.common.utils.TokenUtils.getUsernameFromJwt;
 
 import com.lsadf.controllers.InventoryController;
 import com.lsadf.core.controllers.impl.BaseController;
+import com.lsadf.core.domain.game.inventory.Inventory;
+import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.entities.InventoryEntity;
 import com.lsadf.core.entities.ItemEntity;
-import com.lsadf.core.game.inventory.Inventory;
-import com.lsadf.core.game.inventory.item.Item;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.requests.item.ItemRequest;
 import com.lsadf.core.services.CacheService;

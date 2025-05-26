@@ -14,11 +14,12 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.game.currency;
+package com.lsadf.core.domain.game.stage;
 
-import static com.lsadf.core.constants.JsonAttributes.Currency.*;
+import static com.lsadf.core.constants.JsonAttributes.Stage.CURRENT_STAGE;
+import static com.lsadf.core.constants.JsonAttributes.Stage.MAX_STAGE;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.constants.JsonViews;
@@ -32,25 +33,20 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "Currency", description = "Currency object")
 @Data
 @Builder
-@JsonPropertyOrder({GOLD, DIAMOND, EMERALD, AMETHYST})
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(name = "Stage", description = "Stage object containing the player's game progress")
+@JsonPropertyOrder({CURRENT_STAGE, MAX_STAGE})
 @JsonView(JsonViews.External.class)
-public class Currency implements Model {
+public class Stage implements Model {
 
-  @Serial private static final long serialVersionUID = 3614717300669193588L;
+  @Serial private static final long serialVersionUID = -7126306428235414817L;
 
-  private Long gold;
+  @Schema(description = "The Current game stage", example = "26")
+  @JsonProperty(value = CURRENT_STAGE)
+  private Long currentStage;
 
-  @JsonView(JsonViews.External.class)
-  @Schema(description = "The amount of diamond", example = "100")
-  private Long diamond;
-
-  @Schema(description = "The amount of emerald", example = "100")
-  private Long emerald;
-
-  @Schema(description = "The amount of amethyst", example = "100")
-  private Long amethyst;
+  @Schema(description = "The Maximum game stage", example = "26")
+  @JsonProperty(value = MAX_STAGE)
+  private Long maxStage;
 }

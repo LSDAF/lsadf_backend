@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.services;
 
-import com.lsadf.core.game.game_save.GameSave;
+import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.requests.game_save.GameSaveSortingParameter;
 import com.lsadf.core.requests.search.SearchRequest;
 import com.lsadf.core.requests.user.UserSortingParameter;

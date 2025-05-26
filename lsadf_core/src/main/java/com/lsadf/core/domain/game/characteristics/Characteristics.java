@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.game.characteristics;
+package com.lsadf.core.domain.game.characteristics;
 
 import static com.lsadf.core.constants.JsonAttributes.Characteristics.*;
 

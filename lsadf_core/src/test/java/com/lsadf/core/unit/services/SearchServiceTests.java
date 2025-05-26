@@ -21,11 +21,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.entities.CharacteristicsEntity;
 import com.lsadf.core.entities.CurrencyEntity;
 import com.lsadf.core.entities.GameSaveEntity;
 import com.lsadf.core.entities.StageEntity;
-import com.lsadf.core.game.game_save.GameSave;
 import com.lsadf.core.mappers.Mapper;
 import com.lsadf.core.mappers.impl.MapperImpl;
 import com.lsadf.core.requests.common.Filter;
