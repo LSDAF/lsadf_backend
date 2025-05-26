@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.infra.cache.configuration;
 
-import static com.lsadf.core.constants.BeanConstants.Cache.*;
+import static com.lsadf.core.infra.config.BeanConstants.Cache.*;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;

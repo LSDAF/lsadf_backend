@@ -16,8 +16,8 @@
  */
 package com.lsadf.core.infra.cache.configuration;
 
-import static com.lsadf.core.constants.BeanConstants.Cache.*;
 import static com.lsadf.core.infra.cache.RedisConstants.GAME_SAVE_OWNERSHIP;
+import static com.lsadf.core.infra.config.BeanConstants.Cache.*;
 
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.currency.CurrencyService;

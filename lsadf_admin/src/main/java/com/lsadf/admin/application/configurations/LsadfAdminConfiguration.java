@@ -24,6 +24,7 @@ import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.config.ApplicationListenerConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
+import com.lsadf.core.infra.persistence.config.JpaConfiguration;
 import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakConfiguration;
 import com.lsadf.core.infra.web.config.security.CorsConfiguration;
 import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
