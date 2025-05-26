@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.infra.cache.listeners;
 
-import static com.lsadf.core.constants.RedisConstants.*;
+import static com.lsadf.core.infra.cache.configuration.RedisConstants.*;
 
 import com.lsadf.core.common.exceptions.http.NotFoundException;
 import com.lsadf.core.models.Characteristics;
