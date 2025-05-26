@@ -17,12 +17,12 @@
 package com.lsadf.admin.application.configurations;
 
 import com.lsadf.core.configurations.*;
-import com.lsadf.core.configurations.keycloak.KeycloakConfiguration;
 import com.lsadf.core.infra.cache.configuration.NoRedisCacheConfiguration;
 import com.lsadf.core.infra.cache.configuration.RedisCacheConfiguration;
 import com.lsadf.core.infra.cache.configuration.RedisEmbeddedCacheConfiguration;
 import com.lsadf.core.infra.listeners.ApplicationListenerConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
+import com.lsadf.core.infra.web.auth.keycloak.KeycloakConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
