@@ -21,6 +21,7 @@ import com.lsadf.core.configurations.keycloak.KeycloakConfiguration;
 import com.lsadf.core.infra.cache.configuration.NoRedisCacheConfiguration;
 import com.lsadf.core.infra.cache.configuration.RedisCacheConfiguration;
 import com.lsadf.core.infra.cache.configuration.RedisEmbeddedCacheConfiguration;
+import com.lsadf.core.infra.listeners.ApplicationListenerConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
