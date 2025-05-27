@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.utils;
+package com.lsadf.admin.utils;
 
 import com.lsadf.core.infra.exceptions.FilterProcessingException;
 import com.lsadf.core.infra.utils.DateUtils;

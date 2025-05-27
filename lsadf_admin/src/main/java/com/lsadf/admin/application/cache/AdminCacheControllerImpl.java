@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.controllers.impl;
+package com.lsadf.admin.application.cache;
 
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
-import com.lsadf.admin.application.controllers.AdminCacheController;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.web.controllers.BaseController;
