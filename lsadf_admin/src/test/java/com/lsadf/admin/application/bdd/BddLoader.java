@@ -18,7 +18,7 @@ package com.lsadf.admin.application.bdd;
 import static com.lsadf.core.infra.config.BeanConstants.Cache.GAME_SAVE_OWNERSHIP_CACHE;
 
 import com.lsadf.admin.application.bdd.config.LsadfAdminBddConfiguration;
-import com.lsadf.admin.application.configuration.LsadfAdminConfiguration;
+import com.lsadf.admin.application.config.LsadfAdminConfiguration;
 import com.lsadf.admin.application.controllers.*;
 import com.lsadf.admin.application.controllers.impl.*;
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;

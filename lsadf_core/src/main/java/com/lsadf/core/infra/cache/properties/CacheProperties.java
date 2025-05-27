@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.cache.properties;
 
-import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
+import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

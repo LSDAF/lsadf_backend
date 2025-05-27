@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.configuration;
+package com.lsadf.core.infra.cache.config;
 
 import static com.lsadf.core.infra.cache.RedisConstants.GAME_SAVE_OWNERSHIP;
 import static com.lsadf.core.infra.config.BeanConstants.Cache.*;
@@ -33,7 +33,7 @@ import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.flush.RedisCacheFlushServiceImpl;
-import com.lsadf.core.infra.cache.impl.ValkeyCache;
+import com.lsadf.core.infra.cache.ValkeyCache;
 import com.lsadf.core.infra.cache.listeners.ValkeyKeyExpirationListener;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.cache.services.CacheService;
