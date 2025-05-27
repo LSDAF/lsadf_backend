@@ -30,7 +30,7 @@ import com.lsadf.core.infra.persistence.mappers.game.CharacteristicsEntityModelM
 import com.lsadf.core.infra.persistence.mappers.game.CurrencyEntityModelMapper;
 import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
 import com.lsadf.core.infra.persistence.mappers.game.StageEntityModelMapper;
-import com.lsadf.core.infra.web.config.keycloak.UserRepresentationModelMapper;
+import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationModelMapper;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestModelMapper;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
@@ -51,7 +51,8 @@ class ModelMapperTests {
   void should_map_stage_request_to_stage() {
     // given
     StageRequest stageRequest = new StageRequest(25L, 500L);
-    com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper mapper = new com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper();
+    com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper mapper =
+        new com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper();
     // when
     Stage stage = mapper.mapToModel(stageRequest);
 
