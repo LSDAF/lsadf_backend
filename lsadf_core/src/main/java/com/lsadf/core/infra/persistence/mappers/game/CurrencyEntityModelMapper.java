@@ -1,0 +1,41 @@
+/*
+ * Copyright © 2024-2025 LSDAF
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.lsadf.core.infra.persistence.mappers.game;
+
+import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
+
+/**
+ * A mapper class that provides the implementation to transform a {@link CurrencyEntity} object into
+ * a {@link Currency} object. This is part of the entity-to-model mapping process, typically used
+ * for converting persistent data entities into application-level data models.
+ *
+ * <p>This class implements the {@link EntityModelMapper} interface, defining the transformation
+ * logic for currency-related data.
+ */
+public class CurrencyEntityModelMapper implements EntityModelMapper<CurrencyEntity, Currency> {
+  /** {@inheritDoc} */
+  @Override
+  public Currency mapToModel(CurrencyEntity currencyEntity) {
+    return new Currency(
+        currencyEntity.getGoldAmount(),
+        currencyEntity.getDiamondAmount(),
+        currencyEntity.getEmeraldAmount(),
+        currencyEntity.getAmethystAmount());
+  }
+}

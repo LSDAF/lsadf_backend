@@ -1,0 +1,76 @@
+/*
+ * Copyright © 2024-2025 LSDAF
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.lsadf.core.infra.persistence.mappers.game;
+
+import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.stage.StageEntity;
+import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
+
+/**
+ * Maps {@link GameSaveEntity} objects to their corresponding {@link GameSave} models. This mapper
+ * facilitates the transformation of data from the persistence layer entity to the application layer
+ * model, ensuring that associated entities such as characteristics, stage, and currency are
+ * properly mapped as part of the conversion.
+ *
+ * <p>This class utilizes other mappers, including: - {@link CharacteristicsEntityModelMapper} for
+ * mapping {@link CharacteristicsEntity}. - {@link StageEntityModelMapper} for mapping {@link
+ * StageEntity}. - {@link CurrencyEntityModelMapper} for mapping {@link CurrencyEntity}.
+ *
+ * <p>The mapping allows developers to abstract entity-to-model translations within the business
+ * logic, promoting separation of concerns and maintainable structure.
+ */
+public class GameSaveEntityModelMapper implements EntityModelMapper<GameSaveEntity, GameSave> {
+
+  public GameSaveEntityModelMapper(
+      CharacteristicsEntityModelMapper characteristicsEntityModelMapper,
+      StageEntityModelMapper stageEntityModelMapper,
+      CurrencyEntityModelMapper currencyEntityModelMapper) {
+    this.characteristicsEntityModelMapper = characteristicsEntityModelMapper;
+    this.stageEntityModelMapper = stageEntityModelMapper;
+    this.currencyEntityModelMapper = currencyEntityModelMapper;
+  }
+
+  private final CharacteristicsEntityModelMapper characteristicsEntityModelMapper;
+  private final StageEntityModelMapper stageEntityModelMapper;
+  private final CurrencyEntityModelMapper currencyEntityModelMapper;
+
+  /** {@inheritDoc} */
+  @Override
+  public GameSave mapToModel(GameSaveEntity gameSaveEntity) {
+    Stage stage = stageEntityModelMapper.mapToModel(gameSaveEntity.getStageEntity());
+    Characteristics characteristics =
+        characteristicsEntityModelMapper.mapToModel(gameSaveEntity.getCharacteristicsEntity());
+    Currency currency = currencyEntityModelMapper.mapToModel(gameSaveEntity.getCurrencyEntity());
+
+    return GameSave.builder()
+        .id(gameSaveEntity.getId())
+        .userEmail(gameSaveEntity.getUserEmail())
+        .nickname(gameSaveEntity.getNickname())
+        .characteristics(characteristics)
+        .currency(currency)
+        .stage(stage)
+        .createdAt(gameSaveEntity.getCreatedAt())
+        .updatedAt(gameSaveEntity.getUpdatedAt())
+        .build();
+  }
+}
