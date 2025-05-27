@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
-import com.lsadf.application.game.characteristics.CharacteristicsController;
+import com.lsadf.application.controllers.game.characteristics.CharacteristicsController;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;

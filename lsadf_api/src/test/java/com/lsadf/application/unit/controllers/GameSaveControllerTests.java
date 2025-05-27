@@ -20,8 +20,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.application.game.game_save.GameSaveController;
-import com.lsadf.application.game.game_save.GameSaveControllerImpl;
+import com.lsadf.application.controllers.game.game_save.GameSaveController;
+import com.lsadf.application.controllers.game.game_save.GameSaveControllerImpl;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;

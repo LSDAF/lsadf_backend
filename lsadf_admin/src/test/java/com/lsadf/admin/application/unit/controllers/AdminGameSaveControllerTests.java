@@ -16,8 +16,8 @@
 package com.lsadf.admin.application.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.admin.application.controllers.AdminGameSaveController;
-import com.lsadf.admin.application.controllers.impl.AdminGameSaveControllerImpl;
+import com.lsadf.admin.application.game.AdminGameSaveController;
+import com.lsadf.admin.application.game.AdminGameSaveControllerImpl;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;

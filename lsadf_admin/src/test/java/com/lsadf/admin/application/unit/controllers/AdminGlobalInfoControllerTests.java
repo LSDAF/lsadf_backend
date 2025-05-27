@@ -15,8 +15,8 @@
  */
 package com.lsadf.admin.application.unit.controllers;
 
-import com.lsadf.admin.application.controllers.AdminGlobalInfoController;
-import com.lsadf.admin.application.controllers.impl.AdminGlobalInfoControllerImpl;
+import com.lsadf.admin.application.info.AdminGlobalInfoController;
+import com.lsadf.admin.application.info.AdminGlobalInfoControllerImpl;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
