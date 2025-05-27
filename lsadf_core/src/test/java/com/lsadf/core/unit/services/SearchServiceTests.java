@@ -15,27 +15,27 @@
  */
 package com.lsadf.core.unit.services;
 
-import static com.lsadf.core.constants.JsonAttributes.ID;
-import static com.lsadf.core.constants.JsonAttributes.User.*;
+import static com.lsadf.core.infra.web.JsonAttributes.ID;
+import static com.lsadf.core.infra.web.JsonAttributes.User.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.entities.CharacteristicsEntity;
-import com.lsadf.core.entities.CurrencyEntity;
-import com.lsadf.core.entities.GameSaveEntity;
-import com.lsadf.core.entities.StageEntity;
-import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.mappers.impl.MapperImpl;
-import com.lsadf.core.models.GameSave;
-import com.lsadf.core.models.User;
-import com.lsadf.core.requests.common.Filter;
-import com.lsadf.core.requests.search.SearchRequest;
-import com.lsadf.core.requests.user.UserSortingParameter;
-import com.lsadf.core.services.GameSaveService;
-import com.lsadf.core.services.SearchService;
-import com.lsadf.core.services.UserService;
-import com.lsadf.core.services.impl.SearchServiceImpl;
+import com.lsadf.core.application.game.game_save.GameSaveService;
+import com.lsadf.core.application.search.SearchService;
+import com.lsadf.core.application.search.SearchServiceImpl;
+import com.lsadf.core.application.user.UserService;
+import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.domain.user.User;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.stage.StageEntity;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.MapperImpl;
+import com.lsadf.core.infra.web.requests.common.Filter;
+import com.lsadf.core.infra.web.requests.search.SearchRequest;
+import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;

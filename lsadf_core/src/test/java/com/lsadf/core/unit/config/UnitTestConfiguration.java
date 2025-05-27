@@ -15,10 +15,18 @@
  */
 package com.lsadf.core.unit.config;
 
-import com.lsadf.core.configurations.ShutdownListener;
-import com.lsadf.core.http_clients.KeycloakClient;
-import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.services.*;
+import com.lsadf.core.application.game.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.currency.CurrencyService;
+import com.lsadf.core.application.game.game_save.GameSaveService;
+import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.stage.StageService;
+import com.lsadf.core.application.search.SearchService;
+import com.lsadf.core.application.user.UserService;
+import com.lsadf.core.infra.cache.flush.CacheFlushService;
+import com.lsadf.core.infra.cache.services.CacheService;
+import com.lsadf.core.infra.config.ShutdownListener;
+import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.web.http_clients.KeycloakClient;
 import javax.sql.DataSource;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
