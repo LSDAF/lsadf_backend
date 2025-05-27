@@ -18,8 +18,8 @@ package com.lsadf.core.infra.web.requests.game.game_save;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
-import com.lsadf.core.constants.JsonAttributes;
 import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.infra.web.JsonAttributes;
 import com.lsadf.core.infra.web.requests.common.SortingParameter;
 import java.util.Comparator;
 import org.springframework.data.domain.Sort;

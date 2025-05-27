@@ -15,16 +15,16 @@
  */
 package com.lsadf.core.domain.user;
 
-import static com.lsadf.core.constants.JsonAttributes.User.*;
+import static com.lsadf.core.infra.web.JsonAttributes.User.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lsadf.core.constants.JsonAttributes;
 import com.lsadf.core.domain.Model;
 import com.lsadf.core.infra.serialization.DateToLongSerializer;
 import com.lsadf.core.infra.serialization.LongToDateSerializer;
+import com.lsadf.core.infra.web.JsonAttributes;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;

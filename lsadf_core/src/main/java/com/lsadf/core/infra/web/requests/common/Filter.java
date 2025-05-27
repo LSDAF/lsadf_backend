@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.infra.web.requests.common;
 
-import static com.lsadf.core.constants.JsonAttributes.Filter.TYPE;
-import static com.lsadf.core.constants.JsonAttributes.Filter.VALUE;
+import static com.lsadf.core.infra.web.JsonAttributes.Filter.TYPE;
+import static com.lsadf.core.infra.web.JsonAttributes.Filter.VALUE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;

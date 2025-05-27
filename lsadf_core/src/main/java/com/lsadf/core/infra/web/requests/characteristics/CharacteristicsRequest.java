@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.requests.characteristics;
 
-import static com.lsadf.core.constants.JsonAttributes.Characteristics.*;
+import static com.lsadf.core.infra.web.JsonAttributes.Characteristics.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

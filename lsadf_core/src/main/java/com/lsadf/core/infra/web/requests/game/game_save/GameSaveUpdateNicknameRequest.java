@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.requests.game.game_save;
 
-import static com.lsadf.core.constants.JsonAttributes.GameSave.*;
+import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.user.validation.Nickname;

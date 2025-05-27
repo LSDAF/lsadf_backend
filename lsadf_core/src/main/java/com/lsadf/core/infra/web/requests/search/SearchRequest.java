@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.requests.search;
 
-import static com.lsadf.core.constants.JsonAttributes.SearchRequest.FILTERS;
+import static com.lsadf.core.infra.web.JsonAttributes.SearchRequest.FILTERS;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.requests.Request;

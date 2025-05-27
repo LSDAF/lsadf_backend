@@ -15,10 +15,10 @@
  */
 package com.lsadf.core.application.search;
 
-import static com.lsadf.core.constants.JsonAttributes.GameSave.NICKNAME;
-import static com.lsadf.core.constants.JsonAttributes.GameSave.USER_EMAIL;
-import static com.lsadf.core.constants.JsonAttributes.ID;
-import static com.lsadf.core.constants.JsonAttributes.User.*;
+import static com.lsadf.core.infra.web.JsonAttributes.GameSave.NICKNAME;
+import static com.lsadf.core.infra.web.JsonAttributes.GameSave.USER_EMAIL;
+import static com.lsadf.core.infra.web.JsonAttributes.ID;
+import static com.lsadf.core.infra.web.JsonAttributes.User.*;
 
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.user.UserService;

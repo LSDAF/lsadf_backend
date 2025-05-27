@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.domain.user;
 
-import static com.lsadf.core.constants.JsonAttributes.UserInfo.*;
+import static com.lsadf.core.infra.web.JsonAttributes.UserInfo.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

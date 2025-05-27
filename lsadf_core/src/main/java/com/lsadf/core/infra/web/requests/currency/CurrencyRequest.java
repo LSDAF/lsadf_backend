@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.infra.web.requests.currency;
 
-import static com.lsadf.core.constants.JsonAttributes.Currency.*;
-import static com.lsadf.core.constants.JsonAttributes.Currency.AMETHYST;
+import static com.lsadf.core.infra.web.JsonAttributes.Currency.*;
+import static com.lsadf.core.infra.web.JsonAttributes.Currency.AMETHYST;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

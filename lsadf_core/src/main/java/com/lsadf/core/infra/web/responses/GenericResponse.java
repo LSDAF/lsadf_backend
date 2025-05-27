@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.responses;
 
-import static com.lsadf.core.constants.JsonAttributes.GenericResponse.*;
+import static com.lsadf.core.infra.web.JsonAttributes.GenericResponse.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
