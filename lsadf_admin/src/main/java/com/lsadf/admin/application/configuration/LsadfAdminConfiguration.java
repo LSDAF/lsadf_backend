@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.configurations;
+package com.lsadf.admin.application.configuration;
 
 import com.lsadf.core.application.ApplicationServiceConfiguration;
 import com.lsadf.core.infra.cache.configuration.NoValkeyCacheConfiguration;
@@ -36,8 +36,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * Global Configuration class for the LSADF backend. It imports all other configurations to be used
- * in the application.
+ * Global Configuration class for the LSADF Admin backend. It imports all other configurations to be
+ * used in the application.
  */
 @Configuration
 @EnableScheduling
@@ -48,6 +48,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   PropertiesConfiguration.class,
   SwaggerConfiguration.class,
   ApplicationServiceConfiguration.class,
+  JpaConfiguration.class,
   CorsConfiguration.class,
   SecurityConfiguration.class,
   LoggingConfiguration.class,
@@ -58,7 +59,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   NoValkeyCacheConfiguration.class,
   ClockConfiguration.class,
   KeycloakConfiguration.class,
-  JpaConfiguration.class,
-  LsadfSecurityConfiguration.class
+  LsadfAdminSecurityConfiguration.class
 })
-public class LsadfConfiguration {}
+public class LsadfAdminConfiguration {}
