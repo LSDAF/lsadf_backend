@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.application.controllers.CharacteristicsController;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
@@ -72,7 +73,7 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
           String gameSaveId) {
     String fullPath =
         ControllerConstants.CHARACTERISTICS
-            + ControllerConstants.Characteristics.GAME_SAVE_ID.replace(
+            + CharacteristicsController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -104,7 +105,7 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
 
     String fullPath =
         ControllerConstants.CHARACTERISTICS
-            + ControllerConstants.Characteristics.GAME_SAVE_ID.replace(
+            + CharacteristicsController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
