@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.configuration;
+package com.lsadf.core.infra.cache.config;
 
 import static com.lsadf.core.infra.config.BeanConstants.Cache.*;
 
@@ -23,8 +23,8 @@ import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.flush.NoOpFlushServiceImpl;
-import com.lsadf.core.infra.cache.impl.NoOpCache;
-import com.lsadf.core.infra.cache.impl.NoOpHistoCache;
+import com.lsadf.core.infra.cache.NoOpCache;
+import com.lsadf.core.infra.cache.NoOpHistoCache;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.cache.services.NoOpCacheServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

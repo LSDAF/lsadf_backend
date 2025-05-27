@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.impl;
+package com.lsadf.core.infra.cache.config;
 
-import com.lsadf.core.infra.cache.HistoCache;
-import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class NoOpHistoCache<T> extends NoOpCache<T> implements HistoCache<T> {
-  @Override
-  public Map<String, T> getAllHisto() {
-    return Map.of();
-  }
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class ValkeyProperties {
+  private boolean enabled;
+  private String host;
+  private int port;
+  private int database;
+  private String password;
+  private boolean embedded;
 }

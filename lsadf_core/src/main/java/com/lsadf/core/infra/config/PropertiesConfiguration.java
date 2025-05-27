@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.config;
 
-import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
+import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.cache.properties.CacheProperties;
 import com.lsadf.core.infra.clock.ClockProperties;

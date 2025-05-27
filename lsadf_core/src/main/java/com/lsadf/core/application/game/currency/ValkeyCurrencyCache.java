@@ -22,8 +22,8 @@ import static com.lsadf.core.infra.cache.RedisConstants.CURRENCY_HISTO;
 
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
-import com.lsadf.core.infra.cache.impl.ValkeyCache;
+import com.lsadf.core.infra.cache.ValkeyCache;
+import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;

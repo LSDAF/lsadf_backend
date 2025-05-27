@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.configuration;
+package com.lsadf.admin.application.config;
 
 import com.lsadf.core.application.ApplicationServiceConfiguration;
-import com.lsadf.core.infra.cache.configuration.NoValkeyCacheConfiguration;
-import com.lsadf.core.infra.cache.configuration.ValkeyCacheConfiguration;
-import com.lsadf.core.infra.cache.configuration.ValkeyEmbeddedCacheConfiguration;
+import com.lsadf.core.infra.cache.config.NoValkeyCacheConfiguration;
+import com.lsadf.core.infra.cache.config.ValkeyCacheConfiguration;
+import com.lsadf.core.infra.cache.config.ValkeyEmbeddedCacheConfiguration;
 import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.config.ApplicationListenerConfiguration;
 import com.lsadf.core.infra.config.PropertiesConfiguration;

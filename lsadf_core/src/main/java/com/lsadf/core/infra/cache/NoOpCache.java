@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.impl;
+package com.lsadf.core.infra.cache;
 
-import com.lsadf.core.infra.cache.Cache;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;

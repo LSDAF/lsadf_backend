@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.impl;
+package com.lsadf.core.infra.cache;
 
-import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.CacheUtils;
-import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
+import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
