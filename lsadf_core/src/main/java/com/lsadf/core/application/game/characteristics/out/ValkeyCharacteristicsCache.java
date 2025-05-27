@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.infra.cache.impl;
+package com.lsadf.core.application.game.characteristics.out;
 
 import static com.lsadf.core.infra.cache.CacheUtils.clearCache;
 import static com.lsadf.core.infra.cache.CacheUtils.getAllEntries;
@@ -27,18 +27,20 @@ import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
+import com.lsadf.core.infra.cache.impl.ValkeyCache;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @Slf4j
-public class RedisCharacteristicsCache extends RedisCache<Characteristics>
+public class ValkeyCharacteristicsCache extends ValkeyCache<Characteristics>
     implements HistoCache<Characteristics> {
 
   private static final String HISTO_KEY_TYPE = CHARACTERISTICS_HISTO;
 
-  public RedisCharacteristicsCache(
+  public ValkeyCharacteristicsCache(
       RedisTemplate<String, Characteristics> redisTemplate,
       int expirationSeconds,
       ValkeyProperties valkeyProperties) {

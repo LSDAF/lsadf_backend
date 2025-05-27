@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.infra.config;
 
-import com.lsadf.core.infra.cache.services.CacheFlushService;
+import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.logging.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.ConfigurationLogger;
 import org.springframework.context.annotation.Bean;
