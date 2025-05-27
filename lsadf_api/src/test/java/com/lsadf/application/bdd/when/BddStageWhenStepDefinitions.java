@@ -21,9 +21,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
-import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
+import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import io.cucumber.datatable.DataTable;

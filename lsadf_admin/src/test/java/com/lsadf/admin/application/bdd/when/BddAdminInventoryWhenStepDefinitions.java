@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
-import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
+import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import io.cucumber.datatable.DataTable;

@@ -19,8 +19,8 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.BEARE
 import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
