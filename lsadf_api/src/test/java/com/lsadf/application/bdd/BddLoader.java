@@ -70,7 +70,6 @@ import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
-import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Stack;
 import lombok.extern.slf4j.Slf4j;
@@ -198,8 +197,6 @@ public class BddLoader {
   @Autowired protected Stack<List<User>> userListStack;
 
   @Autowired protected Stack<GlobalInfo> globalInfoStack;
-
-  @Autowired protected Stack<MimeMessage> mimeMessageStack;
 
   @Autowired protected Stack<Characteristics> characteristicsStack;
 

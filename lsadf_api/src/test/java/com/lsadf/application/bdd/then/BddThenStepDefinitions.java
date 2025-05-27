@@ -32,7 +32,6 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
-import jakarta.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -451,14 +450,5 @@ public class BddThenStepDefinitions extends BddLoader {
           .ignoringFields("id", "createdAt", "updatedAt")
           .isEqualTo(expectedGameSave);
     }
-  }
-
-  @Then("^an email should have been sent to (.*)$")
-  public void then_en_email_should_have_been_sent_to(String email) throws MessagingException {
-    var mime = mimeMessageStack.peek();
-    assertThat(mime).isNotNull();
-
-    String actual = mime.getAllRecipients()[0].toString();
-    assertThat(actual).isEqualTo(email);
   }
 }
