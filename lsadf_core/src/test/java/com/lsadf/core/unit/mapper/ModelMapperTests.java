@@ -23,21 +23,22 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.mappers.game.CharacteristicsEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.CurrencyEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.StageEntityModelMapper;
-import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
+import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;
+import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationMapper;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
+import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestImpl;
-import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestModelMapper;
+import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestMapper;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -51,8 +52,7 @@ class ModelMapperTests {
   void should_map_stage_request_to_stage() {
     // given
     StageRequest stageRequest = new StageRequest(25L, 500L);
-    com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper mapper =
-        new com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper();
+    StageRequestMapper mapper = new StageRequestMapper();
     // when
     Stage stage = mapper.mapToModel(stageRequest);
 
@@ -65,7 +65,7 @@ class ModelMapperTests {
   void should_map_stage_entity_to_stage() {
     // given
     GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
-    StageEntityModelMapper stageEntityModelMapper = new StageEntityModelMapper();
+    StageEntityMapper stageEntityMapper = new StageEntityMapper();
     StageEntity stageEntity =
         StageEntity.builder()
             .maxStage(500L)
@@ -76,7 +76,7 @@ class ModelMapperTests {
             .build();
 
     // when
-    Stage stage = stageEntityModelMapper.mapToModel(stageEntity);
+    Stage stage = stageEntityMapper.mapToModel(stageEntity);
 
     // then
     assertThat(stage.getCurrentStage()).isEqualTo(25L);
@@ -87,8 +87,8 @@ class ModelMapperTests {
   void should_map_characteristics_entity_to_characteristics() {
     // given
     GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
-    CharacteristicsEntityModelMapper characteristicsEntityModelMapper =
-        new CharacteristicsEntityModelMapper();
+    CharacteristicsEntityMapper characteristicsEntityModelMapper =
+        new CharacteristicsEntityMapper();
     CharacteristicsEntity characteristicsEntity =
         CharacteristicsEntity.builder()
             .gameSave(gameSaveEntity)
@@ -114,7 +114,7 @@ class ModelMapperTests {
   @Test
   void should_map_characteristics_request_to_characteristics() {
     // given
-    CharacteristicsRequestModelMapper mapper = new CharacteristicsRequestModelMapper();
+    CharacteristicsRequestMapper mapper = new CharacteristicsRequestMapper();
     CharacteristicsRequest characteristicsRequest =
         new CharacteristicsRequest(100L, 200L, 300L, 400L, 500L);
 
@@ -133,7 +133,7 @@ class ModelMapperTests {
   void should_map_currency_request_to_currency() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 200L, 300L, 400L);
-    CurrencyRequestModelMapper mapper = new CurrencyRequestModelMapper();
+    CurrencyRequestMapper mapper = new CurrencyRequestMapper();
     // when
     Currency currency = mapper.mapToModel(currencyRequest);
 
@@ -148,7 +148,7 @@ class ModelMapperTests {
   void should_map_currency_entity_to_currency() {
     // given
     GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
-    CurrencyEntityModelMapper mapper = new CurrencyEntityModelMapper();
+    CurrencyEntityMapper mapper = new CurrencyEntityMapper();
     CurrencyEntity currencyEntity =
         CurrencyEntity.builder()
             .goldAmount(100L)
@@ -173,13 +173,13 @@ class ModelMapperTests {
   @Test
   void should_map_game_save_entity_to_game_save() {
     // given
-    CurrencyEntityModelMapper currencyEntityModelMapper = new CurrencyEntityModelMapper();
-    StageEntityModelMapper stageEntityModelMapper = new StageEntityModelMapper();
-    CharacteristicsEntityModelMapper characteristicsEntityModelMapper =
-        new CharacteristicsEntityModelMapper();
-    GameSaveEntityModelMapper mapper =
-        new GameSaveEntityModelMapper(
-            characteristicsEntityModelMapper, stageEntityModelMapper, currencyEntityModelMapper);
+    CurrencyEntityMapper currencyEntityMapper = new CurrencyEntityMapper();
+    StageEntityMapper stageEntityMapper = new StageEntityMapper();
+    CharacteristicsEntityMapper characteristicsEntityModelMapper =
+        new CharacteristicsEntityMapper();
+    GameSaveEntityMapper mapper =
+        new GameSaveEntityMapper(
+            characteristicsEntityModelMapper, stageEntityMapper, currencyEntityMapper);
     String id = UUID.randomUUID().toString();
     GameSaveEntity gameSaveEntity =
         GameSaveEntity.builder()
@@ -261,7 +261,7 @@ class ModelMapperTests {
     userRepresentation.setEnabled(false);
     userRepresentation.setRealmRoles(List.of("user", "admin"));
 
-    UserRepresentationModelMapper mapper = new UserRepresentationModelMapper();
+    UserRepresentationMapper mapper = new UserRepresentationMapper();
 
     // when
     User user = mapper.mapToModel(userRepresentation);
@@ -280,7 +280,7 @@ class ModelMapperTests {
   @Test
   void should_map_user_creation_request_to_user_representation() {
     // given
-    UserCreationRequestModelMapper mapper = new UserCreationRequestModelMapper();
+    UserCreationRequestMapper mapper = new UserCreationRequestMapper();
     UserCreationRequestImpl userCreationRequestImpl =
         UserCreationRequestImpl.builder()
             .username(userEmail)

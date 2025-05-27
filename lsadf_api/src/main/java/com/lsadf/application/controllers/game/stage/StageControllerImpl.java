@@ -24,7 +24,7 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
-import com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -41,14 +41,14 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   private final GameSaveService gameSaveService;
   private final CacheService cacheService;
-  private final StageRequestModelMapper mapper;
+  private final StageRequestMapper mapper;
   private final StageService stageService;
 
   @Autowired
   public StageControllerImpl(
       GameSaveService gameSaveService,
       CacheService cacheService,
-      StageRequestModelMapper mapper,
+      StageRequestMapper mapper,
       StageService stageService) {
     this.gameSaveService = gameSaveService;
     this.cacheService = cacheService;

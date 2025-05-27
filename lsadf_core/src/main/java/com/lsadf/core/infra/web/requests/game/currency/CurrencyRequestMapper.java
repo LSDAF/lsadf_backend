@@ -30,7 +30,7 @@ import com.lsadf.core.infra.web.requests.RequestModelMapper;
  * <p>Implements the {@link RequestModelMapper} interface with {@link CurrencyRequest} as the
  * request type and {@link Currency} as the target model type.
  */
-public class CurrencyRequestModelMapper implements RequestModelMapper<CurrencyRequest, Currency> {
+public class CurrencyRequestMapper implements RequestModelMapper<CurrencyRequest, Currency> {
   /** {@inheritDoc} */
   @Override
   public Currency mapToModel(CurrencyRequest currencyRequest) {

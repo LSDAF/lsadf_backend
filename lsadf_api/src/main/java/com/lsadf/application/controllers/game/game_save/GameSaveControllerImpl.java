@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
@@ -40,9 +40,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class GameSaveControllerImpl extends BaseController implements GameSaveController {
 
   private final GameSaveService gameSaveService;
-  private final GameSaveEntityModelMapper mapper;
+  private final GameSaveEntityMapper mapper;
 
-  public GameSaveControllerImpl(GameSaveService gameSaveService, GameSaveEntityModelMapper mapper) {
+  public GameSaveControllerImpl(GameSaveService gameSaveService, GameSaveEntityMapper mapper) {
     this.gameSaveService = gameSaveService;
     this.mapper = mapper;
   }

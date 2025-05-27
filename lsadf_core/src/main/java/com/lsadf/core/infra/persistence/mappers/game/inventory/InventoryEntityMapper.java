@@ -29,24 +29,24 @@ import java.util.stream.Collectors;
  * implements the {@link EntityModelMapper} interface to provide a method for transforming an {@link
  * InventoryEntity} into its corresponding business model representation, {@link Inventory}.
  *
- * <p>The class uses an instance of {@link ItemEntityModelMapper} to handle the mapping of {@link
+ * <p>The class uses an instance of {@link ItemEntityMapper} to handle the mapping of {@link
  * ItemEntity} instances contained within the {@link InventoryEntity} to their respective {@link
  * Item} objects.
  */
-public class InventoryEntityModelMapper implements EntityModelMapper<InventoryEntity, Inventory> {
+public class InventoryEntityMapper implements EntityModelMapper<InventoryEntity, Inventory> {
 
-  public InventoryEntityModelMapper(ItemEntityModelMapper itemEntityModelMapper) {
-    this.itemEntityModelMapper = itemEntityModelMapper;
+  public InventoryEntityMapper(ItemEntityMapper itemEntityMapper) {
+    this.itemEntityMapper = itemEntityMapper;
   }
 
-  private final ItemEntityModelMapper itemEntityModelMapper;
+  private final ItemEntityMapper itemEntityMapper;
 
   /** {@inheritDoc} */
   @Override
   public Inventory mapToModel(InventoryEntity inventoryEntity) {
     Set<Item> items =
         inventoryEntity.getItems().parallelStream()
-            .map(itemEntityModelMapper::mapToModel)
+            .map(itemEntityMapper::mapToModel)
             .collect(Collectors.toSet());
     return new Inventory(items);
   }

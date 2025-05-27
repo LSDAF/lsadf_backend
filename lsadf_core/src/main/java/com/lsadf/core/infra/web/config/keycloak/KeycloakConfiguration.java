@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.config.keycloak;
 
-import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationModelMapper;
+import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mappers.UserToUserRepresentationMapper;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
@@ -61,7 +61,7 @@ public class KeycloakConfiguration {
   }
 
   @Bean
-  public UserRepresentationModelMapper userRepresentationModelMapper() {
-    return new UserRepresentationModelMapper();
+  public UserRepresentationMapper userRepresentationMapper() {
+    return new UserRepresentationMapper();
   }
 }

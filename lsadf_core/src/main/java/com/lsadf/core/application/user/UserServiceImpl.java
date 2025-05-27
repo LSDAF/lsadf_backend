@@ -21,10 +21,10 @@ import com.lsadf.core.infra.exceptions.AlreadyExistingUserException;
 import com.lsadf.core.infra.exceptions.http.InternalServerErrorException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
-import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationModelMapper;
+import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mappers.UserToUserRepresentationMapper;
 import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequest;
-import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestModelMapper;
+import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestMapper;
 import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.requests.user.update.UserUpdateRequest;
 import java.util.ArrayList;
@@ -44,9 +44,9 @@ public class UserServiceImpl implements UserService {
   private final Keycloak keycloak;
   private final KeycloakProperties keycloakProperties;
   private final ClockService clockService;
-  private final UserCreationRequestModelMapper userCreationRequestModelMapper;
+  private final UserCreationRequestMapper userCreationRequestMapper;
   private final UserToUserRepresentationMapper userToUserRepresentationMapper;
-  private final UserRepresentationModelMapper userRepresentationModelMapper;
+  private final UserRepresentationMapper userRepresentationMapper;
 
   private final String realm;
 
@@ -54,15 +54,15 @@ public class UserServiceImpl implements UserService {
       Keycloak keycloak,
       KeycloakProperties keycloakProperties,
       ClockService clockService,
-      UserCreationRequestModelMapper userCreationRequestModelMapper,
+      UserCreationRequestMapper userCreationRequestMapper,
       UserToUserRepresentationMapper userToUserRepresentationMapper,
-      UserRepresentationModelMapper userRepresentationModelMapper) {
+      UserRepresentationMapper userRepresentationMapper) {
     this.keycloakProperties = keycloakProperties;
     this.clockService = clockService;
     this.keycloak = keycloak;
-    this.userCreationRequestModelMapper = userCreationRequestModelMapper;
+    this.userCreationRequestMapper = userCreationRequestMapper;
     this.userToUserRepresentationMapper = userToUserRepresentationMapper;
-    this.userRepresentationModelMapper = userRepresentationModelMapper;
+    this.userRepresentationMapper = userRepresentationMapper;
 
     this.realm = keycloakProperties.getRealm();
   }
@@ -73,9 +73,7 @@ public class UserServiceImpl implements UserService {
     // return keycloakAdminClient.getUsers(realm).stream();
     try {
       List<UserRepresentation> userlist = getUsersResource().list();
-      return userlist.stream()
-          .map(this::enrichUserRoles)
-          .map(userRepresentationModelMapper::mapToModel);
+      return userlist.stream().map(this::enrichUserRoles).map(userRepresentationMapper::mapToModel);
     } catch (Exception e) {
       log.error("Failed to get users", e);
       throw new InternalServerErrorException("Failed to get users");
@@ -100,7 +98,7 @@ public class UserServiceImpl implements UserService {
     try {
       return getUsersResource().search(search).stream()
           .map(this::enrichUserRoles)
-          .map(userRepresentationModelMapper::mapToModel);
+          .map(userRepresentationMapper::mapToModel);
     } catch (Exception e) {
       log.error("Failed to get users with search: {}", search, e);
       throw new InternalServerErrorException("Failed to get users with search: " + search);
@@ -117,7 +115,7 @@ public class UserServiceImpl implements UserService {
     try {
       UserRepresentation userResource = getUserRepresentation(id);
       UserRepresentation enrichedUser = enrichUserRoles(userResource);
-      return userRepresentationModelMapper.mapToModel(enrichedUser);
+      return userRepresentationMapper.mapToModel(enrichedUser);
     } catch (jakarta.ws.rs.NotFoundException e) {
       log.error("User with id {} not found", id);
       throw new NotFoundException("User with id " + id + " not found");
@@ -146,7 +144,7 @@ public class UserServiceImpl implements UserService {
     }
     var user = userRepresentationResults.get(0);
     var enrichedUser = enrichUserRoles(user);
-    return userRepresentationModelMapper.mapToModel(enrichedUser);
+    return userRepresentationMapper.mapToModel(enrichedUser);
   }
 
   /** {@inheritDoc} */
@@ -266,7 +264,7 @@ public class UserServiceImpl implements UserService {
     }
 
     // Create user
-    User user = userCreationRequestModelMapper.mapToModel(request);
+    User user = userCreationRequestMapper.mapToModel(request);
     UserRepresentation userRepresentation = userToUserRepresentationMapper.mapToModel(user);
     try (var response = getUsersResource().create(userRepresentation)) {
       if (response.getStatus() != HttpStatus.CREATED.value()) {

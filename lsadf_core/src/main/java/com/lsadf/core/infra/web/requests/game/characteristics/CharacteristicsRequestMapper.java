@@ -32,7 +32,7 @@ import com.lsadf.core.infra.web.requests.RequestModelMapper;
  * ensures that input values from the request are accurately translated into the corresponding
  * fields of the domain model.
  */
-public class CharacteristicsRequestModelMapper
+public class CharacteristicsRequestMapper
     implements RequestModelMapper<CharacteristicsRequest, Characteristics> {
   /** {@inheritDoc} */
   @Override

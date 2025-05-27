@@ -22,24 +22,15 @@ import java.util.Date;
 import org.keycloak.representations.idm.UserRepresentation;
 
 /**
- * Class responsible for mapping {@link UserRepresentation} objects to {@link User} domain models.
- * This mapper implements the {@link ModelMapper} interface specialization for the mapping of {@link
- * UserRepresentation} as the source type to the {@link User} as the target type.
+ * UserRepresentationMapper maps a {@link UserRepresentation} object to a {@link User} object.
  *
- * <p>The mapping process includes transforming the attributes of the {@link UserRepresentation}
- * object into the corresponding attributes of the {@link User} domain model and handles specific
- * data transformations, such as converting timestamp values into {@link Date} instances.
- *
- * <p>Key functionalities provided: - Extracts user details such as username, first name, last name,
- * email verification state, etc. from the {@link UserRepresentation}. - Converts raw timestamp
- * values to {@link Date} when available. - Builds and returns a correctly structured {@link User}
- * object that adheres to the application's domain requirements.
- *
- * <p>This implementation ensures all required domain model fields are accurately represented using
- * the {@link UserRepresentation}'s data, making it a critical component in bridging external
- * representation layers like APIs or third-party integrations with the internal domain model.
+ * <p>This implementation of the {@link ModelMapper} interface processes and converts specific
+ * properties of a {@link UserRepresentation}, including attributes such as username, first name,
+ * last name, email verification status, account activation status, roles, and creation timestamp.
+ * Additionally, it ensures proper handling of optional fields by verifying null values before
+ * setting them to avoid potential runtime exceptions.
  */
-public class UserRepresentationModelMapper implements ModelMapper<UserRepresentation, User> {
+public class UserRepresentationMapper implements ModelMapper<UserRepresentation, User> {
 
   /** {@inheritDoc} */
   @Override

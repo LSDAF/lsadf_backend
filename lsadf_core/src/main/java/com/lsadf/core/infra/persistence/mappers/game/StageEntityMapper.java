@@ -25,7 +25,7 @@ import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
  * provides the mapping capability to transform persistence-layer entities into domain models for
  * application use.
  */
-public class StageEntityModelMapper implements EntityModelMapper<StageEntity, Stage> {
+public class StageEntityMapper implements EntityModelMapper<StageEntity, Stage> {
 
   /** {@inheritDoc} */
   @Override

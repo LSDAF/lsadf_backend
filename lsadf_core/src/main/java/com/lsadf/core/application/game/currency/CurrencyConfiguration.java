@@ -17,9 +17,9 @@ package com.lsadf.core.application.game.currency;
 
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.persistence.mappers.game.CurrencyEntityModelMapper;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,17 +34,17 @@ public class CurrencyConfiguration {
   public CurrencyService currencyService(
       CurrencyRepository currencyRepository,
       Cache<Currency> currencyCache,
-      CurrencyEntityModelMapper mapper) {
+      CurrencyEntityMapper mapper) {
     return new CurrencyServiceImpl(currencyRepository, currencyCache, mapper);
   }
 
   @Bean
-  public CurrencyEntityModelMapper currencyEntityModelMapper() {
-    return new CurrencyEntityModelMapper();
+  public CurrencyEntityMapper currencyEntityModelMapper() {
+    return new CurrencyEntityMapper();
   }
 
   @Bean
-  public CurrencyRequestModelMapper currencyRequestModelMapper() {
-    return new CurrencyRequestModelMapper();
+  public CurrencyRequestMapper currencyRequestModelMapper() {
+    return new CurrencyRequestMapper();
   }
 }

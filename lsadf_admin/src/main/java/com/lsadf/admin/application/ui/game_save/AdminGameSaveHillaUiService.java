@@ -18,7 +18,7 @@ package com.lsadf.admin.application.ui.game_save;
 import com.lsadf.admin.application.utils.FilterUtils;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.utils.StreamUtils;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
 import com.vaadin.hilla.BrowserCallable;
@@ -37,9 +37,9 @@ import org.springframework.data.domain.Pageable;
 public class AdminGameSaveHillaUiService implements ListService<GameSave> {
 
   private final GameSaveService gameSaveService;
-  private final GameSaveEntityModelMapper mapper;
+  private final GameSaveEntityMapper mapper;
 
-  public AdminGameSaveHillaUiService(GameSaveService gameSaveService, GameSaveEntityModelMapper mapper) {
+  public AdminGameSaveHillaUiService(GameSaveService gameSaveService, GameSaveEntityMapper mapper) {
     this.gameSaveService = gameSaveService;
     this.mapper = mapper;
   }
