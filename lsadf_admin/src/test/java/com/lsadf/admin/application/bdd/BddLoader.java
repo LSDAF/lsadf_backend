@@ -42,7 +42,6 @@ import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
@@ -70,6 +69,7 @@ import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -201,11 +201,11 @@ public class BddLoader {
 
   @Autowired protected Stack<Currency> currencyStack;
 
-  @Autowired protected Stack<Inventory> inventoryStack;
-
   @Autowired protected Stack<InventoryEntity> inventoryEntityStack;
 
   @Autowired protected Stack<Item> itemStack;
+
+  @Autowired protected Stack<Set<Item>> itemSetStack;
 
   @Autowired protected Stack<Stage> stageStack;
 

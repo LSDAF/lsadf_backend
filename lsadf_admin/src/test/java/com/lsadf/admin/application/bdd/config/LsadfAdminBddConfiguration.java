@@ -30,6 +30,7 @@ import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -131,6 +132,13 @@ public class LsadfAdminBddConfiguration {
   @Bean
   public Stack<List<UserInfo>> userInfoListStack(BddStackCleaner stackCleaner) {
     Stack<List<UserInfo>> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public Stack<Set<Item>> itemSetStack(BddStackCleaner stackCleaner) {
+    Stack<Set<Item>> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }

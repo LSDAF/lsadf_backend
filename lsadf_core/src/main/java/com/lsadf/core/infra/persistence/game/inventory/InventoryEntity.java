@@ -45,7 +45,7 @@ public class InventoryEntity extends AEntity {
   @EqualsAndHashCode.Exclude
   private GameSaveEntity gameSave;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   private Set<ItemEntity> items;

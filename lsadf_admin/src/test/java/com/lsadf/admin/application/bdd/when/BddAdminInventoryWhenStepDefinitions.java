@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
@@ -30,6 +29,7 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -53,11 +53,11 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Inventory>> result =
+      ResponseEntity<GenericResponse<Set<Item>>> result =
           testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedInventoryResponse());
-      GenericResponse<Inventory> body = result.getBody();
-      inventoryStack.push(body.getData());
+              url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
+      GenericResponse<Set<Item>> body = result.getBody();
+      itemSetStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -114,10 +114,10 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Inventory>> result =
+      ResponseEntity<GenericResponse<Void>> result =
           testRestTemplate.exchange(
-              url, HttpMethod.DELETE, request, buildParameterizedInventoryResponse());
-      GenericResponse<Inventory> body = result.getBody();
+              url, HttpMethod.DELETE, request, buildParameterizedVoidResponse());
+      GenericResponse<Void> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -172,10 +172,10 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Inventory>> result =
+      ResponseEntity<GenericResponse<Void>> result =
           testRestTemplate.exchange(
-              url, HttpMethod.DELETE, request, buildParameterizedInventoryResponse());
-      GenericResponse<Inventory> body = result.getBody();
+              url, HttpMethod.DELETE, request, buildParameterizedVoidResponse());
+      GenericResponse<Void> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {

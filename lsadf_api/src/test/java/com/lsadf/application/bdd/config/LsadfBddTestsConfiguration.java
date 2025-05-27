@@ -29,6 +29,7 @@ import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -93,6 +94,13 @@ public class LsadfBddTestsConfiguration {
   @Bean
   public Stack<Item> itemStack(BddStackCleaner stackCleaner) {
     Stack<Item> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public Stack<Set<Item>> itemSetStack(BddStackCleaner stackCleaner) {
+    Stack<Set<Item>> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }
