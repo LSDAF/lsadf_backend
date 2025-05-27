@@ -16,7 +16,7 @@
  */
 package com.lsadf.admin.application.configurations;
 
-import com.lsadf.core.configurations.*;
+import com.lsadf.core.application.ApplicationServiceConfiguration;
 import com.lsadf.core.infra.cache.configuration.NoValkeyCacheConfiguration;
 import com.lsadf.core.infra.cache.configuration.ValkeyCacheConfiguration;
 import com.lsadf.core.infra.cache.configuration.ValkeyEmbeddedCacheConfiguration;
@@ -48,7 +48,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   DataSourceConfiguration.class,
   PropertiesConfiguration.class,
   SwaggerConfiguration.class,
-  ServiceConfiguration.class,
+  ApplicationServiceConfiguration.class,
   JpaConfiguration.class,
   CorsConfiguration.class,
   SecurityConfiguration.class,
