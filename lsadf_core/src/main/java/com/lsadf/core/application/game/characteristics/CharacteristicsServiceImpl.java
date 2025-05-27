@@ -19,8 +19,8 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,16 +28,15 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
 
   private final CharacteristicsRepository characteristicsRepository;
   private final Cache<Characteristics> characteristicsCache;
-  private final Mapper mapper;
+  private final CharacteristicsEntityMapper characteristicsEntityModelMapper;
 
   public CharacteristicsServiceImpl(
       CharacteristicsRepository characteristicsRepository,
       Cache<Characteristics> characteristicsCache,
-      Mapper mapper) {
+      CharacteristicsEntityMapper characteristicsEntityModelMapper) {
     this.characteristicsRepository = characteristicsRepository;
     this.characteristicsCache = characteristicsCache;
-
-    this.mapper = mapper;
+    this.characteristicsEntityModelMapper = characteristicsEntityModelMapper;
   }
 
   @Override
@@ -64,7 +63,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     }
     CharacteristicsEntity characteristicsEntity = getCharacteristicsEntity(gameSaveId);
 
-    return mapper.mapCharacteristicsEntityToCharacteristics(characteristicsEntity);
+    return characteristicsEntityModelMapper.mapToModel(characteristicsEntity);
   }
 
   /**

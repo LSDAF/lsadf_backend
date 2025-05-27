@@ -17,15 +17,16 @@ package com.lsadf.core.application.game.characteristics;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * Configuration class for setting up the CharacteristicsService bean. This class defines and
  * provides a bean for the CharacteristicsService implementation. It integrates necessary
- * dependencies such as CharacteristicsRepository, Cache for Characteristics, and a Mapper for
+ * dependencies such as CharacteristicsRepository, Cache for Characteristics, and a ModelMapper for
  * handling object transformations.
  */
 @Configuration
@@ -34,7 +35,17 @@ public class CharacteristicsConfiguration {
   public CharacteristicsService characteristicsService(
       CharacteristicsRepository characteristicsRepository,
       Cache<Characteristics> characteristicsCache,
-      Mapper mapper) {
+      CharacteristicsEntityMapper mapper) {
     return new CharacteristicsServiceImpl(characteristicsRepository, characteristicsCache, mapper);
+  }
+
+  @Bean
+  public CharacteristicsEntityMapper characteristicsEntityModelMapper() {
+    return new CharacteristicsEntityMapper();
+  }
+
+  @Bean
+  public CharacteristicsRequestMapper characteristicsRequestModelMapper() {
+    return new CharacteristicsRequestMapper();
   }
 }

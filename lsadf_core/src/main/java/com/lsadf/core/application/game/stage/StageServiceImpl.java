@@ -20,7 +20,7 @@ import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +29,10 @@ public class StageServiceImpl implements StageService {
 
   private final StageRepository stageRepository;
   private final Cache<Stage> stageCache;
-  private final Mapper mapper;
+  private final StageEntityMapper mapper;
 
-  public StageServiceImpl(StageRepository stageRepository, Cache<Stage> stageCache, Mapper mapper) {
+  public StageServiceImpl(
+      StageRepository stageRepository, Cache<Stage> stageCache, StageEntityMapper mapper) {
     this.stageRepository = stageRepository;
     this.stageCache = stageCache;
     this.mapper = mapper;
@@ -56,7 +57,7 @@ public class StageServiceImpl implements StageService {
       }
     }
     StageEntity stageEntity = getStageEntity(gameSaveId);
-    return mapper.mapStageEntityToStage(stageEntity);
+    return mapper.mapToModel(stageEntity);
   }
 
   private StageEntity getStageEntity(String gameSaveId) {

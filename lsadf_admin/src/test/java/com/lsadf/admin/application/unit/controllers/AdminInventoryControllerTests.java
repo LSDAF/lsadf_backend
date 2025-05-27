@@ -16,13 +16,13 @@
 package com.lsadf.admin.application.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.admin.application.controllers.AdminInventoryController;
-import com.lsadf.admin.application.controllers.impl.AdminInventoryControllerImpl;
-import com.lsadf.admin.application.unit.config.UnitTestConfiguration;
+import com.lsadf.admin.application.game.inventory.AdminInventoryController;
+import com.lsadf.admin.application.game.inventory.AdminInventoryControllerImpl;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
+import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
+import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
 import lombok.SneakyThrows;

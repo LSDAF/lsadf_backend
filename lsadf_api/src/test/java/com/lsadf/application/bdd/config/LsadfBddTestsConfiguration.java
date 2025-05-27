@@ -15,7 +15,6 @@
  */
 package com.lsadf.application.bdd.config;
 
-import com.lsadf.application.mocks.JavaMailSenderMock;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
@@ -29,14 +28,12 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.responses.GenericResponse;
-import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Stack;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -49,13 +46,6 @@ public class LsadfBddTestsConfiguration {
   @Bean
   public BddStackCleaner bddStackCleaner() {
     return new BddStackCleaner();
-  }
-
-  @Bean
-  public Stack<MimeMessage> mimeMessageStack(BddStackCleaner stackCleaner) {
-    Stack<MimeMessage> stack = new Stack<>();
-    stackCleaner.addStack(stack);
-    return stack;
   }
 
   @Bean
@@ -167,11 +157,5 @@ public class LsadfBddTestsConfiguration {
   @Primary
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
-  }
-
-  @Bean
-  @Primary
-  public JavaMailSender javaMailSenderMock(Stack<MimeMessage> mimeMessageStack) {
-    return new JavaMailSenderMock(mimeMessageStack);
   }
 }

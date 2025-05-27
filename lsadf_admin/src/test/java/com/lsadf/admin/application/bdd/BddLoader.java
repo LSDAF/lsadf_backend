@@ -17,10 +17,22 @@ package com.lsadf.admin.application.bdd;
 
 import static com.lsadf.core.infra.config.BeanConstants.Cache.GAME_SAVE_OWNERSHIP_CACHE;
 
+import com.lsadf.admin.application.auth.AdminAuthController;
+import com.lsadf.admin.application.auth.AdminAuthControllerImpl;
 import com.lsadf.admin.application.bdd.config.LsadfAdminBddConfiguration;
-import com.lsadf.admin.application.config.LsadfAdminConfiguration;
-import com.lsadf.admin.application.controllers.*;
-import com.lsadf.admin.application.controllers.impl.*;
+import com.lsadf.admin.application.cache.AdminCacheController;
+import com.lsadf.admin.application.cache.AdminCacheControllerImpl;
+import com.lsadf.admin.application.game.AdminGameSaveController;
+import com.lsadf.admin.application.game.AdminGameSaveControllerImpl;
+import com.lsadf.admin.application.game.inventory.AdminInventoryController;
+import com.lsadf.admin.application.game.inventory.AdminInventoryControllerImpl;
+import com.lsadf.admin.application.info.AdminGlobalInfoController;
+import com.lsadf.admin.application.info.AdminGlobalInfoControllerImpl;
+import com.lsadf.admin.application.search.AdminSearchController;
+import com.lsadf.admin.application.search.AdminSearchControllerImpl;
+import com.lsadf.admin.application.user.AdminUserController;
+import com.lsadf.admin.application.user.AdminUserControllerImpl;
+import com.lsadf.admin.config.LsadfAdminConfiguration;
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
@@ -49,9 +61,8 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
-import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakProperties;
+import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.advices.DynamicJsonViewAdvice;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.responses.GenericResponse;
@@ -147,8 +158,6 @@ public class BddLoader {
   @Autowired protected StageRepository stageRepository;
 
   @Autowired protected GameSaveRepository gameSaveRepository;
-
-  @Autowired protected Mapper mapper;
 
   @Autowired protected PasswordEncoder passwordEncoder;
 

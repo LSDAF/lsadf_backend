@@ -16,10 +16,9 @@
 package com.lsadf.core.application.user;
 
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.web.requests.admin.AdminUserCreationRequest;
-import com.lsadf.core.infra.web.requests.admin.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.requests.user.UserCreationRequest;
-import com.lsadf.core.infra.web.requests.user.UserUpdateRequest;
+import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequest;
+import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
+import com.lsadf.core.infra.web.requests.user.update.UserUpdateRequest;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -92,20 +91,12 @@ public interface UserService {
   void deleteUser(String id);
 
   /**
-   * Create new user
+   * Creates a new user based on the provided user creation request.
    *
-   * @param request user creation request
-   * @return created user
+   * @param userCreationRequest the request containing details needed to create a new user
+   * @return the newly created user
    */
-  User createUser(UserCreationRequest request);
-
-  /**
-   * Create new user by admin
-   *
-   * @param adminUserCreationRequest admin user creation request
-   * @return created user
-   */
-  User createUser(AdminUserCreationRequest adminUserCreationRequest);
+  User createUser(UserCreationRequest userCreationRequest);
 
   /**
    * Check if user exists with its username

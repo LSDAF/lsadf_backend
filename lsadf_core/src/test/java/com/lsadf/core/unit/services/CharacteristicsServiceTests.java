@@ -27,9 +27,8 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
-import com.lsadf.core.infra.persistence.mappers.MapperImpl;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -46,7 +45,7 @@ class CharacteristicsServiceTests {
 
   @Mock private Cache<Characteristics> characteristicsCache;
 
-  private final Mapper mapper = new MapperImpl();
+  private final CharacteristicsEntityMapper mapper = new CharacteristicsEntityMapper();
 
   @BeforeEach
   void init() {

@@ -19,11 +19,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.application.controllers.AuthController;
-import com.lsadf.application.controllers.impl.AuthControllerImpl;
+import com.lsadf.application.controllers.auth.AuthController;
+import com.lsadf.application.controllers.auth.AuthControllerImpl;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.requests.user.UserLoginRequest;
-import com.lsadf.core.infra.web.requests.user.UserRefreshLoginRequest;
+import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
+import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;

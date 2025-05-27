@@ -23,11 +23,15 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
+import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,5 +72,13 @@ public class GameSaveConfiguration {
         stageHistoCache,
         characteristicsHistoCache,
         currencyHistoCache);
+  }
+
+  @Bean
+  public GameSaveEntityMapper gameSaveEntityModelMapper(
+      CharacteristicsEntityMapper characteristicsMapper,
+      CurrencyEntityMapper currencyMapper,
+      StageEntityMapper stageMapper) {
+    return new GameSaveEntityMapper(characteristicsMapper, stageMapper, currencyMapper);
   }
 }

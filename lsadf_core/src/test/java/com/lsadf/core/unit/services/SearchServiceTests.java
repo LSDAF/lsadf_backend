@@ -28,11 +28,13 @@ import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
-import com.lsadf.core.infra.persistence.mappers.MapperImpl;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
+import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;
 import com.lsadf.core.infra.web.requests.common.Filter;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
@@ -54,7 +56,9 @@ class SearchServiceTests {
 
   @Mock GameSaveService gameSaveService;
 
-  static Mapper mapper = new MapperImpl();
+  static GameSaveEntityMapper mapper =
+      new GameSaveEntityMapper(
+          new CharacteristicsEntityMapper(), new StageEntityMapper(), new CurrencyEntityMapper());
 
   SearchService searchService;
 
@@ -97,8 +101,7 @@ class SearchServiceTests {
           .updatedAt(new Date())
           .build();
 
-  private static final GameSave GAME_SAVE_1 =
-      mapper.mapGameSaveEntityToGameSave(GAME_SAVE_ENTITY_1);
+  private static final GameSave GAME_SAVE_1 = mapper.mapToModel(GAME_SAVE_ENTITY_1);
 
   private static final GameSaveEntity GAME_SAVE_ENTITY_2 =
       GameSaveEntity.builder()
@@ -112,8 +115,7 @@ class SearchServiceTests {
           .updatedAt(new Date())
           .build();
 
-  private static final GameSave GAME_SAVE_2 =
-      mapper.mapGameSaveEntityToGameSave(GAME_SAVE_ENTITY_2);
+  private static final GameSave GAME_SAVE_2 = mapper.mapToModel(GAME_SAVE_ENTITY_2);
 
   private static final GameSaveEntity GAME_SAVE_ENTITY_3 =
       GameSaveEntity.builder()
@@ -127,8 +129,7 @@ class SearchServiceTests {
           .updatedAt(new Date())
           .build();
 
-  private static final GameSave GAME_SAVE_3 =
-      mapper.mapGameSaveEntityToGameSave(GAME_SAVE_ENTITY_3);
+  private static final GameSave GAME_SAVE_3 = mapper.mapToModel(GAME_SAVE_ENTITY_3);
 
   @BeforeEach
   void init() {

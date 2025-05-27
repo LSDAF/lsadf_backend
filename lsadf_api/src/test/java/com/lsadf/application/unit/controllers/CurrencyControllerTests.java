@@ -21,10 +21,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.application.controllers.CurrencyController;
-import com.lsadf.application.controllers.impl.CurrencyControllerImpl;
+import com.lsadf.application.controllers.game.currency.CurrencyController;
+import com.lsadf.application.controllers.game.currency.CurrencyControllerImpl;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import lombok.SneakyThrows;

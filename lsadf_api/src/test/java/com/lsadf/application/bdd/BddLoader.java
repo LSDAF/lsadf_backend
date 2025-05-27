@@ -18,9 +18,23 @@ package com.lsadf.application.bdd;
 import static com.lsadf.core.infra.config.BeanConstants.Cache.GAME_SAVE_OWNERSHIP_CACHE;
 
 import com.lsadf.application.bdd.config.LsadfBddTestsConfiguration;
-import com.lsadf.application.config.LsadfConfiguration;
-import com.lsadf.application.controllers.*;
-import com.lsadf.application.controllers.impl.*;
+import com.lsadf.application.controllers.auth.AuthController;
+import com.lsadf.application.controllers.auth.AuthControllerImpl;
+import com.lsadf.application.controllers.auth.OAuth2Controller;
+import com.lsadf.application.controllers.auth.OAuth2ControllerImpl;
+import com.lsadf.application.controllers.game.characteristics.CharacteristicsController;
+import com.lsadf.application.controllers.game.characteristics.CharacteristicsControllerImpl;
+import com.lsadf.application.controllers.game.currency.CurrencyController;
+import com.lsadf.application.controllers.game.currency.CurrencyControllerImpl;
+import com.lsadf.application.controllers.game.game_save.GameSaveController;
+import com.lsadf.application.controllers.game.game_save.GameSaveControllerImpl;
+import com.lsadf.application.controllers.game.inventory.InventoryController;
+import com.lsadf.application.controllers.game.inventory.InventoryControllerImpl;
+import com.lsadf.application.controllers.game.stage.StageController;
+import com.lsadf.application.controllers.game.stage.StageControllerImpl;
+import com.lsadf.application.controllers.user.UserController;
+import com.lsadf.application.controllers.user.UserControllerImpl;
+import com.lsadf.config.LsadfConfiguration;
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
@@ -49,15 +63,13 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
-import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakProperties;
+import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.advices.DynamicJsonViewAdvice;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
-import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Stack;
 import lombok.extern.slf4j.Slf4j;
@@ -150,8 +162,6 @@ public class BddLoader {
 
   @Autowired protected GameSaveRepository gameSaveRepository;
 
-  @Autowired protected Mapper mapper;
-
   @Autowired protected PasswordEncoder passwordEncoder;
 
   // Services
@@ -187,8 +197,6 @@ public class BddLoader {
   @Autowired protected Stack<List<User>> userListStack;
 
   @Autowired protected Stack<GlobalInfo> globalInfoStack;
-
-  @Autowired protected Stack<MimeMessage> mimeMessageStack;
 
   @Autowired protected Stack<Characteristics> characteristicsStack;
 

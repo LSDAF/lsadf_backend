@@ -33,20 +33,20 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.web.requests.admin.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.requests.admin.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.requests.admin.AdminUserCreationRequest;
-import com.lsadf.core.infra.web.requests.admin.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.common.Filter;
-import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
-import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
-import com.lsadf.core.infra.web.requests.user.UserCreationRequest;
-import com.lsadf.core.infra.web.requests.user.UserLoginRequest;
-import com.lsadf.core.infra.web.requests.user.UserRefreshLoginRequest;
-import com.lsadf.core.infra.web.requests.user.UserUpdateRequest;
+import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;
+import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestImpl;
+import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
+import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
+import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
+import com.lsadf.core.infra.web.requests.user.update.UserUpdateRequest;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
@@ -575,18 +575,18 @@ public class BddUtils {
   }
 
   /**
-   * Maps a row from a BDD table to a UserCreationRequest
+   * Maps a row from a BDD table to a UserCreationRequestImpl
    *
    * @param row row from BDD table
-   * @return UserCreationRequest
+   * @return UserCreationRequestImpl
    */
-  public static UserCreationRequest mapToUserCreationRequest(Map<String, String> row) {
+  public static UserCreationRequestImpl mapToUserCreationRequest(Map<String, String> row) {
     String email = row.get(BddFieldConstants.UserCreationRequest.EMAIL);
     String firstName = row.get(BddFieldConstants.UserCreationRequest.FIRST_NAME);
     String lastName = row.get(BddFieldConstants.UserCreationRequest.LAST_NAME);
     String password = row.get(BddFieldConstants.UserCreationRequest.PASSWORD);
 
-    return UserCreationRequest.builder()
+    return UserCreationRequestImpl.builder()
         .username(email)
         .firstName(firstName)
         .lastName(lastName)
@@ -676,6 +676,7 @@ public class BddUtils {
     String lastName = row.get(BddFieldConstants.AdminUserCreationRequest.LAST_NAME);
     String email = row.get(BddFieldConstants.AdminUserCreationRequest.USERNAME);
     String enabled = row.get(BddFieldConstants.AdminUserCreationRequest.ENABLED);
+    String password = row.get(BddFieldConstants.AdminUserCreationRequest.PASSWORD);
     String verified = row.get(BddFieldConstants.AdminUserCreationRequest.EMAIL_VERIFIED);
     String roles = row.get(BddFieldConstants.AdminUserCreationRequest.USER_ROLES);
 
@@ -685,7 +686,7 @@ public class BddUtils {
     List<String> userRoles = roles == null ? null : Arrays.stream(roles.split(COMMA)).toList();
 
     return new AdminUserCreationRequest(
-        firstName, lastName, enabledBoolean, verifiedBoolean, email, userRoles);
+        firstName, lastName, enabledBoolean, password, verifiedBoolean, email, userRoles);
   }
 
   /**

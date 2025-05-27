@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.application.controllers.InventoryController;
-import com.lsadf.application.controllers.impl.InventoryControllerImpl;
+import com.lsadf.application.controllers.game.inventory.InventoryController;
+import com.lsadf.application.controllers.game.inventory.InventoryControllerImpl;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;

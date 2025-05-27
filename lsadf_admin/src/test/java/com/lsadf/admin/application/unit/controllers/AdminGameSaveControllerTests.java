@@ -16,16 +16,16 @@
 package com.lsadf.admin.application.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.admin.application.controllers.AdminGameSaveController;
-import com.lsadf.admin.application.controllers.impl.AdminGameSaveControllerImpl;
+import com.lsadf.admin.application.game.AdminGameSaveController;
+import com.lsadf.admin.application.game.AdminGameSaveControllerImpl;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.requests.admin.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.requests.admin.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
+import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
