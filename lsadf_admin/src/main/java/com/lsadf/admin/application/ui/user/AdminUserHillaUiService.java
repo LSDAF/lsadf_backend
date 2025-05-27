@@ -15,7 +15,7 @@
  */
 package com.lsadf.admin.application.ui.user;
 
-import com.lsadf.admin.application.utils.FilterUtils;
+import com.lsadf.admin.utils.FilterUtils;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.utils.StreamUtils;

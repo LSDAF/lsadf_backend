@@ -20,8 +20,8 @@ import static com.lsadf.core.infra.config.BeanConstants.Cache.GAME_SAVE_OWNERSHI
 import com.lsadf.admin.application.auth.AdminAuthController;
 import com.lsadf.admin.application.auth.AdminAuthControllerImpl;
 import com.lsadf.admin.application.bdd.config.LsadfAdminBddConfiguration;
-import com.lsadf.admin.application.controllers.*;
-import com.lsadf.admin.application.controllers.impl.*;
+import com.lsadf.admin.application.cache.AdminCacheController;
+import com.lsadf.admin.application.cache.AdminCacheControllerImpl;
 import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.admin.application.game.AdminGameSaveControllerImpl;
 import com.lsadf.admin.application.game.inventory.AdminInventoryController;

@@ -15,7 +15,7 @@
  */
 package com.lsadf.admin.application.ui.game_save;
 
-import com.lsadf.admin.application.utils.FilterUtils;
+import com.lsadf.admin.utils.FilterUtils;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
