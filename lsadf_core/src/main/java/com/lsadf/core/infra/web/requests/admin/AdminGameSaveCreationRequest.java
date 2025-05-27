@@ -20,12 +20,12 @@ import static com.lsadf.core.constants.JsonAttributes.GameSave.*;
 import static com.lsadf.core.constants.JsonAttributes.ID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.common.validators.annotations.Nickname;
-import com.lsadf.core.common.validators.annotations.Uuid;
+import com.lsadf.core.domain.user.validation.Nickname;
 import com.lsadf.core.infra.web.requests.Request;
 import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
+import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;

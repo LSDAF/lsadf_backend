@@ -26,7 +26,7 @@ import com.lsadf.admin.application.bdd.CacheEntryType;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.persistence.game.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.infra.web.requests.user.UserCreationRequest;

@@ -16,14 +16,14 @@
  */
 package com.lsadf.admin.application.controllers.impl;
 
-import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.application.controllers.AdminGlobalInfoController;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.web.config.controllers.BaseController;
+import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;

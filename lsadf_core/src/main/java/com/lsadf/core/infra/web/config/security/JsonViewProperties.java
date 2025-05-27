@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.infra.web.config.security;
 
-import com.lsadf.core.infra.web.config.controllers.JsonViews;
+import com.lsadf.core.infra.web.controllers.JsonViews;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

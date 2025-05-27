@@ -22,6 +22,7 @@ import com.lsadf.core.infra.cache.configuration.ValkeyCacheConfiguration;
 import com.lsadf.core.infra.cache.configuration.ValkeyEmbeddedCacheConfiguration;
 import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.config.ApplicationListenerConfiguration;
+import com.lsadf.core.infra.config.PropertiesConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
 import com.lsadf.core.infra.persistence.config.JpaConfiguration;

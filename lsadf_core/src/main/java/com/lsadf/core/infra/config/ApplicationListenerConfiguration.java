@@ -16,7 +16,6 @@
  */
 package com.lsadf.core.infra.config;
 
-import com.lsadf.core.configurations.ShutdownListener;
 import com.lsadf.core.infra.cache.services.CacheFlushService;
 import com.lsadf.core.infra.logging.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.ConfigurationLogger;

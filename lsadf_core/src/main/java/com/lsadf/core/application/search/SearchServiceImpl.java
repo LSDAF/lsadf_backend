@@ -23,15 +23,14 @@ import static com.lsadf.core.constants.JsonAttributes.User.*;
 
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.common.utils.StreamUtils;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.utils.StreamUtils;
 import com.lsadf.core.infra.web.requests.common.Filter;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
-
 import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.transaction.annotation.Transactional;

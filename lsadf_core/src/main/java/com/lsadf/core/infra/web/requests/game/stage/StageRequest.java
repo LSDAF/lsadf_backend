@@ -21,7 +21,7 @@ import static com.lsadf.core.constants.JsonAttributes.Stage.MAX_STAGE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.lsadf.core.common.validators.annotations.StageConsistency;
+import com.lsadf.core.domain.game.stage.validation.StageConsistency;
 import com.lsadf.core.infra.web.requests.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;

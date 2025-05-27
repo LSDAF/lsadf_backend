@@ -29,7 +29,7 @@ import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.exceptions.http.ForbiddenException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;

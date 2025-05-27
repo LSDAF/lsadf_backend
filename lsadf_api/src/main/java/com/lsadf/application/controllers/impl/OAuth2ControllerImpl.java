@@ -16,14 +16,14 @@
  */
 package com.lsadf.application.controllers.impl;
 
-import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.application.controllers.OAuth2Controller;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakProperties;
-import com.lsadf.core.infra.web.config.controllers.BaseController;
+import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.http_clients.KeycloakClient;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;

@@ -16,7 +16,7 @@
  */
 package com.lsadf.admin.application.controllers.impl;
 
-import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.admin.application.controllers.AdminGameSaveController;
@@ -25,17 +25,17 @@ import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.stage.StageService;
-import com.lsadf.core.common.utils.StreamUtils;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.mappers.Mapper;
-import com.lsadf.core.infra.web.config.controllers.BaseController;
-import com.lsadf.core.infra.web.config.controllers.JsonViews;
+import com.lsadf.core.infra.utils.StreamUtils;
+import com.lsadf.core.infra.web.controllers.BaseController;
+import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.admin.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.admin.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;

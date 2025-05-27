@@ -16,15 +16,15 @@
  */
 package com.lsadf.application.controllers.impl;
 
-import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
-import static com.lsadf.core.common.utils.TokenUtils.getUsernameFromJwt;
+import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
+import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.application.controllers.GameSaveController;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.persistence.game.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.mappers.Mapper;
-import com.lsadf.core.infra.web.config.controllers.BaseController;
+import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import java.util.List;

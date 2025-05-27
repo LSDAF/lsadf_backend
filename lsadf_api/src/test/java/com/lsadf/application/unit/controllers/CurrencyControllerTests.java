@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controllers.CurrencyController;
 import com.lsadf.application.controllers.impl.CurrencyControllerImpl;
-import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;

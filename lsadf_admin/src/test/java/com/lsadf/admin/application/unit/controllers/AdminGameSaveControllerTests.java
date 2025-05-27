@@ -21,7 +21,7 @@ import com.lsadf.admin.application.controllers.AdminGameSaveController;
 import com.lsadf.admin.application.controllers.impl.AdminGameSaveControllerImpl;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.constants.ControllerConstants;
-import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.requests.admin.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.admin.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
