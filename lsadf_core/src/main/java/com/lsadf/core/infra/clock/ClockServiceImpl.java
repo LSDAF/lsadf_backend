@@ -16,8 +16,7 @@
  */
 package com.lsadf.core.infra.clock;
 
-import com.lsadf.core.common.utils.DateUtils;
-
+import com.lsadf.core.infra.utils.DateUtils;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Date;

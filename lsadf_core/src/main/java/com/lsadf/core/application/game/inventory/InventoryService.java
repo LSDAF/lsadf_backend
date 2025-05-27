@@ -19,8 +19,8 @@ package com.lsadf.core.application.game.inventory;
 import com.lsadf.core.infra.exceptions.AlreadyExistingItemClientIdException;
 import com.lsadf.core.infra.exceptions.http.ForbiddenException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.ItemEntity;
+import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
+import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
 
 public interface InventoryService {

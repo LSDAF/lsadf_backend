@@ -16,7 +16,7 @@
  */
 package com.lsadf.core.infra.persistence;
 
-import com.lsadf.core.constants.EntityAttributes;
+import com.lsadf.core.infra.persistence.config.EntityAttributes;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.util.Date;

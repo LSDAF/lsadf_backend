@@ -16,12 +16,12 @@
  */
 package com.lsadf.application.controllers.impl;
 
-import static com.lsadf.core.common.utils.ResponseUtils.generateResponse;
-import static com.lsadf.core.common.utils.TokenUtils.getUserInfoFromJwt;
+import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUserInfoFromJwt;
+import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.application.controllers.UserController;
 import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.web.config.controllers.BaseController;
+import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

@@ -16,7 +16,6 @@
  */
 package com.lsadf.core.infra.cache;
 
-import com.lsadf.core.common.utils.KeyValueConsumer;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.experimental.UtilityClass;

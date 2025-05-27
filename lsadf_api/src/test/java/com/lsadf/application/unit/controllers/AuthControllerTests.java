@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controllers.AuthController;
 import com.lsadf.application.controllers.impl.AuthControllerImpl;
-import com.lsadf.core.infra.web.config.controllers.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.requests.user.UserLoginRequest;
 import com.lsadf.core.infra.web.requests.user.UserRefreshLoginRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;

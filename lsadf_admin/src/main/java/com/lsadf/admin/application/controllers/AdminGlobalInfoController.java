@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH
 
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.domain.info.GlobalInfo;
-import com.lsadf.core.infra.web.config.controllers.Controller;
+import com.lsadf.core.infra.web.controllers.Controller;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import io.swagger.v3.oas.annotations.Operation;

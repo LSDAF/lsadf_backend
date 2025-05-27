@@ -20,13 +20,13 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.BEARE
 import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.common.validators.annotations.Uuid;
 import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.web.config.controllers.JsonViews;
+import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
+import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
