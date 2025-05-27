@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.domain.game.characteristics;
 
-import static com.lsadf.core.constants.JsonAttributes.Characteristics.*;
+import static com.lsadf.core.infra.web.JsonAttributes.Characteristics.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.domain.game.inventory;
 
-import static com.lsadf.core.constants.JsonAttributes.Inventory.ITEMS;
+import static com.lsadf.core.infra.web.JsonAttributes.Inventory.ITEMS;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.config.auth;
 
-import static com.lsadf.core.constants.JsonAttributes.JwtAuthentication.*;
+import static com.lsadf.core.infra.web.JsonAttributes.JwtAuthentication.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

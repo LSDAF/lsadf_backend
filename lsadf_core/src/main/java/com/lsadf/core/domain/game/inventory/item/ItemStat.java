@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.domain.game.inventory.item;
 
-import static com.lsadf.core.constants.JsonAttributes.ItemStat.BASE_VALUE;
-import static com.lsadf.core.constants.JsonAttributes.ItemStat.STATISTIC;
+import static com.lsadf.core.infra.web.JsonAttributes.ItemStat.BASE_VALUE;
+import static com.lsadf.core.infra.web.JsonAttributes.ItemStat.STATISTIC;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;

@@ -15,15 +15,15 @@
  */
 package com.lsadf.core.domain.game.inventory.item;
 
-import static com.lsadf.core.constants.JsonAttributes.Inventory.ITEMS;
-import static com.lsadf.core.constants.JsonAttributes.Item.*;
+import static com.lsadf.core.infra.web.JsonAttributes.Inventory.ITEMS;
+import static com.lsadf.core.infra.web.JsonAttributes.Item.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.constants.JsonAttributes;
 import com.lsadf.core.domain.Model;
+import com.lsadf.core.infra.web.JsonAttributes;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.ElementCollection;

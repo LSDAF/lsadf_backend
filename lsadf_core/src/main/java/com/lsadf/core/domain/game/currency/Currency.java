@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.domain.game.currency;
 
-import static com.lsadf.core.constants.JsonAttributes.Currency.*;
+import static com.lsadf.core.infra.web.JsonAttributes.Currency.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

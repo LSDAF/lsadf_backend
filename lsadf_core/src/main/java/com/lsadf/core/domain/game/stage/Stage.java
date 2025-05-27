@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.domain.game.stage;
 
-import static com.lsadf.core.constants.JsonAttributes.Stage.CURRENT_STAGE;
-import static com.lsadf.core.constants.JsonAttributes.Stage.MAX_STAGE;
+import static com.lsadf.core.infra.web.JsonAttributes.Stage.CURRENT_STAGE;
+import static com.lsadf.core.infra.web.JsonAttributes.Stage.MAX_STAGE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
