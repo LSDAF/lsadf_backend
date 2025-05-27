@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.config.keycloak;
+package com.lsadf.core.infra.web.config.keycloak.mappers;
 
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.mappers.Mapper;
