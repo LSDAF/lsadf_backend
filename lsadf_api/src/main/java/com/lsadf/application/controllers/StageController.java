@@ -15,11 +15,11 @@
  */
 package com.lsadf.application.controllers;
 
-import static com.lsadf.core.constants.ControllerConstants.STAGE;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controllers.ControllerConstants.STAGE;
 
-import com.lsadf.core.constants.ControllerConstants;
+import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.shared.validation.Uuid;

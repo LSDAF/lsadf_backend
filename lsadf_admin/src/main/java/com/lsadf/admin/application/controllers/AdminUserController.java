@@ -15,14 +15,14 @@
  */
 package com.lsadf.admin.application.controllers;
 
-import static com.lsadf.core.constants.ControllerConstants.Params.*;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controllers.ControllerConstants.Params.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.controllers.Controller;
+import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.admin.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.admin.AdminUserUpdateRequest;

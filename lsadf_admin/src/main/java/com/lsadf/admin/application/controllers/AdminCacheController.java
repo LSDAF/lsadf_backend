@@ -18,8 +18,8 @@ package com.lsadf.admin.application.controllers;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
 
-import com.lsadf.core.constants.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.Controller;
+import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import io.swagger.v3.oas.annotations.Operation;
