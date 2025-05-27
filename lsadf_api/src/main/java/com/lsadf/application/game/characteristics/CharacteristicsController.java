@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.controllers;
+package com.lsadf.application.game.characteristics;
 
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,38 +34,51 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-/** Controller for currency related operations. */
-@RequestMapping(value = ControllerConstants.CURRENCY)
-@Tag(name = ControllerConstants.Swagger.CURRENCY_CONTROLLER)
+/** Controller for characteristics operations */
+@RequestMapping(value = ControllerConstants.CHARACTERISTICS)
+@Tag(name = ControllerConstants.Swagger.CHARACTERISTICS_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
-public interface CurrencyController {
-
+public interface CharacteristicsController {
   String GAME_SAVE_ID = "game_save_id";
-  String GOLD = "gold";
-  String DIAMOND = "diamond";
-  String EMERALD = "emerald";
-  String AMETHYST = "amethyst";
 
+  /**
+   * Updates the characteristics of a game save
+   *
+   * @param jwt Jwt
+   * @param gameSaveId the game save id
+   * @param characteristicsRequest the characteristics request
+   * @return the characteristics
+   */
   @PostMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
-  @Operation(summary = "Saves one or several currency amounts for a game save")
+  @Operation(summary = "Updates the characteristics of a game save")
   @ApiResponses(
       value = {
+        @ApiResponse(responseCode = "200", description = "Characteristics updated"),
         @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "400", description = "Bad Request"),
         @ApiResponse(responseCode = "403", description = "Forbidden"),
-        @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "404", description = "Not Found"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @ApiResponse(responseCode = "404", description = "Not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
       })
-  ResponseEntity<GenericResponse<Void>> saveCurrency(
+  ResponseEntity<GenericResponse<Void>> saveCharacteristics(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
-      @RequestBody @Valid CurrencyRequest currencyRequest);
+      @RequestBody @Valid CharacteristicsRequest characteristicsRequest);
 
+  /**
+   * Gets the characteristics of a game save
+   *
+   * @param jwt Jwt
+   * @param gameSaveId the game save id
+   * @return the characteristics
+   */
   @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
-  @Operation(summary = "Gets the currency amounts for a game save")
+  @Operation(summary = "Gets the characteristics of a game save")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -74,7 +87,7 @@ public interface CurrencyController {
         @ApiResponse(responseCode = "404", description = "Not Found"),
         @ApiResponse(responseCode = "500", description = "Internal Server Error")
       })
-  ResponseEntity<GenericResponse<Void>> getCurrency(
+  ResponseEntity<GenericResponse<Void>> getCharacteristics(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 

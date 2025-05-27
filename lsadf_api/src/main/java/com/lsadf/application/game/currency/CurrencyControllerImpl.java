@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.controllers.impl;
+package com.lsadf.application.game.currency;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
-import com.lsadf.application.controllers.StageController;
+import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.application.game.stage.StageService;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.web.controllers.BaseController;
-import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
-import com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestModelMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -35,50 +34,51 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Implementation of the Stage Controller */
+/** Implementation of the Currency Controller */
 @RestController
 @Slf4j
-public class StageControllerImpl extends BaseController implements StageController {
+public class CurrencyControllerImpl extends BaseController implements CurrencyController {
 
   private final GameSaveService gameSaveService;
+  private final CurrencyService currencyService;
   private final CacheService cacheService;
-  private final StageRequestModelMapper mapper;
-  private final StageService stageService;
+
+  private final CurrencyRequestModelMapper requestModelMapper;
 
   @Autowired
-  public StageControllerImpl(
+  public CurrencyControllerImpl(
       GameSaveService gameSaveService,
+      CurrencyService currencyService,
       CacheService cacheService,
-      StageRequestModelMapper mapper,
-      StageService stageService) {
+      CurrencyRequestModelMapper requestModelMapper) {
     this.gameSaveService = gameSaveService;
+    this.currencyService = currencyService;
     this.cacheService = cacheService;
-    this.mapper = mapper;
-    this.stageService = stageService;
+    this.requestModelMapper = requestModelMapper;
   }
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> saveStage(
-      Jwt jwt, String gameSaveId, StageRequest stageRequest) {
+  public ResponseEntity<GenericResponse<Void>> saveCurrency(
+      Jwt jwt, String gameSaveId, CurrencyRequest currencyRequest) {
     validateUser(jwt);
-    String username = getUsernameFromJwt(jwt);
-    gameSaveService.checkGameSaveOwnership(gameSaveId, username);
+    String userEmail = getUsernameFromJwt(jwt);
+    gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
 
-    Stage stage = mapper.mapToModel(stageRequest);
-    stageService.saveStage(gameSaveId, stage, cacheService.isEnabled());
+    Currency currency = requestModelMapper.mapToModel(currencyRequest);
+    currencyService.saveCurrency(gameSaveId, currency, cacheService.isEnabled());
 
     return generateResponse(HttpStatus.OK);
   }
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> getStage(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<GenericResponse<Void>> getCurrency(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
-    String username = getUsernameFromJwt(jwt);
-    gameSaveService.checkGameSaveOwnership(gameSaveId, username);
-    Stage stage = stageService.getStage(gameSaveId);
-    return generateResponse(HttpStatus.OK, stage);
+    String userEmail = getUsernameFromJwt(jwt);
+    gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
+    Currency currency = currencyService.getCurrency(gameSaveId);
+    return generateResponse(HttpStatus.OK, currency);
   }
 
   /** {@inheritDoc} */

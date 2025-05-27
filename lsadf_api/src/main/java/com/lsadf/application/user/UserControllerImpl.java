@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.controllers.impl;
+package com.lsadf.application.user;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUserInfoFromJwt;
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
-import com.lsadf.application.controllers.UserController;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.responses.GenericResponse;

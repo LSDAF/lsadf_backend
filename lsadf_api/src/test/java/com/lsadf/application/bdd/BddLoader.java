@@ -17,10 +17,24 @@ package com.lsadf.application.bdd;
 
 import static com.lsadf.core.infra.config.BeanConstants.Cache.GAME_SAVE_OWNERSHIP_CACHE;
 
+import com.lsadf.application.auth.AuthController;
+import com.lsadf.application.auth.AuthControllerImpl;
+import com.lsadf.application.auth.OAuth2Controller;
+import com.lsadf.application.auth.OAuth2ControllerImpl;
 import com.lsadf.application.bdd.config.LsadfBddTestsConfiguration;
-import com.lsadf.application.config.LsadfConfiguration;
-import com.lsadf.application.controllers.*;
-import com.lsadf.application.controllers.impl.*;
+import com.lsadf.application.game.characteristics.CharacteristicsController;
+import com.lsadf.application.game.characteristics.CharacteristicsControllerImpl;
+import com.lsadf.application.game.currency.CurrencyController;
+import com.lsadf.application.game.currency.CurrencyControllerImpl;
+import com.lsadf.application.game.game_save.GameSaveController;
+import com.lsadf.application.game.game_save.GameSaveControllerImpl;
+import com.lsadf.application.game.inventory.InventoryController;
+import com.lsadf.application.game.inventory.InventoryControllerImpl;
+import com.lsadf.application.game.stage.StageController;
+import com.lsadf.application.game.stage.StageControllerImpl;
+import com.lsadf.application.user.UserController;
+import com.lsadf.application.user.UserControllerImpl;
+import com.lsadf.config.LsadfConfiguration;
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.game_save.GameSaveService;

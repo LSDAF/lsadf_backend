@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.controllers.impl;
+package com.lsadf.application.game.stage;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
-import com.lsadf.application.controllers.CharacteristicsController;
-import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.application.game.stage.StageService;
+import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.web.controllers.BaseController;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
+import com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -35,51 +34,50 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
 
+/** Implementation of the Stage Controller */
 @RestController
 @Slf4j
-public class CharacteristicsControllerImpl extends BaseController
-    implements CharacteristicsController {
-  private final GameSaveService gameSaveService;
-  private final CharacteristicsService characteristicsService;
-  private final CacheService cacheService;
+public class StageControllerImpl extends BaseController implements StageController {
 
-  private final CharacteristicsRequestModelMapper mapper;
+  private final GameSaveService gameSaveService;
+  private final CacheService cacheService;
+  private final StageRequestModelMapper mapper;
+  private final StageService stageService;
 
   @Autowired
-  public CharacteristicsControllerImpl(
+  public StageControllerImpl(
       GameSaveService gameSaveService,
-      CharacteristicsService characteristicsService,
       CacheService cacheService,
-      CharacteristicsRequestModelMapper mapper) {
+      StageRequestModelMapper mapper,
+      StageService stageService) {
     this.gameSaveService = gameSaveService;
-    this.characteristicsService = characteristicsService;
     this.cacheService = cacheService;
     this.mapper = mapper;
+    this.stageService = stageService;
   }
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> saveCharacteristics(
-      Jwt jwt, String gameSaveId, CharacteristicsRequest characteristicsRequest) {
+  public ResponseEntity<GenericResponse<Void>> saveStage(
+      Jwt jwt, String gameSaveId, StageRequest stageRequest) {
     validateUser(jwt);
-    String userEmail = getUsernameFromJwt(jwt);
-    gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
+    String username = getUsernameFromJwt(jwt);
+    gameSaveService.checkGameSaveOwnership(gameSaveId, username);
 
-    Characteristics characteristics = mapper.mapToModel(characteristicsRequest);
-    characteristicsService.saveCharacteristics(
-        gameSaveId, characteristics, cacheService.isEnabled());
+    Stage stage = mapper.mapToModel(stageRequest);
+    stageService.saveStage(gameSaveId, stage, cacheService.isEnabled());
 
     return generateResponse(HttpStatus.OK);
   }
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> getCharacteristics(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<GenericResponse<Void>> getStage(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
-    String userEmail = getUsernameFromJwt(jwt);
-    gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
-    Characteristics characteristics = characteristicsService.getCharacteristics(gameSaveId);
-    return generateResponse(HttpStatus.OK, characteristics);
+    String username = getUsernameFromJwt(jwt);
+    gameSaveService.checkGameSaveOwnership(gameSaveId, username);
+    Stage stage = stageService.getStage(gameSaveId);
+    return generateResponse(HttpStatus.OK, stage);
   }
 
   /** {@inheritDoc} */
