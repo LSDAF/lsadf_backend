@@ -16,17 +16,17 @@
  */
 package com.lsadf.core.infra.persistence.game.stage;
 
-import com.lsadf.core.infra.persistence.config.EntityAttributes;
+import static com.lsadf.core.infra.persistence.game.stage.StageEntity.StageEntityAttribute.STAGE_ENTITY;
+import static com.lsadf.core.infra.persistence.game.stage.StageEntity.StageEntityAttribute.STAGE_USER_EMAIL;
+
 import com.lsadf.core.domain.game.stage.validation.StageConsistency;
+import com.lsadf.core.infra.persistence.config.EntityAttributes;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Positive;
 import java.io.Serial;
 import lombok.*;
-
-import static com.lsadf.core.infra.persistence.game.stage.StageEntity.StageEntityAttribute.STAGE_ENTITY;
-import static com.lsadf.core.infra.persistence.game.stage.StageEntity.StageEntityAttribute.STAGE_USER_EMAIL;
 
 @Data
 @Entity(name = STAGE_ENTITY)

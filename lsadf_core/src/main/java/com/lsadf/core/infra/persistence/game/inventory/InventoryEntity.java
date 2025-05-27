@@ -23,7 +23,6 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import java.io.Serial;
 import java.util.Set;
-
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

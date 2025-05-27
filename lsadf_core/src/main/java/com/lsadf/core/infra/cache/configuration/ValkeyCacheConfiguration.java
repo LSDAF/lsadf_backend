@@ -38,7 +38,7 @@ import com.lsadf.core.infra.cache.impl.ValkeyCache;
 import com.lsadf.core.infra.cache.listeners.ValkeyKeyExpirationListener;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.cache.services.CacheService;
-import com.lsadf.core.infra.cache.services.RedisCacheServiceImpl;
+import com.lsadf.core.infra.cache.services.ValkeyCacheServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -171,7 +171,7 @@ public class ValkeyCacheConfiguration {
       HistoCache<Characteristics> characteristicsCache,
       HistoCache<Currency> currencyCache,
       HistoCache<Stage> stageCache) {
-    return new RedisCacheServiceImpl(
+    return new ValkeyCacheServiceImpl(
         gameSaveOwnershipCache, characteristicsCache, currencyCache, stageCache);
   }
 

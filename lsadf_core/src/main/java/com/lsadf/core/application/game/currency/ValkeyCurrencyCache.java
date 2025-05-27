@@ -24,11 +24,10 @@ import static com.lsadf.core.infra.cache.RedisConstants.CURRENCY_HISTO;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
+import com.lsadf.core.infra.cache.impl.ValkeyCache;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
-import com.lsadf.core.infra.cache.impl.ValkeyCache;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -52,6 +51,7 @@ public class ValkeyCurrencyCache extends ValkeyCache<Currency> implements HistoC
     return log;
   }
 
+  /** {@inheritDoc} */
   @Override
   public void set(String key, Currency value) {
     set(key, value, this.expirationSeconds);

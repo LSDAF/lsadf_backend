@@ -16,6 +16,8 @@
  */
 package com.lsadf.core.infra.persistence.game.characteristics;
 
+import static com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
+
 import com.lsadf.core.infra.persistence.config.EntityAttributes;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import jakarta.persistence.*;
@@ -24,8 +26,6 @@ import jakarta.validation.constraints.Positive;
 import java.io.Serial;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import static com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
 
 @Data
 @Entity(name = CHARACTERISTICS_ENTITY)

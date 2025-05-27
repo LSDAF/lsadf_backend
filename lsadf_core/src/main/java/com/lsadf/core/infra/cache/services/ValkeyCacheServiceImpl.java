@@ -21,12 +21,11 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class RedisCacheServiceImpl implements CacheService {
+public class ValkeyCacheServiceImpl implements CacheService {
 
   private final Cache<String> gameSaveOwnershipCache;
   private final HistoCache<Characteristics> characteristicsCache;
@@ -35,7 +34,7 @@ public class RedisCacheServiceImpl implements CacheService {
 
   private final AtomicBoolean isEnabled = new AtomicBoolean(true);
 
-  public RedisCacheServiceImpl(
+  public ValkeyCacheServiceImpl(
       Cache<String> gameSaveOwnershipCache,
       HistoCache<Characteristics> characteristicsCache,
       HistoCache<Currency> currencyCache,
