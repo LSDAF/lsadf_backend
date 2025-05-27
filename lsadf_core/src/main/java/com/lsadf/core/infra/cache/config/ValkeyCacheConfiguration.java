@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.cache.RedisConstants.GAME_SAVE_OWNERSHIP;
 import static com.lsadf.core.infra.config.BeanConstants.Cache.*;
 
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.characteristics.out.ValkeyCharacteristicsCache;
+import com.lsadf.core.application.game.characteristics.ValkeyCharacteristicsCache;
 import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.currency.ValkeyCurrencyCache;
 import com.lsadf.core.application.game.inventory.InventoryService;

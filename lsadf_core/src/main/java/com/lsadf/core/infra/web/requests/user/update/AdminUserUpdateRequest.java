@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.requests.user;
+package com.lsadf.core.infra.web.requests.user.update;
 
 import static com.lsadf.core.infra.web.JsonAttributes.User.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.requests.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -31,38 +29,34 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Builder
-public class UserCreationRequest implements Request {
-
-  @Serial private static final long serialVersionUID = 7976141604912528826L;
+public class AdminUserUpdateRequest implements Request {
+  @Serial private static final long serialVersionUID = -4515896456126778133L;
 
   @NotBlank
-  @Schema(description = "Name of user to create", example = "Toto Dupont")
+  @Schema(description = "Name of user to update", example = "Toto Dupont")
   @JsonProperty(value = FIRST_NAME)
   private String firstName;
 
   @NotBlank
-  @Schema(description = "Lastname of user to create", example = "Dupont")
+  @Schema(description = "Lastname of user to update", example = "Dupont")
   @JsonProperty(value = LAST_NAME)
   private String lastName;
 
-  @Size(min = 8)
-  @Schema(description = "Password of user to create", example = "k127F978")
-  @JsonProperty(value = PASSWORD)
-  private String password;
+  @Schema(description = "Verified status of user to update", example = "true")
+  @JsonProperty(value = EMAIL_VERIFIED)
+  @NotNull
+  private Boolean emailVerified;
 
-  @Email
-  @NotBlank
-  @Schema(description = "Username of user to create", example = "toto@toto.fr")
-  @JsonProperty(value = USERNAME)
-  private String username;
+  @Schema(description = "Enabled status of user to update", example = "true")
+  @JsonProperty(value = ENABLED)
+  @NotNull
+  private Boolean enabled;
 
-  @JsonIgnore @Builder.Default private boolean enabled = true;
-
-  @JsonIgnore @Builder.Default private boolean emailVerified = false;
-
-  @JsonIgnore private List<String> userRoles;
+  @Schema(description = "Roles of user to update", example = "[\"USER\"]")
+  @JsonProperty(value = USER_ROLES)
+  private List<String> userRoles;
 }

@@ -17,6 +17,8 @@ package com.lsadf.core.application.game.inventory;
 
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemRepository;
+import com.lsadf.core.infra.persistence.mappers.game.inventory.InventoryEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.inventory.ItemEntityModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,5 +42,15 @@ public class InventoryConfiguration {
   public InventoryService inventoryService(
       InventoryRepository inventoryRepository, ItemRepository itemRepository) {
     return new InventoryServiceImpl(inventoryRepository, itemRepository);
+  }
+
+  @Bean
+  public ItemEntityModelMapper itemEntityModelMapper() {
+    return new ItemEntityModelMapper();
+  }
+
+  @Bean
+  public InventoryEntityModelMapper inventoryEntityModelMapper(ItemEntityModelMapper itemMapper) {
+    return new InventoryEntityModelMapper(itemMapper);
   }
 }

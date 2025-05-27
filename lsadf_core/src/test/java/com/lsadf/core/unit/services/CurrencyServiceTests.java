@@ -28,8 +28,7 @@ import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
-import com.lsadf.core.infra.persistence.mappers.MapperImpl;
+import com.lsadf.core.infra.persistence.mappers.game.CurrencyEntityModelMapper;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -46,7 +45,7 @@ class CurrencyServiceTests {
 
   @Mock private Cache<Currency> currencyCache;
 
-  private final Mapper mapper = new MapperImpl();
+  private final CurrencyEntityModelMapper mapper = new CurrencyEntityModelMapper();
 
   @BeforeEach
   void init() {

@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.requests.admin;
+package com.lsadf.core.infra.web.requests.user.creation;
 
 import static com.lsadf.core.infra.web.JsonAttributes.User.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.infra.web.requests.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
-public class AdminUserCreationRequest implements Request {
+@NoArgsConstructor
+@Builder
+public class UserCreationRequestImpl implements UserCreationRequest {
 
-  @Serial private static final long serialVersionUID = 9104893581644308116L;
+  @Serial private static final long serialVersionUID = 7976141604912528826L;
 
   @NotBlank
   @Schema(description = "Name of user to create", example = "Toto Dupont")
@@ -48,15 +48,10 @@ public class AdminUserCreationRequest implements Request {
   @JsonProperty(value = LAST_NAME)
   private String lastName;
 
-  @Schema(description = "Enabled status of user to create", example = "true")
-  @JsonProperty(value = ENABLED)
-  @NotNull
-  private Boolean enabled;
-
-  @Schema(description = "Verified email status of user to create", example = "true")
-  @JsonProperty(value = EMAIL_VERIFIED)
-  @NotNull
-  private Boolean emailVerified;
+  @Size(min = 8)
+  @Schema(description = "Password of user to create", example = "k127F978")
+  @JsonProperty(value = PASSWORD)
+  private String password;
 
   @Email
   @NotBlank
@@ -64,7 +59,19 @@ public class AdminUserCreationRequest implements Request {
   @JsonProperty(value = USERNAME)
   private String username;
 
-  @Schema(description = "Roles of user to create", example = "[\"ADMIN\", \"USER\"]")
-  @JsonProperty(value = USER_ROLES)
-  private List<String> userRoles;
+  @JsonIgnore @Builder.Default private boolean enabled = true;
+
+  @JsonIgnore @Builder.Default private boolean emailVerified = false;
+
+  @JsonIgnore private List<String> userRoles;
+
+  @Override
+  public Boolean getEnabled() {
+    return this.enabled;
+  }
+
+  @Override
+  public Boolean getEmailVerified() {
+    return emailVerified;
+  }
 }

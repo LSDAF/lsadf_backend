@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.requests.admin;
+package com.lsadf.core.infra.web.requests.game.game_save.admin;
 
 import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
 import static com.lsadf.core.infra.web.JsonAttributes.ID;
@@ -21,8 +21,8 @@ import static com.lsadf.core.infra.web.JsonAttributes.ID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.user.validation.Nickname;
 import com.lsadf.core.infra.web.requests.Request;
-import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.media.Schema;

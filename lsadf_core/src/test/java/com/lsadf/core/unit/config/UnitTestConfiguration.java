@@ -25,18 +25,17 @@ import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.config.ShutdownListener;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.http_clients.KeycloakClient;
 import javax.sql.DataSource;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
 @TestConfiguration
+@Import(UnitMapperMockConfiguration.class)
 public class UnitTestConfiguration {
-
-  @MockBean private Mapper mapper;
 
   @MockBean private KeycloakClient keycloakClient;
 

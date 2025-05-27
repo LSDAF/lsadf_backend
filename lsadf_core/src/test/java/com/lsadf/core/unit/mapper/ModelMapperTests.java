@@ -26,32 +26,34 @@ import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEnti
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
-import com.lsadf.core.infra.persistence.mappers.MapperImpl;
-import com.lsadf.core.infra.web.requests.admin.AdminUserCreationRequest;
-import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
+import com.lsadf.core.infra.persistence.mappers.game.CharacteristicsEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.CurrencyEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.StageEntityModelMapper;
+import com.lsadf.core.infra.web.config.keycloak.UserRepresentationModelMapper;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestModelMapper;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
-import com.lsadf.core.infra.web.requests.user.UserCreationRequest;
+import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestImpl;
+import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestModelMapper;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.keycloak.representations.idm.UserRepresentation;
 
-class MapperTests {
-
-  private final Mapper mapper = new MapperImpl();
-
+class ModelMapperTests {
   private final String userEmail = "toto@toto.com";
 
   @Test
   void should_map_stage_request_to_stage() {
     // given
     StageRequest stageRequest = new StageRequest(25L, 500L);
-
+    com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper mapper = new com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper();
     // when
-    Stage stage = mapper.mapStageRequestToStage(stageRequest);
+    Stage stage = mapper.mapToModel(stageRequest);
 
     // then
     assertThat(stage.getCurrentStage()).isEqualTo(25L);
@@ -62,6 +64,7 @@ class MapperTests {
   void should_map_stage_entity_to_stage() {
     // given
     GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
+    StageEntityModelMapper stageEntityModelMapper = new StageEntityModelMapper();
     StageEntity stageEntity =
         StageEntity.builder()
             .maxStage(500L)
@@ -72,7 +75,7 @@ class MapperTests {
             .build();
 
     // when
-    Stage stage = mapper.mapStageEntityToStage(stageEntity);
+    Stage stage = stageEntityModelMapper.mapToModel(stageEntity);
 
     // then
     assertThat(stage.getCurrentStage()).isEqualTo(25L);
@@ -83,6 +86,8 @@ class MapperTests {
   void should_map_characteristics_entity_to_characteristics() {
     // given
     GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
+    CharacteristicsEntityModelMapper characteristicsEntityModelMapper =
+        new CharacteristicsEntityModelMapper();
     CharacteristicsEntity characteristicsEntity =
         CharacteristicsEntity.builder()
             .gameSave(gameSaveEntity)
@@ -95,7 +100,7 @@ class MapperTests {
 
     // when
     Characteristics characteristics =
-        mapper.mapCharacteristicsEntityToCharacteristics(characteristicsEntity);
+        characteristicsEntityModelMapper.mapToModel(characteristicsEntity);
 
     // then
     assertThat(characteristics.getAttack()).isEqualTo(100L);
@@ -108,12 +113,12 @@ class MapperTests {
   @Test
   void should_map_characteristics_request_to_characteristics() {
     // given
+    CharacteristicsRequestModelMapper mapper = new CharacteristicsRequestModelMapper();
     CharacteristicsRequest characteristicsRequest =
         new CharacteristicsRequest(100L, 200L, 300L, 400L, 500L);
 
     // when
-    Characteristics characteristics =
-        mapper.mapCharacteristicsRequestToCharacteristics(characteristicsRequest);
+    Characteristics characteristics = mapper.mapToModel(characteristicsRequest);
 
     // then
     assertThat(characteristics.getAttack()).isEqualTo(100L);
@@ -127,9 +132,9 @@ class MapperTests {
   void should_map_currency_request_to_currency() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 200L, 300L, 400L);
-
+    CurrencyRequestModelMapper mapper = new CurrencyRequestModelMapper();
     // when
-    Currency currency = mapper.mapCurrencyRequestToCurrency(currencyRequest);
+    Currency currency = mapper.mapToModel(currencyRequest);
 
     // then
     assertThat(currency.getGold()).isEqualTo(100L);
@@ -142,6 +147,7 @@ class MapperTests {
   void should_map_currency_entity_to_currency() {
     // given
     GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
+    CurrencyEntityModelMapper mapper = new CurrencyEntityModelMapper();
     CurrencyEntity currencyEntity =
         CurrencyEntity.builder()
             .goldAmount(100L)
@@ -154,7 +160,7 @@ class MapperTests {
             .build();
 
     // when
-    Currency currency = mapper.mapCurrencyEntityToCurrency(currencyEntity);
+    Currency currency = mapper.mapToModel(currencyEntity);
 
     // then
     assertThat(currency.getGold()).isEqualTo(100L);
@@ -166,6 +172,13 @@ class MapperTests {
   @Test
   void should_map_game_save_entity_to_game_save() {
     // given
+    CurrencyEntityModelMapper currencyEntityModelMapper = new CurrencyEntityModelMapper();
+    StageEntityModelMapper stageEntityModelMapper = new StageEntityModelMapper();
+    CharacteristicsEntityModelMapper characteristicsEntityModelMapper =
+        new CharacteristicsEntityModelMapper();
+    GameSaveEntityModelMapper mapper =
+        new GameSaveEntityModelMapper(
+            characteristicsEntityModelMapper, stageEntityModelMapper, currencyEntityModelMapper);
     String id = UUID.randomUUID().toString();
     GameSaveEntity gameSaveEntity =
         GameSaveEntity.builder()
@@ -207,7 +220,7 @@ class MapperTests {
     gameSaveEntity.setStageEntity(stageEntity);
 
     // when
-    GameSave gameSave = mapper.mapGameSaveEntityToGameSave(gameSaveEntity);
+    GameSave gameSave = mapper.mapToModel(gameSaveEntity);
 
     // then
     assertThat(gameSave.getId()).isEqualTo(gameSaveEntity.getId());
@@ -247,8 +260,10 @@ class MapperTests {
     userRepresentation.setEnabled(false);
     userRepresentation.setRealmRoles(List.of("user", "admin"));
 
+    UserRepresentationModelMapper mapper = new UserRepresentationModelMapper();
+
     // when
-    User user = mapper.mapUserRepresentationToUser(userRepresentation);
+    User user = mapper.mapToModel(userRepresentation);
 
     // then
     assertThat(user.getUsername()).isEqualTo(userRepresentation.getUsername());
@@ -264,8 +279,9 @@ class MapperTests {
   @Test
   void should_map_user_creation_request_to_user_representation() {
     // given
-    UserCreationRequest userCreationRequest =
-        UserCreationRequest.builder()
+    UserCreationRequestModelMapper mapper = new UserCreationRequestModelMapper();
+    UserCreationRequestImpl userCreationRequestImpl =
+        UserCreationRequestImpl.builder()
             .username(userEmail)
             .password("password")
             .lastName("tata")
@@ -276,41 +292,13 @@ class MapperTests {
             .build();
 
     // when
-    UserRepresentation userRepresentation =
-        mapper.mapUserCreationRequestToUserRepresentation(userCreationRequest);
+    User user = mapper.mapToModel(userCreationRequestImpl);
 
     // then
-    assertThat(userRepresentation.getUsername()).isEqualTo(userCreationRequest.getUsername());
-    assertThat(userRepresentation.getFirstName()).isEqualTo(userCreationRequest.getFirstName());
-    assertThat(userRepresentation.getLastName()).isEqualTo(userCreationRequest.getLastName());
-    assertThat(userRepresentation.isEmailVerified())
-        .isEqualTo(userCreationRequest.isEmailVerified());
-    assertThat(userRepresentation.isEnabled()).isEqualTo(userCreationRequest.isEnabled());
-  }
-
-  @Test
-  void should_map_admin_user_creation_request_to_user_creation_request() {
-    // given
-    AdminUserCreationRequest adminUserCreationRequest =
-        AdminUserCreationRequest.builder()
-            .username(userEmail)
-            .lastName("tata")
-            .firstName("toto")
-            .emailVerified(false)
-            .enabled(false)
-            .build();
-
-    // when
-    UserCreationRequest userCreationRequest =
-        mapper.mapAdminUserCreationRequestToUserCreationRequest(adminUserCreationRequest);
-
-    // then
-    assertThat(userCreationRequest.getUsername()).isEqualTo(adminUserCreationRequest.getUsername());
-    assertThat(userCreationRequest.getFirstName())
-        .isEqualTo(adminUserCreationRequest.getFirstName());
-    assertThat(userCreationRequest.getLastName()).isEqualTo(adminUserCreationRequest.getLastName());
-    assertThat(userCreationRequest.isEmailVerified())
-        .isEqualTo(adminUserCreationRequest.getEmailVerified());
-    assertThat(userCreationRequest.isEnabled()).isEqualTo(adminUserCreationRequest.getEnabled());
+    assertThat(user.getUsername()).isEqualTo(userCreationRequestImpl.getUsername());
+    assertThat(user.getFirstName()).isEqualTo(userCreationRequestImpl.getFirstName());
+    assertThat(user.getLastName()).isEqualTo(userCreationRequestImpl.getLastName());
+    assertThat(user.getEmailVerified()).isEqualTo(userCreationRequestImpl.getEmailVerified());
+    assertThat(user.getEnabled()).isEqualTo(userCreationRequestImpl.getEnabled());
   }
 }

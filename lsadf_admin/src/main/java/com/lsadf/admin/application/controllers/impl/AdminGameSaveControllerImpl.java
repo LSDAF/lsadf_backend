@@ -31,16 +31,19 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
 import com.lsadf.core.infra.utils.StreamUtils;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.controllers.JsonViews;
-import com.lsadf.core.infra.web.requests.admin.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.requests.admin.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestModelMapper;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
+import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
+import com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +66,10 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
   private final GameSaveService gameSaveService;
   private final InventoryService inventoryService;
   private final CacheService cacheService;
-  private final Mapper mapper;
+  private final GameSaveEntityModelMapper gameSaveMapper;
+  private final CharacteristicsRequestModelMapper characteristicsRequestMapper;
+  private final CurrencyRequestModelMapper currencyRequestMapper;
+  private final StageRequestModelMapper stageRequestMapper;
   private final CharacteristicsService characteristicsService;
 
   @Autowired
@@ -72,15 +78,21 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       StageService stageService,
       GameSaveService gameSaveService,
       InventoryService inventoryService,
-      Mapper mapper,
+      GameSaveEntityModelMapper mapper,
+      CharacteristicsRequestModelMapper characteristicsRequestMapper,
+      CurrencyRequestModelMapper currencyRequestMapper,
       CacheService cacheService,
-      CharacteristicsService characteristicsService) {
+      CharacteristicsService characteristicsService,
+      StageRequestModelMapper stageRequestMapper) {
     this.currencyService = currencyService;
     this.stageService = stageService;
     this.gameSaveService = gameSaveService;
     this.inventoryService = inventoryService;
     this.cacheService = cacheService;
-    this.mapper = mapper;
+    this.gameSaveMapper = mapper;
+    this.characteristicsRequestMapper = characteristicsRequestMapper;
+    this.currencyRequestMapper = currencyRequestMapper;
+    this.stageRequestMapper = stageRequestMapper;
     this.characteristicsService = characteristicsService;
   }
 
@@ -106,7 +118,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     }
     validateUser(jwt);
     try (Stream<GameSaveEntity> stream = gameSaveService.getGameSaves()) {
-      Stream<GameSave> gameSaveStream = stream.map(mapper::mapGameSaveEntityToGameSave);
+      Stream<GameSave> gameSaveStream = stream.map(gameSaveMapper::mapToModel);
       Stream<GameSave> orderedStream = StreamUtils.sortGameSaves(gameSaveStream, gameSaveOrderBy);
       List<GameSave> gameSaves = orderedStream.toList();
       return generateResponse(HttpStatus.OK, gameSaves);
@@ -119,7 +131,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       Jwt jwt, String username) {
     validateUser(jwt);
     try (Stream<GameSaveEntity> stream = gameSaveService.getGameSavesByUsername(username)) {
-      List<GameSave> gameSaves = stream.map(mapper::mapGameSaveEntityToGameSave).toList();
+      List<GameSave> gameSaves = stream.map(gameSaveMapper::mapToModel).toList();
       return generateResponse(HttpStatus.OK, gameSaves);
     }
   }
@@ -134,7 +146,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
   public ResponseEntity<GenericResponse<GameSave>> getGameSave(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     GameSaveEntity entity = gameSaveService.getGameSave(gameSaveId);
-    GameSave gameSave = mapper.mapGameSaveEntityToGameSave(entity);
+    GameSave gameSave = gameSaveMapper.mapToModel(entity);
     return generateResponse(HttpStatus.OK, gameSave);
   }
 
@@ -151,7 +163,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     validateUser(jwt);
     GameSaveEntity gameSaveEntity =
         gameSaveService.updateNickname(gameSaveId, adminGameSaveUpdateRequest);
-    GameSave gameSave = mapper.mapGameSaveEntityToGameSave(gameSaveEntity);
+    GameSave gameSave = gameSaveMapper.mapToModel(gameSaveEntity);
     return generateResponse(HttpStatus.OK, gameSave);
   }
 
@@ -167,7 +179,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
 
     validateUser(jwt);
     GameSaveEntity gameSaveEntity = gameSaveService.createGameSave(creationRequest);
-    GameSave gameSave = mapper.mapGameSaveEntityToGameSave(gameSaveEntity);
+    GameSave gameSave = gameSaveMapper.mapToModel(gameSaveEntity);
     return generateResponse(HttpStatus.OK, gameSave);
   }
 
@@ -188,7 +200,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       Jwt jwt, String gameSaveId, CharacteristicsRequest characteristicsRequest) {
     validateUser(jwt);
     Characteristics characteristics =
-        mapper.mapCharacteristicsRequestToCharacteristics(characteristicsRequest);
+        characteristicsRequestMapper.mapToModel(characteristicsRequest);
     if (!gameSaveService.existsById(gameSaveId)) {
       throw new NotFoundException("Game save not found");
     }
@@ -204,7 +216,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       Jwt jwt, String gameSaveId, CurrencyRequest currencyRequest) {
 
     validateUser(jwt);
-    Currency currency = mapper.mapCurrencyRequestToCurrency(currencyRequest);
+    Currency currency = currencyRequestMapper.mapToModel(currencyRequest);
     if (!gameSaveService.existsById(gameSaveId)) {
       throw new NotFoundException("Game save not found");
     }
@@ -219,7 +231,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       Jwt jwt, String gameSaveId, StageRequest stageRequest) {
 
     validateUser(jwt);
-    Stage stage = mapper.mapStageRequestToStage(stageRequest);
+    Stage stage = stageRequestMapper.mapToModel(stageRequest);
     if (!gameSaveService.existsById(gameSaveId)) {
       throw new NotFoundException("Game save not found");
     }

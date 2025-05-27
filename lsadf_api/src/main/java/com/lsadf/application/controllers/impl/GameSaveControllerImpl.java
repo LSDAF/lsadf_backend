@@ -22,7 +22,7 @@ import com.lsadf.application.controllers.GameSaveController;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
@@ -41,9 +41,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class GameSaveControllerImpl extends BaseController implements GameSaveController {
 
   private final GameSaveService gameSaveService;
-  private final Mapper mapper;
+  private final GameSaveEntityModelMapper mapper;
 
-  public GameSaveControllerImpl(GameSaveService gameSaveService, Mapper mapper) {
+  public GameSaveControllerImpl(GameSaveService gameSaveService, GameSaveEntityModelMapper mapper) {
     this.gameSaveService = gameSaveService;
     this.mapper = mapper;
   }
@@ -64,7 +64,7 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
     GameSaveEntity newSave = gameSaveService.createGameSave(username);
 
     log.info("Successfully created new game for user with username {}", username);
-    GameSave newGameSave = mapper.mapGameSaveEntityToGameSave(newSave);
+    GameSave newGameSave = mapper.mapToModel(newSave);
 
     return generateResponse(HttpStatus.OK, newGameSave);
   }
@@ -89,10 +89,7 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
     String username = getUsernameFromJwt(jwt);
 
     List<GameSave> gameSaveList =
-        gameSaveService
-            .getGameSavesByUsername(username)
-            .map(mapper::mapGameSaveEntityToGameSave)
-            .toList();
+        gameSaveService.getGameSavesByUsername(username).map(mapper::mapToModel).toList();
 
     return generateResponse(HttpStatus.OK, gameSaveList);
   }

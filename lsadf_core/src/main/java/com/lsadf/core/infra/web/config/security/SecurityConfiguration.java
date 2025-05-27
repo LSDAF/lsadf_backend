@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.controllers.ControllerConstants.ADMIN;
 
 import com.lsadf.core.infra.logging.HttpLogProperties;
 import com.lsadf.core.infra.logging.interceptors.RequestLoggerInterceptor;
-import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakJwtAuthenticationConverter;
+import com.lsadf.core.infra.web.config.keycloak.KeycloakJwtAuthenticationConverter;
 import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

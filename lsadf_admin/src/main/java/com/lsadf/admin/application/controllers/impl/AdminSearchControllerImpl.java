@@ -21,7 +21,6 @@ import com.lsadf.admin.application.controllers.AdminSearchController;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
@@ -44,12 +43,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminSearchControllerImpl extends BaseController implements AdminSearchController {
 
   private final SearchService searchService;
-  private final Mapper mapper;
 
   @Autowired
-  public AdminSearchControllerImpl(SearchService searchService, Mapper mapper) {
+  public AdminSearchControllerImpl(SearchService searchService) {
     this.searchService = searchService;
-    this.mapper = mapper;
   }
 
   /** {@inheritDoc} */

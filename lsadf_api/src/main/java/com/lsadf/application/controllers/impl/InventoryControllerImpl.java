@@ -26,7 +26,8 @@ import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.game.inventory.InventoryEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.inventory.ItemEntityModelMapper;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
@@ -47,18 +48,21 @@ public class InventoryControllerImpl extends BaseController implements Inventory
   private final InventoryService inventoryService;
   private final CacheService cacheService;
 
-  private final Mapper mapper;
+  private final InventoryEntityModelMapper inventoryMapper;
+  private final ItemEntityModelMapper itemMapper;
 
   @Autowired
   public InventoryControllerImpl(
       GameSaveService gameSaveService,
       InventoryService inventoryService,
       CacheService cacheService,
-      Mapper mapper) {
+      InventoryEntityModelMapper inventoryMapper,
+      ItemEntityModelMapper itemMapper) {
     this.gameSaveService = gameSaveService;
     this.inventoryService = inventoryService;
     this.cacheService = cacheService;
-    this.mapper = mapper;
+    this.inventoryMapper = inventoryMapper;
+    this.itemMapper = itemMapper;
   }
 
   /** {@inheritDoc} */
@@ -68,7 +72,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
     InventoryEntity inventoryEntity = inventoryService.getInventory(gameSaveId);
-    Inventory inventory = mapper.mapInventoryEntityToInventory(inventoryEntity);
+    Inventory inventory = inventoryMapper.mapToModel(inventoryEntity);
     return generateResponse(HttpStatus.OK, inventory);
   }
 
@@ -80,7 +84,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
     ItemEntity itemEntity = inventoryService.createItemInInventory(gameSaveId, itemRequest);
-    Item item = mapper.mapItemEntityToItem(itemEntity);
+    Item item = itemMapper.mapToModel(itemEntity);
     return generateResponse(HttpStatus.OK, item);
   }
 
@@ -103,7 +107,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
     var itemEntity = inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
-    var item = mapper.mapItemEntityToItem(itemEntity);
+    var item = itemMapper.mapToModel(itemEntity);
     return generateResponse(HttpStatus.OK, item);
   }
 

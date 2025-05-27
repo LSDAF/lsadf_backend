@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.requests.characteristics;
+package com.lsadf.core.infra.web.requests.game.characteristics;
 
 import static com.lsadf.core.infra.web.JsonAttributes.Characteristics.*;
 
