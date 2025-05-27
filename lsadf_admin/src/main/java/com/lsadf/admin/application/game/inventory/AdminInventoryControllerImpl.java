@@ -22,10 +22,10 @@ import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
-import com.lsadf.core.infra.persistence.mappers.game.inventory.InventoryEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.inventory.ItemEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.inventory.InventoryEntityMapper;
+import com.lsadf.core.infra.persistence.mappers.game.inventory.ItemEntityMapper;
 import com.lsadf.core.infra.web.controllers.BaseController;
-import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
+import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -41,16 +41,16 @@ public class AdminInventoryControllerImpl extends BaseController
 
   public AdminInventoryControllerImpl(
       InventoryService inventoryService,
-      InventoryEntityModelMapper inventoryMapper,
-      ItemEntityModelMapper itemMapper) {
+      InventoryEntityMapper inventoryMapper,
+      ItemEntityMapper itemMapper) {
     this.inventoryService = inventoryService;
     this.inventoryMapper = inventoryMapper;
     this.itemMapper = itemMapper;
   }
 
   private final InventoryService inventoryService;
-  private final InventoryEntityModelMapper inventoryMapper;
-  private final ItemEntityModelMapper itemMapper;
+  private final InventoryEntityMapper inventoryMapper;
+  private final ItemEntityMapper itemMapper;
 
   @Override
   public Logger getLogger() {

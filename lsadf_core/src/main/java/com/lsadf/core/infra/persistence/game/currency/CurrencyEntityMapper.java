@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.mappers.game;
+package com.lsadf.core.infra.persistence.game.currency;
 
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
 
 /**
@@ -28,7 +27,7 @@ import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
  * <p>This class implements the {@link EntityModelMapper} interface, defining the transformation
  * logic for currency-related data.
  */
-public class CurrencyEntityModelMapper implements EntityModelMapper<CurrencyEntity, Currency> {
+public class CurrencyEntityMapper implements EntityModelMapper<CurrencyEntity, Currency> {
   /** {@inheritDoc} */
   @Override
   public Currency mapToModel(CurrencyEntity currencyEntity) {

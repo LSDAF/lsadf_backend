@@ -24,7 +24,7 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -42,14 +42,14 @@ public class CharacteristicsControllerImpl extends BaseController
   private final CharacteristicsService characteristicsService;
   private final CacheService cacheService;
 
-  private final CharacteristicsRequestModelMapper mapper;
+  private final CharacteristicsRequestMapper mapper;
 
   @Autowired
   public CharacteristicsControllerImpl(
       GameSaveService gameSaveService,
       CharacteristicsService characteristicsService,
       CacheService cacheService,
-      CharacteristicsRequestModelMapper mapper) {
+      CharacteristicsRequestMapper mapper) {
     this.gameSaveService = gameSaveService;
     this.characteristicsService = characteristicsService;
     this.cacheService = cacheService;

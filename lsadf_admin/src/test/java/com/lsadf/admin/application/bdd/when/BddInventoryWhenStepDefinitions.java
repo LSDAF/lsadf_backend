@@ -28,7 +28,7 @@ import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
-import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
+import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;

@@ -33,7 +33,7 @@ import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemRepository;
-import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
+import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;

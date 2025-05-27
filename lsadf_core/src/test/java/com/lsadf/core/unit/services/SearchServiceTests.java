@@ -28,13 +28,13 @@ import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.mappers.game.CharacteristicsEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.CurrencyEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.StageEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
+import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;
 import com.lsadf.core.infra.web.requests.common.Filter;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
@@ -56,11 +56,9 @@ class SearchServiceTests {
 
   @Mock GameSaveService gameSaveService;
 
-  static GameSaveEntityModelMapper mapper =
-      new GameSaveEntityModelMapper(
-          new CharacteristicsEntityModelMapper(),
-          new StageEntityModelMapper(),
-          new CurrencyEntityModelMapper());
+  static GameSaveEntityMapper mapper =
+      new GameSaveEntityMapper(
+          new CharacteristicsEntityMapper(), new StageEntityMapper(), new CurrencyEntityMapper());
 
   SearchService searchService;
 

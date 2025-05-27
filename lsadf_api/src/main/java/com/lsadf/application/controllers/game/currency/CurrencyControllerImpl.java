@@ -24,7 +24,7 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -43,14 +43,14 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
   private final CurrencyService currencyService;
   private final CacheService cacheService;
 
-  private final CurrencyRequestModelMapper requestModelMapper;
+  private final CurrencyRequestMapper requestModelMapper;
 
   @Autowired
   public CurrencyControllerImpl(
       GameSaveService gameSaveService,
       CurrencyService currencyService,
       CacheService cacheService,
-      CurrencyRequestModelMapper requestModelMapper) {
+      CurrencyRequestMapper requestModelMapper) {
     this.gameSaveService = gameSaveService;
     this.currencyService = currencyService;
     this.cacheService = cacheService;

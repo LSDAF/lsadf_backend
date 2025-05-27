@@ -17,9 +17,9 @@ package com.lsadf.core.application.user;
 
 import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
-import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationModelMapper;
+import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mappers.UserToUserRepresentationMapper;
-import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestModelMapper;
+import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestMapper;
 import org.keycloak.admin.client.Keycloak;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,19 +37,19 @@ public class UserConfiguration {
       KeycloakProperties keycloakProperties,
       ClockService clockService,
       UserToUserRepresentationMapper userToUserRepresentationMapper,
-      UserCreationRequestModelMapper userCreationRequestModelMapper,
-      UserRepresentationModelMapper userRepresentationModelMapper) {
+      UserCreationRequestMapper userCreationRequestMapper,
+      UserRepresentationMapper userRepresentationMapper) {
     return new UserServiceImpl(
         keycloak,
         keycloakProperties,
         clockService,
-        userCreationRequestModelMapper,
+        userCreationRequestMapper,
         userToUserRepresentationMapper,
-        userRepresentationModelMapper);
+        userRepresentationMapper);
   }
 
   @Bean
-  public UserCreationRequestModelMapper userCreationRequestModelMapper() {
-    return new UserCreationRequestModelMapper();
+  public UserCreationRequestMapper userCreationRequestModelMapper() {
+    return new UserCreationRequestMapper();
   }
 }

@@ -27,7 +27,7 @@ import com.lsadf.core.infra.web.requests.RequestModelMapper;
  * properties of a {@code StageRequest} instance (currentStage and maxStage) to a {@code Stage}
  * instance.
  */
-public class StageRequestModelMapper implements RequestModelMapper<StageRequest, Stage> {
+public class StageRequestMapper implements RequestModelMapper<StageRequest, Stage> {
   /** {@inheritDoc} */
   @Override
   public Stage mapToModel(StageRequest stageRequest) {

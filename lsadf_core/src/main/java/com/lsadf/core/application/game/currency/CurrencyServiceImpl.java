@@ -19,8 +19,8 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.persistence.mappers.game.CurrencyEntityModelMapper;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +28,12 @@ public class CurrencyServiceImpl implements CurrencyService {
 
   private final CurrencyRepository currencyRepository;
   private final Cache<Currency> currencyCache;
-  private final CurrencyEntityModelMapper mapper;
+  private final CurrencyEntityMapper mapper;
 
   public CurrencyServiceImpl(
       CurrencyRepository currencyRepository,
       Cache<Currency> currencyCache,
-      CurrencyEntityModelMapper mapper) {
+      CurrencyEntityMapper mapper) {
     this.currencyRepository = currencyRepository;
     this.currencyCache = currencyCache;
     this.mapper = mapper;

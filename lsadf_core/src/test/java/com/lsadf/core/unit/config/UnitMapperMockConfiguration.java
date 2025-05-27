@@ -16,38 +16,38 @@
 
 package com.lsadf.core.unit.config;
 
-import com.lsadf.core.infra.persistence.mappers.game.CharacteristicsEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.CurrencyEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.StageEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.inventory.InventoryEntityModelMapper;
-import com.lsadf.core.infra.persistence.mappers.game.inventory.ItemEntityModelMapper;
-import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationModelMapper;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
+import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;
+import com.lsadf.core.infra.persistence.mappers.game.inventory.InventoryEntityMapper;
+import com.lsadf.core.infra.persistence.mappers.game.inventory.ItemEntityMapper;
+import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mappers.UserToUserRepresentationMapper;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestModelMapper;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestModelMapper;
-import com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper;
-import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
+import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
+import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestMapper;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @TestConfiguration
 public class UnitMapperMockConfiguration {
   // entity mapper
-  @MockBean public CharacteristicsEntityModelMapper characteristicsEntityModelMapper;
-  @MockBean public CurrencyEntityModelMapper currencyEntityModelMapper;
-  @MockBean public GameSaveEntityModelMapper gameSaveEntityModelMapper;
-  @MockBean public InventoryEntityModelMapper inventoryEntityModelMapper;
-  @MockBean public ItemEntityModelMapper itemEntityModelMapper;
-  @MockBean public StageEntityModelMapper stageEntityModelMapper;
+  @MockBean public CharacteristicsEntityMapper characteristicsEntityModelMapper;
+  @MockBean public CurrencyEntityMapper currencyEntityMapper;
+  @MockBean public GameSaveEntityMapper gameSaveEntityMapper;
+  @MockBean public InventoryEntityMapper inventoryEntityMapper;
+  @MockBean public ItemEntityMapper itemEntityMapper;
+  @MockBean public StageEntityMapper stageEntityMapper;
 
   // request mapper
-  @MockBean public UserCreationRequestModelMapper userCreationRequestModelMapper;
-  @MockBean public StageRequestModelMapper stageRequestModelMapper;
-  @MockBean public CharacteristicsRequestModelMapper characteristicsRequestModelMapper;
-  @MockBean public CurrencyRequestModelMapper currencyRequestModelMapper;
+  @MockBean public UserCreationRequestMapper userCreationRequestMapper;
+  @MockBean public StageRequestMapper stageRequestMapper;
+  @MockBean public CharacteristicsRequestMapper characteristicsRequestMapper;
+  @MockBean public CurrencyRequestMapper currencyRequestMapper;
 
   // keycloak mapper
   @MockBean public UserToUserRepresentationMapper userToUserRepresentationMapper;
-  @MockBean public UserRepresentationModelMapper userRepresentationModelMapper;
+  @MockBean public UserRepresentationMapper userRepresentationMapper;
 }

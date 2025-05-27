@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.mappers.game;
+package com.lsadf.core.infra.persistence.game.characteristics;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
 
 /**
@@ -35,7 +34,7 @@ import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
  *
  * <p>Thread Safety: This implementation is thread-safe as it performs no mutation of shared state.
  */
-public class CharacteristicsEntityModelMapper
+public class CharacteristicsEntityMapper
     implements EntityModelMapper<CharacteristicsEntity, Characteristics> {
 
   /** {@inheritDoc} */

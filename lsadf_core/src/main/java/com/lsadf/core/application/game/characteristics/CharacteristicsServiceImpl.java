@@ -19,8 +19,8 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.persistence.mappers.game.CharacteristicsEntityModelMapper;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +28,12 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
 
   private final CharacteristicsRepository characteristicsRepository;
   private final Cache<Characteristics> characteristicsCache;
-  private final CharacteristicsEntityModelMapper characteristicsEntityModelMapper;
+  private final CharacteristicsEntityMapper characteristicsEntityModelMapper;
 
   public CharacteristicsServiceImpl(
       CharacteristicsRepository characteristicsRepository,
       Cache<Characteristics> characteristicsCache,
-      CharacteristicsEntityModelMapper characteristicsEntityModelMapper) {
+      CharacteristicsEntityMapper characteristicsEntityModelMapper) {
     this.characteristicsRepository = characteristicsRepository;
     this.characteristicsCache = characteristicsCache;
     this.characteristicsEntityModelMapper = characteristicsEntityModelMapper;

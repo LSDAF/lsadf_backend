@@ -30,19 +30,19 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.utils.StreamUtils;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
-import com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper;
+import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import java.util.Collections;
 import java.util.List;
@@ -55,7 +55,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
 
-/** The implementation of the AdminGameSaveController */
+/**
+ * Controller implementation for managing game save data by admins. This class provides
+ * functionality to perform CRUD and update operations on game saves, including creating new saves,
+ * updating game save properties like characteristics, currencies, and stages, and fetching game
+ * save details. Inherits common functionality from the {@code BaseController}. Utilizes various
+ * services and mappers to facilitate data transformation and service layer interactions.
+ *
+ * <p>This controller is intended for admin-level access and uses specific JSON views to manage
+ * serialization of data.
+ */
 @RestController
 @Slf4j
 public class AdminGameSaveControllerImpl extends BaseController implements AdminGameSaveController {
@@ -65,10 +74,10 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
   private final GameSaveService gameSaveService;
   private final InventoryService inventoryService;
   private final CacheService cacheService;
-  private final GameSaveEntityModelMapper gameSaveMapper;
-  private final CharacteristicsRequestModelMapper characteristicsRequestMapper;
-  private final CurrencyRequestModelMapper currencyRequestMapper;
-  private final StageRequestModelMapper stageRequestMapper;
+  private final GameSaveEntityMapper gameSaveMapper;
+  private final CharacteristicsRequestMapper characteristicsRequestMapper;
+  private final CurrencyRequestMapper currencyRequestMapper;
+  private final StageRequestMapper stageRequestMapper;
   private final CharacteristicsService characteristicsService;
 
   @Autowired
@@ -77,12 +86,12 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       StageService stageService,
       GameSaveService gameSaveService,
       InventoryService inventoryService,
-      GameSaveEntityModelMapper mapper,
-      CharacteristicsRequestModelMapper characteristicsRequestMapper,
-      CurrencyRequestModelMapper currencyRequestMapper,
+      GameSaveEntityMapper mapper,
+      CharacteristicsRequestMapper characteristicsRequestMapper,
+      CurrencyRequestMapper currencyRequestMapper,
       CacheService cacheService,
       CharacteristicsService characteristicsService,
-      StageRequestModelMapper stageRequestMapper) {
+      StageRequestMapper stageRequestMapper) {
     this.currencyService = currencyService;
     this.stageService = stageService;
     this.gameSaveService = gameSaveService;

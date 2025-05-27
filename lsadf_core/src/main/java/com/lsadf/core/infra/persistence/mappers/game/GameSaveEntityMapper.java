@@ -21,7 +21,9 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
@@ -32,35 +34,35 @@ import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
  * model, ensuring that associated entities such as characteristics, stage, and currency are
  * properly mapped as part of the conversion.
  *
- * <p>This class utilizes other mappers, including: - {@link CharacteristicsEntityModelMapper} for
- * mapping {@link CharacteristicsEntity}. - {@link StageEntityModelMapper} for mapping {@link
- * StageEntity}. - {@link CurrencyEntityModelMapper} for mapping {@link CurrencyEntity}.
+ * <p>This class utilizes other mappers, including: - {@link CharacteristicsEntityMapper} for
+ * mapping {@link CharacteristicsEntity}. - {@link StageEntityMapper} for mapping {@link
+ * StageEntity}. - {@link CurrencyEntityMapper} for mapping {@link CurrencyEntity}.
  *
  * <p>The mapping allows developers to abstract entity-to-model translations within the business
  * logic, promoting separation of concerns and maintainable structure.
  */
-public class GameSaveEntityModelMapper implements EntityModelMapper<GameSaveEntity, GameSave> {
+public class GameSaveEntityMapper implements EntityModelMapper<GameSaveEntity, GameSave> {
 
-  public GameSaveEntityModelMapper(
-      CharacteristicsEntityModelMapper characteristicsEntityModelMapper,
-      StageEntityModelMapper stageEntityModelMapper,
-      CurrencyEntityModelMapper currencyEntityModelMapper) {
+  public GameSaveEntityMapper(
+      CharacteristicsEntityMapper characteristicsEntityModelMapper,
+      StageEntityMapper stageEntityMapper,
+      CurrencyEntityMapper currencyEntityMapper) {
     this.characteristicsEntityModelMapper = characteristicsEntityModelMapper;
-    this.stageEntityModelMapper = stageEntityModelMapper;
-    this.currencyEntityModelMapper = currencyEntityModelMapper;
+    this.stageEntityMapper = stageEntityMapper;
+    this.currencyEntityMapper = currencyEntityMapper;
   }
 
-  private final CharacteristicsEntityModelMapper characteristicsEntityModelMapper;
-  private final StageEntityModelMapper stageEntityModelMapper;
-  private final CurrencyEntityModelMapper currencyEntityModelMapper;
+  private final CharacteristicsEntityMapper characteristicsEntityModelMapper;
+  private final StageEntityMapper stageEntityMapper;
+  private final CurrencyEntityMapper currencyEntityMapper;
 
   /** {@inheritDoc} */
   @Override
   public GameSave mapToModel(GameSaveEntity gameSaveEntity) {
-    Stage stage = stageEntityModelMapper.mapToModel(gameSaveEntity.getStageEntity());
+    Stage stage = stageEntityMapper.mapToModel(gameSaveEntity.getStageEntity());
     Characteristics characteristics =
         characteristicsEntityModelMapper.mapToModel(gameSaveEntity.getCharacteristicsEntity());
-    Currency currency = currencyEntityModelMapper.mapToModel(gameSaveEntity.getCurrencyEntity());
+    Currency currency = currencyEntityMapper.mapToModel(gameSaveEntity.getCurrencyEntity());
 
     return GameSave.builder()
         .id(gameSaveEntity.getId())

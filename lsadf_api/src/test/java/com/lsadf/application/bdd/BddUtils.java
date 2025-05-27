@@ -39,7 +39,7 @@ import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
+import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestImpl;

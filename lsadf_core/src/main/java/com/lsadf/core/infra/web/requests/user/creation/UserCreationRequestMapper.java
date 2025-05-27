@@ -33,7 +33,7 @@ import java.util.Date;
  * <p>The {@code mapToModel} method is the core function that performs the mapping operation,
  * ensuring all necessary attributes are appropriately populated in the {@link User} model.
  */
-public class UserCreationRequestModelMapper
+public class UserCreationRequestMapper
     implements RequestModelMapper<UserCreationRequest, User> {
   /** {@inheritDoc} */
   @Override
