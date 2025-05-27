@@ -16,8 +16,8 @@
 package com.lsadf.admin.application.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.admin.application.controllers.AdminUserController;
-import com.lsadf.admin.application.controllers.impl.AdminUserControllerImpl;
+import com.lsadf.admin.application.user.AdminUserController;
+import com.lsadf.admin.application.user.AdminUserControllerImpl;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;

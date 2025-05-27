@@ -15,7 +15,7 @@
  */
 package com.lsadf.admin.application;
 
-import com.lsadf.admin.application.config.LsadfAdminConfiguration;
+import com.lsadf.admin.config.LsadfAdminConfiguration;
 import com.lsadf.core.infra.config.ApplicationUtils;
 import java.net.UnknownHostException;
 import lombok.extern.slf4j.Slf4j;

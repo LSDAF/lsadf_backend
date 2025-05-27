@@ -16,8 +16,8 @@
 package com.lsadf.admin.application.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.admin.application.controllers.AdminInventoryController;
-import com.lsadf.admin.application.controllers.impl.AdminInventoryControllerImpl;
+import com.lsadf.admin.application.game.inventory.AdminInventoryController;
+import com.lsadf.admin.application.game.inventory.AdminInventoryControllerImpl;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;

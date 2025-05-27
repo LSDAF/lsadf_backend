@@ -17,10 +17,22 @@ package com.lsadf.admin.application.bdd;
 
 import static com.lsadf.core.infra.config.BeanConstants.Cache.GAME_SAVE_OWNERSHIP_CACHE;
 
+import com.lsadf.admin.application.auth.AdminAuthController;
+import com.lsadf.admin.application.auth.AdminAuthControllerImpl;
 import com.lsadf.admin.application.bdd.config.LsadfAdminBddConfiguration;
-import com.lsadf.admin.application.config.LsadfAdminConfiguration;
 import com.lsadf.admin.application.controllers.*;
 import com.lsadf.admin.application.controllers.impl.*;
+import com.lsadf.admin.application.game.AdminGameSaveController;
+import com.lsadf.admin.application.game.AdminGameSaveControllerImpl;
+import com.lsadf.admin.application.game.inventory.AdminInventoryController;
+import com.lsadf.admin.application.game.inventory.AdminInventoryControllerImpl;
+import com.lsadf.admin.application.info.AdminGlobalInfoController;
+import com.lsadf.admin.application.info.AdminGlobalInfoControllerImpl;
+import com.lsadf.admin.application.search.AdminSearchController;
+import com.lsadf.admin.application.search.AdminSearchControllerImpl;
+import com.lsadf.admin.application.user.AdminUserController;
+import com.lsadf.admin.application.user.AdminUserControllerImpl;
+import com.lsadf.admin.config.LsadfAdminConfiguration;
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
