@@ -16,6 +16,8 @@
  */
 package com.lsadf.core.infra.persistence.game.inventory.items;
 
+import static com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity.ItemAttributes.*;
+
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
@@ -26,11 +28,8 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Positive;
 import java.io.Serial;
 import java.util.List;
-
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import static com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity.ItemAttributes.*;
 
 @Data
 @Entity(name = ITEM_ENTITY)

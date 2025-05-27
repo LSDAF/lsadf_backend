@@ -24,11 +24,10 @@ import static com.lsadf.core.infra.cache.RedisConstants.STAGE_HISTO;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.configuration.ValkeyProperties;
+import com.lsadf.core.infra.cache.impl.ValkeyCache;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
-import com.lsadf.core.infra.cache.impl.ValkeyCache;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;
