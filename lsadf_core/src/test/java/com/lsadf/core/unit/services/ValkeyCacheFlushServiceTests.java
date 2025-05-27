@@ -25,7 +25,7 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.services.RedisCacheFlushServiceImpl;
+import com.lsadf.core.infra.cache.flush.RedisCacheFlushServiceImpl;
 import java.util.Collections;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +36,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
-class RedisCacheFlushServiceTests {
+class ValkeyCacheFlushServiceTests {
 
   RedisCacheFlushServiceImpl redisCacheFlushService;
 

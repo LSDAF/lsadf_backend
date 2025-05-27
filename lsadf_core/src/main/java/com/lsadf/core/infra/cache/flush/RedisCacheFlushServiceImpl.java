@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package com.lsadf.core.infra.cache.services;
+package com.lsadf.core.infra.cache.flush;
 
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.currency.CurrencyService;

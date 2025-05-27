@@ -29,7 +29,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @Slf4j
-public class RedisCache<T> implements Cache<T> {
+public class ValkeyCache<T> implements Cache<T> {
 
   protected final RedisTemplate<String, T> redisTemplate;
   protected final String keyType;
@@ -38,7 +38,7 @@ public class RedisCache<T> implements Cache<T> {
 
   protected final AtomicBoolean isEnabled;
 
-  public RedisCache(
+  public ValkeyCache(
       RedisTemplate<String, T> redisTemplate,
       String keyType,
       int expirationSeconds,

@@ -22,7 +22,7 @@ import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.stage.StageService;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.infra.cache.services.CacheFlushService;
+import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.config.ShutdownListener;
 import com.lsadf.core.infra.persistence.mappers.Mapper;

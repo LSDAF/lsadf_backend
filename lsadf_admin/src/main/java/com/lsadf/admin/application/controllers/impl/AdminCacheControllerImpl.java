@@ -19,7 +19,7 @@ package com.lsadf.admin.application.controllers.impl;
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.application.controllers.AdminCacheController;
-import com.lsadf.core.infra.cache.services.CacheFlushService;
+import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.responses.GenericResponse;
