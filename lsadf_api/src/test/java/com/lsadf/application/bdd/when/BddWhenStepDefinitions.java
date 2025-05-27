@@ -28,9 +28,9 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
-import com.lsadf.core.infra.web.requests.user.UserCreationRequest;
-import com.lsadf.core.infra.web.requests.user.UserLoginRequest;
-import com.lsadf.core.infra.web.requests.user.UserRefreshLoginRequest;
+import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestImpl;
+import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
+import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
@@ -153,7 +153,7 @@ public class BddWhenStepDefinitions extends BddLoader {
   }
 
   @When(
-      "^the user requests the endpoint to register a user with the following UserCreationRequest$")
+      "^the user requests the endpoint to register a user with the following UserCreationRequestImpl$")
   public void
       when_the_user_request_the_endpoint_to_register_a_user_with_the_following_UserCreationRequest(
           DataTable dataTable) {
@@ -165,11 +165,11 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
 
     Map<String, String> row = rows.get(0);
-    UserCreationRequest userCreationRequest = BddUtils.mapToUserCreationRequest(row);
+    UserCreationRequestImpl userCreationRequestImpl = BddUtils.mapToUserCreationRequest(row);
     String fullPath = ControllerConstants.AUTH + ControllerConstants.Auth.REGISTER;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    HttpEntity<UserCreationRequest> request = BddUtils.buildHttpEntity(userCreationRequest);
+    HttpEntity<UserCreationRequestImpl> request = BddUtils.buildHttpEntity(userCreationRequestImpl);
     try {
 
       ResponseEntity<GenericResponse<UserInfo>> result =

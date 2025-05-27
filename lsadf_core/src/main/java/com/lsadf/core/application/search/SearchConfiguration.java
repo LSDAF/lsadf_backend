@@ -17,7 +17,8 @@ package com.lsadf.core.application.search;
 
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,7 +36,7 @@ import org.springframework.context.annotation.Configuration;
 public class SearchConfiguration {
   @Bean
   public SearchService searchService(
-      UserService userService, GameSaveService gameSaveService, Mapper mapper) {
+      UserService userService, GameSaveService gameSaveService, GameSaveEntityModelMapper mapper) {
     return new SearchServiceImpl(userService, gameSaveService, mapper);
   }
 }

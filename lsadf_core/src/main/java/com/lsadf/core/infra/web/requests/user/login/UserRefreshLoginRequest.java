@@ -13,30 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.requests.admin;
+package com.lsadf.core.infra.web.requests.user.login;
 
-import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
+import static com.lsadf.core.infra.web.JsonAttributes.JwtAuthentication.REFRESH_TOKEN;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.domain.user.validation.Nickname;
 import com.lsadf.core.infra.web.requests.Request;
-import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import java.io.Serial;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Builder
-public class AdminGameSaveUpdateRequest implements Request {
+public class UserRefreshLoginRequest implements Request {
 
-  @Serial private static final long serialVersionUID = -1619677650296221394L;
+  @Serial private static final long serialVersionUID = -1758378448778560290L;
 
-  @JsonProperty(value = NICKNAME)
-  @Nickname
-  @Schema(description = "Nickname of the user", example = "test")
-  private String nickname;
+  @JsonProperty(value = REFRESH_TOKEN)
+  @NotBlank
+  private String refreshToken;
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.config.auth.keycloak;
+package com.lsadf.core.infra.web.config.keycloak;
 
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
@@ -21,6 +21,20 @@ import org.keycloak.admin.client.KeycloakBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class for setting up Keycloak integration.
+ *
+ * <p>This class provides beans to initialize and configure the Keycloak client used for
+ * communicating with the Keycloak server. Two beans are defined:
+ *
+ * <p>1. A {@link Keycloak} instance configured with URL, realm, client ID, client secret, and grant
+ * type for managing authentication and authorization.
+ *
+ * <p>2. A {@link UserToUserRepresentationMapper} for facilitating the mapping of user representations.
+ *
+ * <p>The configuration leverages the properties defined in {@link KeycloakProperties} and {@link
+ * KeycloakAdminProperties} to create and initialize the Keycloak client.
+ */
 @Configuration
 public class KeycloakConfiguration {
 
@@ -36,5 +50,15 @@ public class KeycloakConfiguration {
             .grantType(OAuth2Constants.CLIENT_CREDENTIALS);
 
     return builder.build();
+  }
+
+  @Bean
+  public UserToUserRepresentationMapper userMapper() {
+    return new UserToUserRepresentationMapper();
+  }
+
+  @Bean
+  public UserRepresentationModelMapper userRepresentationModelMapper() {
+    return new UserRepresentationModelMapper();
   }
 }

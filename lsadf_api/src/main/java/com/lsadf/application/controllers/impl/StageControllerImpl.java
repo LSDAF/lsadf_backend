@@ -23,9 +23,9 @@ import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.game.stage.StageService;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.services.CacheService;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
+import com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -42,14 +42,14 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   private final GameSaveService gameSaveService;
   private final CacheService cacheService;
-  private final Mapper mapper;
+  private final StageRequestModelMapper mapper;
   private final StageService stageService;
 
   @Autowired
   public StageControllerImpl(
       GameSaveService gameSaveService,
       CacheService cacheService,
-      Mapper mapper,
+      StageRequestModelMapper mapper,
       StageService stageService) {
     this.gameSaveService = gameSaveService;
     this.cacheService = cacheService;
@@ -65,7 +65,7 @@ public class StageControllerImpl extends BaseController implements StageControll
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
 
-    Stage stage = mapper.mapStageRequestToStage(stageRequest);
+    Stage stage = mapper.mapToModel(stageRequest);
     stageService.saveStage(gameSaveId, stage, cacheService.isEnabled());
 
     return generateResponse(HttpStatus.OK);

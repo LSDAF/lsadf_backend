@@ -18,7 +18,8 @@ package com.lsadf.core.application.game.stage;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.game.StageEntityModelMapper;
+import com.lsadf.core.infra.web.requests.game.stage.StageRequestModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,7 +34,17 @@ import org.springframework.context.annotation.Configuration;
 public class StageConfiguration {
   @Bean
   public StageService stageService(
-      StageRepository stageRepository, Cache<Stage> stageCache, Mapper mapper) {
+      StageRepository stageRepository, Cache<Stage> stageCache, StageEntityModelMapper mapper) {
     return new StageServiceImpl(stageRepository, stageCache, mapper);
+  }
+
+  @Bean
+  public StageEntityModelMapper stageEntityModelMapper() {
+    return new StageEntityModelMapper();
+  }
+
+  @Bean
+  public StageRequestModelMapper stageRequestModelMapper() {
+    return new StageRequestModelMapper();
   }
 }

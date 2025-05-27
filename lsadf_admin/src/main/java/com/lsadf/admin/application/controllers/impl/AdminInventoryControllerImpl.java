@@ -23,7 +23,8 @@ import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
+import com.lsadf.core.infra.persistence.mappers.game.inventory.InventoryEntityModelMapper;
+import com.lsadf.core.infra.persistence.mappers.game.inventory.ItemEntityModelMapper;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.inventory.item.ItemRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
@@ -39,13 +40,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminInventoryControllerImpl extends BaseController
     implements AdminInventoryController {
 
-  public AdminInventoryControllerImpl(InventoryService inventoryService, Mapper mapper) {
+  public AdminInventoryControllerImpl(
+      InventoryService inventoryService,
+      InventoryEntityModelMapper inventoryMapper,
+      ItemEntityModelMapper itemMapper) {
     this.inventoryService = inventoryService;
-    this.mapper = mapper;
+    this.inventoryMapper = inventoryMapper;
+    this.itemMapper = itemMapper;
   }
 
   private final InventoryService inventoryService;
-  private final Mapper mapper;
+  private final InventoryEntityModelMapper inventoryMapper;
+  private final ItemEntityModelMapper itemMapper;
 
   @Override
   public Logger getLogger() {
@@ -57,7 +63,7 @@ public class AdminInventoryControllerImpl extends BaseController
   public ResponseEntity<GenericResponse<Inventory>> getInventory(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     InventoryEntity inventoryEntity = inventoryService.getInventory(gameSaveId);
-    Inventory inventory = mapper.mapInventoryEntityToInventory(inventoryEntity);
+    Inventory inventory = inventoryMapper.mapToModel(inventoryEntity);
     return generateResponse(HttpStatus.OK, inventory);
   }
 
@@ -67,7 +73,7 @@ public class AdminInventoryControllerImpl extends BaseController
       Jwt jwt, String gameSaveId, ItemRequest itemRequest) {
     validateUser(jwt);
     ItemEntity itemEntity = inventoryService.createItemInInventory(gameSaveId, itemRequest);
-    Item item = mapper.mapItemEntityToItem(itemEntity);
+    Item item = itemMapper.mapToModel(itemEntity);
     return generateResponse(HttpStatus.OK, item);
   }
 
@@ -87,7 +93,7 @@ public class AdminInventoryControllerImpl extends BaseController
     validateUser(jwt);
     ItemEntity itemEntity =
         inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
-    Item item = mapper.mapItemEntityToItem(itemEntity);
+    Item item = itemMapper.mapToModel(itemEntity);
     return generateResponse(HttpStatus.OK, item);
   }
 

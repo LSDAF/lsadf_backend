@@ -23,9 +23,9 @@ import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.services.CacheService;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.controllers.BaseController;
-import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestModelMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -43,14 +43,14 @@ public class CharacteristicsControllerImpl extends BaseController
   private final CharacteristicsService characteristicsService;
   private final CacheService cacheService;
 
-  private final Mapper mapper;
+  private final CharacteristicsRequestModelMapper mapper;
 
   @Autowired
   public CharacteristicsControllerImpl(
       GameSaveService gameSaveService,
       CharacteristicsService characteristicsService,
       CacheService cacheService,
-      Mapper mapper) {
+      CharacteristicsRequestModelMapper mapper) {
     this.gameSaveService = gameSaveService;
     this.characteristicsService = characteristicsService;
     this.cacheService = cacheService;
@@ -65,8 +65,7 @@ public class CharacteristicsControllerImpl extends BaseController
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
 
-    Characteristics characteristics =
-        mapper.mapCharacteristicsRequestToCharacteristics(characteristicsRequest);
+    Characteristics characteristics = mapper.mapToModel(characteristicsRequest);
     characteristicsService.saveCharacteristics(
         gameSaveId, characteristics, cacheService.isEnabled());
 

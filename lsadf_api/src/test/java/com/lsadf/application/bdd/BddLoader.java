@@ -49,9 +49,8 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
-import com.lsadf.core.infra.web.config.auth.keycloak.KeycloakProperties;
+import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.advices.DynamicJsonViewAdvice;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.responses.GenericResponse;
@@ -149,8 +148,6 @@ public class BddLoader {
   @Autowired protected StageRepository stageRepository;
 
   @Autowired protected GameSaveRepository gameSaveRepository;
-
-  @Autowired protected Mapper mapper;
 
   @Autowired protected PasswordEncoder passwordEncoder;
 

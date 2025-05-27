@@ -23,9 +23,9 @@ import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.services.CacheService;
-import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.web.controllers.BaseController;
-import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestModelMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -44,18 +44,18 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
   private final CurrencyService currencyService;
   private final CacheService cacheService;
 
-  private final Mapper mapper;
+  private final CurrencyRequestModelMapper requestModelMapper;
 
   @Autowired
   public CurrencyControllerImpl(
       GameSaveService gameSaveService,
       CurrencyService currencyService,
       CacheService cacheService,
-      Mapper mapper) {
+      CurrencyRequestModelMapper requestModelMapper) {
     this.gameSaveService = gameSaveService;
     this.currencyService = currencyService;
     this.cacheService = cacheService;
-    this.mapper = mapper;
+    this.requestModelMapper = requestModelMapper;
   }
 
   /** {@inheritDoc} */
@@ -66,7 +66,7 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
 
-    Currency currency = mapper.mapCurrencyRequestToCurrency(currencyRequest);
+    Currency currency = requestModelMapper.mapToModel(currencyRequest);
     currencyService.saveCurrency(gameSaveId, currency, cacheService.isEnabled());
 
     return generateResponse(HttpStatus.OK);

@@ -13,26 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.requests.user;
+package com.lsadf.core.infra.web.requests.user.update;
 
-import static com.lsadf.core.infra.web.JsonAttributes.JwtAuthentication.REFRESH_TOKEN;
+import static com.lsadf.core.infra.web.JsonAttributes.User.FIRST_NAME;
+import static com.lsadf.core.infra.web.JsonAttributes.User.LAST_NAME;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.requests.Request;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serial;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRefreshLoginRequest implements Request {
+@Data
+@Builder
+public class UserUpdateRequest implements Request {
 
-  @Serial private static final long serialVersionUID = -1758378448778560290L;
+  @Serial private static final long serialVersionUID = 3391683431995156829L;
 
-  @JsonProperty(value = REFRESH_TOKEN)
+  @JsonProperty(value = FIRST_NAME)
   @NotBlank
-  private String refreshToken;
+  private String firstName;
+
+  @JsonProperty(value = LAST_NAME)
+  @NotBlank
+  private String lastName;
 }

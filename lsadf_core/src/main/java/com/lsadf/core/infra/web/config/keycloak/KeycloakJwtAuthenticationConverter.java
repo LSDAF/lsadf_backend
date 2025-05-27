@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.config.auth.keycloak;
+package com.lsadf.core.infra.web.config.keycloak;
 
 import com.lsadf.core.infra.web.config.auth.TokenUtils;
 import java.util.Collection;
