@@ -32,4 +32,9 @@ public class ClockConfiguration {
     }
     return Clock.systemDefaultZone();
   }
+
+  @Bean
+  public ClockService clockService(Clock clock) {
+    return new ClockServiceImpl(clock);
+  }
 }

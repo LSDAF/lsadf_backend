@@ -19,11 +19,8 @@ package com.lsadf.core.application;
 import com.lsadf.core.application.game.GameServiceConfiguration;
 import com.lsadf.core.application.search.SearchConfiguration;
 import com.lsadf.core.application.user.UserConfiguration;
-import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.clock.ClockServiceImpl;
 import com.lsadf.core.infra.persistence.mappers.Mapper;
 import com.lsadf.core.infra.persistence.mappers.MapperImpl;
-import java.time.Clock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -40,10 +37,5 @@ public class ApplicationServiceConfiguration {
   @Bean
   public Mapper mapper() {
     return new MapperImpl();
-  }
-
-  @Bean
-  public ClockService clockService(Clock clock) {
-    return new ClockServiceImpl(clock);
   }
 }
