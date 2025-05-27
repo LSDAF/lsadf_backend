@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.controllers.impl;
+package com.lsadf.application.auth;
 
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
-import com.lsadf.application.controllers.OAuth2Controller;
 import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;

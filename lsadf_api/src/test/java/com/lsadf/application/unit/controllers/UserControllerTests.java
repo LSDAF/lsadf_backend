@@ -18,8 +18,8 @@ package com.lsadf.application.unit.controllers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.lsadf.application.controllers.UserController;
-import com.lsadf.application.controllers.impl.UserControllerImpl;
+import com.lsadf.application.user.UserController;
+import com.lsadf.application.user.UserControllerImpl;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;

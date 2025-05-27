@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.controllers.impl;
+package com.lsadf.application.game.game_save;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
-import com.lsadf.application.controllers.GameSaveController;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;

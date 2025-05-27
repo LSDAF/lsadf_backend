@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.controllers.impl;
+package com.lsadf.application.game.inventory;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
-import com.lsadf.application.controllers.InventoryController;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.persistence.mappers.game.inventory.InventoryEntityModelMapper;
@@ -46,7 +44,6 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   private final GameSaveService gameSaveService;
   private final InventoryService inventoryService;
-  private final CacheService cacheService;
 
   private final InventoryEntityModelMapper inventoryMapper;
   private final ItemEntityModelMapper itemMapper;
@@ -55,12 +52,10 @@ public class InventoryControllerImpl extends BaseController implements Inventory
   public InventoryControllerImpl(
       GameSaveService gameSaveService,
       InventoryService inventoryService,
-      CacheService cacheService,
       InventoryEntityModelMapper inventoryMapper,
       ItemEntityModelMapper itemMapper) {
     this.gameSaveService = gameSaveService;
     this.inventoryService = inventoryService;
-    this.cacheService = cacheService;
     this.inventoryMapper = inventoryMapper;
     this.itemMapper = itemMapper;
   }
