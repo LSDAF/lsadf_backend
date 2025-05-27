@@ -15,6 +15,9 @@
  */
 package com.lsadf.core.infra.web.config.swagger;
 
+import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -30,8 +33,6 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({SwaggerContactProperties.class, SwaggerProperties.class})
 public class SwaggerConfiguration {
-  public static final String BEARER_AUTHENTICATION = "Bearer Authentication";
-  public static final String OAUTH2_AUTHENTICATION = "OAuth2 Authentication";
 
   private static final String KEYCLOAK = "keycloak";
 

@@ -15,8 +15,8 @@
  */
 package com.lsadf.application.controllers;
 
-import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.currency.CurrencyRequest;
@@ -28,6 +28,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -46,7 +48,7 @@ public interface CurrencyController {
   String EMERALD = "emerald";
   String AMETHYST = "amethyst";
 
-  @PostMapping(value = ControllerConstants.Currency.GAME_SAVE_ID)
+  @PostMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Saves one or several currency amounts for a game save")
   @ApiResponses(
       value = {
@@ -62,7 +64,7 @@ public interface CurrencyController {
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @RequestBody @Valid CurrencyRequest currencyRequest);
 
-  @GetMapping(value = ControllerConstants.Currency.GAME_SAVE_ID)
+  @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Gets the currency amounts for a game save")
   @ApiResponses(
       value = {
@@ -75,4 +77,12 @@ public interface CurrencyController {
   ResponseEntity<GenericResponse<Void>> getCurrency(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String GAME_SAVE_ID = "/{game_save_id}";
+    }
+  }
 }

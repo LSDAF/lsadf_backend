@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.application.controllers.CurrencyController;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
@@ -70,7 +71,8 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
       String gameSaveId) {
     String fullPath =
         ControllerConstants.CURRENCY
-            + ControllerConstants.Currency.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
+            + CurrencyController.Constants.ApiPaths.GAME_SAVE_ID.replace(
+                "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
@@ -100,7 +102,8 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
 
     String fullPath =
         ControllerConstants.CURRENCY
-            + ControllerConstants.Currency.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
+            + CurrencyController.Constants.ApiPaths.GAME_SAVE_ID.replace(
+                "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();

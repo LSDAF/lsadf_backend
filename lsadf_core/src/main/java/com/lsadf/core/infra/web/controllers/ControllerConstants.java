@@ -55,13 +55,19 @@ public final class ControllerConstants {
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class Swagger {
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class Authentications {
+      public static final String BEARER_AUTHENTICATION = "Bearer Authentication";
+      public static final String OAUTH2_AUTHENTICATION = "OAuth2 Authentication";
+    }
+
     public static final String AUTH_CONTROLLER = "Auth Controller";
     public static final String CHARACTERISTICS_CONTROLLER = "Characteristics Controller";
     public static final String CURRENCY_CONTROLLER = "Currency Controller";
     public static final String GAME_SAVE_CONTROLLER = "Game Save Controller";
     public static final String INVENTORY_CONTROLLER = "Inventory Controller";
     public static final String OAUTH_2_CONTROLLER = "OAuth2 Controller";
-    public static final String STAGE_CONTROLLER = "Stage Controller";
     public static final String USER_CONTROLLER = "User Controller";
 
     // ADMIN
@@ -71,21 +77,6 @@ public final class ControllerConstants {
     public static final String ADMIN_INVENTORIES_CONTROLLER = "Admin Inventories Controller";
     public static final String ADMIN_SEARCH_CONTROLLER = "Admin Search Controller";
     public static final String ADMIN_GLOBAL_INFO_CONTROLLER = "Admin Global Info Controller";
-  }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class Stage {
-    public static final String GAME_SAVE_ID = "/{game_save_id}";
-  }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class Currency {
-    public static final String GAME_SAVE_ID = "/{game_save_id}";
-  }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class Characteristics {
-    public static final String GAME_SAVE_ID = "/{game_save_id}";
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)

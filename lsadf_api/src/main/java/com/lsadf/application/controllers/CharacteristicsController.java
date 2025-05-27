@@ -15,8 +15,8 @@
  */
 package com.lsadf.application.controllers;
 
-import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.characteristics.CharacteristicsRequest;
@@ -28,6 +28,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -53,7 +55,7 @@ public interface CharacteristicsController {
    * @param characteristicsRequest the characteristics request
    * @return the characteristics
    */
-  @PostMapping(value = ControllerConstants.Characteristics.GAME_SAVE_ID)
+  @PostMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Updates the characteristics of a game save")
   @ApiResponses(
       value = {
@@ -75,7 +77,7 @@ public interface CharacteristicsController {
    * @param gameSaveId the game save id
    * @return the characteristics
    */
-  @GetMapping(value = ControllerConstants.Characteristics.GAME_SAVE_ID)
+  @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Gets the characteristics of a game save")
   @ApiResponses(
       value = {
@@ -88,4 +90,12 @@ public interface CharacteristicsController {
   ResponseEntity<GenericResponse<Void>> getCharacteristics(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String GAME_SAVE_ID = "/{game_save_id}";
+    }
+  }
 }

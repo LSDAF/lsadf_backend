@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.application.controllers.StageController;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
@@ -77,7 +78,7 @@ public class BddStageWhenStepDefinitions extends BddLoader {
 
     String fullPath =
         ControllerConstants.STAGE
-            + ControllerConstants.Stage.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
+            + StageController.Constants.ApiPaths.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
@@ -103,7 +104,7 @@ public class BddStageWhenStepDefinitions extends BddLoader {
       String gameSaveId) {
     String fullPath =
         ControllerConstants.STAGE
-            + ControllerConstants.Stage.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
+            + StageController.Constants.ApiPaths.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
