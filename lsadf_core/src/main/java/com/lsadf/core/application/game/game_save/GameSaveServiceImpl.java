@@ -16,6 +16,7 @@
 package com.lsadf.core.application.game.game_save;
 
 import com.lsadf.core.application.user.UserService;
+import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
@@ -36,6 +37,7 @@ import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
@@ -62,6 +64,8 @@ public class GameSaveServiceImpl implements GameSaveService {
   private final HistoCache<Characteristics> characteristicsCache;
   private final HistoCache<Currency> currencyCache;
 
+  private final GameSaveEntityMapper mapper;
+
   public GameSaveServiceImpl(
       UserService userService,
       GameSaveRepository gameSaveRepository,
@@ -72,7 +76,8 @@ public class GameSaveServiceImpl implements GameSaveService {
       Cache<String> gameSaveOwnershipCache,
       HistoCache<Stage> stageCache,
       HistoCache<Characteristics> characteristicsCache,
-      HistoCache<Currency> currencyCache) {
+      HistoCache<Currency> currencyCache,
+      GameSaveEntityMapper mapper) {
     this.userService = userService;
     this.gameSaveRepository = gameSaveRepository;
     this.inventoryRepository = inventoryRepository;
@@ -83,12 +88,13 @@ public class GameSaveServiceImpl implements GameSaveService {
     this.stageCache = stageCache;
     this.characteristicsCache = characteristicsCache;
     this.currencyCache = currencyCache;
+    this.mapper = mapper;
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional
-  public GameSaveEntity createGameSave(String userEmail) throws NotFoundException {
+  public GameSave createGameSave(String userEmail) throws NotFoundException {
     log.info("Creating new save for user {}", userEmail);
 
     User user = userService.getUserByUsername(userEmail);
@@ -117,20 +123,21 @@ public class GameSaveServiceImpl implements GameSaveService {
 
     saved.setStageEntity(stageEntity);
 
-    return gameSaveRepository.save(saved);
+    var results = gameSaveRepository.save(saved);
+    return mapper.mapToModel(results);
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
-  public GameSaveEntity getGameSave(String saveId) throws NotFoundException {
+  public GameSave getGameSave(String saveId) throws NotFoundException {
     GameSaveEntity gameSaveEntity = getGameSaveEntity(saveId);
     return enrichGameSaveWithCachedData(gameSaveEntity);
   }
 
   /** {@inheritDoc} */
   @Override
-  public GameSaveEntity createGameSave(AdminGameSaveCreationRequest creationRequest)
+  public GameSave createGameSave(AdminGameSaveCreationRequest creationRequest)
       throws NotFoundException, AlreadyExistingGameSaveException {
 
     User user = userService.getUserByUsername(creationRequest.getUserEmail());
@@ -189,13 +196,14 @@ public class GameSaveServiceImpl implements GameSaveService {
 
     saved.setStageEntity(stageEntity);
 
-    return gameSaveRepository.save(saved);
+    var result = gameSaveRepository.save(saved);
+    return mapper.mapToModel(result);
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional
-  public GameSaveEntity updateNickname(
+  public GameSave updateNickname(
       String saveId, GameSaveUpdateNicknameRequest gameSaveUpdateNicknameRequest)
       throws NotFoundException, AlreadyTakenNicknameException {
     GameSaveEntity currentGameSave = getGameSaveEntity(saveId);
@@ -215,7 +223,7 @@ public class GameSaveServiceImpl implements GameSaveService {
   /** {@inheritDoc} */
   @Override
   @Transactional
-  public GameSaveEntity updateNickname(String saveId, AdminGameSaveUpdateRequest updateRequest)
+  public GameSave updateNickname(String saveId, AdminGameSaveUpdateRequest updateRequest)
       throws NotFoundException, AlreadyTakenNicknameException {
     GameSaveEntity currentGameSave = getGameSaveEntity(saveId);
 
@@ -224,7 +232,7 @@ public class GameSaveServiceImpl implements GameSaveService {
           "Game save with nickname " + updateRequest.getNickname() + " already exists");
     }
 
-    return updateGameSaveEntity(currentGameSave, updateRequest);
+    return updateGameSave(currentGameSave, updateRequest);
   }
 
   /** {@inheritDoc} */
@@ -269,18 +277,11 @@ public class GameSaveServiceImpl implements GameSaveService {
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
-  public Stream<GameSaveEntity> getGameSaves() {
+  public Stream<GameSave> getGameSaves() {
     return gameSaveRepository.findAllGameSaves().map(this::enrichGameSaveWithCachedData);
   }
 
-  /**
-   * Update the game save entity with the new nickname
-   *
-   * @param gameSaveEntity the game save entity
-   * @param gameSaveUpdateNicknameRequest the nickname update request
-   * @return the updated game save entity
-   */
-  private GameSaveEntity updateGameSaveEntityNickname(
+  private GameSave updateGameSaveEntityNickname(
       GameSaveEntity gameSaveEntity, GameSaveUpdateNicknameRequest gameSaveUpdateNicknameRequest) {
     boolean hasUpdates = false;
 
@@ -291,20 +292,21 @@ public class GameSaveServiceImpl implements GameSaveService {
     }
 
     if (hasUpdates) {
-      return gameSaveRepository.save(gameSaveEntity);
+      var updated = gameSaveRepository.save(gameSaveEntity);
+      return mapper.mapToModel(updated);
     }
 
-    return gameSaveEntity;
+    return mapper.mapToModel(gameSaveEntity);
   }
 
   /**
-   * Update the game save entity with the new data
+   * Updates the provided game save entity with data from the admin update request.
    *
-   * @param gameSaveEntity the game save entity
-   * @param adminUpdateRequest the admin update request
-   * @return the updated game save entity
+   * @param gameSaveEntity the game save entity to be updated
+   * @param adminUpdateRequest the request containing the updated data
+   * @return the updated game save entity, or the original entity if no updates were made
    */
-  private GameSaveEntity updateGameSaveEntity(
+  private GameSave updateGameSave(
       GameSaveEntity gameSaveEntity, AdminGameSaveUpdateRequest adminUpdateRequest) {
     boolean hasUpdates = false;
 
@@ -314,10 +316,11 @@ public class GameSaveServiceImpl implements GameSaveService {
     }
 
     if (hasUpdates) {
-      return gameSaveRepository.save(gameSaveEntity);
+      var updated = gameSaveRepository.save(gameSaveEntity);
+      return mapper.mapToModel(updated);
     }
 
-    return gameSaveEntity;
+    return mapper.mapToModel(gameSaveEntity);
   }
 
   /** {@inheritDoc} */
@@ -353,7 +356,7 @@ public class GameSaveServiceImpl implements GameSaveService {
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
-  public Stream<GameSaveEntity> getGameSavesByUsername(String username) {
+  public Stream<GameSave> getGameSavesByUsername(String username) {
     if (!userService.checkUsernameExists(username)) {
       throw new NotFoundException("User with username " + username + " not found");
     }
@@ -363,12 +366,13 @@ public class GameSaveServiceImpl implements GameSaveService {
   }
 
   /**
-   * Enrich the game save with cached data
+   * Enhances the provided game save entity with data from the cache for characteristics, currency,
+   * and stage entities, if the respective caches are enabled and contain data.
    *
-   * @param gameSave the game save
-   * @return the game save with cached data
+   * @param gameSave the game save entity to be enriched with cached data
+   * @return the enriched game save entity
    */
-  private GameSaveEntity enrichGameSaveWithCachedData(GameSaveEntity gameSave) {
+  private GameSave enrichGameSaveWithCachedData(GameSaveEntity gameSave) {
     if (characteristicsCache.isEnabled()) {
       Optional<Characteristics> optionalCharacteristics =
           characteristicsCache.get(gameSave.getId());
@@ -383,7 +387,7 @@ public class GameSaveServiceImpl implements GameSaveService {
       optionalStage.ifPresent(gameSave::setStageEntity);
     }
 
-    return gameSave;
+    return mapper.mapToModel(gameSave);
   }
 
   /**

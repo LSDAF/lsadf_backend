@@ -18,7 +18,6 @@ package com.lsadf.admin.application.ui.game_save;
 import com.lsadf.admin.utils.FilterUtils;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.utils.StreamUtils;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
 import com.vaadin.hilla.BrowserCallable;
@@ -37,11 +36,9 @@ import org.springframework.data.domain.Pageable;
 public class AdminGameSaveHillaUiService implements ListService<GameSave> {
 
   private final GameSaveService gameSaveService;
-  private final GameSaveEntityMapper mapper;
 
-  public AdminGameSaveHillaUiService(GameSaveService gameSaveService, GameSaveEntityMapper mapper) {
+  public AdminGameSaveHillaUiService(GameSaveService gameSaveService) {
     this.gameSaveService = gameSaveService;
-    this.mapper = mapper;
   }
 
   @Override
@@ -49,7 +46,7 @@ public class AdminGameSaveHillaUiService implements ListService<GameSave> {
   @NonNull
   public List<@Nonnull GameSave> list(
       @NonNull Pageable pageable, @jakarta.annotation.Nullable @Nullable Filter filter) {
-    Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves().map(mapper::mapToModel);
+    Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves();
 
     // Filter the stream
     if (filter != null) {
@@ -70,7 +67,6 @@ public class AdminGameSaveHillaUiService implements ListService<GameSave> {
 
   @Nonnull
   public GameSave get(@Nonnull String id) {
-    var gameSave = gameSaveService.getGameSave(id);
-    return mapper.mapToModel(gameSave);
+    return gameSaveService.getGameSave(id);
   }
 }

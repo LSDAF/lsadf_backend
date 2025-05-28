@@ -22,7 +22,6 @@ import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
@@ -194,12 +193,10 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   @Then("^the inventory of the game save with id (.*) should be empty$")
   public void when_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
     try {
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(gameSaveId);
+      Set<Item> inventory = inventoryService.getInventoryItems(gameSaveId);
 
-      InventoryEntity inventoryEntity = gameSaveEntity.getInventoryEntity();
-
-      assertThat(inventoryEntity).isNotNull();
-      assertThat(inventoryEntity.getItems()).isEmpty();
+      assertThat(inventory).isNotNull();
+      assertThat(inventory).isEmpty();
     } catch (Exception e) {
       exceptionStack.push(e);
     }

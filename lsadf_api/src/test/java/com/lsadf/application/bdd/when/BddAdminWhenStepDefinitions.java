@@ -25,7 +25,6 @@ import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.exceptions.AlreadyExistingGameSaveException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.common.Filter;
@@ -66,15 +65,15 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       throw new IllegalArgumentException("Expected only one row in the DataTable");
     }
 
-    List<GameSaveEntity> list = new ArrayList<>();
+    List<GameSave> list = new ArrayList<>();
     for (Map<String, String> row : rows) {
       AdminGameSaveCreationRequest request = BddUtils.mapToAdminGameSaveCreationRequest(row);
-      GameSaveEntity gameSave = gameSaveService.createGameSave(request);
+      GameSave gameSave = gameSaveService.createGameSave(request);
       list.add(gameSave);
     }
 
     try {
-      gameSaveEntityListStack.push(list);
+      gameSaveListStack.push(list);
     } catch (Exception e) {
       exceptionStack.push(e);
     }
