@@ -24,7 +24,7 @@ import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
 import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -60,7 +60,7 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<GenericResponse<List<User>>> getUsers(Jwt jwt, List<String> orderBy) {
+  public ResponseEntity<ApiResponse<List<User>>> getUsers(Jwt jwt, List<String> orderBy) {
     List<UserSortingParameter> sortingParameterList =
         Collections.singletonList(UserSortingParameter.NONE);
     if (orderBy != null && !orderBy.isEmpty()) {
@@ -77,7 +77,7 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<GenericResponse<User>> getUserById(Jwt jwt, String userId) {
+  public ResponseEntity<ApiResponse<User>> getUserById(Jwt jwt, String userId) {
     validateUser(jwt);
     User user = userService.getUserById(userId);
     return generateResponse(HttpStatus.OK, user);
@@ -89,7 +89,7 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<GenericResponse<User>> getUserByUsername(Jwt jwt, String username) {
+  public ResponseEntity<ApiResponse<User>> getUserByUsername(Jwt jwt, String username) {
     validateUser(jwt);
     User user = userService.getUserByUsername(username);
     return generateResponse(HttpStatus.OK, user);
@@ -101,7 +101,7 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<GenericResponse<User>> updateUser(
+  public ResponseEntity<ApiResponse<User>> updateUser(
       Jwt jwt, String userId, AdminUserUpdateRequest user) {
     validateUser(jwt);
     User updatedUser = userService.updateUser(userId, user);
@@ -114,7 +114,7 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<GenericResponse<Void>> deleteUser(Jwt jwt, String userId) {
+  public ResponseEntity<ApiResponse<Void>> deleteUser(Jwt jwt, String userId) {
     validateUser(jwt);
     userService.deleteUser(userId);
     return generateResponse(HttpStatus.OK);
@@ -126,7 +126,7 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<GenericResponse<User>> createUser(
+  public ResponseEntity<ApiResponse<User>> createUser(
       Jwt jwt, AdminUserCreationRequest adminUserCreationRequest) {
     validateUser(jwt);
     User user = userService.createUser(adminUserCreationRequest);

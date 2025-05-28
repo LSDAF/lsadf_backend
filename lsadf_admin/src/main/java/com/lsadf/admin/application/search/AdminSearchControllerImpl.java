@@ -24,7 +24,7 @@ import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -60,7 +60,7 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
    * @return
    */
   @Override
-  public ResponseEntity<GenericResponse<List<User>>> searchUsers(
+  public ResponseEntity<ApiResponse<List<User>>> searchUsers(
       Jwt jwt, SearchRequest searchRequest, List<String> orderBy) {
     List<UserSortingParameter> sortingParameterList =
         Collections.singletonList(UserSortingParameter.NONE);
@@ -80,7 +80,7 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
    * @return
    */
   @Override
-  public ResponseEntity<GenericResponse<List<GameSave>>> searchGameSaves(
+  public ResponseEntity<ApiResponse<List<GameSave>>> searchGameSaves(
       Jwt jwt, SearchRequest searchRequest, List<String> orderBy) {
     List<GameSaveSortingParameter> gameSaveOrderBy =
         Collections.singletonList(GameSaveSortingParameter.NONE);

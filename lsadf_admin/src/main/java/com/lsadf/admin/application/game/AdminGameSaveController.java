@@ -26,11 +26,10 @@ import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -57,16 +56,26 @@ public interface AdminGameSaveController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Deletes a game save")
   @DeleteMapping(value = ControllerConstants.AdminGameSave.GAME_SAVE_ID)
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<Void>> deleteGameSave(
+  ResponseEntity<ApiResponse<Void>> deleteGameSave(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 
@@ -79,15 +88,23 @@ public interface AdminGameSaveController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Generates a new game save")
   @PostMapping
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<GameSave>> generateNewSaveGame(
+  ResponseEntity<ApiResponse<GameSave>> generateNewSaveGame(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody AdminGameSaveCreationRequest creationRequest);
 
@@ -100,16 +117,26 @@ public interface AdminGameSaveController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets a game save by its id")
   @GetMapping(value = ControllerConstants.AdminGameSave.GAME_SAVE_ID)
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<GameSave>> getGameSave(
+  ResponseEntity<ApiResponse<GameSave>> getGameSave(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 
@@ -122,16 +149,26 @@ public interface AdminGameSaveController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets a user's game saves")
   @GetMapping(value = ControllerConstants.AdminGameSave.USER_GAME_SAVES)
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<List<GameSave>>> getUserGameSaves(
+  ResponseEntity<ApiResponse<List<GameSave>>> getUserGameSaves(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @PathVariable(value = USERNAME) @Email String username);
 
@@ -144,15 +181,23 @@ public interface AdminGameSaveController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets all game saves")
   @GetMapping
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<List<GameSave>>> getSaveGames(
+  ResponseEntity<ApiResponse<List<GameSave>>> getSaveGames(
       @AuthenticationPrincipal Jwt jwt,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);
 
@@ -166,16 +211,26 @@ public interface AdminGameSaveController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Updates a new game")
   @PostMapping(value = ControllerConstants.AdminGameSave.GAME_SAVE_ID)
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<GameSave>> updateGameSave(
+  ResponseEntity<ApiResponse<GameSave>> updateGameSave(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @Valid @RequestBody AdminGameSaveUpdateRequest adminGameSaveUpdateRequest);

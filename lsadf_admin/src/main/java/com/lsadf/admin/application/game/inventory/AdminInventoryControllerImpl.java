@@ -21,7 +21,7 @@ import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -48,7 +48,7 @@ public class AdminInventoryControllerImpl extends BaseController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Set<Item>>> getInventory(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<Set<Item>>> getInventory(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     Set<Item> items = inventoryService.getInventoryItems(gameSaveId);
     return generateResponse(HttpStatus.OK, items);
@@ -56,7 +56,7 @@ public class AdminInventoryControllerImpl extends BaseController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Item>> createItemInInventory(
+  public ResponseEntity<ApiResponse<Item>> createItemInInventory(
       Jwt jwt, String gameSaveId, ItemRequest itemRequest) {
     validateUser(jwt);
     Item item = inventoryService.createItemInInventory(gameSaveId, itemRequest);
@@ -65,7 +65,7 @@ public class AdminInventoryControllerImpl extends BaseController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> deleteItemFromInventory(
+  public ResponseEntity<ApiResponse<Void>> deleteItemFromInventory(
       Jwt jwt, String gameSaveId, String itemClientId) {
     validateUser(jwt);
     inventoryService.deleteItemFromInventory(gameSaveId, itemClientId);
@@ -74,7 +74,7 @@ public class AdminInventoryControllerImpl extends BaseController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Item>> updateItemInInventory(
+  public ResponseEntity<ApiResponse<Item>> updateItemInInventory(
       Jwt jwt, String gameSaveId, String itemClientId, ItemRequest itemRequest) {
     validateUser(jwt);
     Item item = inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
@@ -83,7 +83,7 @@ public class AdminInventoryControllerImpl extends BaseController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> clearInventoryItems(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<Void>> clearInventoryItems(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     inventoryService.clearInventory(gameSaveId);
     return generateResponse(HttpStatus.OK);

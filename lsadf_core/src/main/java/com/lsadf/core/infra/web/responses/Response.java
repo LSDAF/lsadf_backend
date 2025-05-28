@@ -16,4 +16,6 @@
 
 package com.lsadf.core.infra.web.responses;
 
-public interface Response {}
+import java.io.Serializable;
+
+public interface Response extends Serializable {}

@@ -26,10 +26,9 @@ import com.lsadf.core.infra.web.controllers.Controller;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,16 +58,26 @@ public interface AdminSearchController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "400", description = ResponseMessages.BAD_REQUEST),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "400",
+            description = ResponseMessages.BAD_REQUEST),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @PostMapping(value = ControllerConstants.AdminSearch.SEARCH_USERS)
   @Operation(summary = "Searches for users in function of the give search criteria")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<List<User>>> searchUsers(
+  ResponseEntity<ApiResponse<List<User>>> searchUsers(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody(required = false) SearchRequest searchRequest,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);
@@ -83,16 +92,26 @@ public interface AdminSearchController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "400", description = ResponseMessages.BAD_REQUEST),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "400",
+            description = ResponseMessages.BAD_REQUEST),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @PostMapping(value = ControllerConstants.AdminSearch.SEARCH_GAME_SAVES)
   @Operation(summary = "Searches for game saves in function of the give search criteria")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<List<GameSave>>> searchGameSaves(
+  ResponseEntity<ApiResponse<List<GameSave>>> searchGameSaves(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody(required = false) SearchRequest searchRequest,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);

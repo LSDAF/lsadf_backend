@@ -22,7 +22,7 @@ import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.web.controllers.BaseController;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -58,7 +58,7 @@ public class AdminGlobalInfoControllerImpl extends BaseController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<GlobalInfo>> getGlobalInfo(Jwt jwt) {
+  public ResponseEntity<ApiResponse<GlobalInfo>> getGlobalInfo(Jwt jwt) {
     validateUser(jwt);
     Long userCount = userService.getUsers().count();
     Long gameSaveCount = gameSaveService.getGameSaves().count();

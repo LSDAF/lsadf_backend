@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.infra.exceptions.DynamicJsonViewException;
 import com.lsadf.core.infra.web.config.security.JsonViewProperties;
 import com.lsadf.core.infra.web.controllers.JsonViews;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -43,7 +43,7 @@ public class DynamicJsonViewAdvice implements ResponseBodyAdvice<Object> {
     this.jsonViewProperties = jsonViewProperties;
 
     // init objectMapper typeReference registers
-    objectMapper.getTypeFactory().constructType(GenericResponse.class);
+    objectMapper.getTypeFactory().constructType(ApiResponse.class);
   }
 
   @Override
@@ -75,12 +75,12 @@ public class DynamicJsonViewAdvice implements ResponseBodyAdvice<Object> {
           };
 
       try {
-        GenericResponse<Object> genericResponse = (GenericResponse<Object>) body;
-        Object data = genericResponse.getData();
+        ApiResponse<Object> apiResponse = (ApiResponse<Object>) body;
+        Object data = apiResponse.getData();
         String json = objectMapper.writerWithView(viewClass).writeValueAsString(data);
         JsonNode jsonNode = objectMapper.readTree(json);
-        genericResponse.setData(jsonNode);
-        return genericResponse;
+        apiResponse.setData(jsonNode);
+        return apiResponse;
       } catch (Exception e) {
         throw new DynamicJsonViewException("Failed to apply JSON view", e);
       }

@@ -18,22 +18,15 @@ package com.lsadf.admin.application.game;
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.application.game.stage.StageService;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.utils.StreamUtils;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.controllers.JsonViews;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -59,33 +52,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AdminGameSaveControllerImpl extends BaseController implements AdminGameSaveController {
 
-  private final CurrencyService currencyService;
-  private final StageService stageService;
   private final GameSaveService gameSaveService;
-  private final CacheService cacheService;
-  private final CharacteristicsRequestMapper characteristicsRequestMapper;
-  private final CurrencyRequestMapper currencyRequestMapper;
-  private final StageRequestMapper stageRequestMapper;
-  private final CharacteristicsService characteristicsService;
 
   @Autowired
-  public AdminGameSaveControllerImpl(
-      CurrencyService currencyService,
-      StageService stageService,
-      GameSaveService gameSaveService,
-      CharacteristicsRequestMapper characteristicsRequestMapper,
-      CurrencyRequestMapper currencyRequestMapper,
-      CacheService cacheService,
-      CharacteristicsService characteristicsService,
-      StageRequestMapper stageRequestMapper) {
-    this.currencyService = currencyService;
-    this.stageService = stageService;
+  public AdminGameSaveControllerImpl(GameSaveService gameSaveService) {
     this.gameSaveService = gameSaveService;
-    this.cacheService = cacheService;
-    this.characteristicsRequestMapper = characteristicsRequestMapper;
-    this.currencyRequestMapper = currencyRequestMapper;
-    this.stageRequestMapper = stageRequestMapper;
-    this.characteristicsService = characteristicsService;
   }
 
   /** {@inheritDoc} */
@@ -101,8 +72,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    */
   @Override
   @JsonView(JsonViews.Admin.class)
-  public ResponseEntity<GenericResponse<List<GameSave>>> getSaveGames(
-      Jwt jwt, List<String> orderBy) {
+  public ResponseEntity<ApiResponse<List<GameSave>>> getSaveGames(Jwt jwt, List<String> orderBy) {
     List<GameSaveSortingParameter> gameSaveOrderBy =
         Collections.singletonList(GameSaveSortingParameter.NONE);
     if (orderBy != null && !orderBy.isEmpty()) {
@@ -118,8 +88,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<List<GameSave>>> getUserGameSaves(
-      Jwt jwt, String username) {
+  public ResponseEntity<ApiResponse<List<GameSave>>> getUserGameSaves(Jwt jwt, String username) {
     validateUser(jwt);
     try (Stream<GameSave> stream = gameSaveService.getGameSavesByUsername(username)) {
       List<GameSave> gameSaves = stream.toList();
@@ -134,7 +103,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    */
   @Override
   @JsonView(JsonViews.Admin.class)
-  public ResponseEntity<GenericResponse<GameSave>> getGameSave(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<GameSave>> getGameSave(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     GameSave gameSave = gameSaveService.getGameSave(gameSaveId);
     return generateResponse(HttpStatus.OK, gameSave);
@@ -147,7 +116,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    */
   @Override
   @JsonView(JsonViews.Admin.class)
-  public ResponseEntity<GenericResponse<GameSave>> updateGameSave(
+  public ResponseEntity<ApiResponse<GameSave>> updateGameSave(
       Jwt jwt, String gameSaveId, AdminGameSaveUpdateRequest adminGameSaveUpdateRequest) {
 
     validateUser(jwt);
@@ -162,7 +131,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    */
   @Override
   @JsonView(JsonViews.Admin.class)
-  public ResponseEntity<GenericResponse<GameSave>> generateNewSaveGame(
+  public ResponseEntity<ApiResponse<GameSave>> generateNewSaveGame(
       Jwt jwt, AdminGameSaveCreationRequest creationRequest) {
 
     validateUser(jwt);
@@ -173,7 +142,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
   /** {@inheritDoc} */
   @Override
   @JsonView(JsonViews.Admin.class)
-  public ResponseEntity<GenericResponse<Void>> deleteGameSave(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<Void>> deleteGameSave(Jwt jwt, String gameSaveId) {
 
     validateUser(jwt);
 

@@ -26,7 +26,7 @@ import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -86,10 +86,10 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Set<Item>>> result =
+      ResponseEntity<ApiResponse<Set<Item>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
-      GenericResponse<Set<Item>> body = result.getBody();
+      ApiResponse<Set<Item>> body = result.getBody();
       itemSetStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
@@ -119,10 +119,10 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<ItemRequest> request = new HttpEntity<>(itemRequest, headers);
-      ResponseEntity<GenericResponse<Void>> result =
+      ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedVoidResponse());
-      GenericResponse<Void> body = result.getBody();
+      ApiResponse<Void> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -147,10 +147,10 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Void>> result =
+      ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.DELETE, request, buildParameterizedVoidResponse());
-      GenericResponse<Void> body = result.getBody();
+      ApiResponse<Void> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -181,9 +181,9 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<ItemRequest> request = new HttpEntity<>(itemRequest, headers);
-      ResponseEntity<GenericResponse<Void>> result =
+      ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(url, HttpMethod.PUT, request, buildParameterizedVoidResponse());
-      GenericResponse<Void> body = result.getBody();
+      ApiResponse<Void> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {

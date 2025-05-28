@@ -29,11 +29,11 @@ public class ResponseUtils {
    * @param message Human readable message status
    * @param responseObj Object to return
    * @param <T> Type of object to return
-   * @return ResponseEntity of GenericResponse containing all inputs
+   * @return ResponseEntity of ApiResponse containing all inputs
    */
-  public static <T> ResponseEntity<GenericResponse<T>> generateResponse(
+  public static <T> ResponseEntity<ApiResponse<T>> generateResponse(
       HttpStatus status, String message, Object responseObj) {
-    GenericResponse response = generateGenericResponse(status, message, responseObj);
+    ApiResponse response = generateGenericResponse(status, message, responseObj);
     return new ResponseEntity<>(response, status);
   }
 
@@ -43,9 +43,9 @@ public class ResponseUtils {
    * @param status HTTP status of the response
    * @param responseObj Object to return
    * @param <T> Type of object to return
-   * @return ResponseEntity of GenericResponse containing all inputs
+   * @return ResponseEntity of ApiResponse containing all inputs
    */
-  public static <T> ResponseEntity<GenericResponse<T>> generateResponse(
+  public static <T> ResponseEntity<ApiResponse<T>> generateResponse(
       HttpStatus status, Object responseObj) {
     return generateResponse(status, null, responseObj);
   }
@@ -55,24 +55,24 @@ public class ResponseUtils {
    *
    * @param status HTTP status of the response
    * @param <T> Type of object to return
-   * @return ResponseEntity of GenericResponse containing all inputs
+   * @return ResponseEntity of ApiResponse containing all inputs
    */
-  public static <T> ResponseEntity<GenericResponse<T>> generateResponse(HttpStatus status) {
+  public static <T> ResponseEntity<ApiResponse<T>> generateResponse(HttpStatus status) {
     return generateResponse(status, null, null);
   }
 
   /**
-   * private method to build a GenericResponse
+   * private method to build a ApiResponse
    *
    * @param status HTTP status of the response
    * @param message Human-readable message status
    * @param responseObj Object to return
    * @param <T> Type of object to return
-   * @return GenericResponse containing all inputs
+   * @return ApiResponse containing all inputs
    */
-  private static <T> GenericResponse<T> generateGenericResponse(
+  private static <T> ApiResponse<T> generateGenericResponse(
       HttpStatus status, String message, T responseObj) {
-    return GenericResponse.<T>builder()
+    return ApiResponse.<T>builder()
         .status(status.value())
         .message(message)
         .data(responseObj)

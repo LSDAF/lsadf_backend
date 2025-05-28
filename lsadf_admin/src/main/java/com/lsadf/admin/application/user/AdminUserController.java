@@ -26,11 +26,10 @@ import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,16 +57,26 @@ public interface AdminUserController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @PostMapping(value = ControllerConstants.AdminUser.USER_ID)
   @Operation(summary = "Updates a user")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<User>> updateUser(
+  ResponseEntity<ApiResponse<User>> updateUser(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = USER_ID) @Uuid String userId,
       @Valid @RequestBody AdminUserUpdateRequest user);
@@ -81,16 +90,26 @@ public interface AdminUserController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.BAD_REQUEST),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.BAD_REQUEST),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Creates a new user")
   @JsonView(JsonViews.Admin.class)
   @PostMapping
-  ResponseEntity<GenericResponse<User>> createUser(
+  ResponseEntity<ApiResponse<User>> createUser(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody AdminUserCreationRequest adminUserCreationRequest);
 
@@ -103,16 +122,26 @@ public interface AdminUserController extends Controller {
    */
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Deletes a user")
   @DeleteMapping(value = ControllerConstants.AdminUser.USER_ID)
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<Void>> deleteUser(
+  ResponseEntity<ApiResponse<Void>> deleteUser(
       @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) @Uuid String userId);
 
   /**
@@ -125,15 +154,25 @@ public interface AdminUserController extends Controller {
   @GetMapping(value = ControllerConstants.AdminUser.USERNAME)
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets a user by its email")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<User>> getUserByUsername(
+  ResponseEntity<ApiResponse<User>> getUserByUsername(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @Email @PathVariable(value = USERNAME) String username);
 
@@ -147,15 +186,25 @@ public interface AdminUserController extends Controller {
   @GetMapping(value = ControllerConstants.AdminUser.USER_ID)
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets a UserAdminDetails by the user id")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<User>> getUserById(
+  ResponseEntity<ApiResponse<User>> getUserById(
       @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) @Uuid String userId);
 
   /**
@@ -166,14 +215,22 @@ public interface AdminUserController extends Controller {
   @GetMapping
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets all users")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<List<User>>> getUsers(
+  ResponseEntity<ApiResponse<List<User>>> getUsers(
       @AuthenticationPrincipal Jwt jwt,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);
 }

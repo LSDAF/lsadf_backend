@@ -64,7 +64,7 @@ import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.advices.DynamicJsonViewAdvice;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import jakarta.mail.internet.MimeMessage;
@@ -213,7 +213,7 @@ public class BddLoader {
 
   @Autowired protected Stack<Exception> exceptionStack;
 
-  @Autowired protected Stack<GenericResponse<?>> responseStack;
+  @Autowired protected Stack<ApiResponse<?>> responseStack;
 
   @Autowired protected Stack<Boolean> booleanStack;
 

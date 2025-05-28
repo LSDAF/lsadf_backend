@@ -26,7 +26,7 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
@@ -87,7 +87,7 @@ public class BddStageWhenStepDefinitions extends BddLoader {
       headers.setBearerAuth(token);
 
       HttpEntity<StageRequest> httpRequest = new HttpEntity<>(request, headers);
-      ResponseEntity<GenericResponse<Void>> result =
+      ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, httpRequest, buildParameterizedVoidResponse());
       var body = result.getBody();
@@ -112,7 +112,7 @@ public class BddStageWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Stage>> result =
+      ResponseEntity<ApiResponse<Stage>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedStageResponse());
       var body = result.getBody();

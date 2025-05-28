@@ -33,7 +33,7 @@ import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpda
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
@@ -87,10 +87,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<GlobalInfo>> result =
+      ResponseEntity<ApiResponse<GlobalInfo>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGlobalInfoResponse());
-      GenericResponse<GlobalInfo> body = result.getBody();
+      ApiResponse<GlobalInfo> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -109,10 +109,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<List<User>>> result =
+      ResponseEntity<ApiResponse<List<User>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedUserListResponse());
-      GenericResponse<List<User>> body = result.getBody();
+      ApiResponse<List<User>> body = result.getBody();
       userListStack.push(body.getData());
       responseStack.push(body);
 
@@ -134,10 +134,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<List<GameSave>>> result =
+      ResponseEntity<ApiResponse<List<GameSave>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
-      GenericResponse<List<GameSave>> body = result.getBody();
+      ApiResponse<List<GameSave>> body = result.getBody();
       gameSaveListStack.push(body.getData());
       responseStack.push(body);
 
@@ -160,7 +160,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Void>> result =
+      ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.DELETE, request, buildParameterizedVoidResponse());
       responseStack.push(result.getBody());
@@ -184,7 +184,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Void>> result =
+      ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.DELETE, request, buildParameterizedVoidResponse());
       responseStack.push(result.getBody());
@@ -208,9 +208,9 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<User>> result =
+      ResponseEntity<ApiResponse<User>> result =
           testRestTemplate.exchange(url, HttpMethod.GET, request, buildParamaterizedUserResponse());
-      GenericResponse<User> body = result.getBody();
+      ApiResponse<User> body = result.getBody();
       userListStack.push(Collections.singletonList(body.getData()));
       responseStack.push(body);
       log.info("Response: {}", result);
@@ -234,10 +234,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<GameSave>> result =
+      ResponseEntity<ApiResponse<GameSave>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveResponse());
-      GenericResponse<GameSave> body = result.getBody();
+      ApiResponse<GameSave> body = result.getBody();
       gameSaveListStack.push(Collections.singletonList(body.getData()));
       responseStack.push(body);
       log.info("Response: {}", result);
@@ -261,9 +261,9 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<User>> result =
+      ResponseEntity<ApiResponse<User>> result =
           testRestTemplate.exchange(url, HttpMethod.GET, request, buildParamaterizedUserResponse());
-      GenericResponse<User> body = result.getBody();
+      ApiResponse<User> body = result.getBody();
       userListStack.push(Collections.singletonList(body.getData()));
       responseStack.push(body);
       log.info("Response: {}", result);
@@ -296,10 +296,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<SearchRequest> request = new HttpEntity<>(new SearchRequest(filters), headers);
-      ResponseEntity<GenericResponse<List<User>>> result =
+      ResponseEntity<ApiResponse<List<User>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedUserListResponse());
-      GenericResponse<List<User>> body = result.getBody();
+      ApiResponse<List<User>> body = result.getBody();
       userListStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
@@ -332,10 +332,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<SearchRequest> request = new HttpEntity<>(new SearchRequest(filters), headers);
-      ResponseEntity<GenericResponse<List<GameSave>>> result =
+      ResponseEntity<ApiResponse<List<GameSave>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedGameSaveListResponse());
-      GenericResponse<List<GameSave>> body = result.getBody();
+      ApiResponse<List<GameSave>> body = result.getBody();
       gameSaveListStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
@@ -367,10 +367,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       headers.setBearerAuth(token);
       HttpEntity<AdminUserUpdateRequest> request =
           new HttpEntity<>(adminUserUpdateRequest, headers);
-      ResponseEntity<GenericResponse<User>> result =
+      ResponseEntity<ApiResponse<User>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParamaterizedUserResponse());
-      GenericResponse<User> body = result.getBody();
+      ApiResponse<User> body = result.getBody();
       userListStack.push(Collections.singletonList(body.getData()));
       responseStack.push(body);
       log.info("Response: {}", result);
@@ -403,10 +403,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<AdminUserCreationRequest> request = new HttpEntity<>(adminRequest, headers);
-      ResponseEntity<GenericResponse<User>> result =
+      ResponseEntity<ApiResponse<User>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParamaterizedUserResponse());
-      GenericResponse<User> body = result.getBody();
+      ApiResponse<User> body = result.getBody();
       userListStack.push(Collections.singletonList(body.getData()));
       responseStack.push(body);
       log.info("Response: {}", result);
@@ -426,7 +426,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Boolean>> result =
+      ResponseEntity<ApiResponse<Boolean>> result =
           testRestTemplate.exchange(
               url, HttpMethod.PUT, request, buildParameterizedBooleanResponse());
       responseStack.push(result.getBody());
@@ -446,7 +446,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Boolean>> result =
+      ResponseEntity<ApiResponse<Boolean>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedBooleanResponse());
       responseStack.push(result.getBody());
@@ -466,7 +466,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Void>> result =
+      ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(url, HttpMethod.PUT, request, buildParameterizedVoidResponse());
       responseStack.push(result.getBody());
       log.info("Response: {}", result);
@@ -498,10 +498,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<AdminGameSaveCreationRequest> request = new HttpEntity<>(adminRequest, headers);
-      ResponseEntity<GenericResponse<GameSave>> result =
+      ResponseEntity<ApiResponse<GameSave>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedGameSaveResponse());
-      GenericResponse<GameSave> body = result.getBody();
+      ApiResponse<GameSave> body = result.getBody();
       gameSaveListStack.push(Collections.singletonList(body.getData()));
       responseStack.push(body);
       log.info("Response: {}", result);
@@ -525,10 +525,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<List<GameSave>>> result =
+      ResponseEntity<ApiResponse<List<GameSave>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
-      GenericResponse<List<GameSave>> body = result.getBody();
+      ApiResponse<List<GameSave>> body = result.getBody();
       gameSaveListStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
@@ -560,10 +560,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<AdminGameSaveUpdateRequest> request = new HttpEntity<>(updateRequest, headers);
-      ResponseEntity<GenericResponse<GameSave>> result =
+      ResponseEntity<ApiResponse<GameSave>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedGameSaveResponse());
-      GenericResponse<GameSave> body = result.getBody();
+      ApiResponse<GameSave> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 

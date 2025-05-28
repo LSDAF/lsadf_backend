@@ -20,7 +20,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.web.controllers.BaseController;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ public class AdminCacheControllerImpl extends BaseController implements AdminCac
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Boolean>> isCacheEnabled(Jwt jwt) {
+  public ResponseEntity<ApiResponse<Boolean>> isCacheEnabled(Jwt jwt) {
     validateUser(jwt);
     boolean cacheEnabled = redisCacheService.isEnabled();
     return generateResponse(HttpStatus.OK, cacheEnabled);
@@ -60,7 +60,7 @@ public class AdminCacheControllerImpl extends BaseController implements AdminCac
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Boolean>> toggleRedisCacheEnabling(Jwt jwt) {
+  public ResponseEntity<ApiResponse<Boolean>> toggleRedisCacheEnabling(Jwt jwt) {
     validateUser(jwt);
     redisCacheService.toggleCacheEnabling();
     Boolean cacheEnabled = redisCacheService.isEnabled();
@@ -69,7 +69,7 @@ public class AdminCacheControllerImpl extends BaseController implements AdminCac
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> flushAndClearCache(Jwt jwt) {
+  public ResponseEntity<ApiResponse<Void>> flushAndClearCache(Jwt jwt) {
     validateUser(jwt);
 
     log.info("Clearing all caches");

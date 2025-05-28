@@ -22,7 +22,7 @@ import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,7 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<GameSave>> generateNewGameSave(Jwt jwt) {
+  public ResponseEntity<ApiResponse<GameSave>> generateNewGameSave(Jwt jwt) {
     validateUser(jwt);
 
     String username = getUsernameFromJwt(jwt);
@@ -66,7 +66,7 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> updateNickname(
+  public ResponseEntity<ApiResponse<Void>> updateNickname(
       Jwt jwt, String id, GameSaveNicknameUpdateRequest gameSaveNicknameUpdateRequest) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
@@ -78,7 +78,7 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<List<GameSave>>> getUserGameSaves(
+  public ResponseEntity<ApiResponse<List<GameSave>>> getUserGameSaves(
       @AuthenticationPrincipal Jwt jwt) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);

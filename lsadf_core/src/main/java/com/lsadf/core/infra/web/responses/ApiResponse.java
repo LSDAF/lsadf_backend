@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.responses;
 
-import static com.lsadf.core.infra.web.responses.GenericResponse.Attributes.*;
+import static com.lsadf.core.infra.web.responses.ApiResponse.Attributes.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,7 +37,7 @@ import lombok.*;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({STATUS, MESSAGE, DATA})
-public class GenericResponse<T> implements Serializable {
+public class ApiResponse<T> implements Serializable {
   @Serial private static final long serialVersionUID = 5392685232533641077L;
 
   @JsonProperty(value = STATUS)

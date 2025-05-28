@@ -17,9 +17,8 @@ package com.lsadf.application.controllers.auth;
 
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -36,16 +35,24 @@ public interface OAuth2Controller {
    * Handle OAuth2 callback
    *
    * @param code OAuth2 code
-   * @return GenericResponse with JwtAuthentication
+   * @return ApiResponse with JwtAuthentication
    */
   @GetMapping(value = ControllerConstants.OAuth2.CALLBACK)
   @Operation(summary = "Handles the OAuth2 callback", hidden = true)
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "404", description = "Not Found"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "OK"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = "Not Found"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error")
       })
-  ResponseEntity<GenericResponse<JwtAuthentication>> handleOAuth2Callback(String code);
+  ResponseEntity<ApiResponse<JwtAuthentication>> handleOAuth2Callback(String code);
 }

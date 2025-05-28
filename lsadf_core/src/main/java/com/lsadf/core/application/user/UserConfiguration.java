@@ -20,6 +20,7 @@ import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mappers.UserToUserRepresentationMapper;
 import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestMapper;
+import com.lsadf.core.infra.web.responses.user.UserInfoResponseMapper;
 import org.keycloak.admin.client.Keycloak;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,5 +52,10 @@ public class UserConfiguration {
   @Bean
   public UserCreationRequestMapper userCreationRequestModelMapper() {
     return new UserCreationRequestMapper();
+  }
+
+  @Bean
+  public UserInfoResponseMapper userInfoResponseModelMapper() {
+    return new UserInfoResponseMapper();
   }
 }

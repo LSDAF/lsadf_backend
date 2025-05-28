@@ -24,7 +24,7 @@ import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -35,140 +35,139 @@ import org.springframework.core.ParameterizedTypeReference;
 public class ParameterizedTypeReferenceUtils {
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of UserInfo
+   * Builds a ParameterizedTypeReference for a ApiResponse of UserInfo
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<UserInfo>>
+  public static ParameterizedTypeReference<ApiResponse<UserInfo>>
       buildParameterizedUserInfoResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of JwtAuthentication
+   * Builds a ParameterizedTypeReference for a ApiResponse of JwtAuthentication
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<JwtAuthentication>>
+  public static ParameterizedTypeReference<ApiResponse<JwtAuthentication>>
       buildParameterizedJwtAuthenticationResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of GameSave
+   * Builds a ParameterizedTypeReference for a ApiResponse of GameSave
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<GameSave>>
+  public static ParameterizedTypeReference<ApiResponse<GameSave>>
       buildParameterizedGameSaveResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of Characteristics
+   * Builds a ParameterizedTypeReference for a ApiResponse of Characteristics
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<Characteristics>>
+  public static ParameterizedTypeReference<ApiResponse<Characteristics>>
       buildParameterizedCharacteristicsResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of Currency
+   * Builds a ParameterizedTypeReference for a ApiResponse of Currency
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<Currency>>
+  public static ParameterizedTypeReference<ApiResponse<Currency>>
       buildParameterizedCurrencyResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse containing a Set of Item objects.
+   * Builds a ParameterizedTypeReference for a ApiResponse containing a Set of Item objects.
    *
-   * @return a ParameterizedTypeReference representing a GenericResponse with a Set of Item objects
-   *     as its data type
+   * @return a ParameterizedTypeReference representing a ApiResponse with a Set of Item objects as
+   *     its data type
    */
-  public static ParameterizedTypeReference<GenericResponse<Set<Item>>>
+  public static ParameterizedTypeReference<ApiResponse<Set<Item>>>
       buildParameterizedItemSetResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of Item
+   * Builds a ParameterizedTypeReference for a ApiResponse of Item
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<Item>> buildParameterizedItemResponse() {
+  public static ParameterizedTypeReference<ApiResponse<Item>> buildParameterizedItemResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of Stage
+   * Builds a ParameterizedTypeReference for a ApiResponse of Stage
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<Stage>>
-      buildParameterizedStageResponse() {
+  public static ParameterizedTypeReference<ApiResponse<Stage>> buildParameterizedStageResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of Void
+   * Builds a ParameterizedTypeReference for a ApiResponse of Void
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<Void>> buildParameterizedVoidResponse() {
+  public static ParameterizedTypeReference<ApiResponse<Void>> buildParameterizedVoidResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of List of GameSave
+   * Builds a ParameterizedTypeReference for a ApiResponse of List of GameSave
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<List<GameSave>>>
+  public static ParameterizedTypeReference<ApiResponse<List<GameSave>>>
       buildParameterizedGameSaveListResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of List of GameSaveEntity
+   * Builds a ParameterizedTypeReference for a ApiResponse of List of GameSaveEntity
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<Boolean>>
+  public static ParameterizedTypeReference<ApiResponse<Boolean>>
       buildParameterizedBooleanResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of GlobalInfo
+   * Builds a ParameterizedTypeReference for a ApiResponse of GlobalInfo
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<GlobalInfo>>
+  public static ParameterizedTypeReference<ApiResponse<GlobalInfo>>
       buildParameterizedGlobalInfoResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of list of User
+   * Builds a ParameterizedTypeReference for a ApiResponse of list of User
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<List<User>>>
+  public static ParameterizedTypeReference<ApiResponse<List<User>>>
       buildParameterizedUserListResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of User
+   * Builds a ParameterizedTypeReference for a ApiResponse of User
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<GenericResponse<User>> buildParamaterizedUserResponse() {
+  public static ParameterizedTypeReference<ApiResponse<User>> buildParamaterizedUserResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 }

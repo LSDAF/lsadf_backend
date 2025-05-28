@@ -27,7 +27,7 @@ import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -155,8 +155,8 @@ public class LsadfBddTestsConfiguration {
   }
 
   @Bean
-  public Stack<GenericResponse<?>> genericResponseStack(BddStackCleaner stackCleaner) {
-    var stack = new Stack<GenericResponse<?>>();
+  public Stack<ApiResponse<?>> genericResponseStack(BddStackCleaner stackCleaner) {
+    var stack = new Stack<ApiResponse<?>>();
     stackCleaner.addStack(stack);
     return stack;
   }

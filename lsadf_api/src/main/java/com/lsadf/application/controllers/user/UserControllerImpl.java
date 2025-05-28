@@ -20,7 +20,9 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.controllers.BaseController;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.user.UserInfoResponse;
+import com.lsadf.core.infra.web.responses.user.UserInfoResponseMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class UserControllerImpl extends BaseController implements UserController {
+
+  private final UserInfoResponseMapper userInfoResponseMapper;
+
+  public UserControllerImpl(UserInfoResponseMapper userInfoResponseMapper) {
+    this.userInfoResponseMapper = userInfoResponseMapper;
+  }
+
   /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
@@ -40,8 +49,9 @@ public class UserControllerImpl extends BaseController implements UserController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<UserInfo>> getUserInfo(Jwt jwt) {
+  public ResponseEntity<ApiResponse<UserInfoResponse>> getUserInfo(Jwt jwt) {
     UserInfo userInfo = getUserInfoFromJwt(jwt);
-    return generateResponse(HttpStatus.OK, userInfo);
+    var response = userInfoResponseMapper.mapToResponse(userInfo);
+    return generateResponse(HttpStatus.OK, response);
   }
 }
