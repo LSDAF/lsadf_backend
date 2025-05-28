@@ -15,27 +15,21 @@
  */
 package com.lsadf.core.infra.cache.config;
 
-import static com.lsadf.core.infra.cache.RedisConstants.GAME_SAVE_OWNERSHIP;
 import static com.lsadf.core.infra.config.BeanConstants.Cache.*;
 
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.characteristics.ValkeyCharacteristicsCache;
 import com.lsadf.core.application.game.currency.CurrencyService;
-import com.lsadf.core.application.game.currency.ValkeyCurrencyCache;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.stage.StageService;
-import com.lsadf.core.application.game.stage.ValkeyStageCache;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.infra.cache.ValkeyCache;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.flush.RedisCacheFlushServiceImpl;
 import com.lsadf.core.infra.cache.listeners.ValkeyKeyExpirationListener;
-import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.cache.services.ValkeyCacheServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -123,50 +117,9 @@ public class ValkeyCacheConfiguration {
     return template;
   }
 
-  @Bean(name = GAME_SAVE_OWNERSHIP_CACHE)
-  public ValkeyCache<String> gameSaveOwnershipCache(
-      RedisTemplate<String, String> redisTemplate,
-      CacheExpirationProperties cacheExpirationProperties,
-      ValkeyProperties valkeyProperties) {
-    return new ValkeyCache<>(
-        redisTemplate,
-        GAME_SAVE_OWNERSHIP,
-        cacheExpirationProperties.getGameSaveOwnershipExpirationSeconds(),
-        valkeyProperties);
-  }
-
-  @Bean(name = CHARACTERISTICS_CACHE)
-  public HistoCache<Characteristics> redisCharacteristicsCache(
-      RedisTemplate<String, Characteristics> redisTemplate,
-      CacheExpirationProperties cacheExpirationProperties,
-      ValkeyProperties valkeyProperties) {
-    return new ValkeyCharacteristicsCache(
-        redisTemplate,
-        cacheExpirationProperties.getCharacteristicsExpirationSeconds(),
-        valkeyProperties);
-  }
-
-  @Bean(name = CURRENCY_CACHE)
-  public HistoCache<Currency> redisCurrencyCache(
-      RedisTemplate<String, Currency> redisTemplate,
-      CacheExpirationProperties cacheExpirationProperties,
-      ValkeyProperties valkeyProperties) {
-    return new ValkeyCurrencyCache(
-        redisTemplate, cacheExpirationProperties.getCurrencyExpirationSeconds(), valkeyProperties);
-  }
-
-  @Bean(name = STAGE_CACHE)
-  public HistoCache<Stage> redisStageCache(
-      RedisTemplate<String, Stage> redisTemplate,
-      CacheExpirationProperties cacheExpirationProperties,
-      ValkeyProperties valkeyProperties) {
-    return new ValkeyStageCache(
-        redisTemplate, cacheExpirationProperties.getStageExpirationSeconds(), valkeyProperties);
-  }
-
   @Bean
   public CacheService redisCacheService(
-      ValkeyCache<String> gameSaveOwnershipCache,
+      Cache<String> gameSaveOwnershipCache,
       HistoCache<Characteristics> characteristicsCache,
       HistoCache<Currency> currencyCache,
       HistoCache<Stage> stageCache) {

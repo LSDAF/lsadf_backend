@@ -15,13 +15,19 @@
  */
 package com.lsadf.core.application.game.stage;
 
+import static com.lsadf.core.infra.config.BeanConstants.Cache.STAGE_CACHE;
+
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.cache.HistoCache;
+import com.lsadf.core.infra.cache.config.ValkeyProperties;
+import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * Configuration class for the Stage service and its dependencies.
@@ -46,5 +52,14 @@ public class StageConfiguration {
   @Bean
   public StageRequestMapper stageRequestModelMapper() {
     return new StageRequestMapper();
+  }
+
+  @Bean(name = STAGE_CACHE)
+  public HistoCache<Stage> redisStageCache(
+      RedisTemplate<String, Stage> redisTemplate,
+      CacheExpirationProperties cacheExpirationProperties,
+      ValkeyProperties valkeyProperties) {
+    return new ValkeyStageCache(
+        redisTemplate, cacheExpirationProperties.getStageExpirationSeconds(), valkeyProperties);
   }
 }

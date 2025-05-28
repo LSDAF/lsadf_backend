@@ -59,19 +59,9 @@ public class SimpleUserCreationRequest implements UserCreationRequest {
   @JsonProperty(value = USERNAME)
   private String username;
 
-  @JsonIgnore @Builder.Default private boolean enabled = true;
+  @JsonIgnore @Builder.Default private Boolean enabled = true;
 
-  @JsonIgnore @Builder.Default private boolean emailVerified = false;
+  @JsonIgnore @Builder.Default private Boolean emailVerified = false;
 
   @JsonIgnore private List<String> userRoles;
-
-  @Override
-  public Boolean getEnabled() {
-    return this.enabled;
-  }
-
-  @Override
-  public Boolean getEmailVerified() {
-    return emailVerified;
-  }
 }

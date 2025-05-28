@@ -15,13 +15,22 @@
  */
 package com.lsadf.core.application.game.characteristics;
 
+import static com.lsadf.core.infra.config.BeanConstants.Cache.CHARACTERISTICS_CACHE;
+
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.cache.HistoCache;
+import com.lsadf.core.infra.cache.NoOpHistoCache;
+import com.lsadf.core.infra.cache.config.ValkeyProperties;
+import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * Configuration class for setting up the CharacteristicsService bean. This class defines and
@@ -47,5 +56,23 @@ public class CharacteristicsConfiguration {
   @Bean
   public CharacteristicsRequestMapper characteristicsRequestModelMapper() {
     return new CharacteristicsRequestMapper();
+  }
+
+  @Bean(name = CHARACTERISTICS_CACHE)
+  @ConditionalOnProperty(prefix = "cache.redis", name = "enabled", havingValue = "true")
+  public HistoCache<Characteristics> redisCharacteristicsCache(
+      RedisTemplate<String, Characteristics> redisTemplate,
+      CacheExpirationProperties cacheExpirationProperties,
+      ValkeyProperties valkeyProperties) {
+    return new ValkeyCharacteristicsCache(
+        redisTemplate,
+        cacheExpirationProperties.getCharacteristicsExpirationSeconds(),
+        valkeyProperties);
+  }
+
+  @Bean(name = CHARACTERISTICS_CACHE)
+  @ConditionalOnMissingBean
+  public HistoCache<Characteristics> noOpCharacteristicsCache() {
+    return new NoOpHistoCache<>();
   }
 }

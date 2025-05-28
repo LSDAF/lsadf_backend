@@ -24,6 +24,7 @@ import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -70,7 +71,7 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(id, username);
-    gameSaveService.updateNickname(id, gameSaveNicknameUpdateRequest);
+    gameSaveService.updateGameSave(id, gameSaveNicknameUpdateRequest);
     log.info("Successfully saved game with id {} for user with email {}", id, username);
     return generateResponse(HttpStatus.OK);
   }
@@ -82,8 +83,10 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
 
-    List<GameSave> gameSaveList = gameSaveService.getGameSavesByUsername(username).toList();
-
-    return generateResponse(HttpStatus.OK, gameSaveList);
+    try (Stream<GameSave> gameSaveStream = gameSaveService.getGameSavesByUsername(username)) {
+      List<GameSave> gameSaveList = gameSaveStream.toList();
+      log.info("Successfully retrieved game saves for user with email {}", username);
+      return generateResponse(HttpStatus.OK, gameSaveList);
+    }
   }
 }

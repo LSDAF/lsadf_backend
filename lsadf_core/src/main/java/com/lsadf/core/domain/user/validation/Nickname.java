@@ -28,4 +28,6 @@ public @interface Nickname {
   Class<?>[] groups() default {};
 
   Class<?>[] payload() default {};
+
+  boolean nullable() default false;
 }

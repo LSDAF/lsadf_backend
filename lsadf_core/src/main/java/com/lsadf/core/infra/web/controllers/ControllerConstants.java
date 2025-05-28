@@ -90,11 +90,6 @@ public final class ControllerConstants {
   public static final class AdminGameSave {
     public static final String USER_GAME_SAVES = "/user/{username}";
     public static final String GAME_SAVE_ID = "/id/{game_save_id}";
-    public static final String UPDATE_GAME_SAVE_CHARACTERISTICS =
-        "/id/{game_save_id}/characteristics";
-    public static final String UPDATE_GAME_SAVE_CURRENCIES = "/id/{game_save_id}/currencies";
-    public static final String UPDATE_GAME_SAVE_INVENTORIES = "/id/{game_save_id}/inventories";
-    public static final String UPDATE_GAME_SAVE_STAGES = "/id/{game_save_id}/stages";
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)

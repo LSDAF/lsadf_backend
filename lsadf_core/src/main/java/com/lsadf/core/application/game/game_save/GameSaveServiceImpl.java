@@ -23,6 +23,7 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
+import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.exceptions.AlreadyExistingGameSaveException;
 import com.lsadf.core.infra.exceptions.AlreadyTakenNicknameException;
 import com.lsadf.core.infra.exceptions.http.ForbiddenException;
@@ -43,7 +44,6 @@ import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsReq
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveUpdateRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import java.util.*;
@@ -55,42 +55,46 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class GameSaveServiceImpl implements GameSaveService {
   private final UserService userService;
-  private final GameSaveRepository gameSaveRepository;
-  private final InventoryRepository inventoryRepository;
-  private final StageRepository stageRepository;
-  private final CharacteristicsRepository characteristicsRepository;
-  private final CurrencyRepository currencyRepository;
 
+  private final GameSaveRepository gameSaveRepository;
+  private final CurrencyRepository currencyRepository;
+  private final StageRepository stageRepository;
+  private final InventoryRepository inventoryRepository;
+  private final CharacteristicsRepository characteristicsRepository;
+
+  private final CacheService cacheService;
   private final Cache<String> gameSaveOwnershipCache;
   private final HistoCache<Stage> stageCache;
-  private final HistoCache<Characteristics> characteristicsCache;
   private final HistoCache<Currency> currencyCache;
+  private final HistoCache<Characteristics> characteristicsCache;
 
-  private final GameSaveEntityMapper mapper;
+  private final GameSaveEntityMapper gameSaveEntityMapper;
 
   public GameSaveServiceImpl(
       UserService userService,
       GameSaveRepository gameSaveRepository,
-      InventoryRepository inventoryRepository,
-      StageRepository stageRepository,
       CharacteristicsRepository characteristicsRepository,
       CurrencyRepository currencyRepository,
+      StageRepository stageRepository,
+      InventoryRepository inventoryRepository,
+      GameSaveEntityMapper gameSaveEntityMapper,
+      CacheService cacheService,
       Cache<String> gameSaveOwnershipCache,
       HistoCache<Stage> stageCache,
-      HistoCache<Characteristics> characteristicsCache,
       HistoCache<Currency> currencyCache,
-      GameSaveEntityMapper mapper) {
+      HistoCache<Characteristics> characteristicsCache) {
     this.userService = userService;
     this.gameSaveRepository = gameSaveRepository;
-    this.inventoryRepository = inventoryRepository;
+    this.gameSaveEntityMapper = gameSaveEntityMapper;
+    this.cacheService = cacheService;
+    this.gameSaveOwnershipCache = gameSaveOwnershipCache;
+    this.stageCache = stageCache;
+    this.currencyCache = currencyCache;
+    this.characteristicsCache = characteristicsCache;
     this.characteristicsRepository = characteristicsRepository;
     this.currencyRepository = currencyRepository;
     this.stageRepository = stageRepository;
-    this.gameSaveOwnershipCache = gameSaveOwnershipCache;
-    this.stageCache = stageCache;
-    this.characteristicsCache = characteristicsCache;
-    this.currencyCache = currencyCache;
-    this.mapper = mapper;
+    this.inventoryRepository = inventoryRepository;
   }
 
   /** {@inheritDoc} */
@@ -126,7 +130,7 @@ public class GameSaveServiceImpl implements GameSaveService {
     saved.setStageEntity(stageEntity);
 
     var results = gameSaveRepository.save(saved);
-    return mapper.mapToModel(results);
+    return gameSaveEntityMapper.mapToModel(results);
   }
 
   /** {@inheritDoc} */
@@ -134,7 +138,7 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Transactional(readOnly = true)
   public GameSave getGameSave(String saveId) throws NotFoundException {
     GameSaveEntity gameSaveEntity = getGameSaveEntity(saveId);
-    GameSave gameSave = mapper.mapToModel(gameSaveEntity);
+    GameSave gameSave = gameSaveEntityMapper.mapToModel(gameSaveEntity);
     return enrichGameSaveWithCachedData(gameSave);
   }
 
@@ -200,12 +204,12 @@ public class GameSaveServiceImpl implements GameSaveService {
     saved.setStageEntity(stageEntity);
 
     var result = gameSaveRepository.save(saved);
-    return mapper.mapToModel(result);
+    return gameSaveEntityMapper.mapToModel(result);
   }
 
   /** {@inheritDoc} */
   @Override
-  public GameSave updateNickname(String saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
+  public GameSave updateGameSave(String saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
       throws ForbiddenException,
           NotFoundException,
           UnauthorizedException,
@@ -230,12 +234,11 @@ public class GameSaveServiceImpl implements GameSaveService {
       gameSaveEntity.setNickname(gameSaveUpdateRequest.getNickname());
     }
 
-    if (hasUpdates) {
-      var updated = gameSaveRepository.save(gameSaveEntity);
-      return mapper.mapToModel(updated);
+    if (gameSaveUpdateRequest.getCharacteristics() != null) {
+      Characteristics characteristicsUpdate = gameSaveUpdateRequest.getCharacteristics();
     }
 
-    return mapper.mapToModel(gameSaveEntity);
+    return gameSaveEntityMapper.mapToModel(gameSaveEntity);
   }
 
   /** {@inheritDoc} */
@@ -259,50 +262,20 @@ public class GameSaveServiceImpl implements GameSaveService {
     // Delete entities from currency & stage before deleting the game save
     characteristicsRepository.deleteById(saveId);
     currencyRepository.deleteById(saveId);
-    inventoryRepository.deleteById(saveId);
     stageRepository.deleteById(saveId);
-
+    inventoryRepository.deleteById(saveId);
     gameSaveRepository.deleteById(saveId);
-    if (characteristicsCache.isEnabled()) {
-      characteristicsCache.unset(saveId);
-    }
-    if (currencyCache.isEnabled()) {
-      currencyCache.unset(saveId);
-    }
-    if (stageCache.isEnabled()) {
-      stageCache.unset(saveId);
-    }
-    if (gameSaveOwnershipCache.isEnabled()) {
-      gameSaveOwnershipCache.unset(saveId);
-    }
+    cacheService.clearGameSaveValues(saveId);
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public Stream<GameSave> getGameSaves() {
-    return gameSaveRepository
-        .findAllGameSaves()
-        .map(mapper::mapToModel)
-        .map(this::enrichGameSaveWithCachedData);
-  }
-
-  private GameSave updateGameSaveEntityNickname(
-      GameSaveEntity gameSaveEntity, GameSaveNicknameUpdateRequest gameSaveNicknameUpdateRequest) {
-    boolean hasUpdates = false;
-
-    if (!Objects.equals(
-        gameSaveEntity.getNickname(), gameSaveNicknameUpdateRequest.getNickname())) {
-      gameSaveEntity.setNickname(gameSaveNicknameUpdateRequest.getNickname());
-      hasUpdates = true;
+    try (var resultStream = gameSaveRepository.findAllGameSaves()) {
+      List<GameSave> results = resultStream.map(gameSaveEntityMapper::mapToModel).toList();
+      return results.stream().map(this::enrichGameSaveWithCachedData);
     }
-
-    if (hasUpdates) {
-      var updated = gameSaveRepository.save(gameSaveEntity);
-      return mapper.mapToModel(updated);
-    }
-
-    return mapper.mapToModel(gameSaveEntity);
   }
 
   /**
@@ -323,10 +296,10 @@ public class GameSaveServiceImpl implements GameSaveService {
 
     if (hasUpdates) {
       var updated = gameSaveRepository.save(gameSaveEntity);
-      return mapper.mapToModel(updated);
+      return gameSaveEntityMapper.mapToModel(updated);
     }
 
-    return mapper.mapToModel(gameSaveEntity);
+    return gameSaveEntityMapper.mapToModel(gameSaveEntity);
   }
 
   /** {@inheritDoc} */
@@ -366,27 +339,21 @@ public class GameSaveServiceImpl implements GameSaveService {
     if (!userService.checkUsernameExists(username)) {
       throw new NotFoundException("User with username " + username + " not found");
     }
-    return gameSaveRepository
-        .findGameSaveEntitiesByUserEmail(username)
-        .map(mapper::mapToModel)
-        .map(this::enrichGameSaveWithCachedData);
+    try (var resultStream = gameSaveRepository.findGameSaveEntitiesByUserEmail(username)) {
+      List<GameSave> results = resultStream.map(gameSaveEntityMapper::mapToModel).toList();
+      return results.stream().map(this::enrichGameSaveWithCachedData);
+    }
   }
 
   private GameSave enrichGameSaveWithCachedData(GameSave gameSave) {
-    if (characteristicsCache.isEnabled()) {
-      Optional<Characteristics> optionalCharacteristics =
-          characteristicsCache.get(gameSave.getId());
-      optionalCharacteristics.ifPresent(gameSave::setCharacteristics);
-    }
-    if (currencyCache.isEnabled()) {
-      Optional<Currency> optionalCurrency = currencyCache.get(gameSave.getId());
-      optionalCurrency.ifPresent(gameSave::setCurrency);
-    }
-    if (stageCache.isEnabled()) {
-      Optional<Stage> optionalStage = stageCache.get(gameSave.getId());
-      optionalStage.ifPresent(gameSave::setStage);
-    }
+    var cacheCharacteristics = characteristicsCache.get(gameSave.getId());
+    cacheCharacteristics.ifPresent(gameSave::setCharacteristics);
 
+    var cacheCurrency = currencyCache.get(gameSave.getId());
+    cacheCurrency.ifPresent(gameSave::setCurrency);
+
+    var cacheStage = stageCache.get(gameSave.getId());
+    cacheStage.ifPresent(gameSave::setStage);
     return gameSave;
   }
 

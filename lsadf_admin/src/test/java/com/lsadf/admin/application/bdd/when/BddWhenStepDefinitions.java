@@ -253,7 +253,7 @@ public class BddWhenStepDefinitions extends BddLoader {
     Map<String, String> row = rows.get(0);
     GameSaveNicknameUpdateRequest updateRequest = BddUtils.mapToGameSaveUpdateUserRequest(row);
     try {
-      GameSave updatedGameSave = gameSaveService.updateNickname(saveId, updateRequest);
+      GameSave updatedGameSave = gameSaveService.updateGameSave(saveId, updateRequest);
       gameSaveListStack.push(Collections.singletonList(updatedGameSave));
     } catch (Exception e) {
       exceptionStack.push(e);

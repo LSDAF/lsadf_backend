@@ -16,8 +16,45 @@
 
 package com.lsadf.core.infra.web.requests.game.game_save.update;
 
+import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.web.requests.Request;
 
+/**
+ * Represents a request for updating a game save. This interface provides methods to retrieve
+ * details about the game's save state, including characteristics, currency, stage progress, and the
+ * player's nickname. Implementing classes should provide the functionality to manage and update
+ * specific components of the game save.
+ */
 public interface GameSaveUpdateRequest extends Request {
+
+  /**
+   * Retrieves the characteristics associated with the game save update request.
+   *
+   * @return the characteristics object containing details such as attack, crit chance, crit damage,
+   *     health, and resistance
+   */
+  Characteristics getCharacteristics();
+
+  /**
+   * Retrieves the currency information associated with the game save update request.
+   *
+   * @return the currency object containing details such as gold, diamond, emerald, and amethyst
+   */
+  Currency getCurrency();
+
+  /**
+   * Retrieves the stage object associated with the game save update request.
+   *
+   * @return the stage representing the player's game progress
+   */
+  Stage getStage();
+
+  /**
+   * Retrieves the nickname associated with the game save update request.
+   *
+   * @return the nickname of the user as a string
+   */
   String getNickname();
 }

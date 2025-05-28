@@ -139,7 +139,7 @@ Feature: Admin GameSave Controller BDD tests
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
-    And the user requests the admin endpoint to update the game save with id 6a4f12dc-4e83-40f7-992e-8f2e04375d74 with the following AdminGameSaveUpdateRequest
+    And the user requests the admin endpoint to update the game save with id 6a4f12dc-4e83-40f7-992e-8f2e04375d74 with the following GameSaveUpdateRequest
       | healthPoints | attack | nickname |
       | 100000       | 599    | test-ZZZ |
 
@@ -152,7 +152,7 @@ Feature: Admin GameSave Controller BDD tests
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
-    And the user requests the admin endpoint to update the game save with id 88df00e0-1529-44a1-97d6-c11218bd6003 with the following AdminGameSaveUpdateRequest
+    And the user requests the admin endpoint to update the game save with id 88df00e0-1529-44a1-97d6-c11218bd6003 with the following GameSaveUpdateRequest
       | nickname | attack | critChance | critDamage | health | resistance |
       | test-ZZZ | 100    | 200        | 300        | 400    | 500        |
 
@@ -180,7 +180,7 @@ Feature: Admin GameSave Controller BDD tests
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
-    And the user requests the admin endpoint to update the characteristics of the game save with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following CharacteristicsRequest
+    And the user requests the admin endpoint to update the game save with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following GameSaveUpdateRequest
       | attack | critChance | critDamage | health | resistance |
       | 100    | 100        | 100        | 100    | 100        |
 
@@ -190,7 +190,7 @@ Feature: Admin GameSave Controller BDD tests
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
-    And the user requests the admin endpoint to update the characteristics of the game save with id 861e3a80-eade-402c-8598-3820e870c252 with the following CharacteristicsRequest
+    And the user requests the admin endpoint to update the game save with id 861e3a80-eade-402c-8598-3820e870c252 with the following GameSaveUpdateRequest
       | attack | critChance | critDamage | health | resistance |
       | 100    | 100        | 100        | 100    | 100        |
     Then the response status code should be 404
@@ -199,7 +199,7 @@ Feature: Admin GameSave Controller BDD tests
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
-    And the user requests the admin endpoint to update the currencies of the game save with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following CurrencyRequest
+    And the user requests the admin endpoint to update the game save with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following GameSaveUpdateRequest
       | gold | diamond | emerald | amethyst |
       | 100  |         | 300     |          |
 
@@ -209,7 +209,7 @@ Feature: Admin GameSave Controller BDD tests
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
-    And the user requests the admin endpoint to update the currencies of the game save with id 861e3a80-eade-402c-8598-3820e870c252 with the following CurrencyRequest
+    And the user requests the admin endpoint to update the game save with id 861e3a80-eade-402c-8598-3820e870c252 with the following GameSaveUpdateRequest
       | gold | diamond | emerald | amethyst |
       | 100  |         | 300     |          |
     Then the response status code should be 404
@@ -218,7 +218,7 @@ Feature: Admin GameSave Controller BDD tests
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
-    And the user requests the admin endpoint to update the stages of the game save with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following StageRequest
+    And the user requests the admin endpoint to update the game save with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following GameSaveUpdateRequest
       | currentStage | maxStage |
       | 1000         | 2000     |
     Then the response status code should be 200
@@ -227,7 +227,7 @@ Feature: Admin GameSave Controller BDD tests
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
-    And the user requests the admin endpoint to update the stages of the game save with id e97e0aa2-f380-4833-9e9e-79284379000b with the following StageRequest
+    And the user requests the admin endpoint to update the game save with id e97e0aa2-f380-4833-9e9e-79284379000b with the following GameSaveUpdateRequest
       | currentStage | maxStage |
       | 1000         | 1000     |
 

@@ -18,6 +18,9 @@ package com.lsadf.core.infra.web.requests.game.game_save.update;
 import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.validation.Nickname;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
@@ -36,4 +39,19 @@ public class GameSaveNicknameUpdateRequest implements GameSaveUpdateRequest {
   @Nickname
   @Schema(description = "Nickname of the user", example = "test")
   private String nickname;
+
+  @Override
+  public Characteristics getCharacteristics() {
+    return null;
+  }
+
+  @Override
+  public Currency getCurrency() {
+    return null;
+  }
+
+  @Override
+  public Stage getStage() {
+    return null;
+  }
 }

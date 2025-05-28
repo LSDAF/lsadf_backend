@@ -24,11 +24,8 @@ import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.controllers.Controller;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.JsonViews;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import com.lsadf.core.shared.validation.Uuid;
@@ -182,76 +179,4 @@ public interface AdminGameSaveController extends Controller {
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @Valid @RequestBody AdminGameSaveUpdateRequest adminGameSaveUpdateRequest);
-
-  /**
-   * Updates the characteristics of a game save
-   *
-   * @param jwt Jwt
-   * @param gameSaveId the game save id
-   * @param characteristicsRequest the characteristics request
-   * @return the characteristics
-   */
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
-      })
-  @Operation(summary = "Updates the characteristics of a game save")
-  @PostMapping(value = ControllerConstants.AdminGameSave.UPDATE_GAME_SAVE_CHARACTERISTICS)
-  @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<Void>> updateGameSaveCharacteristics(
-      @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
-      @RequestBody @Valid CharacteristicsRequest characteristicsRequest);
-
-  /**
-   * Updates the currency of a game save
-   *
-   * @param jwt the requester JWT
-   * @param gameSaveId the game save id
-   * @param currencyRequest the currency request
-   * @return the updated game save
-   */
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
-      })
-  @Operation(summary = "Updates the currency of a game save")
-  @PostMapping(value = ControllerConstants.AdminGameSave.UPDATE_GAME_SAVE_CURRENCIES)
-  @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<Void>> updateGameSaveCurrencies(
-      @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
-      @Valid @RequestBody CurrencyRequest currencyRequest);
-
-  /**
-   * Updates the stages of a game save
-   *
-   * @param jwt the requester JWT
-   * @param gameSaveId the game save id
-   * @param stageRequest the stage request
-   * @return the updated game save
-   */
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
-      })
-  @Operation(summary = "Updates the stages of a game save")
-  @PostMapping(value = ControllerConstants.AdminGameSave.UPDATE_GAME_SAVE_STAGES)
-  @JsonView(JsonViews.Admin.class)
-  ResponseEntity<GenericResponse<Void>> updateGameSaveStages(
-      @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
-      @Valid @RequestBody StageRequest stageRequest);
 }
