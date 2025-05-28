@@ -37,6 +37,7 @@ import jakarta.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -476,5 +477,11 @@ public class BddThenStepDefinitions extends BddLoader {
         .usingRecursiveComparison()
         .ignoringFields("id", "createdAt", "updatedAt")
         .isEqualTo(expected);
+  }
+
+  @Then("^the inventory of the game save with id (.*) should be empty")
+  public void then_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
+    Set<Item> items = inventoryService.getInventoryItems(gameSaveId);
+    assertThat(items).isEmpty();
   }
 }

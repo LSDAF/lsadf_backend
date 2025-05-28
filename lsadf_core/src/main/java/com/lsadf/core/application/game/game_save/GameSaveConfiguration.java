@@ -60,7 +60,8 @@ public class GameSaveConfiguration {
       @Qualifier(GAME_SAVE_OWNERSHIP_CACHE) Cache<String> gameSaveOwnershipCache,
       HistoCache<Stage> stageHistoCache,
       HistoCache<Characteristics> characteristicsHistoCache,
-      HistoCache<Currency> currencyHistoCache) {
+      HistoCache<Currency> currencyHistoCache,
+      GameSaveEntityMapper gameSaveEntityModelMapper) {
     return new GameSaveServiceImpl(
         userService,
         gameSaveRepository,
@@ -71,7 +72,8 @@ public class GameSaveConfiguration {
         gameSaveOwnershipCache,
         stageHistoCache,
         characteristicsHistoCache,
-        currencyHistoCache);
+        currencyHistoCache,
+        gameSaveEntityModelMapper);
   }
 
   @Bean

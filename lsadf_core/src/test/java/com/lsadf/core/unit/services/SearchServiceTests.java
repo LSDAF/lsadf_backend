@@ -135,12 +135,11 @@ class SearchServiceTests {
   void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
-    this.searchService = new SearchServiceImpl(userService, gameSaveService, mapper);
+    this.searchService = new SearchServiceImpl(userService, gameSaveService);
     Stream<User> users = Stream.of(USER1, USER2, USER3);
     when(userService.getUsers()).thenReturn(users);
 
-    Stream<GameSaveEntity> gameSaves =
-        Stream.of(GAME_SAVE_ENTITY_1, GAME_SAVE_ENTITY_2, GAME_SAVE_ENTITY_3);
+    Stream<GameSave> gameSaves = Stream.of(GAME_SAVE_1, GAME_SAVE_2, GAME_SAVE_3);
     when(gameSaveService.getGameSaves()).thenReturn(gameSaves);
   }
 

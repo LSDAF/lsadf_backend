@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
@@ -72,21 +71,6 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     inventoryRepository.save(inventoryEntity);
 
     log.info("Items created");
-  }
-
-  @Given("^the inventory of the game save with id (.*) is set to empty$")
-  public void given_the_inventory_of_the_game_save_with_id_is_set_to_empty(String gameSaveId) {
-    try {
-      InventoryEntity inventoryEntity = InventoryEntity.builder().build();
-
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(gameSaveId);
-
-      gameSaveEntity.setInventoryEntity(inventoryEntity);
-
-      gameSaveRepository.save(gameSaveEntity);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
   }
 
   @When("^the user requests the endpoint to get the inventory of the game save with id (.*)$")
@@ -202,20 +186,6 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       GenericResponse<Void> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @Then("^the inventory of the game save with id (.*) should be empty$")
-  public void when_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
-    try {
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(gameSaveId);
-
-      InventoryEntity inventoryEntity = gameSaveEntity.getInventoryEntity();
-
-      assertThat(inventoryEntity).isNotNull();
-      assertThat(inventoryEntity.getItems()).isEmpty();
     } catch (Exception e) {
       exceptionStack.push(e);
     }
