@@ -15,22 +15,22 @@
  */
 package com.lsadf.core.application.game.inventory;
 
+import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.exceptions.AlreadyExistingItemClientIdException;
 import com.lsadf.core.infra.exceptions.http.ForbiddenException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
+import java.util.Set;
 
 public interface InventoryService {
 
   /**
-   * Get the inventory of a game save
+   * Retrieves the inventory for the specified game save.
    *
-   * @param gameSaveId the id of the game save
-   * @return the inventory entity
+   * @param gameSaveId the ID of the game save for which the inventory is to be retrieved
+   * @return a set of items representing the inventory of the specified game save
    */
-  InventoryEntity getInventory(String gameSaveId);
+  Set<Item> getInventoryItems(String gameSaveId);
 
   /**
    * Create an item in the inventory of a game save
@@ -39,7 +39,7 @@ public interface InventoryService {
    * @param itemRequest the item to add
    * @throws NotFoundException
    */
-  ItemEntity createItemInInventory(String gameSaveId, ItemRequest itemRequest)
+  Item createItemInInventory(String gameSaveId, ItemRequest itemRequest)
       throws NotFoundException, AlreadyExistingItemClientIdException;
 
   /**
@@ -60,7 +60,7 @@ public interface InventoryService {
    * @param itemRequest the item to update
    * @throws NotFoundException, ForbiddenException
    */
-  ItemEntity updateItemInInventory(String gameSaveId, String itemClientId, ItemRequest itemRequest)
+  Item updateItemInInventory(String gameSaveId, String itemClientId, ItemRequest itemRequest)
       throws NotFoundException, ForbiddenException;
 
   /**

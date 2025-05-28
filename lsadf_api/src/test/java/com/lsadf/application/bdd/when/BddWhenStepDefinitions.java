@@ -24,7 +24,6 @@ import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.bdd.CacheEntryType;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
@@ -86,8 +85,8 @@ public class BddWhenStepDefinitions extends BddLoader {
   public void when_the_user_with_email_gets_a_game_save_with_id(
       String userEmail, String gameSaveId) {
     try {
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(gameSaveId);
-      gameSaveEntityListStack.push(Collections.singletonList(gameSaveEntity));
+      GameSave gameSave = gameSaveService.getGameSave(gameSaveId);
+      gameSaveListStack.push(Collections.singletonList(gameSave));
     } catch (Exception e) {
       exceptionStack.push(e);
     }
@@ -196,8 +195,8 @@ public class BddWhenStepDefinitions extends BddLoader {
   @When("^we want to create a new game save for the user with email (.*)$")
   public void when_we_want_to_create_a_new_game_save_for_the_user_with_email(String userEmail) {
     try {
-      GameSaveEntity gameSaveEntity = gameSaveService.createGameSave(userEmail);
-      gameSaveEntityListStack.push(Collections.singletonList(gameSaveEntity));
+      GameSave gameSave = gameSaveService.createGameSave(userEmail);
+      gameSaveListStack.push(Collections.singletonList(gameSave));
     } catch (Exception e) {
       exceptionStack.push(e);
     }
@@ -206,8 +205,8 @@ public class BddWhenStepDefinitions extends BddLoader {
   @When("^we want to get the game save with id (.*)$")
   public void when_we_want_to_get_the_game_save_with_id(String saveId) {
     try {
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(saveId);
-      gameSaveEntityListStack.push(Collections.singletonList(gameSaveEntity));
+      GameSave gameSave = gameSaveService.getGameSave(saveId);
+      gameSaveListStack.push(Collections.singletonList(gameSave));
     } catch (Exception e) {
       exceptionStack.push(e);
     }
@@ -216,8 +215,8 @@ public class BddWhenStepDefinitions extends BddLoader {
   @When("^we want to get all game saves$")
   public void when_we_want_to_get_all_game_saves() {
     try {
-      List<GameSaveEntity> gameSaves = gameSaveService.getGameSaves().toList();
-      gameSaveEntityListStack.push(gameSaves);
+      List<GameSave> gameSaves = gameSaveService.getGameSaves().toList();
+      gameSaveListStack.push(gameSaves);
     } catch (Exception e) {
       exceptionStack.push(e);
     }
@@ -226,8 +225,8 @@ public class BddWhenStepDefinitions extends BddLoader {
   @When("^we want to get all game saves for the user with email (.*)$")
   public void when_we_want_to_get_all_game_saves_for_the_user_with_email(String email) {
     try {
-      List<GameSaveEntity> gameSaves = gameSaveService.getGameSavesByUsername(email).toList();
-      gameSaveEntityListStack.push(gameSaves);
+      List<GameSave> gameSaves = gameSaveService.getGameSavesByUsername(email).toList();
+      gameSaveListStack.push(gameSaves);
     } catch (Exception e) {
       exceptionStack.push(e);
     }
@@ -248,8 +247,8 @@ public class BddWhenStepDefinitions extends BddLoader {
     Map<String, String> row = rows.get(0);
     GameSaveUpdateNicknameRequest updateRequest = BddUtils.mapToGameSaveUpdateUserRequest(row);
     try {
-      GameSaveEntity updatedGameSave = gameSaveService.updateNickname(saveId, updateRequest);
-      gameSaveEntityListStack.push(Collections.singletonList(updatedGameSave));
+      GameSave updatedGameSave = gameSaveService.updateNickname(saveId, updateRequest);
+      gameSaveListStack.push(Collections.singletonList(updatedGameSave));
     } catch (Exception e) {
       exceptionStack.push(e);
     }

@@ -15,15 +15,12 @@
  */
 package com.lsadf.admin.application.bdd.when;
 
-import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.buildParameterizedInventoryResponse;
-import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
+import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
@@ -34,10 +31,7 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -79,21 +73,6 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     log.info("Items created");
   }
 
-  @Given("^the inventory of the game save with id (.*) is set to empty$")
-  public void given_the_inventory_of_the_game_save_with_id_is_set_to_empty(String gameSaveId) {
-    try {
-      InventoryEntity inventoryEntity = InventoryEntity.builder().build();
-
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(gameSaveId);
-
-      gameSaveEntity.setInventoryEntity(inventoryEntity);
-
-      gameSaveRepository.save(gameSaveEntity);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
   @When("^the user requests the endpoint to get the inventory of the game save with id (.*)$")
   public void when_the_user_requests_the_endpoint_to_get_the_inventory_of_the_game_save_with_id(
       String gameSaveId) {
@@ -107,11 +86,11 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Inventory>> result =
+      ResponseEntity<GenericResponse<Set<Item>>> result =
           testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedInventoryResponse());
-      GenericResponse<Inventory> body = result.getBody();
-      inventoryStack.push(body.getData());
+              url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
+      GenericResponse<Set<Item>> body = result.getBody();
+      itemSetStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -212,32 +191,15 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     }
   }
 
-  @Then("^the inventory of the game save with id (.*) should be empty$")
-  public void when_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
-    try {
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(gameSaveId);
-
-      InventoryEntity inventoryEntity = gameSaveEntity.getInventoryEntity();
-
-      assertThat(inventoryEntity).isNotNull();
-      assertThat(inventoryEntity.getItems()).isEmpty();
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
   @Then("^the response should have the following items in the inventory$")
   public void then_the_response_should_have_the_following_items_in_the_inventory(
       DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    Inventory inventory = inventoryStack.peek();
+    Set<Item> inventory = itemSetStack.peek();
     for (Map<String, String> row : rows) {
       Item actual =
-          inventory.getItems().stream()
-              .filter(g -> g.getId().equals(row.get("id")))
-              .findFirst()
-              .orElseThrow();
+          inventory.stream().filter(g -> g.getId().equals(row.get("id"))).findFirst().orElseThrow();
 
       Item expected = BddUtils.mapToItem(row);
 

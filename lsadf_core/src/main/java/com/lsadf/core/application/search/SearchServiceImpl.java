@@ -24,7 +24,6 @@ import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.utils.StreamUtils;
 import com.lsadf.core.infra.web.requests.common.Filter;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
@@ -39,13 +38,10 @@ public class SearchServiceImpl implements SearchService {
 
   private final UserService userService;
   private final GameSaveService gameSaveService;
-  private final GameSaveEntityMapper mapper;
 
-  public SearchServiceImpl(
-      UserService userService, GameSaveService gameSaveService, GameSaveEntityMapper mapper) {
+  public SearchServiceImpl(UserService userService, GameSaveService gameSaveService) {
     this.userService = userService;
     this.gameSaveService = gameSaveService;
-    this.mapper = mapper;
   }
 
   /** {@inheritDoc} */
@@ -80,7 +76,7 @@ public class SearchServiceImpl implements SearchService {
   @Transactional(readOnly = true)
   public Stream<GameSave> searchGameSaves(
       SearchRequest searchRequest, List<GameSaveSortingParameter> orderBy) {
-    Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves().map(mapper::mapToModel);
+    Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves();
     List<Filter> filters = searchRequest.getFilters();
     for (Filter filter : filters) {
       switch (filter.getType()) {

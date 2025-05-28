@@ -18,7 +18,6 @@ package com.lsadf.admin.application.bdd;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
@@ -27,6 +26,7 @@ import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import java.util.List;
+import java.util.Set;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -85,12 +85,13 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a GenericResponse of Inventory
+   * Builds a ParameterizedTypeReference for a GenericResponse containing a Set of Item objects.
    *
-   * @return ParameterizedTypeReference
+   * @return a ParameterizedTypeReference representing a GenericResponse with a Set of Item objects
+   *     as its data type
    */
-  public static ParameterizedTypeReference<GenericResponse<Inventory>>
-      buildParameterizedInventoryResponse() {
+  public static ParameterizedTypeReference<GenericResponse<Set<Item>>>
+      buildParameterizedItemSetResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 

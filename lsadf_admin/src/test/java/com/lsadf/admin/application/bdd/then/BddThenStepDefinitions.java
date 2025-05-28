@@ -22,7 +22,6 @@ import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
@@ -38,6 +37,7 @@ import jakarta.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -464,35 +464,6 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(actual).isEqualTo(email);
   }
 
-  @Then("^the response should have the following items in inventory$")
-  public void then_the_response_should_have_the_following_items_in_inventory(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    Inventory inventory = inventoryStack.peek();
-    assertThat(inventory).isNotNull();
-    assertThat(inventory.getItems()).isNotNull();
-
-    for (Map<String, String> row : rows) {
-      Item expected = BddUtils.mapToItem(row);
-
-      Item actual =
-          inventory.getItems().stream()
-              .filter(item -> item.getClientId().equals(expected.getClientId()))
-              .findFirst()
-              .orElseThrow(
-                  () ->
-                      new AssertionError(
-                          "Item with clientId "
-                              + expected.getClientId()
-                              + " not found in inventory"));
-
-      assertThat(actual)
-          .usingRecursiveComparison()
-          .ignoringFields("id", "createdAt", "updatedAt")
-          .isEqualTo(expected);
-    }
-  }
-
   @Then("^the response should have the following item$")
   public void then_the_response_should_have_the_following_item(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
@@ -506,5 +477,11 @@ public class BddThenStepDefinitions extends BddLoader {
         .usingRecursiveComparison()
         .ignoringFields("id", "createdAt", "updatedAt")
         .isEqualTo(expected);
+  }
+
+  @Then("^the inventory of the game save with id (.*) should be empty")
+  public void then_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
+    Set<Item> items = inventoryService.getInventoryItems(gameSaveId);
+    assertThat(items).isEmpty();
   }
 }

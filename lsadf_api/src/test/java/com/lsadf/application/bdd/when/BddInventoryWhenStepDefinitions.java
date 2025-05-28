@@ -15,16 +15,13 @@
  */
 package com.lsadf.application.bdd.when;
 
-import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.buildParameterizedInventoryResponse;
-import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
+import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
@@ -38,6 +35,7 @@ import io.cucumber.java.en.When;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -87,11 +85,11 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Inventory>> result =
+      ResponseEntity<GenericResponse<Set<Item>>> result =
           testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedInventoryResponse());
-      GenericResponse<Inventory> body = result.getBody();
-      inventoryStack.push(body.getData());
+              url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
+      GenericResponse<Set<Item>> body = result.getBody();
+      itemSetStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -195,12 +193,10 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   @Then("^the inventory of the game save with id (.*) should be empty$")
   public void when_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
     try {
-      GameSaveEntity gameSaveEntity = gameSaveService.getGameSave(gameSaveId);
+      Set<Item> inventory = inventoryService.getInventoryItems(gameSaveId);
 
-      InventoryEntity inventoryEntity = gameSaveEntity.getInventoryEntity();
-
-      assertThat(inventoryEntity).isNotNull();
-      assertThat(inventoryEntity.getItems()).isEmpty();
+      assertThat(inventory).isNotNull();
+      assertThat(inventory).isEmpty();
     } catch (Exception e) {
       exceptionStack.push(e);
     }
@@ -211,13 +207,10 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    Inventory inventory = inventoryStack.peek();
+    Set<Item> inventory = itemSetStack.peek();
     for (Map<String, String> row : rows) {
       Item actual =
-          inventory.getItems().stream()
-              .filter(g -> g.getId().equals(row.get("id")))
-              .findFirst()
-              .orElseThrow();
+          inventory.stream().filter(g -> g.getId().equals(row.get("id"))).findFirst().orElseThrow();
 
       Item expected = BddUtils.mapToItem(row);
 

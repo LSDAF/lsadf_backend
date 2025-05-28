@@ -17,26 +17,23 @@ package com.lsadf.core.unit.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.inventory.InventoryServiceImpl;
-import com.lsadf.core.domain.game.inventory.item.ItemRarity;
-import com.lsadf.core.domain.game.inventory.item.ItemStat;
-import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
-import com.lsadf.core.domain.game.inventory.item.ItemType;
+import com.lsadf.core.domain.game.inventory.item.*;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
+import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntityMapper;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemRepository;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -53,46 +50,49 @@ class InventoryServiceTests {
 
   @Mock private ItemRepository itemRepository;
 
+  private ItemEntityMapper itemEntityMapper = new ItemEntityMapper();
+
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    inventoryService = new InventoryServiceImpl(inventoryRepository, itemRepository);
+    inventoryService =
+        new InventoryServiceImpl(inventoryRepository, itemRepository, itemEntityMapper);
   }
 
   /* GET */
   @Test
-  void getInventory_on_null_gamesave_id() {
+  void getInventory_Items_on_null_gamesave_id() {
     // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> inventoryService.getInventory(null));
+    assertThrows(IllegalArgumentException.class, () -> inventoryService.getInventoryItems(null));
   }
 
   @Test
-  void getInventory_on_non_existing_gamesave_id() {
+  void getInventory_Items_on_non_existing_gamesave_id() {
     // Arrange
     when(inventoryRepository.findById(anyString())).thenReturn(Optional.empty());
 
     // Assert
-    assertThrows(NotFoundException.class, () -> inventoryService.getInventory("1"));
+    assertThrows(NotFoundException.class, () -> inventoryService.getInventoryItems("1"));
   }
 
   @Test
-  void getInventory_on_existing_gamesave_id_with_empty_inventory() {
+  void getInventory_on_existing_gamesave_id_with_empty_inventoryItems() {
     // Arrange
     InventoryEntity inventoryEntity = InventoryEntity.builder().items(new HashSet<>()).build();
 
     when(inventoryRepository.findById(anyString())).thenReturn(Optional.of(inventoryEntity));
 
     // Act
-    InventoryEntity result = inventoryService.getInventory("1");
+    Set<Item> result = inventoryService.getInventoryItems("1");
 
     // Assert
-    assertThat(result).isEqualTo(inventoryEntity);
+    assertThat(result).isEmpty();
   }
 
   @Test
-  void getInventory_on_existing_gamesave_id_with_items() {
+  void getInventory_Items_on_existing_gamesave_id_with_items() {
     // Arrange
     ItemEntity itemEntity =
         ItemEntity.builder()
@@ -120,16 +120,18 @@ class InventoryServiceTests {
             .additionalStats(List.of(new ItemStat(ItemStatistic.HEALTH_MULT, 2f)))
             .build();
 
-    InventoryEntity inventoryEntity =
-        InventoryEntity.builder().items(new HashSet<>(List.of(itemEntity, itemEntity2))).build();
+    var list = List.of(itemEntity, itemEntity2);
+    var expecteditems = list.stream().map(itemEntityMapper::mapToModel).collect(Collectors.toSet());
+
+    InventoryEntity inventoryEntity = InventoryEntity.builder().items(new HashSet<>(list)).build();
 
     when(inventoryRepository.findById(anyString())).thenReturn(Optional.of(inventoryEntity));
 
     // Act
-    InventoryEntity result = inventoryService.getInventory("1");
+    Set<Item> result = inventoryService.getInventoryItems("1");
 
     // Assert
-    assertThat(result).isEqualTo(inventoryEntity);
+    assertThat(result).containsExactly(expecteditems.toArray(new Item[0]));
   }
 
   /* CREATE */
@@ -169,7 +171,7 @@ class InventoryServiceTests {
             List.of(new ItemStat(ItemStatistic.ATTACK_MULT, 2f)));
 
     when(inventoryRepository.findById(anyString())).thenReturn(Optional.of(inventoryEntity));
-
+    when(inventoryRepository.save(any())).thenReturn(inventoryEntity);
     // Act
     inventoryService.createItemInInventory("1", itemRequest);
 
@@ -185,10 +187,26 @@ class InventoryServiceTests {
   @Test
   void createItemInInventory_on_existing_gamesave_id_with_non_empty_inventory() {
     // Arrange
-    ItemEntity itemEntity = ItemEntity.builder().build();
+    reset(inventoryRepository, itemRepository);
+    InventoryEntity inventoryEntity = InventoryEntity.builder().items(new HashSet<>()).build();
 
-    InventoryEntity inventoryEntity =
-        InventoryEntity.builder().items(new HashSet<>(List.of(itemEntity))).build();
+    var now = new Date();
+    ItemEntity presentItemEntity =
+        ItemEntity.builder()
+            .id(UUID.randomUUID().toString())
+            .inventoryEntity(inventoryEntity)
+            .createdAt(now)
+            .updatedAt(now)
+            .clientId(UUID.randomUUID().toString())
+            .itemType(ItemType.CHESTPLATE)
+            .itemRarity(ItemRarity.RARE)
+            .isEquipped(false)
+            .level(10)
+            .mainStat(new ItemStat(ItemStatistic.HEALTH_MULT, 100f))
+            .additionalStats(List.of(new ItemStat(ItemStatistic.HEALTH_ADD, 100f)))
+            .build();
+
+    inventoryEntity.getItems().add(presentItemEntity);
 
     ItemRequest itemRequest =
         new ItemRequest(
@@ -202,6 +220,7 @@ class InventoryServiceTests {
             List.of(new ItemStat(ItemStatistic.ATTACK_MULT, 2f)));
 
     when(inventoryRepository.findById(anyString())).thenReturn(Optional.of(inventoryEntity));
+    when(inventoryRepository.save(any())).thenReturn(inventoryEntity);
 
     // Act
     inventoryService.createItemInInventory("1", itemRequest);
@@ -374,13 +393,20 @@ class InventoryServiceTests {
   @Test
   void updateItemInInventory_on_existing_gamesave_id_with_one_item_inventory() {
     // Arrange
+    reset(inventoryRepository, itemRepository);
     GameSaveEntity gameSaveEntity =
         GameSaveEntity.builder().id("1").userEmail("test@test.com").build();
     ItemEntity itemEntity =
         ItemEntity.builder()
             .id("2")
-            .clientId("6f27c2a-06e8-4bdb-bf59-56999116f5ef__11111111-1111-1111-1111-111111111111")
+            .clientId("6f27c2a-06e8-4bdb-bf59-56999116f5ef__22222222-2222-2222-2222-222222222222")
+            .blueprintId("old_blueprint")
             .itemType(ItemType.BOOTS)
+            .itemRarity(ItemRarity.RARE)
+            .isEquipped(false)
+            .level(10)
+            .mainStat(new ItemStat(ItemStatistic.HEALTH_MULT, 100f))
+            .additionalStats(List.of(new ItemStat(ItemStatistic.HEALTH_ADD, 100f)))
             .build();
 
     InventoryEntity inventoryEntity =
@@ -391,29 +417,51 @@ class InventoryServiceTests {
 
     itemEntity.setInventoryEntity(inventoryEntity);
 
-    ItemRequest itemRequest =
+    ItemRequest updatedItemRequest =
         new ItemRequest(
-            "36f27c2a-06e8-4bdb-bf59-56999116f5ef__11111111-1111-1111-1111-111111111111",
+            "6f27c2a-06e8-4bdb-bf59-56999116f5ef__22222222-2222-2222-2222-222222222222",
             ItemType.SWORD.getType(),
-            "blueprint_id",
+            "new_blueprint",
             ItemRarity.LEGENDARY.getRarity(),
             true,
             20,
-            new ItemStat(ItemStatistic.ATTACK_ADD, 100f),
-            List.of(new ItemStat(ItemStatistic.ATTACK_MULT, 2f)));
+            new ItemStat(ItemStatistic.ATTACK_ADD, 200f),
+            List.of(new ItemStat(ItemStatistic.ATTACK_MULT, 3f)));
 
     when(inventoryRepository.findById(anyString())).thenReturn(Optional.of(inventoryEntity));
     when(itemRepository.findItemEntityByClientId(anyString())).thenReturn(Optional.of(itemEntity));
+    when(inventoryRepository.save(any())).thenReturn(inventoryEntity);
 
     // Act
-    inventoryService.updateItemInInventory("1", "2", itemRequest);
+    inventoryService.updateItemInInventory(
+        "1",
+        "6f27c2a-06e8-4bdb-bf59-56999116f5ef__22222222-2222-2222-2222-222222222222",
+        updatedItemRequest);
 
     // Assert
-    ArgumentCaptor<ItemEntity> itemEntityCaptor = ArgumentCaptor.forClass(ItemEntity.class);
-    verify(itemRepository).save(itemEntityCaptor.capture());
+    ArgumentCaptor<InventoryEntity> inventoryEntityCaptor =
+        ArgumentCaptor.forClass(InventoryEntity.class);
+    verify(inventoryRepository).save(inventoryEntityCaptor.capture());
 
-    ItemEntity capturedItem = itemEntityCaptor.getValue();
-    assertThat(capturedItem.getItemType()).isEqualTo(ItemType.SWORD);
+    InventoryEntity capturedInventory = inventoryEntityCaptor.getValue();
+    ItemEntity updatedItem =
+        capturedInventory.getItems().stream()
+            .filter(
+                item ->
+                    item.getClientId()
+                        .equals(
+                            "6f27c2a-06e8-4bdb-bf59-56999116f5ef__22222222-2222-2222-2222-222222222222"))
+            .findFirst()
+            .orElseThrow();
+
+    assertThat(updatedItem.getBlueprintId()).isEqualTo("new_blueprint");
+    assertThat(updatedItem.getItemType()).isEqualTo(ItemType.SWORD);
+    assertThat(updatedItem.getItemRarity()).isEqualTo(ItemRarity.LEGENDARY);
+    assertThat(updatedItem.getIsEquipped()).isTrue();
+    assertThat(updatedItem.getLevel()).isEqualTo(20);
+    assertThat(updatedItem.getMainStat()).isEqualTo(new ItemStat(ItemStatistic.ATTACK_ADD, 200f));
+    assertThat(updatedItem.getAdditionalStats())
+        .containsExactly(new ItemStat(ItemStatistic.ATTACK_MULT, 3f));
   }
 
   /* CLEAR */

@@ -17,26 +17,21 @@ package com.lsadf.core.application.search;
 
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.infra.mappers.Mapper;
-import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration class for setting up dependencies related to the search functionality within the
- * application context.
+ * Configuration class responsible for setting up beans related to search functionality in the
+ * application.
  *
- * <p>This configuration provides a {@link SearchService} bean, which is responsible for
- * facilitating search-related operations such as user searches and game save searches. The {@link
- * SearchService} implementation depends on the following services: - {@link UserService} for
- * user-related operations. - {@link GameSaveService} for operations related to game saves. - {@link
- * Mapper} for data mapping between entities and domain models.
+ * <p>This class defines the {@code SearchService} bean, which uses {@code UserService} and {@code
+ * GameSaveService} to facilitate search-related operations. It provides an implementation of {@code
+ * SearchService} in the form of {@code SearchServiceImpl}.
  */
 @Configuration
 public class SearchConfiguration {
   @Bean
-  public SearchService searchService(
-      UserService userService, GameSaveService gameSaveService, GameSaveEntityMapper mapper) {
-    return new SearchServiceImpl(userService, gameSaveService, mapper);
+  public SearchService searchService(UserService userService, GameSaveService gameSaveService) {
+    return new SearchServiceImpl(userService, gameSaveService);
   }
 }

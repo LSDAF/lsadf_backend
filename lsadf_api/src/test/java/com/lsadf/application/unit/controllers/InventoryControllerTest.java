@@ -53,7 +53,7 @@ class InventoryControllerTest {
 
   @Test
   @SneakyThrows
-  void getInventory_should_return_401_when_user_not_authenticated() {
+  void getInventory_Items_should_return_401_when_user_not_authenticated() {
     // when
     mockMvc
         .perform(get("/api/v1/inventory/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
@@ -64,7 +64,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getInventory_should_return_400_when_non_uuid_gameSaveId() {
+  void getInventory_Items_should_return_400_when_non_uuid_gameSaveId() {
     // when
     mockMvc
         .perform(get("/api/v1/inventory/{gameSaveId}", "testtesttest"))
@@ -75,7 +75,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getInventory_should_return_200_when_authenticated_user_and_valid_uuid() {
+  void getInventory_Items_should_return_200_when_authenticated_user_and_valid_uuid() {
     // when
     mockMvc
         .perform(get("/api/v1/inventory/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))

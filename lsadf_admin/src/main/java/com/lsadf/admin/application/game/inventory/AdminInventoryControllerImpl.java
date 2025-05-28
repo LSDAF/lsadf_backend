@@ -18,15 +18,11 @@ package com.lsadf.admin.application.game.inventory;
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
-import com.lsadf.core.infra.persistence.mappers.game.inventory.InventoryEntityMapper;
-import com.lsadf.core.infra.persistence.mappers.game.inventory.ItemEntityMapper;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -39,18 +35,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminInventoryControllerImpl extends BaseController
     implements AdminInventoryController {
 
-  public AdminInventoryControllerImpl(
-      InventoryService inventoryService,
-      InventoryEntityMapper inventoryMapper,
-      ItemEntityMapper itemMapper) {
+  public AdminInventoryControllerImpl(InventoryService inventoryService) {
     this.inventoryService = inventoryService;
-    this.inventoryMapper = inventoryMapper;
-    this.itemMapper = itemMapper;
   }
 
   private final InventoryService inventoryService;
-  private final InventoryEntityMapper inventoryMapper;
-  private final ItemEntityMapper itemMapper;
 
   @Override
   public Logger getLogger() {
@@ -59,11 +48,10 @@ public class AdminInventoryControllerImpl extends BaseController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Inventory>> getInventory(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<GenericResponse<Set<Item>>> getInventory(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
-    InventoryEntity inventoryEntity = inventoryService.getInventory(gameSaveId);
-    Inventory inventory = inventoryMapper.mapToModel(inventoryEntity);
-    return generateResponse(HttpStatus.OK, inventory);
+    Set<Item> items = inventoryService.getInventoryItems(gameSaveId);
+    return generateResponse(HttpStatus.OK, items);
   }
 
   /** {@inheritDoc} */
@@ -71,8 +59,7 @@ public class AdminInventoryControllerImpl extends BaseController
   public ResponseEntity<GenericResponse<Item>> createItemInInventory(
       Jwt jwt, String gameSaveId, ItemRequest itemRequest) {
     validateUser(jwt);
-    ItemEntity itemEntity = inventoryService.createItemInInventory(gameSaveId, itemRequest);
-    Item item = itemMapper.mapToModel(itemEntity);
+    Item item = inventoryService.createItemInInventory(gameSaveId, itemRequest);
     return generateResponse(HttpStatus.OK, item);
   }
 
@@ -90,9 +77,7 @@ public class AdminInventoryControllerImpl extends BaseController
   public ResponseEntity<GenericResponse<Item>> updateItemInInventory(
       Jwt jwt, String gameSaveId, String itemClientId, ItemRequest itemRequest) {
     validateUser(jwt);
-    ItemEntity itemEntity =
-        inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
-    Item item = itemMapper.mapToModel(itemEntity);
+    Item item = inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
     return generateResponse(HttpStatus.OK, item);
   }
 
