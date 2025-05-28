@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.config.auth;
+package com.lsadf.core.infra.web.responses.auth;
 
-import static com.lsadf.core.infra.web.JsonAttributes.JwtAuthentication.*;
+import static com.lsadf.core.infra.web.responses.auth.JwtAuthentication.Attributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -40,6 +42,14 @@ public class JwtAuthentication implements Model {
   @JsonProperty(value = REFRESH_TOKEN)
   private final String refreshToken;
 
-  @JsonProperty(value = REFRESH_EXPIRES_IN)
+  @JsonProperty(value = Attributes.REFRESH_EXPIRES_IN)
   private final Long refreshExpiresIn;
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class Attributes {
+    public static final String ACCESS_TOKEN = "access_token";
+    public static final String REFRESH_TOKEN = "refresh_token";
+    public static final String EXPIRES_IN = "expires_in";
+    public static final String REFRESH_EXPIRES_IN = "refresh_expires_in";
+  }
 }
