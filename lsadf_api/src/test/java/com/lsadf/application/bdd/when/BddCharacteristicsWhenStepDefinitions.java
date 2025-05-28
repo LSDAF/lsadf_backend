@@ -26,7 +26,7 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
@@ -82,7 +82,7 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<GenericResponse<Characteristics>> result =
+      ResponseEntity<ApiResponse<Characteristics>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedCharacteristicsResponse());
       var body = result.getBody();
@@ -115,7 +115,7 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
       headers.setBearerAuth(token);
 
       HttpEntity<CharacteristicsRequest> httpRequest = new HttpEntity<>(request, headers);
-      ResponseEntity<GenericResponse<Void>> result =
+      ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, httpRequest, buildParameterizedVoidResponse());
       var body = result.getBody();

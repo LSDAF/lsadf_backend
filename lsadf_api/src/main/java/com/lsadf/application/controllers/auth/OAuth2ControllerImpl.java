@@ -23,7 +23,7 @@ import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -53,7 +53,7 @@ public class OAuth2ControllerImpl extends BaseController implements OAuth2Contro
     return log;
   }
 
-  public ResponseEntity<GenericResponse<JwtAuthentication>> handleOAuth2Callback(
+  public ResponseEntity<ApiResponse<JwtAuthentication>> handleOAuth2Callback(
       @RequestParam(CODE) String code) {
     // Handle the code returned from Keycloak here
     log.info("Received code: {}", code);

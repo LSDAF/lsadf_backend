@@ -22,10 +22,9 @@ import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.controllers.Controller;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,13 +57,23 @@ public interface AdminInventoryController extends Controller {
   @Operation(summary = "Gets the inventory for a game save")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "403", description = "Forbidden"),
-        @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "404", description = "Not Found"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = "Forbidden"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "OK"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = "Not Found"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error")
       })
-  ResponseEntity<GenericResponse<Set<Item>>> getInventory(
+  ResponseEntity<ApiResponse<Set<Item>>> getInventory(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 
@@ -80,13 +89,23 @@ public interface AdminInventoryController extends Controller {
   @Operation(summary = "Creates an item in the inventory of a game save")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "403", description = "Forbidden"),
-        @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "404", description = "Not Found"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = "Forbidden"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "OK"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = "Not Found"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error")
       })
-  ResponseEntity<GenericResponse<Item>> createItemInInventory(
+  ResponseEntity<ApiResponse<Item>> createItemInInventory(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @RequestBody @Valid ItemRequest itemRequest);
@@ -103,13 +122,23 @@ public interface AdminInventoryController extends Controller {
   @Operation(summary = "Deletes an item from the inventory of a game save")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "403", description = "Forbidden"),
-        @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "404", description = "Not Found"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = "Forbidden"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "OK"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = "Not Found"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error")
       })
-  ResponseEntity<GenericResponse<Void>> deleteItemFromInventory(
+  ResponseEntity<ApiResponse<Void>> deleteItemFromInventory(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @PathVariable(value = CLIENT_ID) String itemClientId);
@@ -127,13 +156,23 @@ public interface AdminInventoryController extends Controller {
   @Operation(summary = "Updates an item in the inventory of a game save")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "403", description = "Forbidden"),
-        @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "404", description = "Not Found"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = "Forbidden"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "OK"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = "Not Found"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error")
       })
-  ResponseEntity<GenericResponse<Item>> updateItemInInventory(
+  ResponseEntity<ApiResponse<Item>> updateItemInInventory(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @PathVariable(value = CLIENT_ID) String itemClientId,
@@ -150,13 +189,23 @@ public interface AdminInventoryController extends Controller {
   @Operation(summary = "Clears the inventory of a specific game save")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "403", description = "Forbidden"),
-        @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "404", description = "Not Found"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = "Forbidden"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "OK"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = "Not Found"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error")
       })
-  ResponseEntity<GenericResponse<Void>> clearInventoryItems(
+  ResponseEntity<ApiResponse<Void>> clearInventoryItems(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 }

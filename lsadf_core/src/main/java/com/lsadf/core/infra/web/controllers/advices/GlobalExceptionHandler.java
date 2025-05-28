@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.core.infra.exceptions.*;
 import com.lsadf.core.infra.exceptions.http.*;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the errors
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<GenericResponse<Map<String, String>>> handleMethodArgumentNotValidException(
+  public ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgumentNotValidException(
       MethodArgumentNotValidException e) {
     log.error("MethodArgumentNotValidException: ", e);
     Map<String, String> fieldErrorMap = new HashMap<>();
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(DynamicJsonViewException.class)
-  public ResponseEntity<GenericResponse<Void>> handleDynamicJsonViewException(
+  public ResponseEntity<ApiResponse<Void>> handleDynamicJsonViewException(
       DynamicJsonViewException e) {
     log.error("Cannot render dynamically json view of the object: ", e);
     return generateResponse(
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<GenericResponse<Void>> handleIllegalArgumentException(
+  public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(
       IllegalArgumentException e) {
     log.error("IllegalArgumentException: ", e);
     return generateResponse(HttpStatus.BAD_REQUEST, "Illegal argument: " + e.getMessage(), null);
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(HandlerMethodValidationException.class)
-  public ResponseEntity<GenericResponse<Map<String, String>>> handleValidationException(
+  public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationException(
       HandlerMethodValidationException e) {
     log.error("HandlerMethodValidationException: ", e);
     Map<String, String> fieldErrorMap = new HashMap<>();
@@ -119,7 +119,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<GenericResponse<Void>> handleHttpMessageNotReadableException(
+  public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadableException(
       HttpMessageNotReadableException e) {
     log.error("HttpMessageNotReadableException: ", e);
     String msg = e.getMessage();
@@ -133,8 +133,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(UnauthorizedException.class)
-  public ResponseEntity<GenericResponse<Void>> handleUnauthorizedException(
-      UnauthorizedException e) {
+  public ResponseEntity<ApiResponse<Void>> handleUnauthorizedException(UnauthorizedException e) {
     log.error("UnauthorizedException: ", e);
     return generateResponse(HttpStatus.UNAUTHORIZED, "Unauthorized: " + e.getMessage(), null);
   }
@@ -146,7 +145,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<GenericResponse<Void>> handleNotFoundException(NotFoundException e) {
+  public ResponseEntity<ApiResponse<Void>> handleNotFoundException(NotFoundException e) {
     log.error("NotFoundException: ", e);
     return generateResponse(HttpStatus.NOT_FOUND, "Not found: " + e.getMessage(), null);
   }
@@ -158,7 +157,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(ForbiddenException.class)
-  public ResponseEntity<GenericResponse<Void>> handleForbiddenException(ForbiddenException e) {
+  public ResponseEntity<ApiResponse<Void>> handleForbiddenException(ForbiddenException e) {
     log.error("ForbiddenException: ", e);
     return generateResponse(HttpStatus.FORBIDDEN, "Forbidden: " + e.getMessage(), null);
   }
@@ -170,7 +169,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(InternalServerErrorException.class)
-  public ResponseEntity<GenericResponse<Void>> handleInternalServerErrorException(
+  public ResponseEntity<ApiResponse<Void>> handleInternalServerErrorException(
       InternalServerErrorException e) {
     log.error("InternalServerErrorException: ", e);
     return generateResponse(
@@ -184,7 +183,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(BadRequestException.class)
-  public ResponseEntity<GenericResponse<Void>> handleBadRequestException(BadRequestException e) {
+  public ResponseEntity<ApiResponse<Void>> handleBadRequestException(BadRequestException e) {
     log.error("BadRequestException: ", e);
     return generateResponse(HttpStatus.BAD_REQUEST, "Bad request: " + e.getMessage(), null);
   }
@@ -196,7 +195,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(AlreadyExistingGameSaveException.class)
-  public ResponseEntity<GenericResponse<Void>> handleAlreadyExistingGameSaveException(
+  public ResponseEntity<ApiResponse<Void>> handleAlreadyExistingGameSaveException(
       AlreadyExistingGameSaveException e) {
     log.error("AlreadyExistingGameSaveException: ", e);
     return generateResponse(
@@ -210,7 +209,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(AlreadyExistingItemClientIdException.class)
-  public ResponseEntity<GenericResponse<Void>> handleAlreadyExistingItemClientIdException(
+  public ResponseEntity<ApiResponse<Void>> handleAlreadyExistingItemClientIdException(
       AlreadyExistingItemClientIdException e) {
     log.error("AlreadyExistingItemClientIdException: ", e);
     return generateResponse(
@@ -224,7 +223,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(AlreadyExistingUserException.class)
-  public ResponseEntity<GenericResponse<Void>> handleAlreadyExistingUserException(
+  public ResponseEntity<ApiResponse<Void>> handleAlreadyExistingUserException(
       AlreadyExistingUserException e) {
     log.error("AlreadyExistingUserException: ", e);
     return generateResponse(HttpStatus.BAD_REQUEST, "User already exists: " + e.getMessage(), null);
@@ -237,7 +236,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(AlreadyTakenNicknameException.class)
-  public ResponseEntity<GenericResponse<Void>> handleAlreadyTakenNicknameException(
+  public ResponseEntity<ApiResponse<Void>> handleAlreadyTakenNicknameException(
       AlreadyTakenNicknameException e) {
     log.error("AlreadyTakenNicknameException: ", e);
     return generateResponse(
@@ -251,7 +250,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity containing the error
    */
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<GenericResponse<Void>> handleException(Exception e) {
+  public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
     log.error("Exception: " + e);
     return generateResponse(
         HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error: " + e.getMessage(), null);

@@ -20,10 +20,9 @@ import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.A
 
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,13 +58,23 @@ public interface CharacteristicsController {
   @Operation(summary = "Updates the characteristics of a game save")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Characteristics updated"),
-        @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "403", description = "Forbidden"),
-        @ApiResponse(responseCode = "404", description = "Not found"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "Characteristics updated"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = "Forbidden"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = "Not found"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = "Internal server error")
       })
-  ResponseEntity<GenericResponse<Void>> saveCharacteristics(
+  ResponseEntity<ApiResponse<Void>> saveCharacteristics(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @RequestBody @Valid CharacteristicsRequest characteristicsRequest);
@@ -81,13 +90,23 @@ public interface CharacteristicsController {
   @Operation(summary = "Gets the characteristics of a game save")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = "Unauthorized"),
-        @ApiResponse(responseCode = "403", description = "Forbidden"),
-        @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "404", description = "Not Found"),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = "Forbidden"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "OK"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = "Not Found"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error")
       })
-  ResponseEntity<GenericResponse<Void>> getCharacteristics(
+  ResponseEntity<ApiResponse<Void>> getCharacteristics(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 

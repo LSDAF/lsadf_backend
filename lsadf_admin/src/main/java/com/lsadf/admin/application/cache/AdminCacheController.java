@@ -20,10 +20,9 @@ import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.A
 
 import com.lsadf.core.infra.web.controllers.Controller;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,13 +48,21 @@ public interface AdminCacheController extends Controller {
   @PutMapping(value = ControllerConstants.AdminCache.FLUSH)
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Clears all the caches of the application")
-  ResponseEntity<GenericResponse<Void>> flushAndClearCache(@AuthenticationPrincipal Jwt jwt);
+  ResponseEntity<ApiResponse<Void>> flushAndClearCache(@AuthenticationPrincipal Jwt jwt);
 
   /**
    * Checks if the cache is enabled
@@ -66,13 +73,21 @@ public interface AdminCacheController extends Controller {
   @GetMapping(value = ControllerConstants.AdminCache.ENABLED)
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Checks if the cache is enabled")
-  ResponseEntity<GenericResponse<Boolean>> isCacheEnabled(@AuthenticationPrincipal Jwt jwt);
+  ResponseEntity<ApiResponse<Boolean>> isCacheEnabled(@AuthenticationPrincipal Jwt jwt);
 
   /**
    * Enables/Disables the cache
@@ -83,12 +98,19 @@ public interface AdminCacheController extends Controller {
   @PutMapping(value = ControllerConstants.AdminCache.TOGGLE)
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Enables/Disables the cache")
-  ResponseEntity<GenericResponse<Boolean>> toggleRedisCacheEnabling(
-      @AuthenticationPrincipal Jwt jwt);
+  ResponseEntity<ApiResponse<Boolean>> toggleRedisCacheEnabling(@AuthenticationPrincipal Jwt jwt);
 }

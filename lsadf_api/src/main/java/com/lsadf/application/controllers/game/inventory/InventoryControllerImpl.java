@@ -23,7 +23,7 @@ import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Set<Item>>> getInventoryItems(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<Set<Item>>> getInventoryItems(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -60,7 +60,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Item>> createItemInInventory(
+  public ResponseEntity<ApiResponse<Item>> createItemInInventory(
       Jwt jwt, String gameSaveId, ItemRequest itemRequest) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
@@ -71,7 +71,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> deleteItemFromInventory(
+  public ResponseEntity<ApiResponse<Void>> deleteItemFromInventory(
       Jwt jwt, String gameSaveId, String itemClientId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
@@ -82,7 +82,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Item>> updateItemInInventory(
+  public ResponseEntity<ApiResponse<Item>> updateItemInInventory(
       Jwt jwt, String gameSaveId, String itemClientId, ItemRequest itemRequest) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);

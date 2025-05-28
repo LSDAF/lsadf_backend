@@ -25,7 +25,7 @@ import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -72,7 +72,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<Void>> login() {
+  public ResponseEntity<ApiResponse<Void>> login() {
     log.info("Anonymous user wants to login with grant_type=authorization_code");
     HttpHeaders headers = new HttpHeaders();
     String newUrl = buildRedirectUrl();
@@ -82,7 +82,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<JwtAuthentication>> login(
+  public ResponseEntity<ApiResponse<JwtAuthentication>> login(
       @RequestBody @Valid UserLoginRequest userLoginRequest) {
     log.info("User {} wants to login with grant_type=password", userLoginRequest.getUsername());
 
@@ -108,7 +108,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<GenericResponse<JwtAuthentication>> refresh(
+  public ResponseEntity<ApiResponse<JwtAuthentication>> refresh(
       @RequestBody @Valid UserRefreshLoginRequest userRefreshLoginRequest) {
     log.info("Anonymous user wants to login with grant_type=refresh_token");
 

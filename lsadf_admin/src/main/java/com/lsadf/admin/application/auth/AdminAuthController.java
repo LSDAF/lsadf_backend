@@ -19,10 +19,9 @@ import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -45,10 +44,14 @@ public interface AdminAuthController {
       hidden = true)
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  ResponseEntity<GenericResponse<Void>> login();
+  ResponseEntity<ApiResponse<Void>> login();
 
   /**
    * Logins a new user with the password grant type
@@ -60,12 +63,20 @@ public interface AdminAuthController {
   @Operation(summary = "Logins a user, returns a JWT object contaning the token to request the API")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  ResponseEntity<GenericResponse<JwtAuthentication>> login(UserLoginRequest userLoginRequest);
+  ResponseEntity<ApiResponse<JwtAuthentication>> login(UserLoginRequest userLoginRequest);
 
   /**
    * Refreshes a user token
@@ -78,11 +89,19 @@ public interface AdminAuthController {
   @Operation(summary = "Refreshes the token of a user")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  ResponseEntity<GenericResponse<JwtAuthentication>> refresh(
+  ResponseEntity<ApiResponse<JwtAuthentication>> refresh(
       UserRefreshLoginRequest userRefreshLoginRequest);
 }

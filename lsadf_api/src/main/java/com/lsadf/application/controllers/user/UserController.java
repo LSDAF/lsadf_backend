@@ -18,13 +18,11 @@ package com.lsadf.application.controllers.user;
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
-import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.exceptions.http.UnauthorizedException;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
-import com.lsadf.core.infra.web.responses.GenericResponse;
+import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
+import com.lsadf.core.infra.web.responses.user.UserInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,21 +40,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface UserController {
 
   /**
-   * Gets the logged UserInfo user info
+   * Retrieves the information of the logged-in user.
    *
-   * @param jwt the jwt
-   * @return the user info
-   * @throws UnauthorizedException
+   * @param jwt the JWT token of the authenticated user, provided automatically via Spring Security
+   * @return a ResponseEntity containing a ApiResponse object with user information encapsulated as
+   *     a UserInfoResponse. The response status and message will also be included.
    */
   @GetMapping(value = ControllerConstants.User.ME)
   @Operation(summary = "Gets the logged UserInfo user info")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "401", description = ResponseMessages.UNAUTHORIZED),
-        @ApiResponse(responseCode = "403", description = ResponseMessages.FORBIDDEN),
-        @ApiResponse(responseCode = "200", description = ResponseMessages.OK),
-        @ApiResponse(responseCode = "404", description = ResponseMessages.NOT_FOUND),
-        @ApiResponse(responseCode = "500", description = ResponseMessages.INTERNAL_SERVER_ERROR)
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = ResponseMessages.UNAUTHORIZED),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = ResponseMessages.FORBIDDEN),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = ResponseMessages.OK),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404",
+            description = ResponseMessages.NOT_FOUND),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  ResponseEntity<GenericResponse<UserInfo>> getUserInfo(@AuthenticationPrincipal Jwt jwt);
+  ResponseEntity<ApiResponse<UserInfoResponse>> getUserInfo(@AuthenticationPrincipal Jwt jwt);
 }
