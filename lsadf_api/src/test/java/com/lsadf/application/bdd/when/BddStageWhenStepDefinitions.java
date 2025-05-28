@@ -23,7 +23,7 @@ import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.controllers.game.stage.StageController;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
@@ -81,8 +81,8 @@ public class BddStageWhenStepDefinitions extends BddLoader {
             + StageController.Constants.ApiPaths.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
-      JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
-      String token = jwtAuthentication.getAccessToken();
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
 
@@ -107,8 +107,8 @@ public class BddStageWhenStepDefinitions extends BddLoader {
             + StageController.Constants.ApiPaths.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
-      JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
-      String token = jwtAuthentication.getAccessToken();
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);

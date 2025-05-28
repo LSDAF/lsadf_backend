@@ -34,10 +34,10 @@ public class UserInfoResponseMapper implements ModelResponseMapper<UserInfo, Use
   @Override
   public UserInfoResponse mapToResponse(UserInfo model) {
     return UserInfoResponse.builder()
-        .email(model.getEmail())
-        .name(model.getName())
-        .roles(model.getRoles())
-        .verified(model.isVerified())
+        .email(model.email())
+        .name(model.name())
+        .roles(model.roles())
+        .verified(model.verified())
         .build();
   }
 }

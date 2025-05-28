@@ -23,7 +23,7 @@ import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.controllers.game.currency.CurrencyController;
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
@@ -75,8 +75,8 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
-      JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
-      String token = jwtAuthentication.getAccessToken();
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
@@ -106,8 +106,8 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
-      JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
-      String token = jwtAuthentication.getAccessToken();
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
 

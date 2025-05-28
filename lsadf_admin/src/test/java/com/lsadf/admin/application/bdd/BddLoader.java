@@ -60,7 +60,7 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.advices.DynamicJsonViewAdvice;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
@@ -217,7 +217,7 @@ public class BddLoader {
 
   @Autowired protected Stack<Boolean> booleanStack;
 
-  @Autowired protected Stack<JwtAuthentication> jwtAuthenticationStack;
+  @Autowired protected Stack<JwtAuthenticationResponse> jwtAuthenticationResponseStack;
 
   // Properties
   @Autowired protected CacheExpirationProperties cacheExpirationProperties;

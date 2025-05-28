@@ -29,18 +29,23 @@ import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.exceptions.http.ForbiddenException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.responses.user.UserInfoResponse;
+import com.lsadf.core.infra.web.responses.user.UserInfoResponseMapper;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Step definitions for the then steps in the BDD scenarios */
 @Slf4j(topic = "[THEN STEP DEFINITIONS]")
 public class BddThenStepDefinitions extends BddLoader {
+
+  @Autowired private UserInfoResponseMapper userInfoResponseMapper;
 
   @Then("^I should return the following game saves$")
   public void then_i_should_return_the_following_game_saves(DataTable dataTable)
@@ -139,15 +144,16 @@ public class BddThenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
 
-    UserInfo actual = (UserInfo) responseStack.peek().getData();
+    UserInfoResponse actual = (UserInfoResponse) responseStack.peek().getData();
     UserInfo expected = BddUtils.mapToUserInfo(row);
+    UserInfoResponse expectedResponse = userInfoResponseMapper.mapToResponse(expected);
 
     assertThat(actual)
         .usingRecursiveComparison()
         .ignoringFields("id", "createdAt", "updatedAt", "roles")
-        .isEqualTo(expected);
+        .isEqualTo(expectedResponse);
 
-    assertThat(actual.getRoles()).containsAll(expected.getRoles());
+    assertThat(actual.roles()).containsAll(expectedResponse.roles());
   }
 
   @Then("^I should have no game save entries in DB$")
@@ -288,14 +294,16 @@ public class BddThenStepDefinitions extends BddLoader {
 
   @Then("^the token from the response should not be null$")
   public void then_the_token_from_the_response_should_not_be_null() {
-    JwtAuthentication jwtAuthentication = (JwtAuthentication) responseStack.peek().getData();
-    assertThat(jwtAuthentication.getAccessToken()).isNotNull();
+    JwtAuthenticationResponse jwtAuthenticationResponse =
+        (JwtAuthenticationResponse) responseStack.peek().getData();
+    assertThat(jwtAuthenticationResponse.accessToken()).isNotNull();
   }
 
   @Then("^the refresh token from the response should not be null$")
   public void then_the_refresh_token_from_the_response_should_not_be_null() {
-    JwtAuthentication jwtAuthentication = (JwtAuthentication) responseStack.peek().getData();
-    assertThat(jwtAuthentication.getRefreshToken()).isNotNull();
+    JwtAuthenticationResponse jwtAuthenticationResponse =
+        (JwtAuthenticationResponse) responseStack.peek().getData();
+    assertThat(jwtAuthenticationResponse.refreshToken()).isNotNull();
   }
 
   @Then("^the response should have the following GameSave$")

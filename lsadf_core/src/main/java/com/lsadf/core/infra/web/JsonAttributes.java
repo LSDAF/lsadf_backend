@@ -52,14 +52,6 @@ public final class JsonAttributes {
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class UserInfo {
-    public static final String NAME = "name";
-    public static final String EMAIL = "email";
-    public static final String ROLES = "roles";
-    public static final String VERIFIED = "validated";
-  }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class Stage {
     public static final String CURRENT_STAGE = "current_stage";
     public static final String MAX_STAGE = "max_stage";

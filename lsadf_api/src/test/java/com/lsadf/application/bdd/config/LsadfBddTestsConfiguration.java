@@ -26,7 +26,7 @@ import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.List;
 import java.util.Set;
@@ -120,8 +120,8 @@ public class LsadfBddTestsConfiguration {
   }
 
   @Bean
-  public Stack<JwtAuthentication> jwtAuthenticationStack(BddStackCleaner stackCleaner) {
-    Stack<JwtAuthentication> stack = new Stack<>();
+  public Stack<JwtAuthenticationResponse> jwtAuthenticationStack(BddStackCleaner stackCleaner) {
+    Stack<JwtAuthenticationResponse> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }
