@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.responses;
 
-import static com.lsadf.core.infra.web.JsonAttributes.GenericResponse.*;
+import static com.lsadf.core.infra.web.responses.GenericResponse.Attributes.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,10 +24,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import java.io.Serial;
 import java.io.Serializable;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * Generic POJO Response for all API controllers
@@ -54,4 +51,11 @@ public class GenericResponse<T> implements Serializable {
   @JsonProperty(value = DATA)
   @JsonView(JsonViews.External.class)
   private transient T data;
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class Attributes implements Serializable {
+    public static final String STATUS = "status";
+    public static final String MESSAGE = "message";
+    public static final String DATA = "data";
+  }
 }
