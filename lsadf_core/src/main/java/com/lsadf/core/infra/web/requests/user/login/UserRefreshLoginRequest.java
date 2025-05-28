@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.requests.user.login;
 
-import static com.lsadf.core.infra.web.responses.auth.JwtAuthentication.Attributes.REFRESH_TOKEN;
+import static com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication.Attributes.REFRESH_TOKEN;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.requests.Request;

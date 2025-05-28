@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.http_clients;
+package com.lsadf.core.infra.web.clients;
 
-import static com.lsadf.core.infra.web.http_clients.HttpClientTypes.DEFAULT;
+import static com.lsadf.core.infra.web.clients.HttpClientTypes.DEFAULT;
 
 import feign.Contract;
 import feign.Logger;

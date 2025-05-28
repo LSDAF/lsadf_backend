@@ -13,19 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.http_clients;
+package com.lsadf.core.infra.web.clients;
 
-import java.util.Optional;
-import org.springframework.format.FormatterRegistrar;
-import org.springframework.format.FormatterRegistry;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-public class OptionalFeignFormatterRegistrar implements FormatterRegistrar {
-
-  @Override
-  public void registerFormatters(FormatterRegistry registry) {
-    registry.addConverter(
-        Optional.class,
-        String.class,
-        optional -> optional.isPresent() ? optional.get().toString() : null);
-  }
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class HttpClientTypes {
+  public static final String DEFAULT = "default";
+  public static final String KEYCLOAK = "keycloak";
+  public static final String KEYCLOAK_ADMIN = "keycloak-admin";
 }

@@ -25,7 +25,7 @@ import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.config.ShutdownListener;
-import com.lsadf.core.infra.web.http_clients.KeycloakClient;
+import com.lsadf.core.infra.web.clients.keycloak.KeycloakClient;
 import javax.sql.DataSource;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
