@@ -15,14 +15,15 @@
  */
 package com.lsadf.core.infra.web.requests.common;
 
-import static com.lsadf.core.infra.web.JsonAttributes.Filter.TYPE;
-import static com.lsadf.core.infra.web.JsonAttributes.Filter.VALUE;
+import static com.lsadf.core.infra.web.requests.common.Filter.Attributes.TYPE;
+import static com.lsadf.core.infra.web.requests.common.Filter.Attributes.VALUE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,4 +44,10 @@ public class Filter implements Serializable {
   @JsonProperty(value = VALUE)
   @NotNull
   private String value;
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class Attributes {
+    public static final String TYPE = "type";
+    public static final String VALUE = "value";
+  }
 }
