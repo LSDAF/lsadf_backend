@@ -15,7 +15,7 @@
  */
 package com.lsadf.application.controllers.auth;
 
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +35,7 @@ public interface OAuth2Controller {
    * Handle OAuth2 callback
    *
    * @param code OAuth2 code
-   * @return ApiResponse with JwtAuthentication
+   * @return ApiResponse with JwtAuthenticationResponse
    */
   @GetMapping(value = ControllerConstants.OAuth2.CALLBACK)
   @Operation(summary = "Handles the OAuth2 callback", hidden = true)
@@ -54,5 +54,5 @@ public interface OAuth2Controller {
             responseCode = "500",
             description = "Internal Server Error")
       })
-  ResponseEntity<ApiResponse<JwtAuthentication>> handleOAuth2Callback(String code);
+  ResponseEntity<ApiResponse<JwtAuthenticationResponse>> handleOAuth2Callback(String code);
 }

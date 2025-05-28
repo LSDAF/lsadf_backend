@@ -23,7 +23,7 @@ import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.controllers.game.characteristics.CharacteristicsController;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
@@ -77,8 +77,8 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
-      JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
-      String token = jwtAuthentication.getAccessToken();
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
@@ -109,8 +109,8 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
-      JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
-      String token = jwtAuthentication.getAccessToken();
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
 

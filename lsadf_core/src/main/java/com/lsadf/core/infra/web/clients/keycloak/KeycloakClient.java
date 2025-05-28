@@ -17,7 +17,7 @@ package com.lsadf.core.infra.web.clients.keycloak;
 
 import com.lsadf.core.infra.web.clients.CommonFeignConfiguration;
 import com.lsadf.core.infra.web.clients.HttpClientTypes;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +35,6 @@ public interface KeycloakClient {
       path = TOKEN_ENDPOINT,
       consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  JwtAuthentication getToken(@PathVariable(value = REALM) String realm, @RequestBody String body);
+  JwtAuthenticationResponse getToken(
+      @PathVariable(value = REALM) String realm, @RequestBody String body);
 }

@@ -15,35 +15,24 @@
  */
 package com.lsadf.core.infra.web.clients.keycloak.response;
 
-import static com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication.Attributes.*;
+import static com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse.Attributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
 @JsonPropertyOrder({ACCESS_TOKEN, EXPIRES_IN, REFRESH_TOKEN, REFRESH_EXPIRES_IN})
-public class JwtAuthentication implements Model {
+public record JwtAuthenticationResponse(
+    @JsonProperty(value = ACCESS_TOKEN) String accessToken,
+    @JsonProperty(value = EXPIRES_IN) Long expiresIn,
+    @JsonProperty(value = REFRESH_TOKEN) String refreshToken,
+    @JsonProperty(value = Attributes.REFRESH_EXPIRES_IN) Long refreshExpiresIn)
+    implements Model {
 
   @Serial private static final long serialVersionUID = -5360094704215801310L;
-
-  @JsonProperty(value = ACCESS_TOKEN)
-  private final String accessToken;
-
-  @JsonProperty(value = EXPIRES_IN)
-  private final Long expiresIn;
-
-  @JsonProperty(value = REFRESH_TOKEN)
-  private final String refreshToken;
-
-  @JsonProperty(value = Attributes.REFRESH_EXPIRES_IN)
-  private final Long refreshExpiresIn;
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class Attributes {

@@ -694,10 +694,10 @@ public class BddUtils {
   }
 
   /**
-   * Maps a row from a BDD table to a JwtAuthentication
+   * Maps a row from a BDD table to a JwtAuthenticationResponse
    *
    * @param row row from BDD table
-   * @return JwtAuthentication
+   * @return JwtAuthenticationResponse
    */
   public static UserUpdateRequest mapToUserUpdateRequest(Map<String, String> row) {
     String firstName = row.get(BddFieldConstants.UserUpdateRequest.FIRST_NAME);

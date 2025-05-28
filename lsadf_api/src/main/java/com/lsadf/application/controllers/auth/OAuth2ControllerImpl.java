@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.clients.keycloak.KeycloakClient;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
@@ -53,7 +53,7 @@ public class OAuth2ControllerImpl extends BaseController implements OAuth2Contro
     return log;
   }
 
-  public ResponseEntity<ApiResponse<JwtAuthentication>> handleOAuth2Callback(
+  public ResponseEntity<ApiResponse<JwtAuthenticationResponse>> handleOAuth2Callback(
       @RequestParam(CODE) String code) {
     // Handle the code returned from Keycloak here
     log.info("Received code: {}", code);
@@ -82,7 +82,8 @@ public class OAuth2ControllerImpl extends BaseController implements OAuth2Contro
             + "&redirect_uri="
             + redirectUri;
 
-    JwtAuthentication jwt = keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
+    JwtAuthenticationResponse jwt =
+        keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
     log.info("Received token: {}", jwt);
     if (jwt == null) {
       return generateResponse(HttpStatus.INTERNAL_SERVER_ERROR);

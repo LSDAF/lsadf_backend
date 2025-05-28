@@ -23,14 +23,14 @@ import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.bdd.CacheEntryType;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.requests.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.user.UserInfoResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.*;
@@ -102,7 +102,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
       HttpEntity<UserRefreshLoginRequest> request =
           BddUtils.buildHttpEntity(userRefreshLoginRequest);
-      ResponseEntity<ApiResponse<JwtAuthentication>> result =
+      ResponseEntity<ApiResponse<JwtAuthenticationResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedJwtAuthenticationResponse());
       var response = result.getBody();
@@ -110,7 +110,7 @@ public class BddWhenStepDefinitions extends BddLoader {
       responseStack.push(response);
       var jwtAuthentication = response.getData();
       if (jwtAuthentication != null) {
-        jwtAuthenticationStack.push(jwtAuthentication);
+        jwtAuthenticationResponseStack.push(jwtAuthentication);
       }
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -135,7 +135,7 @@ public class BddWhenStepDefinitions extends BddLoader {
       UserLoginRequest userLoginRequest = BddUtils.mapToUserLoginRequest(row);
 
       HttpEntity<UserLoginRequest> request = BddUtils.buildHttpEntity(userLoginRequest);
-      ResponseEntity<ApiResponse<JwtAuthentication>> result =
+      ResponseEntity<ApiResponse<JwtAuthenticationResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedJwtAuthenticationResponse());
       var response = result.getBody();
@@ -143,7 +143,7 @@ public class BddWhenStepDefinitions extends BddLoader {
       responseStack.push(response);
       var jwtAuthentication = response.getData();
       if (jwtAuthentication != null) {
-        jwtAuthenticationStack.push(jwtAuthentication);
+        jwtAuthenticationResponseStack.push(jwtAuthentication);
       }
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -172,10 +172,10 @@ public class BddWhenStepDefinitions extends BddLoader {
         BddUtils.buildHttpEntity(simpleUserCreationRequest);
     try {
 
-      ResponseEntity<ApiResponse<UserInfo>> result =
+      ResponseEntity<ApiResponse<UserInfoResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfo> body = result.getBody();
+      ApiResponse<UserInfoResponse> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -272,9 +272,9 @@ public class BddWhenStepDefinitions extends BddLoader {
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
 
-      JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
       HttpHeaders headers = new HttpHeaders();
-      headers.setBearerAuth(jwtAuthentication.getAccessToken());
+      headers.setBearerAuth(jwtAuthenticationResponse.accessToken());
       HttpEntity<Void> request = new HttpEntity<>(headers);
       ResponseEntity<ApiResponse<GameSave>> result =
           testRestTemplate.exchange(
@@ -348,8 +348,8 @@ public class BddWhenStepDefinitions extends BddLoader {
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
 
-      JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
-      String token = jwtAuthentication.getAccessToken();
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<GameSaveNicknameUpdateRequest> request = new HttpEntity<>(updateRequest, headers);
@@ -372,10 +372,10 @@ public class BddWhenStepDefinitions extends BddLoader {
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       HttpEntity<Void> request = new HttpEntity<>(new HttpHeaders());
-      ResponseEntity<ApiResponse<UserInfo>> result =
+      ResponseEntity<ApiResponse<UserInfoResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfo> body = result.getBody();
+      ApiResponse<UserInfoResponse> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -391,15 +391,15 @@ public class BddWhenStepDefinitions extends BddLoader {
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
 
-      JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
-      String token = jwtAuthentication.getAccessToken();
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<UserInfo>> result =
+      ResponseEntity<ApiResponse<UserInfoResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfo> body = result.getBody();
+      ApiResponse<UserInfoResponse> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -415,8 +415,8 @@ public class BddWhenStepDefinitions extends BddLoader {
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
 
-      JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
-      String token = jwtAuthentication.getAccessToken();
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
@@ -454,8 +454,8 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("the user uses the previously generated refresh token to log in")
   public void when_the_user_uses_the_previously_generated_refresh_token_to_log_in() {
-    JwtAuthentication jwtAuthentication = jwtAuthenticationStack.peek();
-    String refreshToken = jwtAuthentication.getRefreshToken();
+    JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+    String refreshToken = jwtAuthenticationResponse.refreshToken();
     logInWithRefreshToken(refreshToken);
   }
 }

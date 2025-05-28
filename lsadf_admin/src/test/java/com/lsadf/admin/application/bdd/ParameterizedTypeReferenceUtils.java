@@ -23,7 +23,7 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import java.util.List;
 import java.util.Set;
@@ -45,11 +45,11 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of JwtAuthentication
+   * Builds a ParameterizedTypeReference for a ApiResponse of JwtAuthenticationResponse
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<JwtAuthentication>>
+  public static ParameterizedTypeReference<ApiResponse<JwtAuthenticationResponse>>
       buildParameterizedJwtAuthenticationResponse() {
     return new ParameterizedTypeReference<>() {};
   }

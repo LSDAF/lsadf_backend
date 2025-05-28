@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.clients.keycloak.KeycloakClient;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
@@ -82,7 +82,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<JwtAuthentication>> login(
+  public ResponseEntity<ApiResponse<JwtAuthenticationResponse>> login(
       @RequestBody @Valid UserLoginRequest userLoginRequest) {
     log.info("User {} wants to login with grant_type=password", userLoginRequest.getUsername());
 
@@ -100,7 +100,8 @@ public class AuthControllerImpl extends BaseController implements AuthController
             + "&password="
             + userLoginRequest.getPassword();
 
-    JwtAuthentication jwt = keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
+    JwtAuthenticationResponse jwt =
+        keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
 
     log.info("Received token: {}", jwt);
     return generateResponse(HttpStatus.OK, jwt);
@@ -108,7 +109,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<JwtAuthentication>> refresh(
+  public ResponseEntity<ApiResponse<JwtAuthenticationResponse>> refresh(
       @RequestBody @Valid UserRefreshLoginRequest userRefreshLoginRequest) {
     log.info("Anonymous user wants to login with grant_type=refresh_token");
 
@@ -124,7 +125,8 @@ public class AuthControllerImpl extends BaseController implements AuthController
             + "&refresh_token="
             + userRefreshLoginRequest.getRefreshToken();
 
-    JwtAuthentication response = keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
+    JwtAuthenticationResponse response =
+        keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
 
     log.info("Received token: {}", response);
     return generateResponse(HttpStatus.OK, response);
