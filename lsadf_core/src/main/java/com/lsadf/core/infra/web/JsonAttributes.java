@@ -112,10 +112,4 @@ public final class JsonAttributes {
     public static final String EXPIRES_IN = "expires_in";
     public static final String REFRESH_EXPIRES_IN = "refresh_expires_in";
   }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class Filter {
-    public static final String TYPE = "type";
-    public static final String VALUE = "value";
-  }
 }
