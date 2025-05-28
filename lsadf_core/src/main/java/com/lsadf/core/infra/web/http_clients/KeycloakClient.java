@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.http_clients;
 
-import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
+import com.lsadf.core.infra.web.responses.auth.JwtAuthentication;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
