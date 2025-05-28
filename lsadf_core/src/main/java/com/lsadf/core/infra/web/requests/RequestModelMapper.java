@@ -16,8 +16,8 @@
 
 package com.lsadf.core.infra.web.requests;
 
-import com.lsadf.core.domain.Model;
 import com.lsadf.core.infra.mappers.ModelMapper;
+import com.lsadf.core.shared.model.Model;
 
 /**
  * Represents a functional interface responsible for converting a request object into its

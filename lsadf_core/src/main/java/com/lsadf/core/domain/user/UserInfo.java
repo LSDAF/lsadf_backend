@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.JsonAttributes.UserInfo.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.lsadf.core.domain.Model;
+import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
 import java.util.Set;
 import lombok.AllArgsConstructor;

@@ -20,8 +20,8 @@ import static com.lsadf.core.infra.web.JsonAttributes.ItemStat.STATISTIC;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.domain.Model;
 import com.lsadf.core.infra.web.controllers.JsonViews;
+import com.lsadf.core.shared.model.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
