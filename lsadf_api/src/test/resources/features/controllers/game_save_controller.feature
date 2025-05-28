@@ -46,7 +46,7 @@ Feature: GameSave Controller BDD tests
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to update a GameSave with id d06664b0-5c4c-4d0b-a253-4f742b470bfd with the following GameSaveUpdateNicknameRequest
+    And the user requests the endpoint to update a GameSave with id d06664b0-5c4c-4d0b-a253-4f742b470bfd with the following GameSaveNicknameUpdateRequest
       | nickname   |
       | Play3r-0n3 |
 
@@ -61,7 +61,7 @@ Feature: GameSave Controller BDD tests
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to update a GameSave with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following GameSaveUpdateNicknameRequest
+    And the user requests the endpoint to update a GameSave with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following GameSaveNicknameUpdateRequest
       | nickname   |
       | Play3r-0n3 |
 
@@ -76,7 +76,7 @@ Feature: GameSave Controller BDD tests
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to update a GameSave with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following GameSaveUpdateNicknameRequest
+    And the user requests the endpoint to update a GameSave with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following GameSaveNicknameUpdateRequest
       | nickname   |
       | Play3r-0n3 |
 
@@ -93,7 +93,7 @@ Feature: GameSave Controller BDD tests
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to update a GameSave with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following GameSaveUpdateNicknameRequest
+    And the user requests the endpoint to update a GameSave with id 0530e1fe-3428-4edd-bb32-cb563419d0bd with the following GameSaveNicknameUpdateRequest
       | nickname |
       | player2  |
 

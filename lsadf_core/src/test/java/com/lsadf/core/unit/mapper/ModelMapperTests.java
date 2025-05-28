@@ -37,7 +37,7 @@ import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
-import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestImpl;
+import com.lsadf.core.infra.web.requests.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestMapper;
 import java.util.Date;
 import java.util.List;
@@ -281,8 +281,8 @@ class ModelMapperTests {
   void should_map_user_creation_request_to_user_representation() {
     // given
     UserCreationRequestMapper mapper = new UserCreationRequestMapper();
-    UserCreationRequestImpl userCreationRequestImpl =
-        UserCreationRequestImpl.builder()
+    SimpleUserCreationRequest simpleUserCreationRequest =
+        SimpleUserCreationRequest.builder()
             .username(userEmail)
             .password("password")
             .lastName("tata")
@@ -293,13 +293,13 @@ class ModelMapperTests {
             .build();
 
     // when
-    User user = mapper.mapToModel(userCreationRequestImpl);
+    User user = mapper.mapToModel(simpleUserCreationRequest);
 
     // then
-    assertThat(user.getUsername()).isEqualTo(userCreationRequestImpl.getUsername());
-    assertThat(user.getFirstName()).isEqualTo(userCreationRequestImpl.getFirstName());
-    assertThat(user.getLastName()).isEqualTo(userCreationRequestImpl.getLastName());
-    assertThat(user.getEmailVerified()).isEqualTo(userCreationRequestImpl.getEmailVerified());
-    assertThat(user.getEnabled()).isEqualTo(userCreationRequestImpl.getEnabled());
+    assertThat(user.getUsername()).isEqualTo(simpleUserCreationRequest.getUsername());
+    assertThat(user.getFirstName()).isEqualTo(simpleUserCreationRequest.getFirstName());
+    assertThat(user.getLastName()).isEqualTo(simpleUserCreationRequest.getLastName());
+    assertThat(user.getEmailVerified()).isEqualTo(simpleUserCreationRequest.getEmailVerified());
+    assertThat(user.getEnabled()).isEqualTo(simpleUserCreationRequest.getEnabled());
   }
 }

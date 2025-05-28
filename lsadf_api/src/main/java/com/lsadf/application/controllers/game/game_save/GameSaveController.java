@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.JsonViews;
-import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import com.lsadf.core.shared.validation.Uuid;
@@ -69,7 +69,7 @@ public interface GameSaveController {
    *
    * @param jwt Jwt
    * @param id id of the game save
-   * @param gameSaveUpdateNicknameRequest GameSaveUpdateNicknameRequest
+   * @param gameSaveNicknameUpdateRequest GameSaveNicknameUpdateRequest
    * @return GenericResponse
    */
   @PostMapping(value = ControllerConstants.GameSave.UPDATE_NICKNAME)
@@ -86,7 +86,7 @@ public interface GameSaveController {
   ResponseEntity<GenericResponse<Void>> updateNickname(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String id,
-      @Valid @RequestBody GameSaveUpdateNicknameRequest gameSaveUpdateNicknameRequest);
+      @Valid @RequestBody GameSaveNicknameUpdateRequest gameSaveNicknameUpdateRequest);
 
   /** Gets the user game saves */
   @GetMapping(value = ControllerConstants.GameSave.ME)

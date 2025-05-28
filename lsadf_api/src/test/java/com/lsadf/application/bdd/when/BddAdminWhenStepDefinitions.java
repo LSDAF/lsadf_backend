@@ -30,8 +30,8 @@ import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.common.Filter;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;
@@ -651,7 +651,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   }
 
   @When(
-      "^the user requests the admin endpoint to update the game save with id (.*) with the following AdminGameSaveUpdateRequest$")
+      "^the user requests the admin endpoint to update the game save with id (.*) with the following GameSaveUpdateRequest$")
   public void when_the_user_requests_the_admin_endpoint_to_update_the_game_save_with_id(
       String saveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);

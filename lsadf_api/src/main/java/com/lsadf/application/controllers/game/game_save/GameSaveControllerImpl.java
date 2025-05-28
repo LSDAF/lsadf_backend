@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.controllers.BaseController;
-import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -66,11 +66,11 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
   /** {@inheritDoc} */
   @Override
   public ResponseEntity<GenericResponse<Void>> updateNickname(
-      Jwt jwt, String id, GameSaveUpdateNicknameRequest gameSaveUpdateNicknameRequest) {
+      Jwt jwt, String id, GameSaveNicknameUpdateRequest gameSaveNicknameUpdateRequest) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(id, username);
-    gameSaveService.updateNickname(id, gameSaveUpdateNicknameRequest);
+    gameSaveService.updateNickname(id, gameSaveNicknameUpdateRequest);
     log.info("Successfully saved game with id {} for user with email {}", id, username);
     return generateResponse(HttpStatus.OK);
   }

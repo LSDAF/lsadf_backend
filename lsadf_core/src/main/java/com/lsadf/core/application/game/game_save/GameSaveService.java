@@ -21,9 +21,8 @@ import com.lsadf.core.infra.exceptions.AlreadyTakenNicknameException;
 import com.lsadf.core.infra.exceptions.http.ForbiddenException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.exceptions.http.UnauthorizedException;
-import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveUpdateRequest;
 import java.util.stream.Stream;
 
 /** Service for managing game saves */
@@ -57,14 +56,7 @@ public interface GameSaveService {
    */
   GameSave getGameSave(String saveId) throws NotFoundException;
 
-  GameSave updateNickname(
-      String saveId, GameSaveUpdateNicknameRequest gameSaveUpdateNicknameRequest)
-      throws ForbiddenException,
-          NotFoundException,
-          UnauthorizedException,
-          AlreadyTakenNicknameException;
-
-  GameSave updateNickname(String saveId, AdminGameSaveUpdateRequest updateRequest)
+  GameSave updateNickname(String saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
       throws ForbiddenException,
           NotFoundException,
           UnauthorizedException,

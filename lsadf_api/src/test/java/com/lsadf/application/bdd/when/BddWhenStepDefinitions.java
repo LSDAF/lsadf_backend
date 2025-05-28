@@ -26,8 +26,8 @@ import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.config.auth.JwtAuthentication;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
-import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
-import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestImpl;
+import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
+import com.lsadf.core.infra.web.requests.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.responses.GenericResponse;
@@ -152,7 +152,7 @@ public class BddWhenStepDefinitions extends BddLoader {
   }
 
   @When(
-      "^the user requests the endpoint to register a user with the following UserCreationRequestImpl$")
+      "^the user requests the endpoint to register a user with the following SimpleUserCreationRequest$")
   public void
       when_the_user_request_the_endpoint_to_register_a_user_with_the_following_UserCreationRequest(
           DataTable dataTable) {
@@ -164,11 +164,12 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
 
     Map<String, String> row = rows.get(0);
-    UserCreationRequestImpl userCreationRequestImpl = BddUtils.mapToUserCreationRequest(row);
+    SimpleUserCreationRequest simpleUserCreationRequest = BddUtils.mapToUserCreationRequest(row);
     String fullPath = ControllerConstants.AUTH + ControllerConstants.Auth.REGISTER;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    HttpEntity<UserCreationRequestImpl> request = BddUtils.buildHttpEntity(userCreationRequestImpl);
+    HttpEntity<SimpleUserCreationRequest> request =
+        BddUtils.buildHttpEntity(simpleUserCreationRequest);
     try {
 
       ResponseEntity<GenericResponse<UserInfo>> result =
@@ -233,9 +234,9 @@ public class BddWhenStepDefinitions extends BddLoader {
   }
 
   @When(
-      "^we want to update the game save with id (.*) with the following GameSaveUpdateNicknameRequest")
+      "^we want to update the game save with id (.*) with the following GameSaveNicknameUpdateRequest")
   public void
-      when_we_want_to_update_the_game_save_with_user_id_with_the_following_GameSaveUpdateNicknameRequest(
+      when_we_want_to_update_the_game_save_with_user_id_with_the_following_GameSaveNicknameUpdateRequest(
           String saveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -245,7 +246,7 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
 
     Map<String, String> row = rows.get(0);
-    GameSaveUpdateNicknameRequest updateRequest = BddUtils.mapToGameSaveUpdateUserRequest(row);
+    GameSaveNicknameUpdateRequest updateRequest = BddUtils.mapToGameSaveUpdateUserRequest(row);
     try {
       GameSave updatedGameSave = gameSaveService.updateNickname(saveId, updateRequest);
       gameSaveListStack.push(Collections.singletonList(updatedGameSave));
@@ -313,8 +314,8 @@ public class BddWhenStepDefinitions extends BddLoader {
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       HttpHeaders headers = new HttpHeaders();
-      HttpEntity<GameSaveUpdateNicknameRequest> request =
-          new HttpEntity<>(new GameSaveUpdateNicknameRequest(), headers);
+      HttpEntity<GameSaveNicknameUpdateRequest> request =
+          new HttpEntity<>(new GameSaveNicknameUpdateRequest(), headers);
       ResponseEntity<GenericResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedVoidResponse());
@@ -328,7 +329,7 @@ public class BddWhenStepDefinitions extends BddLoader {
   }
 
   @When(
-      "^the user requests the endpoint to update a GameSave with id (.*) with the following GameSaveUpdateNicknameRequest$")
+      "^the user requests the endpoint to update a GameSave with id (.*) with the following GameSaveNicknameUpdateRequest$")
   public void
       when_the_user_requests_the_endpoint_to_update_a_game_save_with_id_with_the_following_game_save_update_nickname_request(
           String gameSaveId, DataTable dataTable) {
@@ -340,7 +341,7 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
 
     Map<String, String> row = rows.get(0);
-    GameSaveUpdateNicknameRequest updateRequest = BddUtils.mapToGameSaveUpdateUserRequest(row);
+    GameSaveNicknameUpdateRequest updateRequest = BddUtils.mapToGameSaveUpdateUserRequest(row);
 
     String fullPath = ControllerConstants.GAME_SAVE + "/" + gameSaveId + "/nickname";
 
@@ -351,7 +352,7 @@ public class BddWhenStepDefinitions extends BddLoader {
       String token = jwtAuthentication.getAccessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
-      HttpEntity<GameSaveUpdateNicknameRequest> request = new HttpEntity<>(updateRequest, headers);
+      HttpEntity<GameSaveNicknameUpdateRequest> request = new HttpEntity<>(updateRequest, headers);
       ResponseEntity<GenericResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedVoidResponse());

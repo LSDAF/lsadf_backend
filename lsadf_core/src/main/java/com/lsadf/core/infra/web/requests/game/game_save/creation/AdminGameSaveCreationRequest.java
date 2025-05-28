@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.requests.game.game_save.admin;
+package com.lsadf.core.infra.web.requests.game.game_save.creation;
 
 import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
 import static com.lsadf.core.infra.web.JsonAttributes.ID;
