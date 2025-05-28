@@ -16,9 +16,9 @@
 
 package com.lsadf.core.infra.persistence.mappers;
 
-import com.lsadf.core.domain.Model;
 import com.lsadf.core.infra.mappers.ModelMapper;
 import com.lsadf.core.infra.persistence.Entity;
+import com.lsadf.core.shared.model.Model;
 
 /**
  * A functional interface that provides a mapping capability to transform an entity of type {@code

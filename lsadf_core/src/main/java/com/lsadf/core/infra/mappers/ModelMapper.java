@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.mappers;
 
-import com.lsadf.core.domain.Model;
+import com.lsadf.core.shared.model.Model;
 
 /**
  * A functional interface designed to provide a mapping mechanism for converting objects of one type
