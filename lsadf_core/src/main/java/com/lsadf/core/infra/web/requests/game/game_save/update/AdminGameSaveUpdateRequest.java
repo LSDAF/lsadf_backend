@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.requests.game.game_save;
+package com.lsadf.core.infra.web.requests.game.game_save.update;
 
 import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.user.validation.Nickname;
-import com.lsadf.core.infra.web.requests.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GameSaveUpdateNicknameRequest implements Request {
+@Data
+@Builder
+public class AdminGameSaveUpdateRequest implements GameSaveUpdateRequest {
 
-  @Serial private static final long serialVersionUID = -6478222007381338108L;
+  @Serial private static final long serialVersionUID = -1619677650296221394L;
 
   @JsonProperty(value = NICKNAME)
   @Nickname

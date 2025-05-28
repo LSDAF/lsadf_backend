@@ -36,13 +36,13 @@ import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import com.lsadf.core.infra.web.requests.common.Filter;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;
-import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestImpl;
+import com.lsadf.core.infra.web.requests.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
@@ -570,26 +570,26 @@ public class BddUtils {
    * @param row row from BDD table
    * @return GameSaveUpdateRequest
    */
-  public static GameSaveUpdateNicknameRequest mapToGameSaveUpdateUserRequest(
+  public static GameSaveNicknameUpdateRequest mapToGameSaveUpdateUserRequest(
       Map<String, String> row) {
     String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
 
-    return new GameSaveUpdateNicknameRequest(nickname);
+    return new GameSaveNicknameUpdateRequest(nickname);
   }
 
   /**
-   * Maps a row from a BDD table to a UserCreationRequestImpl
+   * Maps a row from a BDD table to a SimpleUserCreationRequest
    *
    * @param row row from BDD table
-   * @return UserCreationRequestImpl
+   * @return SimpleUserCreationRequest
    */
-  public static UserCreationRequestImpl mapToUserCreationRequest(Map<String, String> row) {
+  public static SimpleUserCreationRequest mapToUserCreationRequest(Map<String, String> row) {
     String email = row.get(BddFieldConstants.UserCreationRequest.EMAIL);
     String firstName = row.get(BddFieldConstants.UserCreationRequest.FIRST_NAME);
     String lastName = row.get(BddFieldConstants.UserCreationRequest.LAST_NAME);
     String password = row.get(BddFieldConstants.UserCreationRequest.PASSWORD);
 
-    return UserCreationRequestImpl.builder()
+    return SimpleUserCreationRequest.builder()
         .username(email)
         .firstName(firstName)
         .lastName(lastName)

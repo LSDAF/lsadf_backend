@@ -17,19 +17,15 @@ package com.lsadf.core.infra.persistence.game.game_save;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.persistence.AEntity;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import java.io.Serial;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -151,22 +147,6 @@ public class GameSaveEntity extends AEntity {
     }
     if (currency.getAmethyst() != null) {
       this.currencyEntity.setAmethystAmount(currency.getAmethyst());
-    }
-  }
-
-  /**
-   * Set the inventory of the game save with a inventory POJO
-   *
-   * @param inventory Inventory
-   */
-  public void setInventoryEntity(Inventory inventory) {
-    if (inventory.getItems() != null) {
-      // TODO: get content of items
-      Set<ItemEntity> items =
-          inventory.getItems().stream()
-              .map(item -> ItemEntity.builder().build())
-              .collect(Collectors.toSet());
-      this.inventoryEntity.setItems(items);
     }
   }
 

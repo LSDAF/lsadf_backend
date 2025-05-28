@@ -27,6 +27,7 @@ import com.lsadf.core.infra.exceptions.AlreadyExistingGameSaveException;
 import com.lsadf.core.infra.exceptions.AlreadyTakenNicknameException;
 import com.lsadf.core.infra.exceptions.http.ForbiddenException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
+import com.lsadf.core.infra.exceptions.http.UnauthorizedException;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
@@ -40,9 +41,10 @@ import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.GameSaveUpdateNicknameRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.admin.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
+import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveUpdateRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import java.util.*;
 import java.util.stream.Stream;
@@ -132,7 +134,8 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Transactional(readOnly = true)
   public GameSave getGameSave(String saveId) throws NotFoundException {
     GameSaveEntity gameSaveEntity = getGameSaveEntity(saveId);
-    return enrichGameSaveWithCachedData(gameSaveEntity);
+    GameSave gameSave = mapper.mapToModel(gameSaveEntity);
+    return enrichGameSaveWithCachedData(gameSave);
   }
 
   /** {@inheritDoc} */
@@ -202,37 +205,37 @@ public class GameSaveServiceImpl implements GameSaveService {
 
   /** {@inheritDoc} */
   @Override
-  @Transactional
-  public GameSave updateNickname(
-      String saveId, GameSaveUpdateNicknameRequest gameSaveUpdateNicknameRequest)
-      throws NotFoundException, AlreadyTakenNicknameException {
-    GameSaveEntity currentGameSave = getGameSaveEntity(saveId);
+  public GameSave updateNickname(String saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
+      throws ForbiddenException,
+          NotFoundException,
+          UnauthorizedException,
+          AlreadyTakenNicknameException {
+    if (saveId == null) {
+      throw new NotFoundException("Game save id is null");
+    }
+
+    GameSaveEntity gameSaveEntity = getGameSaveEntity(saveId);
 
     if (gameSaveRepository
-        .findGameSaveEntityByNickname(gameSaveUpdateNicknameRequest.getNickname())
+        .findGameSaveEntityByNickname(gameSaveUpdateRequest.getNickname())
         .isPresent()) {
       throw new AlreadyTakenNicknameException(
-          "Game save with nickname "
-              + gameSaveUpdateNicknameRequest.getNickname()
-              + " already exists");
+          "Nickname " + gameSaveUpdateRequest.getNickname() + " is already taken");
     }
 
-    return updateGameSaveEntityNickname(currentGameSave, gameSaveUpdateNicknameRequest);
-  }
+    boolean hasUpdates = false;
 
-  /** {@inheritDoc} */
-  @Override
-  @Transactional
-  public GameSave updateNickname(String saveId, AdminGameSaveUpdateRequest updateRequest)
-      throws NotFoundException, AlreadyTakenNicknameException {
-    GameSaveEntity currentGameSave = getGameSaveEntity(saveId);
-
-    if (gameSaveRepository.findGameSaveEntityByNickname(updateRequest.getNickname()).isPresent()) {
-      throw new AlreadyTakenNicknameException(
-          "Game save with nickname " + updateRequest.getNickname() + " already exists");
+    if (!Objects.equals(gameSaveEntity.getNickname(), gameSaveUpdateRequest.getNickname())) {
+      hasUpdates = true;
+      gameSaveEntity.setNickname(gameSaveUpdateRequest.getNickname());
     }
 
-    return updateGameSave(currentGameSave, updateRequest);
+    if (hasUpdates) {
+      var updated = gameSaveRepository.save(gameSaveEntity);
+      return mapper.mapToModel(updated);
+    }
+
+    return mapper.mapToModel(gameSaveEntity);
   }
 
   /** {@inheritDoc} */
@@ -278,16 +281,19 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Override
   @Transactional(readOnly = true)
   public Stream<GameSave> getGameSaves() {
-    return gameSaveRepository.findAllGameSaves().map(this::enrichGameSaveWithCachedData);
+    return gameSaveRepository
+        .findAllGameSaves()
+        .map(mapper::mapToModel)
+        .map(this::enrichGameSaveWithCachedData);
   }
 
   private GameSave updateGameSaveEntityNickname(
-      GameSaveEntity gameSaveEntity, GameSaveUpdateNicknameRequest gameSaveUpdateNicknameRequest) {
+      GameSaveEntity gameSaveEntity, GameSaveNicknameUpdateRequest gameSaveNicknameUpdateRequest) {
     boolean hasUpdates = false;
 
     if (!Objects.equals(
-        gameSaveEntity.getNickname(), gameSaveUpdateNicknameRequest.getNickname())) {
-      gameSaveEntity.setNickname(gameSaveUpdateNicknameRequest.getNickname());
+        gameSaveEntity.getNickname(), gameSaveNicknameUpdateRequest.getNickname())) {
+      gameSaveEntity.setNickname(gameSaveNicknameUpdateRequest.getNickname());
       hasUpdates = true;
     }
 
@@ -362,32 +368,26 @@ public class GameSaveServiceImpl implements GameSaveService {
     }
     return gameSaveRepository
         .findGameSaveEntitiesByUserEmail(username)
+        .map(mapper::mapToModel)
         .map(this::enrichGameSaveWithCachedData);
   }
 
-  /**
-   * Enhances the provided game save entity with data from the cache for characteristics, currency,
-   * and stage entities, if the respective caches are enabled and contain data.
-   *
-   * @param gameSave the game save entity to be enriched with cached data
-   * @return the enriched game save entity
-   */
-  private GameSave enrichGameSaveWithCachedData(GameSaveEntity gameSave) {
+  private GameSave enrichGameSaveWithCachedData(GameSave gameSave) {
     if (characteristicsCache.isEnabled()) {
       Optional<Characteristics> optionalCharacteristics =
           characteristicsCache.get(gameSave.getId());
-      optionalCharacteristics.ifPresent(gameSave::setCharacteristicsEntity);
+      optionalCharacteristics.ifPresent(gameSave::setCharacteristics);
     }
     if (currencyCache.isEnabled()) {
       Optional<Currency> optionalCurrency = currencyCache.get(gameSave.getId());
-      optionalCurrency.ifPresent(gameSave::setCurrencyEntity);
+      optionalCurrency.ifPresent(gameSave::setCurrency);
     }
     if (stageCache.isEnabled()) {
       Optional<Stage> optionalStage = stageCache.get(gameSave.getId());
-      optionalStage.ifPresent(gameSave::setStageEntity);
+      optionalStage.ifPresent(gameSave::setStage);
     }
 
-    return mapper.mapToModel(gameSave);
+    return gameSave;
   }
 
   /**

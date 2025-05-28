@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserCreationRequestImpl implements UserCreationRequest {
+public class SimpleUserCreationRequest implements UserCreationRequest {
 
   @Serial private static final long serialVersionUID = 7976141604912528826L;
 
