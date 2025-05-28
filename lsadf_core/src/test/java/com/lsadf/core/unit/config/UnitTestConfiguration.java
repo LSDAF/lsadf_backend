@@ -34,7 +34,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
 @TestConfiguration
-@Import(UnitMapperMockConfiguration.class)
+@Import({UnitMapperMockConfiguration.class, UnitCacheConfiguration.class})
 public class UnitTestConfiguration {
 
   @MockBean private KeycloakClient keycloakClient;

@@ -561,7 +561,66 @@ public class BddUtils {
       Map<String, String> row) {
     String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
 
-    return AdminGameSaveUpdateRequest.builder().nickname(nickname).build();
+    // Currency (nullable)
+    String gold = row.get(BddFieldConstants.Currency.GOLD);
+    String diamond = row.get(BddFieldConstants.Currency.DIAMOND);
+    String emerald = row.get(BddFieldConstants.Currency.EMERALD);
+    String amethyst = row.get(BddFieldConstants.Currency.AMETHYST);
+    Currency currency =
+        Currency.builder()
+            .gold(gold != null ? Long.parseLong(gold) : null)
+            .amethyst(amethyst != null ? Long.parseLong(amethyst) : null)
+            .diamond(diamond != null ? Long.parseLong(diamond) : null)
+            .emerald(emerald != null ? Long.parseLong(emerald) : null)
+            .build();
+    if (currency.getGold() == null
+        && currency.getAmethyst() == null
+        && currency.getDiamond() == null) {
+      currency = null;
+    }
+
+    // Stage
+    String currentStage = row.get(BddFieldConstants.Stage.CURRENT_STAGE);
+    String maxStage = row.get(BddFieldConstants.Stage.MAX_STAGE);
+    Stage stage =
+        Stage.builder()
+            .currentStage(currentStage != null ? Long.parseLong(currentStage) : null)
+            .maxStage(maxStage != null ? Long.parseLong(maxStage) : null)
+            .build();
+
+    if (stage.getCurrentStage() == null && stage.getMaxStage() == null) {
+      stage = null;
+    }
+
+    // Characteristics
+    String attack = row.get(BddFieldConstants.Characteristics.ATTACK);
+    String critChance = row.get(BddFieldConstants.Characteristics.CRIT_CHANCE);
+    String critDamage = row.get(BddFieldConstants.Characteristics.CRIT_DAMAGE);
+    String health = row.get(BddFieldConstants.Characteristics.HEALTH);
+    String resistance = row.get(BddFieldConstants.Characteristics.RESISTANCE);
+    Characteristics characteristics =
+        Characteristics.builder()
+            .attack(attack != null ? Long.parseLong(attack) : null)
+            .critChance(critChance != null ? Long.parseLong(critChance) : null)
+            .critDamage(critDamage != null ? Long.parseLong(critDamage) : null)
+            .health(health != null ? Long.parseLong(health) : null)
+            .resistance(resistance != null ? Long.parseLong(resistance) : null)
+            .build();
+
+    if (characteristics.getAttack() == null
+        || characteristics.getHealth() == null
+        || characteristics.getCritChance() == null
+        || characteristics.getCritDamage() == null
+        || characteristics.getResistance() == null) {
+      characteristics = null;
+    }
+
+    return AdminGameSaveUpdateRequest.builder()
+        .nickname(nickname)
+        .characteristics(characteristics)
+        .currency(currency)
+        .stage(stage)
+        .build();
   }
 
   /**

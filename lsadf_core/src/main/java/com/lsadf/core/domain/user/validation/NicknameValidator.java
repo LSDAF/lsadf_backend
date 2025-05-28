@@ -22,11 +22,18 @@ public class NicknameValidator implements ConstraintValidator<Nickname, String> 
   private static final int MIN_LENGTH = 3;
   private static final int MAX_LENGTH = 16;
 
+  private boolean nullable;
+
+  @Override
+  public void initialize(Nickname constraintAnnotation) {
+    this.nullable = constraintAnnotation.nullable();
+  }
+
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
-    // If nickname is null, then should return false
+    // If nickname is null, then should return false if nullable is true
     if (value == null) {
-      return false;
+      return nullable;
     }
 
     if (value.length() < MIN_LENGTH || value.length() > MAX_LENGTH) {

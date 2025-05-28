@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.application.game.game_save;
 
+import static com.lsadf.core.infra.cache.RedisConstants.GAME_SAVE_OWNERSHIP;
 import static com.lsadf.core.infra.config.BeanConstants.Cache.GAME_SAVE_OWNERSHIP_CACHE;
 
 import com.lsadf.core.application.user.UserService;
@@ -23,6 +24,10 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
+import com.lsadf.core.infra.cache.ValkeyCache;
+import com.lsadf.core.infra.cache.config.ValkeyProperties;
+import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
@@ -35,6 +40,7 @@ import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * Configuration class for managing the setup of the Game Save related services and components.
@@ -53,27 +59,29 @@ public class GameSaveConfiguration {
   public GameSaveService gameSaveService(
       UserService userService,
       GameSaveRepository gameSaveRepository,
-      InventoryRepository inventoryRepository,
-      StageRepository stageRepository,
       CharacteristicsRepository characteristicsRepository,
       CurrencyRepository currencyRepository,
+      StageRepository stageRepository,
+      InventoryRepository inventoryRepository,
+      HistoCache<Stage> stageCache,
+      HistoCache<Currency> currencyCache,
+      HistoCache<Characteristics> characteristicsCache,
       @Qualifier(GAME_SAVE_OWNERSHIP_CACHE) Cache<String> gameSaveOwnershipCache,
-      HistoCache<Stage> stageHistoCache,
-      HistoCache<Characteristics> characteristicsHistoCache,
-      HistoCache<Currency> currencyHistoCache,
+      CacheService cacheService,
       GameSaveEntityMapper gameSaveEntityModelMapper) {
     return new GameSaveServiceImpl(
         userService,
         gameSaveRepository,
-        inventoryRepository,
-        stageRepository,
         characteristicsRepository,
         currencyRepository,
+        stageRepository,
+        inventoryRepository,
+        gameSaveEntityModelMapper,
+        cacheService,
         gameSaveOwnershipCache,
-        stageHistoCache,
-        characteristicsHistoCache,
-        currencyHistoCache,
-        gameSaveEntityModelMapper);
+        stageCache,
+        currencyCache,
+        characteristicsCache);
   }
 
   @Bean
@@ -82,5 +90,17 @@ public class GameSaveConfiguration {
       CurrencyEntityMapper currencyMapper,
       StageEntityMapper stageMapper) {
     return new GameSaveEntityMapper(characteristicsMapper, stageMapper, currencyMapper);
+  }
+
+  @Bean(name = GAME_SAVE_OWNERSHIP_CACHE)
+  public Cache<String> gameSaveOwnershipCache(
+      RedisTemplate<String, String> redisTemplate,
+      CacheExpirationProperties cacheExpirationProperties,
+      ValkeyProperties valkeyProperties) {
+    return new ValkeyCache<>(
+        redisTemplate,
+        GAME_SAVE_OWNERSHIP,
+        cacheExpirationProperties.getGameSaveOwnershipExpirationSeconds(),
+        valkeyProperties);
   }
 }

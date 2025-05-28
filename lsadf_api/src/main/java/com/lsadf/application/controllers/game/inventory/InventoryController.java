@@ -123,7 +123,7 @@ public interface InventoryController {
    *
    * @param jwt The JWT token of the authenticated user.
    * @param gameSaveId The UUID of the game save containing the inventory to update.
-   * @param itemClientId The client-side identifier of the item to update.
+   * @param itemClientId The client-side identi fier of the item to update.
    * @param itemRequest The request containing the updated item details.
    * @return ResponseEntity containing the updated item data.
    */

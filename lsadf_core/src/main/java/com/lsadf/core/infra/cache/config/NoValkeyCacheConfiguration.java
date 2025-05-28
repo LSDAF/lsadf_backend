@@ -15,14 +15,6 @@
  */
 package com.lsadf.core.infra.cache.config;
 
-import static com.lsadf.core.infra.config.BeanConstants.Cache.*;
-
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.infra.cache.NoOpCache;
-import com.lsadf.core.infra.cache.NoOpHistoCache;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.flush.NoOpFlushServiceImpl;
 import com.lsadf.core.infra.cache.services.CacheService;
@@ -43,20 +35,5 @@ public class NoValkeyCacheConfiguration {
   @Bean
   public CacheFlushService noOpCacheFlushService() {
     return new NoOpFlushServiceImpl();
-  }
-
-  @Bean(name = CHARACTERISTICS_CACHE)
-  public HistoCache<Characteristics> characteristicsCache() {
-    return new NoOpHistoCache<>();
-  }
-
-  @Bean(name = CURRENCY_CACHE)
-  public HistoCache<Currency> currencyCache() {
-    return new NoOpHistoCache<>();
-  }
-
-  @Bean(name = GAME_SAVE_OWNERSHIP_CACHE)
-  public Cache<String> gameSaveOwnershipCache() {
-    return new NoOpCache<>();
   }
 }

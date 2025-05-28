@@ -29,4 +29,11 @@ public interface CacheService {
 
   /** Clear all the caches */
   void clearCaches();
+
+  /**
+   * Clears the cache entry associated with the specified key.
+   *
+   * @param key the key for the cache entry to be cleared
+   */
+  void clearGameSaveValues(String key);
 }

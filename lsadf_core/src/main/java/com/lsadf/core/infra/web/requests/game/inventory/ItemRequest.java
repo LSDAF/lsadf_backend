@@ -26,6 +26,7 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -42,6 +43,7 @@ import lombok.NoArgsConstructor;
   MAIN_STAT,
   ADDITIONAL_STATS
 })
+@Builder
 public class ItemRequest implements Request {
 
   @Serial private static final long serialVersionUID = -1116418739363127022L;

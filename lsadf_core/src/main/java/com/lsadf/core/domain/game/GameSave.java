@@ -28,17 +28,13 @@ import com.lsadf.core.shared.model.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /** Game Save DTO */
-@Data
 @Schema(name = "GameSave", description = "Game Save Object")
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class GameSave implements Model {
 
   @Serial private static final long serialVersionUID = -2686370647354845265L;
@@ -68,13 +64,14 @@ public class GameSave implements Model {
 
   // External fields
 
+  @Setter
   @JsonView(JsonViews.External.class)
   @JsonProperty(value = NICKNAME)
   private String nickname;
 
   @JsonView(JsonViews.External.class)
   @JsonProperty(value = CHARACTERISTICS)
-  private Characteristics characteristics;
+  private final Characteristics characteristics;
 
   @JsonView(JsonViews.External.class)
   @JsonProperty(value = CURRENCY)
@@ -83,4 +80,57 @@ public class GameSave implements Model {
   @JsonView(JsonViews.External.class)
   @JsonProperty(value = STAGE)
   private Stage stage;
+
+  public void setCharacteristics(Characteristics characteristics) {
+    var attack = characteristics.getAttack();
+    if (attack != null) {
+      this.characteristics.setAttack(attack);
+    }
+    var critChance = characteristics.getCritChance();
+    if (critChance != null) {
+      this.characteristics.setCritChance(critChance);
+    }
+    var critDamage = characteristics.getCritDamage();
+    if (critDamage != null) {
+      this.characteristics.setCritDamage(critDamage);
+    }
+    var health = characteristics.getHealth();
+    if (health != null) {
+      this.characteristics.setHealth(health);
+    }
+    var resistance = characteristics.getResistance();
+    if (resistance != null) {
+      this.characteristics.setResistance(resistance);
+    }
+  }
+
+  public void setCurrency(Currency currency) {
+    var gold = currency.getGold();
+    if (gold != null) {
+      this.currency.setGold(gold);
+    }
+    var diamond = currency.getDiamond();
+    if (diamond != null) {
+      this.currency.setDiamond(diamond);
+    }
+    var emerald = currency.getEmerald();
+    if (emerald != null) {
+      this.currency.setEmerald(emerald);
+    }
+    var amethyst = currency.getAmethyst();
+    if (amethyst != null) {
+      this.currency.setAmethyst(amethyst);
+    }
+  }
+
+  public void setStage(Stage stage) {
+    var currentStage = stage.getCurrentStage();
+    if (currentStage != null) {
+      this.stage.setCurrentStage(currentStage);
+    }
+    var maxStage = stage.getMaxStage();
+    if (maxStage != null) {
+      this.stage.setMaxStage(maxStage);
+    }
+  }
 }

@@ -23,22 +23,15 @@ import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.game.stage.StageService;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.services.CacheService;
-import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.utils.StreamUtils;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.controllers.JsonViews;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.web.responses.GenericResponse;
 import java.util.Collections;
@@ -158,7 +151,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       Jwt jwt, String gameSaveId, AdminGameSaveUpdateRequest adminGameSaveUpdateRequest) {
 
     validateUser(jwt);
-    GameSave gameSave = gameSaveService.updateNickname(gameSaveId, adminGameSaveUpdateRequest);
+    GameSave gameSave = gameSaveService.updateGameSave(gameSaveId, adminGameSaveUpdateRequest);
     return generateResponse(HttpStatus.OK, gameSave);
   }
 
@@ -185,52 +178,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     validateUser(jwt);
 
     gameSaveService.deleteGameSave(gameSaveId);
-    return generateResponse(HttpStatus.OK);
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public ResponseEntity<GenericResponse<Void>> updateGameSaveCharacteristics(
-      Jwt jwt, String gameSaveId, CharacteristicsRequest characteristicsRequest) {
-    validateUser(jwt);
-    Characteristics characteristics =
-        characteristicsRequestMapper.mapToModel(characteristicsRequest);
-    if (!gameSaveService.existsById(gameSaveId)) {
-      throw new NotFoundException("Game save not found");
-    }
-    characteristicsService.saveCharacteristics(
-        gameSaveId, characteristics, cacheService.isEnabled());
-
-    return generateResponse(HttpStatus.OK);
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public ResponseEntity<GenericResponse<Void>> updateGameSaveCurrencies(
-      Jwt jwt, String gameSaveId, CurrencyRequest currencyRequest) {
-
-    validateUser(jwt);
-    Currency currency = currencyRequestMapper.mapToModel(currencyRequest);
-    if (!gameSaveService.existsById(gameSaveId)) {
-      throw new NotFoundException("Game save not found");
-    }
-    currencyService.saveCurrency(gameSaveId, currency, cacheService.isEnabled());
-
-    return generateResponse(HttpStatus.OK);
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public ResponseEntity<GenericResponse<Void>> updateGameSaveStages(
-      Jwt jwt, String gameSaveId, StageRequest stageRequest) {
-
-    validateUser(jwt);
-    Stage stage = stageRequestMapper.mapToModel(stageRequest);
-    if (!gameSaveService.existsById(gameSaveId)) {
-      throw new NotFoundException("Game save not found");
-    }
-    stageService.saveStage(gameSaveId, stage, cacheService.isEnabled());
-
     return generateResponse(HttpStatus.OK);
   }
 }

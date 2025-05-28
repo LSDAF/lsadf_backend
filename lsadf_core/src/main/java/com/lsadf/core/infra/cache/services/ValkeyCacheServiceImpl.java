@@ -72,4 +72,15 @@ public class ValkeyCacheServiceImpl implements CacheService {
     gameSaveOwnershipCache.clear();
     log.info("Caches cleared");
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void clearGameSaveValues(String key) {
+    log.info("Clearing game caches for key: {}", key);
+    characteristicsCache.unset(key);
+    currencyCache.unset(key);
+    stageCache.unset(key);
+    gameSaveOwnershipCache.unset(key);
+    log.info("Cache cleared for key: {}", key);
+  }
 }

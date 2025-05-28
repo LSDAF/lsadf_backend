@@ -34,4 +34,10 @@ public class NoOpCacheServiceImpl implements CacheService {
   public void clearCaches() {
     // Do nothing
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public void clearGameSaveValues(String key) {
+    // Do nothing
+  }
 }

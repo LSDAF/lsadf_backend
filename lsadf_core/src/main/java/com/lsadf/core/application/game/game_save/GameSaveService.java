@@ -56,7 +56,19 @@ public interface GameSaveService {
    */
   GameSave getGameSave(String saveId) throws NotFoundException;
 
-  GameSave updateNickname(String saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
+  /**
+   * Updates an existing game save with the provided update request data.
+   *
+   * @param saveId the unique identifier of the game save to update
+   * @param gameSaveUpdateRequest the request containing the updated game save information. If
+   *     objects are null, they do not need to be edited
+   * @return the updated game save object
+   * @throws ForbiddenException if the user is not allowed to update the game save
+   * @throws NotFoundException if the game save with the specified identifier does not exist
+   * @throws UnauthorizedException if the user is not authenticated or authorized
+   * @throws AlreadyTakenNicknameException if the updated nickname is already taken by another user
+   */
+  GameSave updateGameSave(String saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
       throws ForbiddenException,
           NotFoundException,
           UnauthorizedException,
