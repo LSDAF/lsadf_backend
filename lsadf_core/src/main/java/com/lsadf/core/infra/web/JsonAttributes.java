@@ -26,13 +26,6 @@ public final class JsonAttributes {
   public static final String UPDATED_AT = "updated_at";
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class GenericResponse {
-    public static final String STATUS = "status";
-    public static final String MESSAGE = "message";
-    public static final String DATA = "data";
-  }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class GameSave {
     public static final String USER_EMAIL = "user_email";
     public static final String NICKNAME = "nickname";
