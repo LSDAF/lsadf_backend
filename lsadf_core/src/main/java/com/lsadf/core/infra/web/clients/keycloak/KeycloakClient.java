@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.http_clients;
+package com.lsadf.core.infra.web.clients.keycloak;
 
-import com.lsadf.core.infra.web.responses.auth.JwtAuthentication;
+import com.lsadf.core.infra.web.clients.CommonFeignConfiguration;
+import com.lsadf.core.infra.web.clients.HttpClientTypes;
+import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthentication;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
