@@ -47,6 +47,10 @@ import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.requests.user.update.UserUpdateRequest;
+import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
@@ -70,6 +74,104 @@ import org.springframework.web.client.RestTemplate;
 public class BddUtils {
 
   private static final String COMMA = ",";
+
+  /**
+   * Maps a row from a BDD table to a StageResponse object. Extracts "CURRENT_STAGE" and "MAX_STAGE"
+   * values from the provided map, converts them to long, and builds a StageResponse instance.
+   *
+   * @param row the map containing stage data with keys representing field names
+   * @return a StageResponse object constructed using the values from the provided map
+   * @throws IllegalArgumentException if either "CURRENT_STAGE" or "MAX_STAGE" is null
+   * @throws NumberFormatException if the values for "CURRENT_STAGE" or "MAX_STAGE" cannot be parsed
+   *     to long
+   */
+  public static StageResponse mapToStageResponse(Map<String, String> row) {
+    String currentStage = row.get(BddFieldConstants.Stage.CURRENT_STAGE);
+    String maxStage = row.get(BddFieldConstants.Stage.MAX_STAGE);
+
+    if (currentStage == null || maxStage == null) {
+      throw new IllegalArgumentException("Current and maximum stage cannot be null");
+    }
+
+    long currentStageLong = Long.parseLong(currentStage);
+    long maxStageLong = Long.parseLong(maxStage);
+
+    return StageResponse.builder().currentStage(currentStageLong).maxStage(maxStageLong).build();
+  }
+
+  /**
+   * Maps a row from a BDD table to a CurrencyResponse object. Extracts currency fields such as
+   * "GOLD", "DIAMOND", "EMERALD", and "AMETHYST" from the provided map, converts them to Long
+   * values if present, and constructs a CurrencyResponse instance.
+   *
+   * @param row the map containing currency data with keys representing field names
+   * @return a CurrencyResponse object constructed using the currency values from the provided map
+   */
+  public static CurrencyResponse mapToCurrencyResponse(Map<String, String> row) {
+    String gold = row.get(BddFieldConstants.Currency.GOLD);
+    String diamond = row.get(BddFieldConstants.Currency.DIAMOND);
+    String emerald = row.get(BddFieldConstants.Currency.EMERALD);
+    String amethyst = row.get(BddFieldConstants.Currency.AMETHYST);
+
+    Long goldLong = gold == null ? null : Long.parseLong(gold);
+    Long diamondLong = diamond == null ? null : Long.parseLong(diamond);
+    Long emeraldLong = emerald == null ? null : Long.parseLong(emerald);
+    Long amethystLong = amethyst == null ? null : Long.parseLong(amethyst);
+
+    return new CurrencyResponse(goldLong, diamondLong, emeraldLong, amethystLong);
+  }
+
+  /**
+   * Maps a row of characteristics data to a {@code CharacteristicsResponse} object.
+   *
+   * @param row a map where keys represent characteristics fields and values represent the
+   *     corresponding data as strings
+   * @return a {@code CharacteristicsResponse} object containing parsed and mapped characteristics
+   *     data, or null for fields that are absent or cannot be parsed
+   */
+  public static CharacteristicsResponse mapToCharacteristicsResponse(Map<String, String> row) {
+    String attack = row.get(BddFieldConstants.Characteristics.ATTACK);
+    String critChance = row.get(BddFieldConstants.Characteristics.CRIT_CHANCE);
+    String critDamage = row.get(BddFieldConstants.Characteristics.CRIT_DAMAGE);
+    String health = row.get(BddFieldConstants.Characteristics.HEALTH);
+    String resistance = row.get(BddFieldConstants.Characteristics.RESISTANCE);
+
+    Long attackLong = attack == null ? null : Long.parseLong(attack);
+    Long critChanceLong = critChance == null ? null : Long.parseLong(critChance);
+    Long critDamageLong = critDamage == null ? null : Long.parseLong(critDamage);
+    Long healthLong = health == null ? null : Long.parseLong(health);
+    Long resistanceLong = resistance == null ? null : Long.parseLong(resistance);
+
+    return new CharacteristicsResponse(
+        attackLong, critChanceLong, critDamageLong, healthLong, resistanceLong);
+  }
+
+  /**
+   * Maps a row from a BDD table to a GameSaveResponse object. Extracts fields such as ID, user
+   * email, nickname, characteristics, currency, and stage from the provided map and constructs a
+   * GameSaveResponse instance.
+   *
+   * @param row a map representing a row from the BDD table, where keys correspond to field names
+   *     and values represent the field values
+   * @return a GameSaveResponse object constructed using the values extracted from the provided map
+   */
+  public static GameSaveResponse mapToGameSaveResponse(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.GameSave.ID);
+    String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
+    String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
+
+    StageResponse stageResponse = mapToStageResponse(row);
+    CurrencyResponse currencyResponse = mapToCurrencyResponse(row);
+    CharacteristicsResponse characteristicsResponse = mapToCharacteristicsResponse(row);
+    return GameSaveResponse.builder()
+        .userEmail(userEmail)
+        .nickname(nickname)
+        .id(id)
+        .characteristics(characteristicsResponse)
+        .currency(currencyResponse)
+        .stage(stageResponse)
+        .build();
+  }
 
   /**
    * Maps a row from a BDD table to a CharacteristicsRequest

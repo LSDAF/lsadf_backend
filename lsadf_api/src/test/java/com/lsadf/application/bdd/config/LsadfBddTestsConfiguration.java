@@ -28,6 +28,7 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -74,6 +75,14 @@ public class LsadfBddTestsConfiguration {
   public Stack<List<GameSave>> gameSaveStack(BddStackCleaner stackCleaner) {
     Stack<List<GameSave>> stack = new Stack<>();
     stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public Stack<List<GameSaveResponse>> gameSaveResponseStack(BddStackCleaner stackCleaner) {
+    Stack<List<GameSaveResponse>> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+
     return stack;
   }
 

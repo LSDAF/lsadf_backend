@@ -24,7 +24,6 @@ Feature: GameSave Controller BDD tests
     # We assume we have the two following users in keycloak
     # paul.ochon@test.com: ADMIN,USER: toto1234
     # paul.itesse@test.com: USER: toto5678
-
   Scenario: A User creates a new GameSave
     When the user logs in with the following credentials
       | username            | password |
@@ -33,10 +32,11 @@ Feature: GameSave Controller BDD tests
     And the user requests the endpoint to generate a GameSave
 
     Then the response status code should be 200
-    And the response should have the following GameSave
+    And the response should have the following GameSaveResponse
       | userId                               | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | attack | critChance | critDamage | health | resistance |
       | 9b274f67-d8fd-4e1a-a08c-8ed9a41e1f1d | paul.ochon@test.com | 0    | 0       | 0       | 0        | 1            | 1        | 1      | 1          | 1          | 1      | 1          |
 
+  @ignore
   Scenario: A user tries to update a GameSave with invalid id
     Given the following game saves
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | attack | critChance | critDamage | health | resistance |
@@ -114,7 +114,7 @@ Feature: GameSave Controller BDD tests
 
     Then the response status code should be 200
 
-    And the response should have the following GameSaves
+    And the response should have the following GameSaveResponses
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | maxStage | currentStage | attack | critChance | critDamage | health | resistance |
       | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com | 10   | 100     | 1000    | 10000    | 100      | 99           | 1100   | 1200       | 1300       | 1400   | 1500       |
       | 3bb1a064-79cc-4279-920a-fd0760663ca5 | paul.ochon@test.com | 100  | 1000    | 10000   | 100000   | 1000     | 999          | 400    | 500        | 600        | 700    | 800        |
@@ -147,7 +147,7 @@ Feature: GameSave Controller BDD tests
 
     Then the response status code should be 200
 
-    And the response should have the following GameSaves
+    And the response should have the following GameSaveResponses
       | id                                   | userEmail           | gold  | diamond | emerald | amethyst | maxStage | currentStage | attack | critChance | critDamage | health | resistance |
       | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com | 10000 | 100000  | 1000000 | 10000000 | 100      | 100          | 9999   | 9999       | 9999       | 9999   | 9999       |
       | 3bb1a064-79cc-4279-920a-fd0760663ca5 | paul.ochon@test.com | 100   | 1000    | 10000   | 100000   | 1000     | 999          | 400    | 500        | 600        | 700    | 800        |

@@ -23,6 +23,8 @@ import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponseMapper;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
@@ -40,8 +42,12 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
 
   private final GameSaveService gameSaveService;
 
-  public GameSaveControllerImpl(GameSaveService gameSaveService) {
+  private final GameSaveResponseMapper gameSaveResponseMapper;
+
+  public GameSaveControllerImpl(
+      GameSaveService gameSaveService, GameSaveResponseMapper gameSaveResponseMapper) {
     this.gameSaveService = gameSaveService;
+    this.gameSaveResponseMapper = gameSaveResponseMapper;
   }
 
   /** {@inheritDoc} */
@@ -52,16 +58,16 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<GameSave>> generateNewGameSave(Jwt jwt) {
+  public ResponseEntity<ApiResponse<GameSaveResponse>> generateNewGameSave(Jwt jwt) {
     validateUser(jwt);
 
     String username = getUsernameFromJwt(jwt);
 
     GameSave newSave = gameSaveService.createGameSave(username);
-
     log.info("Successfully created new game for user with username {}", username);
 
-    return generateResponse(HttpStatus.OK, newSave);
+    GameSaveResponse newSaveResponse = gameSaveResponseMapper.mapToResponse(newSave);
+    return generateResponse(HttpStatus.OK, newSaveResponse);
   }
 
   /** {@inheritDoc} */
@@ -78,13 +84,14 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<List<GameSave>>> getUserGameSaves(
+  public ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(
       @AuthenticationPrincipal Jwt jwt) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
 
     try (Stream<GameSave> gameSaveStream = gameSaveService.getGameSavesByUsername(username)) {
-      List<GameSave> gameSaveList = gameSaveStream.toList();
+      List<GameSaveResponse> gameSaveList =
+          gameSaveStream.map(gameSaveResponseMapper::mapToResponse).toList();
       log.info("Successfully retrieved game saves for user with email {}", username);
       return generateResponse(HttpStatus.OK, gameSaveList);
     }

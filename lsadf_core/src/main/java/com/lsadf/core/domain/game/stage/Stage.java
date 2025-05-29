@@ -15,37 +15,35 @@
  */
 package com.lsadf.core.domain.game.stage;
 
-import static com.lsadf.core.infra.web.JsonAttributes.Stage.CURRENT_STAGE;
-import static com.lsadf.core.infra.web.JsonAttributes.Stage.MAX_STAGE;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.shared.model.Model;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Objects;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
-@Schema(name = "Stage", description = "Stage object containing the player's game progress")
-@JsonPropertyOrder({CURRENT_STAGE, MAX_STAGE})
-@JsonView(JsonViews.External.class)
+@Getter
+@Setter
+@ToString
 public class Stage implements Model {
 
   @Serial private static final long serialVersionUID = -7126306428235414817L;
 
-  @Schema(description = "The Current game stage", example = "26")
-  @JsonProperty(value = CURRENT_STAGE)
   private Long currentStage;
 
-  @Schema(description = "The Maximum game stage", example = "26")
-  @JsonProperty(value = MAX_STAGE)
   private Long maxStage;
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    Stage stage = (Stage) o;
+    return Objects.equals(currentStage, stage.currentStage)
+        && Objects.equals(maxStage, stage.maxStage);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(currentStage, maxStage);
+  }
 }

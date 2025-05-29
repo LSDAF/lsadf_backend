@@ -27,6 +27,7 @@ import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationRespo
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +81,7 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<Currency>> result =
+      ResponseEntity<ApiResponse<CurrencyResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedCurrencyResponse());
       var body = result.getBody();

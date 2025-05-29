@@ -20,7 +20,6 @@ import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.A
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.controllers.Controller;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
@@ -28,6 +27,7 @@ import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -111,7 +111,7 @@ public interface AdminSearchController extends Controller {
   @PostMapping(value = ControllerConstants.AdminSearch.SEARCH_GAME_SAVES)
   @Operation(summary = "Searches for game saves in function of the give search criteria")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<ApiResponse<List<GameSave>>> searchGameSaves(
+  ResponseEntity<ApiResponse<List<GameSaveResponse>>> searchGameSaves(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody(required = false) SearchRequest searchRequest,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);

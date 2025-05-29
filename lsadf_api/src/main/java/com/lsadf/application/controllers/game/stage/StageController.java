@@ -21,6 +21,7 @@ import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.A
 
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -90,7 +91,7 @@ public interface StageController {
             responseCode = "500",
             description = "Internal Server Error")
       })
-  ResponseEntity<ApiResponse<Void>> getStage(
+  ResponseEntity<ApiResponse<StageResponse>> getStage(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 

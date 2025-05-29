@@ -55,7 +55,6 @@ import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
@@ -65,6 +64,7 @@ import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.advices.DynamicJsonViewAdvice;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import jakarta.mail.internet.MimeMessage;
@@ -189,7 +189,7 @@ public class BddLoader {
 
   @Autowired protected Stack<List<GameSave>> gameSaveListStack;
 
-  @Autowired protected Stack<List<GameSaveEntity>> gameSaveEntityListStack;
+  @Autowired protected Stack<List<GameSaveResponse>> gameSaveResponseListStack;
 
   @Autowired protected Stack<List<User>> userListStack;
 

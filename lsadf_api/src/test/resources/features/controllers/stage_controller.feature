@@ -40,7 +40,7 @@ Feature: Stage Controller BDD tests
 
     Then the response status code should be 200
 
-    And the response should have the following Stage
+    And the response should have the following StageResponse
       | currentStage | maxStage |
       | 99           | 100      |
 
@@ -55,7 +55,7 @@ Feature: Stage Controller BDD tests
 
     And the user requests the endpoint to get the stages of the game save with id f81b710d-3e02-4871-a86f-390377798dd1
     Then the response status code should be 200
-    And the response should have the following Stage
+    And the response should have the following StageResponse
       | currentStage | maxStage |
       | 10           | 10       |
 

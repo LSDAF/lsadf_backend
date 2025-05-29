@@ -20,11 +20,8 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.exceptions.AlreadyExistingGameSaveException;
-import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.common.Filter;
@@ -34,10 +31,10 @@ import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -50,31 +47,6 @@ import org.springframework.http.ResponseEntity;
 /** Step definitions for the when steps in the BDD scenarios */
 @Slf4j(topic = "[ADMIN WHEN STEP DEFINITIONS]")
 public class BddAdminWhenStepDefinitions extends BddLoader {
-
-  @When("^we want to create a new game save with the following AdminGameSaveCreationRequest$")
-  public void
-      when_we_want_to_create_a_new_game_save_with_the_following_AdminGameSaveCreationRequest(
-          DataTable dataTable) throws NotFoundException, AlreadyExistingGameSaveException {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    // it should have only one line
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    List<GameSave> list = new ArrayList<>();
-    for (Map<String, String> row : rows) {
-      AdminGameSaveCreationRequest request = BddUtils.mapToAdminGameSaveCreationRequest(row);
-      GameSave gameSave = gameSaveService.createGameSave(request);
-      list.add(gameSave);
-    }
-
-    try {
-      gameSaveListStack.push(list);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
 
   @When("the user requests the admin endpoint to get the global info")
   public void when_the_user_requests_the_admin_endpoint_for_global_info() {
@@ -134,11 +106,11 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<List<GameSave>>> result =
+      ResponseEntity<ApiResponse<List<GameSaveResponse>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
-      ApiResponse<List<GameSave>> body = result.getBody();
-      gameSaveListStack.push(body.getData());
+      ApiResponse<List<GameSaveResponse>> body = result.getBody();
+      gameSaveResponseListStack.push(body.getData());
       responseStack.push(body);
 
       log.info("Response: {}", result);
@@ -234,11 +206,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<GameSave>> result =
+      ResponseEntity<ApiResponse<GameSaveResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveResponse());
-      ApiResponse<GameSave> body = result.getBody();
-      gameSaveListStack.push(Collections.singletonList(body.getData()));
+      ApiResponse<GameSaveResponse> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -332,11 +303,11 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<SearchRequest> request = new HttpEntity<>(new SearchRequest(filters), headers);
-      ResponseEntity<ApiResponse<List<GameSave>>> result =
+      ResponseEntity<ApiResponse<List<GameSaveResponse>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedGameSaveListResponse());
-      ApiResponse<List<GameSave>> body = result.getBody();
-      gameSaveListStack.push(body.getData());
+      ApiResponse<List<GameSaveResponse>> body = result.getBody();
+      gameSaveResponseListStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -498,11 +469,11 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<AdminGameSaveCreationRequest> request = new HttpEntity<>(adminRequest, headers);
-      ResponseEntity<ApiResponse<GameSave>> result =
+      ResponseEntity<ApiResponse<GameSaveResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedGameSaveResponse());
-      ApiResponse<GameSave> body = result.getBody();
-      gameSaveListStack.push(Collections.singletonList(body.getData()));
+      ApiResponse<GameSaveResponse> body = result.getBody();
+      gameSaveResponseListStack.push(Collections.singletonList(body.getData()));
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -525,11 +496,11 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<List<GameSave>>> result =
+      ResponseEntity<ApiResponse<List<GameSaveResponse>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
-      ApiResponse<List<GameSave>> body = result.getBody();
-      gameSaveListStack.push(body.getData());
+      ApiResponse<List<GameSaveResponse>> body = result.getBody();
+      gameSaveResponseListStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -560,10 +531,10 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<AdminGameSaveUpdateRequest> request = new HttpEntity<>(updateRequest, headers);
-      ResponseEntity<ApiResponse<GameSave>> result =
+      ResponseEntity<ApiResponse<GameSaveResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedGameSaveResponse());
-      ApiResponse<GameSave> body = result.getBody();
+      var body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 

@@ -84,7 +84,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     InventoryEntity inventoryEntity = optionalInventoryEntity.get();
 
-    var items = inventoryEntity.getItems();
+    Set<ItemEntity> items = inventoryEntity.getItems();
 
     if (items.stream().anyMatch(i -> i.getClientId().equals(itemRequest.getClientId()))) {
       throw new AlreadyExistingItemClientIdException(

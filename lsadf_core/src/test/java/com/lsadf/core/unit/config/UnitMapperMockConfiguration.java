@@ -28,6 +28,10 @@ import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsReq
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestMapper;
+import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponseMapper;
+import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponseMapper;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponseMapper;
+import com.lsadf.core.infra.web.responses.game.stage.StageResponseMapper;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -46,6 +50,12 @@ public class UnitMapperMockConfiguration {
   @MockBean public StageRequestMapper stageRequestMapper;
   @MockBean public CharacteristicsRequestMapper characteristicsRequestMapper;
   @MockBean public CurrencyRequestMapper currencyRequestMapper;
+
+  // response mapper
+  @MockBean public CharacteristicsResponseMapper characteristicsResponseMapper;
+  @MockBean public StageResponseMapper stageResponseMapper;
+  @MockBean public CurrencyResponseMapper currencyResponseMapper;
+  @MockBean public GameSaveResponseMapper gameSaveResponseMapper;
 
   // keycloak mapper
   @MockBean public UserToUserRepresentationMapper userToUserRepresentationMapper;

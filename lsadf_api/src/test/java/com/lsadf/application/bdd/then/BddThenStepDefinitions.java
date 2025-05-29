@@ -22,7 +22,6 @@ import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
@@ -30,6 +29,11 @@ import com.lsadf.core.infra.exceptions.http.ForbiddenException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponseMapper;
+import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
 import com.lsadf.core.infra.web.responses.user.UserInfoResponse;
 import com.lsadf.core.infra.web.responses.user.UserInfoResponseMapper;
 import io.cucumber.datatable.DataTable;
@@ -46,6 +50,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BddThenStepDefinitions extends BddLoader {
 
   @Autowired private UserInfoResponseMapper userInfoResponseMapper;
+  @Autowired private CharacteristicsResponseMapper characteristicsResponseMapper;
 
   @Then("^I should return the following game saves$")
   public void then_i_should_return_the_following_game_saves(DataTable dataTable)
@@ -223,8 +228,8 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(exception).isInstanceOf(ForbiddenException.class);
   }
 
-  @Then("^the response should have the following Stage$")
-  public void then_the_response_should_have_the_following_stage(DataTable dataTable) {
+  @Then("^the response should have the following StageResponse$")
+  public void then_the_response_should_have_the_following_stage_response(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     if (rows.size() > 1) {
@@ -233,8 +238,8 @@ public class BddThenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
 
-    Stage expected = BddUtils.mapToStage(row);
-    Stage actual = (Stage) responseStack.peek().getData();
+    StageResponse expected = BddUtils.mapToStageResponse(row);
+    StageResponse actual = (StageResponse) responseStack.peek().getData();
 
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
@@ -249,13 +254,14 @@ public class BddThenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
 
-    Characteristics expected = BddUtils.mapToCharacteristics(row);
-    Characteristics actual = (Characteristics) responseStack.peek().getData();
+    CharacteristicsResponse expected =
+        characteristicsResponseMapper.mapToResponse(BddUtils.mapToCharacteristics(row));
+    CharacteristicsResponse actual = (CharacteristicsResponse) responseStack.peek().getData();
 
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
-  @Then("^the response should have the following Currency$")
+  @Then("^the response should have the following CurrencyResponse$")
   public void then_the_response_should_have_the_following_currency(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -265,8 +271,8 @@ public class BddThenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
 
-    Currency expected = BddUtils.mapToCurrency(row);
-    Currency actual = (Currency) responseStack.peek().getData();
+    CurrencyResponse expected = BddUtils.mapToCurrencyResponse(row);
+    CurrencyResponse actual = (CurrencyResponse) responseStack.peek().getData();
 
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
@@ -306,8 +312,8 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(jwtAuthenticationResponse.refreshToken()).isNotNull();
   }
 
-  @Then("^the response should have the following GameSave$")
-  public void then_the_response_should_have_the_following_game_save(DataTable dataTable) {
+  @Then("^the response should have the following GameSaveResponse$")
+  public void then_the_response_should_have_the_following_game_save_response(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     if (rows.size() > 1) {
@@ -316,8 +322,8 @@ public class BddThenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
 
-    GameSave actual = (GameSave) responseStack.peek().getData();
-    GameSave expected = BddUtils.mapToGameSave(row);
+    GameSaveResponse actual = (GameSaveResponse) responseStack.peek().getData();
+    GameSaveResponse expected = BddUtils.mapToGameSaveResponse(row);
 
     assertThat(actual)
         .usingRecursiveComparison()
@@ -342,16 +348,14 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
-  @Then("the response should have the following GameSaves")
+  @Then("the response should have the following GameSaveResponses")
   public void then_the_response_should_have_the_following_game_saves(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     for (Map<String, String> row : rows) {
-      GameSave actual =
-          gameSaveListStack.peek().stream()
-              .filter(g -> g.getId().equals(row.get("id")))
-              .findFirst()
-              .orElseThrow();
+      List<GameSaveResponse> list = gameSaveResponseListStack.peek();
+      GameSaveResponse actual =
+          list.stream().filter(g -> g.id().equals(row.get("id"))).findFirst().orElseThrow();
       GameSave expected = BddUtils.mapToGameSave(row);
 
       assertThat(actual)
@@ -434,7 +438,7 @@ public class BddThenStepDefinitions extends BddLoader {
     }
   }
 
-  @Then("^the response should have the following GameSaves in exact order$")
+  @Then("^the response should have the following GameSaveResponses in exact order$")
   public void then_the_response_should_have_the_following_game_saves_in_exact_order(
       DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);

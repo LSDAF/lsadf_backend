@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticati
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.lsadf.core.shared.model.Model;
+import com.lsadf.core.infra.web.responses.Response;
 import java.io.Serial;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -30,7 +30,7 @@ public record JwtAuthenticationResponse(
     @JsonProperty(value = EXPIRES_IN) Long expiresIn,
     @JsonProperty(value = REFRESH_TOKEN) String refreshToken,
     @JsonProperty(value = Attributes.REFRESH_EXPIRES_IN) Long refreshExpiresIn)
-    implements Model {
+    implements Response {
 
   @Serial private static final long serialVersionUID = -5360094704215801310L;
 

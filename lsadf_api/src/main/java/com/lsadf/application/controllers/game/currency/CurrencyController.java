@@ -21,6 +21,7 @@ import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.A
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -95,7 +96,7 @@ public interface CurrencyController {
             responseCode = "500",
             description = "Internal Server Error")
       })
-  ResponseEntity<ApiResponse<Void>> getCurrency(
+  ResponseEntity<ApiResponse<CurrencyResponse>> getCurrency(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 

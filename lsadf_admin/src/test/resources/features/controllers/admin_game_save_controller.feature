@@ -37,7 +37,7 @@ Feature: Admin GameSave Controller BDD tests
     And the user requests the admin endpoint to get all the game saves ordered by NONE
 
     Then the response status code should be 200
-    And the response should have the following GameSaves
+    And the response should have the following GameSaveResponses
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
       | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com | 1    | 5       | 2       | 5        | 10           | 10       | test-1   | 100    | 200        | 300        | 400    | 500        |
       | 804af894-931b-4ee6-968f-1703689066fb | paul.ochon@test.com | 3    | 3       | 2       | 15       | 1000         | 1000     | test-2   | 600    | 700        | 800        | 900    | 1000       |
@@ -50,7 +50,7 @@ Feature: Admin GameSave Controller BDD tests
     And the user requests the admin endpoint to get all the game saves ordered by MAX_STAGE_DESC
 
     Then the response status code should be 200
-    And the response should have the following GameSaves in exact order
+    And the response should have the following GameSaveResponses in exact order
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
       | 6a4f12dc-4e83-40f7-992e-8f2e04375d74 | paul.ochon@test.com | 5    | 1       | 2       | 25       | 100000       | 100000   | test-3   | 1100   | 1200       | 1300       | 1400   | 1500       |
       | 804af894-931b-4ee6-968f-1703689066fb | paul.ochon@test.com | 3    | 3       | 2       | 15       | 1000         | 1000     | test-2   | 600    | 700        | 800        | 900    | 1000       |
@@ -66,7 +66,7 @@ Feature: Admin GameSave Controller BDD tests
 
     Then the response status code should be 200
 
-    And the response should have the following GameSave
+    And the response should have the following GameSaveResponse
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
       | 6a4f12dc-4e83-40f7-992e-8f2e04375d74 | paul.ochon@test.com | 5    | 1       | 2       | 25       | 100000       | 100000   | test-3   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
@@ -86,7 +86,7 @@ Feature: Admin GameSave Controller BDD tests
     And the user requests the admin endpoint to get all the game saves of the user with the following username paul.ochon@test.com
 
     Then the response status code should be 200
-    And the response should have the following GameSaves
+    And the response should have the following GameSaveResponses
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
       | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com | 1    | 5       | 2       | 5        | 10           | 10       | test-1   | 100    | 200        | 300        | 400    | 500        |
       | 804af894-931b-4ee6-968f-1703689066fb | paul.ochon@test.com | 3    | 3       | 2       | 15       | 1000         | 1000     | test-2   | 600    | 700        | 800        | 900    | 1000       |
@@ -110,7 +110,7 @@ Feature: Admin GameSave Controller BDD tests
       | 45c2736f-6c3b-4955-9b26-ce515091810b | paul.ochon@test.com | 1    | 2       | 3       | 4        | 7            | 8        | newgame  | 100    | 200        | 300        | 400    | 500        |
 
     Then the response status code should be 200
-    And the response should have the following GameSave
+    And the response should have the following GameSaveResponse
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
       | 45c2736f-6c3b-4955-9b26-ce515091810b | paul.ochon@test.com | 1    | 2       | 3       | 4        | 7            | 8        | newgame  | 100    | 200        | 300        | 400    | 500        |
 
@@ -144,7 +144,7 @@ Feature: Admin GameSave Controller BDD tests
       | 100000       | 599    | test-ZZZ |
 
     Then the response status code should be 200
-    And the response should have the following GameSave
+    And the response should have the following GameSaveResponse
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
       | 6a4f12dc-4e83-40f7-992e-8f2e04375d74 | paul.ochon@test.com | 5    | 1       | 2       | 25       | 100000       | 100000   | test-ZZZ | 1100   | 1200       | 1300       | 1400   | 1500       |
 

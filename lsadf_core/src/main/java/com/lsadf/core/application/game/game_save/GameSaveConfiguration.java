@@ -37,6 +37,10 @@ import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;
+import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponseMapper;
+import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponseMapper;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponseMapper;
+import com.lsadf.core.infra.web.responses.game.stage.StageResponseMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -90,6 +94,15 @@ public class GameSaveConfiguration {
       CurrencyEntityMapper currencyMapper,
       StageEntityMapper stageMapper) {
     return new GameSaveEntityMapper(characteristicsMapper, stageMapper, currencyMapper);
+  }
+
+  @Bean
+  public GameSaveResponseMapper gameSaveResponseMapper(
+      CurrencyResponseMapper currencyResponseMapper,
+      CharacteristicsResponseMapper characteristicsResponseMapper,
+      StageResponseMapper stageResponseMapper) {
+    return new GameSaveResponseMapper(
+        currencyResponseMapper, characteristicsResponseMapper, stageResponseMapper);
   }
 
   @Bean(name = GAME_SAVE_OWNERSHIP_CACHE)
