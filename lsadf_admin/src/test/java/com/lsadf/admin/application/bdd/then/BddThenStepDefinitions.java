@@ -15,6 +15,7 @@
  */
 package com.lsadf.admin.application.bdd.then;
 
+import static com.lsadf.admin.application.bdd.BddFieldConstants.Item.CLIENT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
@@ -22,7 +23,6 @@ import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
@@ -30,10 +30,10 @@ import com.lsadf.core.infra.exceptions.http.ForbiddenException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
-import jakarta.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -162,6 +162,28 @@ public class BddThenStepDefinitions extends BddLoader {
     Currency actual = currencyStack.peek();
 
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Then("^the response should have the following itemResponses$")
+  public void then_the_response_should_have_the_following_items_in_the_inventory(
+      DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+
+    Set<ItemResponse> inventory = itemResponseSetStack.peek();
+    for (Map<String, String> row : rows) {
+      ItemResponse actual =
+          inventory.stream()
+              .filter(g -> g.clientId().equals(row.get(CLIENT_ID)))
+              .findFirst()
+              .orElseThrow();
+
+      ItemResponse expected = BddUtils.mapToItemResponse(row);
+
+      assertThat(actual)
+          .usingRecursiveComparison()
+          .ignoringFields("id", "createdAt", "updatedAt")
+          .isEqualTo(expected);
+    }
   }
 
   @Then("^I should throw a ForbiddenException$")
@@ -389,33 +411,9 @@ public class BddThenStepDefinitions extends BddLoader {
     }
   }
 
-  @Then("^an email should have been sent to (.*)$")
-  public void then_en_email_should_have_been_sent_to(String email) throws MessagingException {
-    var mime = mimeMessageStack.peek();
-    assertThat(mime).isNotNull();
-
-    String actual = mime.getAllRecipients()[0].toString();
-    assertThat(actual).isEqualTo(email);
-  }
-
-  @Then("^the response should have the following item$")
-  public void then_the_response_should_have_the_following_item(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-    assertThat(rows).hasSize(1);
-
-    Map<String, String> row = rows.get(0);
-    Item expected = BddUtils.mapToItem(row);
-
-    Item actual = (Item) responseStack.peek().getData();
-    assertThat(actual)
-        .usingRecursiveComparison()
-        .ignoringFields("id", "createdAt", "updatedAt")
-        .isEqualTo(expected);
-  }
-
-  @Then("^the inventory of the game save with id (.*) should be empty")
+  @Then("^the inventory of the game save with id (.*) should be empty$")
   public void then_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
-    Set<Item> items = inventoryService.getInventoryItems(gameSaveId);
-    assertThat(items).isEmpty();
+    var results = inventoryService.getInventoryItems(gameSaveId);
+    assertThat(results).isEmpty();
   }
 }

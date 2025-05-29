@@ -19,7 +19,6 @@ import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.Inventory;
-import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
@@ -28,6 +27,7 @@ import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
 import java.util.List;
 import java.util.Set;
@@ -101,15 +101,15 @@ public class LsadfBddTestsConfiguration {
   }
 
   @Bean
-  public Stack<Item> itemStack(BddStackCleaner stackCleaner) {
-    Stack<Item> stack = new Stack<>();
+  public Stack<ItemResponse> itemResponseStack(BddStackCleaner stackCleaner) {
+    Stack<ItemResponse> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }
 
   @Bean
-  public Stack<Set<Item>> itemSetStack(BddStackCleaner stackCleaner) {
-    Stack<Set<Item>> stack = new Stack<>();
+  public Stack<Set<ItemResponse>> itemSetStack(BddStackCleaner stackCleaner) {
+    Stack<Set<ItemResponse>> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }

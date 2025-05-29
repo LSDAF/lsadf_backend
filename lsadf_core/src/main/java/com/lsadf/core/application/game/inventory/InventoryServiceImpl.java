@@ -71,15 +71,15 @@ public class InventoryServiceImpl implements InventoryService {
     if (gameSaveId == null) {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
+
+    Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
+    if (optionalInventoryEntity.isEmpty()) {
+      throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
+    }
+
     if (itemRepository.findItemEntityByClientId(itemRequest.getClientId()).isPresent()) {
       throw new AlreadyExistingItemClientIdException(
           "Game save with id " + itemRequest.getClientId() + " already exists");
-    }
-
-    Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
-
-    if (optionalInventoryEntity.isEmpty()) {
-      throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
 
     InventoryEntity inventoryEntity = optionalInventoryEntity.get();

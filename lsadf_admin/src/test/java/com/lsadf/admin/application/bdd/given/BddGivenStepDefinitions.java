@@ -26,13 +26,17 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
+import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
+import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +44,37 @@ import org.springframework.transaction.annotation.Transactional;
 /** Step definitions for the given steps in the BDD scenarios */
 @Slf4j(topic = "[GIVEN STEP DEFINITIONS]")
 public class BddGivenStepDefinitions extends BddLoader {
+
+  @Given("^the following items to the inventory of the game save with id (.*)$")
+  @Transactional
+  public void given_the_following_items(String gameSaveId, DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+
+    InventoryEntity inventoryEntity;
+
+    Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
+    if (optionalInventoryEntity.isEmpty()) {
+      throw new RuntimeException("Inventory not found");
+    } else {
+      inventoryEntity = optionalInventoryEntity.get();
+    }
+
+    if (inventoryEntity.getItems() == null) {
+      inventoryEntity.setItems(new HashSet<>());
+    }
+
+    log.info("Creating items...");
+    rows.forEach(
+        row -> {
+          ItemEntity itemEntity = BddUtils.mapToItemEntity(row);
+          itemEntity.setInventoryEntity(inventoryEntity);
+          inventoryEntity.getItems().add(itemEntity);
+        });
+
+    inventoryRepository.save(inventoryEntity);
+
+    log.info("Items created");
+  }
 
   @Given("^the BDD engine is ready$")
   public void given_the_bdd_engine_is_ready() {

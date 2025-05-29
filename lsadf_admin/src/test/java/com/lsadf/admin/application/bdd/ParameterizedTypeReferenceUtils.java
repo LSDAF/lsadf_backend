@@ -17,13 +17,13 @@ package com.lsadf.admin.application.bdd;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
 import java.util.List;
 import java.util.Set;
@@ -85,22 +85,23 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse containing a Set of Item objects.
+   * Builds a ParameterizedTypeReference for a ApiResponse containing a Set of ItemResponse objects.
    *
    * @return a ParameterizedTypeReference representing a ApiResponse with a Set of Item objects as
    *     its data type
    */
-  public static ParameterizedTypeReference<ApiResponse<Set<Item>>>
+  public static ParameterizedTypeReference<ApiResponse<Set<ItemResponse>>>
       buildParameterizedItemSetResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of Item
+   * Builds a ParameterizedTypeReference for a ApiResponse of ItemResponse
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<Item>> buildParameterizedItemResponse() {
+  public static ParameterizedTypeReference<ApiResponse<ItemResponse>>
+      buildParameterizedItemResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 

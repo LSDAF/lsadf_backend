@@ -28,6 +28,7 @@ import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationRespo
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -85,11 +86,11 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<Set<Item>>> result =
+      ResponseEntity<ApiResponse<Set<ItemResponse>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
-      ApiResponse<Set<Item>> body = result.getBody();
-      itemSetStack.push(body.getData());
+      ApiResponse<Set<ItemResponse>> body = result.getBody();
+      itemResponseSetStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -202,15 +203,15 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     }
   }
 
-  @Then("^the response should have the following items in the inventory$")
+  @Then("^the response should have the following itemResponses$")
   public void then_the_response_should_have_the_following_items_in_the_inventory(
       DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    Set<Item> inventory = itemSetStack.peek();
+    Set<ItemResponse> inventory = itemResponseSetStack.peek();
     for (Map<String, String> row : rows) {
-      Item actual =
-          inventory.stream().filter(g -> g.getId().equals(row.get("id"))).findFirst().orElseThrow();
+      ItemResponse actual =
+          inventory.stream().filter(g -> g.id().equals(row.get("id"))).findFirst().orElseThrow();
 
       Item expected = BddUtils.mapToItem(row);
 

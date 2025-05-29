@@ -20,17 +20,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -39,6 +41,8 @@ import org.springframework.http.ResponseEntity;
 /** Step definitions for the admin inventory controller when steps in the BDD scenarios */
 @Slf4j(topic = "[ADMIN INVENTORY WHEN STEP DEFINITIONS]")
 public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
+
+  @Autowired private Stack<ItemResponse> itemResponseStack;
 
   @When("^the user requests the admin endpoint to get the inventory for game save with id (.*)$")
   public void when_the_user_requests_the_admin_endpoint_to_get_the_inventory_for_game_save_with_id(
@@ -53,11 +57,11 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<Set<Item>>> result =
+      ResponseEntity<ApiResponse<Set<ItemResponse>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
-      ApiResponse<Set<Item>> body = result.getBody();
-      itemSetStack.push(body.getData());
+      ApiResponse<Set<ItemResponse>> body = result.getBody();
+      itemResponseSetStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -86,11 +90,15 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<ItemRequest> request = new HttpEntity<>(itemRequest, headers);
-      ResponseEntity<ApiResponse<Item>> result =
+      ResponseEntity<ApiResponse<ItemResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedItemResponse());
-      ApiResponse<Item> body = result.getBody();
+      ApiResponse<ItemResponse> body = result.getBody();
       responseStack.push(body);
+      if (body.getData() != null) {
+        var data = body.getData();
+        itemResponseSetStack.push(Set.of(data));
+      }
       log.info("Response: {}", result);
     } catch (Exception e) {
       exceptionStack.push(e);
@@ -148,10 +156,14 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<ItemRequest> request = new HttpEntity<>(itemRequest, headers);
-      ResponseEntity<ApiResponse<Item>> result =
+      ResponseEntity<ApiResponse<ItemResponse>> result =
           testRestTemplate.exchange(url, HttpMethod.PUT, request, buildParameterizedItemResponse());
-      ApiResponse<Item> body = result.getBody();
+      ApiResponse<ItemResponse> body = result.getBody();
       responseStack.push(body);
+      if (body.getData() != null) {
+        ItemResponse data = body.getData();
+        itemResponseSetStack.push(Set.of(data));
+      }
       log.info("Response: {}", result);
     } catch (Exception e) {
       exceptionStack.push(e);

@@ -36,7 +36,6 @@ Feature: GameSave Controller BDD tests
       | userId                               | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | attack | critChance | critDamage | health | resistance |
       | 9b274f67-d8fd-4e1a-a08c-8ed9a41e1f1d | paul.ochon@test.com | 0    | 0       | 0       | 0        | 1            | 1        | 1      | 1          | 1          | 1      | 1          |
 
-  @ignore
   Scenario: A user tries to update a GameSave with invalid id
     Given the following game saves
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | attack | critChance | critDamage | health | resistance |
