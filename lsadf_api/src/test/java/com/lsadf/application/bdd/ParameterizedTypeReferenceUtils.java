@@ -36,7 +36,7 @@ import org.springframework.core.ParameterizedTypeReference;
 public class ParameterizedTypeReferenceUtils {
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of UserInfoResponse
+   * Builds a ParameterizedTypeReference for a ApiResponse of GlobalInfoResponse
    *
    * @return ParameterizedTypeReference
    */

@@ -20,16 +20,16 @@ import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.responses.ModelResponseMapper;
 
 /**
- * A class that implements the mapping logic from a UserInfo model object to a UserInfoResponse
+ * A class that implements the mapping logic from a UserInfo model object to a GlobalInfoResponse
  * object. This class serves to transform the UserInfo domain model into a response format
  * appropriate for API communication.
  */
 public class UserInfoResponseMapper implements ModelResponseMapper<UserInfo, UserInfoResponse> {
   /**
-   * Maps a given UserInfo model object to a corresponding UserInfoResponse object.
+   * Maps a given UserInfo model object to a corresponding GlobalInfoResponse object.
    *
    * @param model the UserInfo model object to be mapped
-   * @return the UserInfoResponse object representing the mapped data
+   * @return the GlobalInfoResponse object representing the mapped data
    */
   @Override
   public UserInfoResponse mapToResponse(UserInfo model) {

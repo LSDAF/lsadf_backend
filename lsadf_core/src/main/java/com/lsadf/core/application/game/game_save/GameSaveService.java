@@ -99,6 +99,13 @@ public interface GameSaveService {
   Stream<GameSave> getGameSaves();
 
   /**
+   * Counts the total number of game saves available in the system.
+   *
+   * @return the total count of game saves
+   */
+  Long countGameSaves();
+
+  /**
    * Gets all game saves of a user
    *
    * @param userEmail the user email

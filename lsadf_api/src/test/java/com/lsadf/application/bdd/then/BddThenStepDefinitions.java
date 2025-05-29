@@ -277,22 +277,6 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
-  @Then("^I should return the following GlobalInfo$")
-  public void then_i_should_return_the_following_global_info(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    GlobalInfo actual = globalInfoStack.peek();
-    GlobalInfo expected = BddUtils.mapToGlobalInfo(row);
-
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-  }
-
   @Then("^I should throw no Exception$")
   public void then_i_should_throw_no_exception() {
     assertThat(exceptionStack).isEmpty();

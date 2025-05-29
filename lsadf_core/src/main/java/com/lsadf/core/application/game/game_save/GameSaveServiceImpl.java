@@ -43,7 +43,6 @@ import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveUpdateRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import java.util.*;
@@ -227,18 +226,26 @@ public class GameSaveServiceImpl implements GameSaveService {
           "Nickname " + gameSaveUpdateRequest.getNickname() + " is already taken");
     }
 
-    boolean hasUpdates = false;
-
     if (!Objects.equals(gameSaveEntity.getNickname(), gameSaveUpdateRequest.getNickname())) {
-      hasUpdates = true;
       gameSaveEntity.setNickname(gameSaveUpdateRequest.getNickname());
     }
 
     if (gameSaveUpdateRequest.getCharacteristics() != null) {
       Characteristics characteristicsUpdate = gameSaveUpdateRequest.getCharacteristics();
+      gameSaveEntity.setCharacteristicsEntity(characteristicsUpdate);
+    }
+    if (gameSaveUpdateRequest.getCurrency() != null) {
+      Currency currencyUpdate = gameSaveUpdateRequest.getCurrency();
+      gameSaveEntity.setCurrencyEntity(currencyUpdate);
+    }
+    if (gameSaveUpdateRequest.getStage() != null) {
+      Stage stageUpdate = gameSaveUpdateRequest.getStage();
+      gameSaveEntity.setStageEntity(stageUpdate);
     }
 
-    return gameSaveEntityMapper.mapToModel(gameSaveEntity);
+    GameSaveEntity updated = gameSaveRepository.save(gameSaveEntity);
+
+    return gameSaveEntityMapper.mapToModel(updated);
   }
 
   /** {@inheritDoc} */
@@ -278,28 +285,10 @@ public class GameSaveServiceImpl implements GameSaveService {
     }
   }
 
-  /**
-   * Updates the provided game save entity with data from the admin update request.
-   *
-   * @param gameSaveEntity the game save entity to be updated
-   * @param adminUpdateRequest the request containing the updated data
-   * @return the updated game save entity, or the original entity if no updates were made
-   */
-  private GameSave updateGameSave(
-      GameSaveEntity gameSaveEntity, AdminGameSaveUpdateRequest adminUpdateRequest) {
-    boolean hasUpdates = false;
-
-    if (!Objects.equals(gameSaveEntity.getNickname(), adminUpdateRequest.getNickname())) {
-      gameSaveEntity.setNickname(adminUpdateRequest.getNickname());
-      hasUpdates = true;
-    }
-
-    if (hasUpdates) {
-      var updated = gameSaveRepository.save(gameSaveEntity);
-      return gameSaveEntityMapper.mapToModel(updated);
-    }
-
-    return gameSaveEntityMapper.mapToModel(gameSaveEntity);
+  @Transactional(readOnly = true)
+  @Override
+  public Long countGameSaves() {
+    return gameSaveRepository.count();
   }
 
   /** {@inheritDoc} */

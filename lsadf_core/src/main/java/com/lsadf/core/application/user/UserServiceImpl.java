@@ -82,6 +82,12 @@ public class UserServiceImpl implements UserService {
 
   /** {@inheritDoc} */
   @Override
+  public Long countUsers() {
+    return (long) getUsersResource().count();
+  }
+
+  /** {@inheritDoc} */
+  @Override
   public List<String> getUserRoles() {
     List<RoleRepresentation> roles = getRolesResource().list();
     return roles.stream().map(RoleRepresentation::getName).toList();

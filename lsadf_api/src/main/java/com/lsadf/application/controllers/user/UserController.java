@@ -44,7 +44,7 @@ public interface UserController {
    *
    * @param jwt the JWT token of the authenticated user, provided automatically via Spring Security
    * @return a ResponseEntity containing a ApiResponse object with user information encapsulated as
-   *     a UserInfoResponse. The response status and message will also be included.
+   *     a GlobalInfoResponse. The response status and message will also be included.
    */
   @GetMapping(value = ControllerConstants.User.ME)
   @Operation(summary = "Gets the logged UserInfo user info")

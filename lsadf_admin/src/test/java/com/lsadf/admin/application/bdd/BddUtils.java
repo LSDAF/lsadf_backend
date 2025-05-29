@@ -24,7 +24,6 @@ import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
@@ -51,6 +50,7 @@ import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsRe
 import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
+import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
@@ -866,12 +866,12 @@ public class BddUtils {
   }
 
   /**
-   * Maps a row from a BDD table to a GlobalInfo
+   * Maps a row from a BDD table to a GlobalInfoResponse
    *
    * @param row row from BDD table
    * @return GlobalInfo
    */
-  public static GlobalInfo mapToGlobalInfo(Map<String, String> row) {
+  public static GlobalInfoResponse mapToGlobalInfoResponse(Map<String, String> row) {
     String nbGameSaves = row.get(BddFieldConstants.GlobalInfo.GAME_SAVE_COUNTER);
     String nbUsers = row.get(BddFieldConstants.GlobalInfo.USER_COUNTER);
     String now = row.get(BddFieldConstants.GlobalInfo.NOW);
@@ -881,7 +881,7 @@ public class BddUtils {
 
     Instant nowInstant = Instant.parse(now);
 
-    return new GlobalInfo(nowInstant, nbGameSavesLong, nbUsersLong);
+    return new GlobalInfoResponse(nowInstant, nbGameSavesLong, nbUsersLong);
   }
 
   /**
