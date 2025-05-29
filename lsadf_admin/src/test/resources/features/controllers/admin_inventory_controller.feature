@@ -41,7 +41,7 @@ Feature: Admin Inventory Controller BDD tests
 
     Then the response status code should be 200
 
-    And the response should have the following items in the inventory
+    And the response should have the following itemResponses
       | clientId                               | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
       | 668192b4-6057-47e5-bad0-fe795c8dbee6-1 | fc8640e1-382e-4c80-a17c-5a6d196f3932 | boots      | leg_boo_01  | LEGENDARY  | true       | 20    | 100               | attack_add        | 200                      | attack_mult              | 300                      | attack_mult              | 400                      | attack_mult              |
       | 668192b4-6057-47e5-bad0-fe795c8dbee6-2 | 1d4fbe96-cc9b-4c47-b140-545bb77c5a42 | chestplate | leg_che_01  | EPIC       | true       | 20    | 100               | attack_add        | 200                      | attack_mult              | 300                      | attack_mult              | 400                      | attack_mult              |
@@ -66,9 +66,9 @@ Feature: Admin Inventory Controller BDD tests
 
     Then the response status code should be 200
 
-    And the response should have the following item
-      | clientId                                | id                                   | itemType | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
-      | 3668192b4-6057-47e5-bad0-fe795c8dbee6-3 | 668192b4-6057-47e5-bad0-fe795c8dbee6 | boots    | leg_boo_01  | LEGENDARY  | true       | 20    | 100               | attack_add        | 200                      | attack_mult              | 300                      | attack_mult              | 400                      | attack_mult              |
+    And the response should have the following itemResponses
+      | clientId                                | itemType | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
+      | 3668192b4-6057-47e5-bad0-fe795c8dbee6-3 | boots    | leg_boo_01  | LEGENDARY  | true       | 20    | 100               | attack_add        | 200                      | attack_mult              | 300                      | attack_mult              | 400                      | attack_mult              |
 
 
   Scenario: A user adds a new item in a non-existing inventory
@@ -77,8 +77,8 @@ Feature: Admin Inventory Controller BDD tests
       | paul.ochon@test.com | toto1234 |
 
     And the user requests the admin endpoint to create a new item in the inventory for game save with id ac142d95-682a-47b6-a81c-49ccdda6c41b with the following ItemRequest
-      | clientId                                | id                                   | itemType | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
-      | 3668192b4-6057-47e5-bad0-fe795c8dbee6-3 | 668192b4-6057-47e5-bad0-fe795c8dbee6 | boots    | leg_boo_01  | LEGENDARY  | true       | 20    | 100               | attack_add        | 200                      | attack_mult              | 300                      | attack_mult              | 400                      | attack_mult              |
+      | clientId                                | itemType | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
+      | 3668192b4-6057-47e5-bad0-fe795c8dbee6-3 | boots    | leg_boo_01  | LEGENDARY  | true       | 20    | 100               | attack_add        | 200                      | attack_mult              | 300                      | attack_mult              | 400                      | attack_mult              |
 
     Then the response status code should be 404
 
@@ -113,7 +113,7 @@ Feature: Admin Inventory Controller BDD tests
 
     Then the response status code should be 200
 
-    And the response should have the following item
+    And the response should have the following itemResponses
       | clientId                               | id                                   | itemType | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
       | 668192b4-6057-47e5-bad0-fe795c8dbee6-1 | fc8640e1-382e-4c80-a17c-5a6d196f3932 | boots    | leg_boo_01  | LEGENDARY  | true       | 50    | 200               | attack_add        | 400                      | attack_mult              | 600                      | attack_mult              | 800                      | attack_mult              |
 

@@ -31,6 +31,7 @@ import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestMapper
 import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponseMapper;
 import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponseMapper;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponseMapper;
+import com.lsadf.core.infra.web.responses.game.inventory.ItemResponseMapper;
 import com.lsadf.core.infra.web.responses.game.stage.StageResponseMapper;
 import com.lsadf.core.infra.web.responses.info.GlobalInfoResponseMapper;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -58,6 +59,7 @@ public class UnitMapperMockConfiguration {
   @MockBean public CurrencyResponseMapper currencyResponseMapper;
   @MockBean public GameSaveResponseMapper gameSaveResponseMapper;
   @MockBean public GlobalInfoResponseMapper globalInfoResponseMapper;
+  @MockBean public ItemResponseMapper itemResponseMapper;
 
   // keycloak mapper
   @MockBean public UserToUserRepresentationMapper userToUserRepresentationMapper;

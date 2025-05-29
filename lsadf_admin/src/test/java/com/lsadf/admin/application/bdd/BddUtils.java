@@ -18,7 +18,6 @@ package com.lsadf.admin.application.bdd;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
@@ -49,6 +48,7 @@ import com.lsadf.core.infra.web.requests.user.update.UserUpdateRequest;
 import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
 import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
 import java.io.IOException;
@@ -502,7 +502,7 @@ public class BddUtils {
    * @param row row from BDD table
    * @return Item
    */
-  public static Item mapToItem(Map<String, String> row) {
+  public static ItemResponse mapToItemResponse(Map<String, String> row) {
     String id = row.get(BddFieldConstants.Item.ID);
     String clientId = row.get(BddFieldConstants.Item.CLIENT_ID);
     ItemType itemType = ItemType.fromString(row.get(BddFieldConstants.Item.ITEM_TYPE));
@@ -530,7 +530,7 @@ public class BddUtils {
 
     List<ItemStat> additionalStats = List.of(additionalStat1, additionalStat2, additionalStat3);
 
-    return Item.builder()
+    return ItemResponse.builder()
         .id(id)
         .clientId(clientId)
         .itemType(itemType)

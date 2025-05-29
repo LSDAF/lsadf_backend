@@ -48,7 +48,7 @@ import org.springframework.http.ResponseEntity;
 @Slf4j(topic = "[ADMIN WHEN STEP DEFINITIONS]")
 public class BddAdminWhenStepDefinitions extends BddLoader {
 
-  @When("the user requests the admin endpoint to get the global info")
+  @When("^the user requests the admin endpoint to get the global info$")
   public void when_the_user_requests_the_admin_endpoint_for_global_info() {
     String fullPath = ControllerConstants.ADMIN_GLOBAL_INFO;
 

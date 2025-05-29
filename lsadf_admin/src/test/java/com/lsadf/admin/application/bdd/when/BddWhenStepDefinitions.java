@@ -87,17 +87,6 @@ public class BddWhenStepDefinitions extends BddLoader {
     this.cacheFlushService.flushStages();
   }
 
-  @When("^the user with email (.*) gets the game save with id (.*)$")
-  public void when_the_user_with_email_gets_a_game_save_with_id(
-      String userEmail, String gameSaveId) {
-    try {
-      GameSave gameSave = gameSaveService.getGameSave(gameSaveId);
-      gameSaveListStack.push(Collections.singletonList(gameSave));
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
   @When("^the user logs in with the following refresh token (.*)$")
   public void logInWithRefreshToken(String refreshToken) {
     try {

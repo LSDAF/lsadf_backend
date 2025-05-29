@@ -18,10 +18,10 @@ package com.lsadf.application.controllers.game.inventory;
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
-import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -77,7 +77,7 @@ public interface InventoryController {
             responseCode = "500",
             description = "Internal Server Error")
       })
-  ResponseEntity<ApiResponse<Set<Item>>> getInventoryItems(
+  ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventoryItems(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 
@@ -109,7 +109,7 @@ public interface InventoryController {
             responseCode = "500",
             description = "Internal Server Error")
       })
-  ResponseEntity<ApiResponse<Item>> createItemInInventory(
+  ResponseEntity<ApiResponse<ItemResponse>> createItemInInventory(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @RequestBody @Valid ItemRequest itemRequest);
@@ -176,7 +176,7 @@ public interface InventoryController {
             responseCode = "500",
             description = "Internal Server Error")
       })
-  ResponseEntity<ApiResponse<Item>> updateItemInInventory(
+  ResponseEntity<ApiResponse<ItemResponse>> updateItemInInventory(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @PathVariable(value = CLIENT_ID) String itemClientId,

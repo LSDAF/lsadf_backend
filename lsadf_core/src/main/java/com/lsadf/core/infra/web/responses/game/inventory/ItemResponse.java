@@ -28,6 +28,7 @@ import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.infra.web.JsonAttributes;
 import com.lsadf.core.infra.web.controllers.JsonViews;
+import com.lsadf.core.infra.web.responses.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
@@ -79,4 +80,5 @@ public record ItemResponse(
         @JsonProperty(value = ADDITIONAL_STATS)
         @Schema(description = "Additional item stat list")
         @ElementCollection
-        List<ItemStat> additionalStats) {}
+        List<ItemStat> additionalStats)
+    implements Response {}

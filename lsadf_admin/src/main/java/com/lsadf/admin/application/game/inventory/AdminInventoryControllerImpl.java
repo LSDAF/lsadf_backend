@@ -22,7 +22,10 @@ import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.responses.game.inventory.ItemResponseMapper;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -35,8 +38,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminInventoryControllerImpl extends BaseController
     implements AdminInventoryController {
 
-  public AdminInventoryControllerImpl(InventoryService inventoryService) {
+  private final ItemResponseMapper itemResponseMapper;
+
+  public AdminInventoryControllerImpl(
+      InventoryService inventoryService, ItemResponseMapper itemResponseMapper) {
     this.inventoryService = inventoryService;
+    this.itemResponseMapper = itemResponseMapper;
   }
 
   private final InventoryService inventoryService;
@@ -48,19 +55,22 @@ public class AdminInventoryControllerImpl extends BaseController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<Set<Item>>> getInventory(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventory(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     Set<Item> items = inventoryService.getInventoryItems(gameSaveId);
-    return generateResponse(HttpStatus.OK, items);
+    Set<ItemResponse> itemResponses =
+        items.stream().map(itemResponseMapper::mapToResponse).collect(Collectors.toSet());
+    return generateResponse(HttpStatus.OK, itemResponses);
   }
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<Item>> createItemInInventory(
+  public ResponseEntity<ApiResponse<ItemResponse>> createItemInInventory(
       Jwt jwt, String gameSaveId, ItemRequest itemRequest) {
     validateUser(jwt);
     Item item = inventoryService.createItemInInventory(gameSaveId, itemRequest);
-    return generateResponse(HttpStatus.OK, item);
+    ItemResponse itemResponse = itemResponseMapper.mapToResponse(item);
+    return generateResponse(HttpStatus.OK, itemResponse);
   }
 
   /** {@inheritDoc} */
@@ -74,11 +84,12 @@ public class AdminInventoryControllerImpl extends BaseController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<Item>> updateItemInInventory(
+  public ResponseEntity<ApiResponse<ItemResponse>> updateItemInInventory(
       Jwt jwt, String gameSaveId, String itemClientId, ItemRequest itemRequest) {
     validateUser(jwt);
     Item item = inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
-    return generateResponse(HttpStatus.OK, item);
+    ItemResponse itemResponse = itemResponseMapper.mapToResponse(item);
+    return generateResponse(HttpStatus.OK, itemResponse);
   }
 
   /** {@inheritDoc} */
