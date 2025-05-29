@@ -35,6 +35,13 @@ public final class JsonAttributes {
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class GlobalInfo {
+    public static final String NOW = "now";
+    public static final String GAME_SAVE_COUNTER = "game_save_counter";
+    public static final String USER_COUNTER = "user_counter";
+  }
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class User {
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";

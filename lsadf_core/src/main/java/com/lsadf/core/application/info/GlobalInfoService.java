@@ -13,15 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.info;
 
-import com.lsadf.core.shared.model.Model;
-import java.io.Serial;
-import java.time.Instant;
-import lombok.*;
+package com.lsadf.core.application.info;
 
-@Builder
-public record GlobalInfo(Instant now, Long gameSaveCounter, Long userCounter) implements Model {
+import com.lsadf.core.domain.info.GlobalInfo;
 
-  @Serial private static final long serialVersionUID = -5539057784012769955L;
+/**
+ * Provides methods to retrieve global information related to system state, including current time,
+ * save counters, and user metrics.
+ */
+public interface GlobalInfoService {
+  /**
+   * Retrieves the global information including current timestamp, game save counter, and user
+   * counter.
+   *
+   * @return a GlobalInfo object containing the global data such as the current time, game save
+   *     count, and user count.
+   */
+  GlobalInfo getGlobalInfo();
 }

@@ -16,6 +16,7 @@
 package com.lsadf.core.application;
 
 import com.lsadf.core.application.game.GameServiceConfiguration;
+import com.lsadf.core.application.info.GlobalInfoConfiguration;
 import com.lsadf.core.application.search.SearchConfiguration;
 import com.lsadf.core.application.user.UserConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -27,5 +28,6 @@ import org.springframework.context.annotation.Import;
   GameServiceConfiguration.class,
   SearchConfiguration.class,
   UserConfiguration.class,
+  GlobalInfoConfiguration.class
 })
 public class ApplicationServiceConfiguration {}

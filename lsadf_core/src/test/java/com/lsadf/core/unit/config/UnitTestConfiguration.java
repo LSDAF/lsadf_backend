@@ -20,6 +20,7 @@ import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.stage.StageService;
+import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
@@ -52,6 +53,8 @@ public class UnitTestConfiguration {
   @MockBean private SearchService searchService;
 
   @MockBean private GameSaveService gameSaveService;
+
+  @MockBean private GlobalInfoService globalInfoService;
 
   @MockBean private CharacteristicsService characteristicsService;
 

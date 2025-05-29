@@ -31,6 +31,13 @@ public interface UserService {
   Stream<User> getUsers();
 
   /**
+   * Counts the total number of users in the system.
+   *
+   * @return the total count of users as a Long value
+   */
+  Long countUsers();
+
+  /**
    * Search users by name, or by username
    *
    * @param search search query

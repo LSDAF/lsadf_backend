@@ -13,15 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.info;
 
-import com.lsadf.core.shared.model.Model;
+package com.lsadf.core.infra.web.responses.info;
+
+import static com.lsadf.core.infra.web.JsonAttributes.GlobalInfo.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.lsadf.core.infra.web.controllers.JsonViews;
+import com.lsadf.core.infra.web.responses.Response;
 import java.io.Serial;
 import java.time.Instant;
-import lombok.*;
+import lombok.Builder;
 
 @Builder
-public record GlobalInfo(Instant now, Long gameSaveCounter, Long userCounter) implements Model {
+@JsonView(JsonViews.Admin.class)
+public record GlobalInfoResponse(
+    @JsonView(JsonViews.Admin.class) @JsonProperty(value = NOW) Instant now,
+    @JsonView(JsonViews.Admin.class) @JsonProperty(value = GAME_SAVE_COUNTER) Long gameSaveCounter,
+    @JsonView(JsonViews.Admin.class) @JsonProperty(value = USER_COUNTER) Long userCounter)
+    implements Response {
 
   @Serial private static final long serialVersionUID = -5539057784012769955L;
 }

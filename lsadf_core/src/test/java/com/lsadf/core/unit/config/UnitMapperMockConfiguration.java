@@ -32,6 +32,7 @@ import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsRe
 import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponseMapper;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponseMapper;
 import com.lsadf.core.infra.web.responses.game.stage.StageResponseMapper;
+import com.lsadf.core.infra.web.responses.info.GlobalInfoResponseMapper;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -56,6 +57,7 @@ public class UnitMapperMockConfiguration {
   @MockBean public StageResponseMapper stageResponseMapper;
   @MockBean public CurrencyResponseMapper currencyResponseMapper;
   @MockBean public GameSaveResponseMapper gameSaveResponseMapper;
+  @MockBean public GlobalInfoResponseMapper globalInfoResponseMapper;
 
   // keycloak mapper
   @MockBean public UserToUserRepresentationMapper userToUserRepresentationMapper;

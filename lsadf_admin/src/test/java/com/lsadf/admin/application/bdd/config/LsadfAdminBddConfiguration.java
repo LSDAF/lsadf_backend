@@ -21,13 +21,13 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Set;
@@ -109,8 +109,8 @@ public class LsadfAdminBddConfiguration {
   }
 
   @Bean
-  public Stack<GlobalInfo> globalInfoStack(BddStackCleaner stackCleaner) {
-    Stack<GlobalInfo> stack = new Stack<>();
+  public Stack<GlobalInfoResponse> globalInfoResponseStack(BddStackCleaner stackCleaner) {
+    Stack<GlobalInfoResponse> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }

@@ -18,11 +18,11 @@ package com.lsadf.admin.application.info;
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
-import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.infra.web.controllers.Controller;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
+import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -61,5 +61,5 @@ public interface AdminGlobalInfoController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets the global info of the application")
-  ResponseEntity<ApiResponse<GlobalInfo>> getGlobalInfo(@AuthenticationPrincipal Jwt jwt);
+  ResponseEntity<ApiResponse<GlobalInfoResponse>> getGlobalInfo(@AuthenticationPrincipal Jwt jwt);
 }

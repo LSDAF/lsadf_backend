@@ -46,7 +46,6 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.cache.Cache;
@@ -198,8 +197,6 @@ public class BddLoader {
   @Autowired protected Stack<List<GameSaveEntity>> gameSaveEntityListStack;
 
   @Autowired protected Stack<List<User>> userListStack;
-
-  @Autowired protected Stack<GlobalInfo> globalInfoStack;
 
   @Autowired protected Stack<Characteristics> characteristicsStack;
 

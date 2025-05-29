@@ -24,13 +24,13 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.exceptions.http.ForbiddenException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import jakarta.mail.MessagingException;
@@ -218,22 +218,6 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
-  @Then("^I should return the following GlobalInfo$")
-  public void then_i_should_return_the_following_global_info(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    GlobalInfo actual = globalInfoStack.peek();
-    GlobalInfo expected = BddUtils.mapToGlobalInfo(row);
-
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-  }
-
   @Then("^I should throw no Exception$")
   public void then_i_should_throw_no_exception() {
     assertThat(exceptionStack).isEmpty();
@@ -283,8 +267,8 @@ public class BddThenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
 
-    GlobalInfo actual = (GlobalInfo) responseStack.peek().getData();
-    GlobalInfo expected = BddUtils.mapToGlobalInfo(row);
+    GlobalInfoResponse actual = globalInfoResponseStack.peek();
+    GlobalInfoResponse expected = BddUtils.mapToGlobalInfoResponse(row);
 
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }

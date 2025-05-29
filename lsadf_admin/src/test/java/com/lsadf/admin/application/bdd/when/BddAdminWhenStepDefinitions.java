@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
-import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
@@ -32,6 +31,7 @@ import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
@@ -59,11 +59,11 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<GlobalInfo>> result =
+      ResponseEntity<ApiResponse<GlobalInfoResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGlobalInfoResponse());
-      ApiResponse<GlobalInfo> body = result.getBody();
-      responseStack.push(body);
+      ApiResponse<GlobalInfoResponse> body = result.getBody();
+      globalInfoResponseStack.push(body.getData());
       log.info("Response: {}", result);
     } catch (Exception e) {
       exceptionStack.push(e);

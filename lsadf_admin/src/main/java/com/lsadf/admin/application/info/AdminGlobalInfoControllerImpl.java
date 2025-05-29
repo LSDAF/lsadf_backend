@@ -17,13 +17,12 @@ package com.lsadf.admin.application.info;
 
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
-import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.application.user.UserService;
+import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.domain.info.GlobalInfo;
-import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.responses.ApiResponse;
-import java.time.Instant;
+import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.responses.info.GlobalInfoResponseMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +37,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminGlobalInfoControllerImpl extends BaseController
     implements AdminGlobalInfoController {
 
-  private final UserService userService;
-  private final GameSaveService gameSaveService;
-  private final ClockService clockService;
+  private final GlobalInfoService globalInfoService;
+  private final GlobalInfoResponseMapper globalInfoResponseMapper;
 
   @Autowired
   public AdminGlobalInfoControllerImpl(
-      UserService userService, GameSaveService gameSaveService, ClockService clockService) {
-    this.userService = userService;
-    this.gameSaveService = gameSaveService;
-    this.clockService = clockService;
+      GlobalInfoService globalInfoService, GlobalInfoResponseMapper globalInfoResponseMapper) {
+    this.globalInfoService = globalInfoService;
+    this.globalInfoResponseMapper = globalInfoResponseMapper;
   }
 
   /** {@inheritDoc} */
@@ -58,14 +55,10 @@ public class AdminGlobalInfoControllerImpl extends BaseController
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<GlobalInfo>> getGlobalInfo(Jwt jwt) {
+  public ResponseEntity<ApiResponse<GlobalInfoResponse>> getGlobalInfo(Jwt jwt) {
     validateUser(jwt);
-    Long userCount = userService.getUsers().count();
-    Long gameSaveCount = gameSaveService.getGameSaves().count();
-    Instant now = clockService.nowInstant();
-
-    GlobalInfo globalInfo =
-        GlobalInfo.builder().userCounter(userCount).now(now).gameSaveCounter(gameSaveCount).build();
-    return generateResponse(HttpStatus.OK, globalInfo);
+    GlobalInfo globalInfo = globalInfoService.getGlobalInfo();
+    GlobalInfoResponse response = globalInfoResponseMapper.mapToResponse(globalInfo);
+    return generateResponse(HttpStatus.OK, response);
   }
 }
