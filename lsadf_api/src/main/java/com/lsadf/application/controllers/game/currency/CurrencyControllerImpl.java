@@ -26,6 +26,8 @@ import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponseMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,17 +46,20 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
   private final CacheService cacheService;
 
   private final CurrencyRequestMapper requestModelMapper;
+  private final CurrencyResponseMapper currencyResponseMapper;
 
   @Autowired
   public CurrencyControllerImpl(
       GameSaveService gameSaveService,
       CurrencyService currencyService,
       CacheService cacheService,
-      CurrencyRequestMapper requestModelMapper) {
+      CurrencyRequestMapper requestModelMapper,
+      CurrencyResponseMapper currencyResponseMapper) {
     this.gameSaveService = gameSaveService;
     this.currencyService = currencyService;
     this.cacheService = cacheService;
     this.requestModelMapper = requestModelMapper;
+    this.currencyResponseMapper = currencyResponseMapper;
   }
 
   /** {@inheritDoc} */
@@ -73,12 +78,13 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<Void>> getCurrency(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<CurrencyResponse>> getCurrency(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
     Currency currency = currencyService.getCurrency(gameSaveId);
-    return generateResponse(HttpStatus.OK, currency);
+    CurrencyResponse currencyResponse = currencyResponseMapper.mapToResponse(currency);
+    return generateResponse(HttpStatus.OK, currencyResponse);
   }
 
   /** {@inheritDoc} */

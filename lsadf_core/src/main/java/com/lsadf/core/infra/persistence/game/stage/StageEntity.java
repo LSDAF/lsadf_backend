@@ -27,13 +27,14 @@ import jakarta.validation.constraints.Positive;
 import java.io.Serial;
 import lombok.*;
 
-@Data
 @Entity(name = STAGE_ENTITY)
 @Table(name = STAGE_ENTITY)
 @Builder
 @AllArgsConstructor
 @ToString(callSuper = true)
 @StageConsistency(currentStageField = "currentStage", maxStageField = "maxStage")
+@Getter
+@Setter
 public class StageEntity implements com.lsadf.core.infra.persistence.Entity {
 
   @Serial private static final long serialVersionUID = -5093458201484300006L;

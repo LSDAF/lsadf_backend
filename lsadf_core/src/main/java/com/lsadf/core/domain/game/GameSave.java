@@ -15,23 +15,15 @@
  */
 package com.lsadf.core.domain.game;
 
-import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.infra.web.JsonAttributes;
-import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.shared.model.Model;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.util.Date;
 import lombok.*;
 
 /** Game Save DTO */
-@Schema(name = "GameSave", description = "Game Save Object")
 @Builder
 @AllArgsConstructor
 @Getter
@@ -39,47 +31,21 @@ public class GameSave implements Model {
 
   @Serial private static final long serialVersionUID = -2686370647354845265L;
 
-  // Admin fields
+  private final String id;
 
-  // Internal fields
+  private final String userEmail;
 
-  @JsonView(JsonViews.Internal.class)
-  @JsonProperty(value = JsonAttributes.ID)
-  @Schema(description = "Game Id", example = "7d9f92ce-3c8e-4695-9df7-ce10c0bbaaeb")
-  private String id;
+  private final Date createdAt;
 
-  @JsonView(JsonViews.Internal.class)
-  @JsonProperty(value = USER_EMAIL)
-  private String userEmail;
+  private final Date updatedAt;
 
-  @JsonView(JsonViews.Internal.class)
-  @JsonProperty(value = JsonAttributes.CREATED_AT)
-  @Schema(description = "Creation date", example = "2022-01-01 00:00:00.000")
-  private Date createdAt;
+  private final String nickname;
 
-  @JsonView(JsonViews.Internal.class)
-  @JsonProperty(value = JsonAttributes.UPDATED_AT)
-  @Schema(description = "Update date", example = "2022-01-01 00:00:00.000")
-  private Date updatedAt;
-
-  // External fields
-
-  @Setter
-  @JsonView(JsonViews.External.class)
-  @JsonProperty(value = NICKNAME)
-  private String nickname;
-
-  @JsonView(JsonViews.External.class)
-  @JsonProperty(value = CHARACTERISTICS)
   private final Characteristics characteristics;
 
-  @JsonView(JsonViews.External.class)
-  @JsonProperty(value = CURRENCY)
-  private Currency currency;
+  private final Currency currency;
 
-  @JsonView(JsonViews.External.class)
-  @JsonProperty(value = STAGE)
-  private Stage stage;
+  private final Stage stage;
 
   public void setCharacteristics(Characteristics characteristics) {
     var attack = characteristics.getAttack();

@@ -24,6 +24,7 @@ import com.lsadf.core.shared.model.Model;
  * @param <M> the type of the model object
  * @param <R> the type of the response object
  */
+@FunctionalInterface
 public interface ModelResponseMapper<M extends Model, R extends Response> {
   /**
    * Maps a given model object to its corresponding response representation.

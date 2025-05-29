@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.requests.game.game_save.creation;
 
-import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
+import static com.lsadf.core.infra.web.JsonAttributes.GameSave.USER_EMAIL;
 import static com.lsadf.core.infra.web.JsonAttributes.ID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

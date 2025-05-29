@@ -25,6 +25,8 @@ import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponseMapper;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -43,9 +45,13 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
 
   private final SearchService searchService;
 
+  private final GameSaveResponseMapper gameSaveResponseMapper;
+
   @Autowired
-  public AdminSearchControllerImpl(SearchService searchService) {
+  public AdminSearchControllerImpl(
+      SearchService searchService, GameSaveResponseMapper gameSaveResponseMapper) {
     this.searchService = searchService;
+    this.gameSaveResponseMapper = gameSaveResponseMapper;
   }
 
   /** {@inheritDoc} */
@@ -80,7 +86,7 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
    * @return
    */
   @Override
-  public ResponseEntity<ApiResponse<List<GameSave>>> searchGameSaves(
+  public ResponseEntity<ApiResponse<List<GameSaveResponse>>> searchGameSaves(
       Jwt jwt, SearchRequest searchRequest, List<String> orderBy) {
     List<GameSaveSortingParameter> gameSaveOrderBy =
         Collections.singletonList(GameSaveSortingParameter.NONE);
@@ -90,7 +96,8 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
     validateUser(jwt);
     try (Stream<GameSave> gameSaveStream =
         searchService.searchGameSaves(searchRequest, gameSaveOrderBy)) {
-      List<GameSave> gameSaves = gameSaveStream.toList();
+      List<GameSaveResponse> gameSaves =
+          gameSaveStream.map(gameSaveResponseMapper::mapToResponse).toList();
       return generateResponse(HttpStatus.OK, gameSaves);
     }
   }

@@ -27,16 +27,17 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Positive;
 import java.io.Serial;
 import java.util.List;
+import java.util.Objects;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@Data
 @Entity(name = ITEM_ENTITY)
 @Table(name = ITEM_ENTITY)
 @SuperBuilder
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@ToString
+@Getter
+@Setter
 public class ItemEntity extends AEntity {
 
   @Serial private static final long serialVersionUID = 7924047722096464427L;
@@ -88,5 +89,37 @@ public class ItemEntity extends AEntity {
     public static final String ITEM_IS_EQUIPPED = "is_equipped";
     public static final String ITEM_LEVEL = "level";
     public static final String ITEM_MAIN_STAT = "main_stat";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+    ItemEntity that = (ItemEntity) o;
+    return Objects.equals(inventoryEntity, that.inventoryEntity)
+        && Objects.equals(clientId, that.clientId)
+        && Objects.equals(blueprintId, that.blueprintId)
+        && itemType == that.itemType
+        && itemRarity == that.itemRarity
+        && Objects.equals(isEquipped, that.isEquipped)
+        && Objects.equals(level, that.level)
+        && Objects.equals(mainStat, that.mainStat)
+        && Objects.equals(additionalStats, that.additionalStats);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        clientId,
+        blueprintId,
+        itemType,
+        itemRarity,
+        isEquipped,
+        level,
+        mainStat,
+        additionalStats,
+        id,
+        createdAt,
+        updatedAt);
   }
 }

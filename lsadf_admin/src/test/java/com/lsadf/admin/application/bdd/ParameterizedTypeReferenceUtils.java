@@ -15,7 +15,6 @@
  */
 package com.lsadf.admin.application.bdd;
 
-import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.item.Item;
@@ -25,6 +24,7 @@ import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -55,11 +55,11 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of GameSave
+   * Builds a ParameterizedTypeReference for a ApiResponse of GameSaveResponse
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<GameSave>>
+  public static ParameterizedTypeReference<ApiResponse<GameSaveResponse>>
       buildParameterizedGameSaveResponse() {
     return new ParameterizedTypeReference<>() {};
   }
@@ -127,7 +127,7 @@ public class ParameterizedTypeReferenceUtils {
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<List<GameSave>>>
+  public static ParameterizedTypeReference<ApiResponse<List<GameSaveResponse>>>
       buildParameterizedGameSaveListResponse() {
     return new ParameterizedTypeReference<>() {};
   }

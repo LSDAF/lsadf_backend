@@ -26,6 +26,7 @@ import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
+import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponseMapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -56,6 +57,11 @@ public class CharacteristicsConfiguration {
   @Bean
   public CharacteristicsRequestMapper characteristicsRequestModelMapper() {
     return new CharacteristicsRequestMapper();
+  }
+
+  @Bean
+  public CharacteristicsResponseMapper characteristicsResponseMapper() {
+    return new CharacteristicsResponseMapper();
   }
 
   @Bean(name = CHARACTERISTICS_CACHE)

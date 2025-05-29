@@ -26,16 +26,17 @@ import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import java.io.Serial;
+import java.util.Objects;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /** Game Save Entity to persist data of a game save */
-@Data
 @Entity(name = GameSaveEntity.GameSaveAttributes.GAME_SAVE_ENTITY)
 @Table(name = GameSaveEntity.GameSaveAttributes.GAME_SAVE_ENTITY)
 @SuperBuilder
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @ToString(callSuper = true)
 public class GameSaveEntity extends AEntity {
 
@@ -173,5 +174,32 @@ public class GameSaveEntity extends AEntity {
     public static final String GAME_SAVE_INVENTORY_ID = "inventory_id";
     public static final String GAME_SAVE_STAGE_ID = "stage_id";
     public static final String GAME_SAVE_NICKNAME = "nickname";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+    GameSaveEntity that = (GameSaveEntity) o;
+    return Objects.equals(userEmail, that.userEmail)
+        && Objects.equals(nickname, that.nickname)
+        && Objects.equals(characteristicsEntity, that.characteristicsEntity)
+        && Objects.equals(currencyEntity, that.currencyEntity)
+        && Objects.equals(inventoryEntity, that.inventoryEntity)
+        && Objects.equals(stageEntity, that.stageEntity);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        userEmail,
+        nickname,
+        characteristicsEntity,
+        currencyEntity,
+        inventoryEntity,
+        stageEntity,
+        id,
+        createdAt,
+        updatedAt);
   }
 }

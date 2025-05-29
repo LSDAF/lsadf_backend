@@ -29,8 +29,8 @@ import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.exceptions.http.ForbiddenException;
 import com.lsadf.core.infra.exceptions.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import jakarta.mail.MessagingException;
@@ -44,56 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 /** Step definitions for the then steps in the BDD scenarios */
 @Slf4j(topic = "[THEN STEP DEFINITIONS]")
 public class BddThenStepDefinitions extends BddLoader {
-
-  @Then("^I should return the following game saves$")
-  public void then_i_should_return_the_following_game_saves(DataTable dataTable)
-      throws NotFoundException {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    List<GameSave> actual = gameSaveListStack.peek();
-
-    for (Map<String, String> row : rows) {
-      GameSave expectedGameSave = BddUtils.mapToGameSave(row);
-      GameSave actualGameSave =
-          actual.stream()
-              .filter(g -> g.getId().equals(expectedGameSave.getId()))
-              .findFirst()
-              .orElseThrow();
-
-      assertThat(actualGameSave)
-          .usingRecursiveComparison()
-          .ignoringFields("id", "createdAt", "updatedAt")
-          .ignoringExpectedNullFields()
-          .isEqualTo(expectedGameSave);
-    }
-  }
-
-  @Then("^I should return the following game save entities$")
-  public void then_i_should_return_the_following_game_save_entities(DataTable dataTable)
-      throws NotFoundException {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    List<GameSaveEntity> actual = gameSaveEntityListStack.peek();
-
-    for (Map<String, String> row : rows) {
-      GameSaveEntity expected = BddUtils.mapToGameSaveEntity(row);
-      GameSaveEntity gameSave =
-          actual.stream()
-              .filter(
-                  g -> {
-                    if (expected.getId() == null) {
-                      return g.getUserEmail().equals(expected.getUserEmail());
-                    }
-                    return g.getId().equals(expected.getId());
-                  })
-              .findFirst()
-              .orElseThrow();
-
-      long gold = gameSave.getCurrencyEntity().getGoldAmount();
-      long expectedGold = expected.getCurrencyEntity().getGoldAmount();
-      assertThat(gold).isEqualTo(expectedGold);
-    }
-  }
 
   @Then("^I should return true$")
   public void then_i_should_return_true() {
@@ -220,7 +170,7 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(exception).isInstanceOf(ForbiddenException.class);
   }
 
-  @Then("^the response should have the following Stage$")
+  @Then("^the response should have the following StageResponse$")
   public void then_the_response_should_have_the_following_stage(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -252,7 +202,7 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
-  @Then("^the response should have the following Currency$")
+  @Then("^the response should have the following CurrencyResponse$")
   public void then_the_response_should_have_the_following_currency(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -303,8 +253,8 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(jwtAuthenticationResponse.refreshToken()).isNotNull();
   }
 
-  @Then("^the response should have the following GameSave$")
-  public void then_the_response_should_have_the_following_game_save(DataTable dataTable) {
+  @Then("^the response should have the following GameSaveResponse$")
+  public void then_the_response_should_have_the_following_game_save_response(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     if (rows.size() > 1) {
@@ -313,8 +263,8 @@ public class BddThenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
 
-    GameSave actual = (GameSave) responseStack.peek().getData();
-    GameSave expected = BddUtils.mapToGameSave(row);
+    GameSaveResponse actual = (GameSaveResponse) responseStack.peek().getData();
+    GameSaveResponse expected = BddUtils.mapToGameSaveResponse(row);
 
     assertThat(actual)
         .usingRecursiveComparison()
@@ -339,16 +289,14 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
-  @Then("the response should have the following GameSaves")
+  @Then("^the response should have the following GameSaveResponses$")
   public void then_the_response_should_have_the_following_game_saves(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     for (Map<String, String> row : rows) {
-      GameSave actual =
-          gameSaveListStack.peek().stream()
-              .filter(g -> g.getId().equals(row.get("id")))
-              .findFirst()
-              .orElseThrow();
+      var list = gameSaveResponseListStack.peek();
+      var actual =
+          list.stream().filter(g -> g.id().equals(row.get("id"))).findFirst().orElseThrow();
       GameSave expected = BddUtils.mapToGameSave(row);
 
       assertThat(actual)
@@ -431,29 +379,29 @@ public class BddThenStepDefinitions extends BddLoader {
     }
   }
 
-  @Then("^the response should have the following GameSaves in exact order$")
+  @Then("^the response should have the following GameSaveResponses in exact order$")
   public void then_the_response_should_have_the_following_game_saves_in_exact_order(
       DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    List<GameSave> actual = gameSaveListStack.peek();
+    List<GameSaveResponse> actual = gameSaveResponseListStack.peek();
 
-    List<GameSave> expected = new ArrayList<>();
+    List<GameSaveResponse> expected = new ArrayList<>();
 
     for (Map<String, String> row : rows) {
-      GameSave expectedEntity = BddUtils.mapToGameSave(row);
-      expected.add(expectedEntity);
+      GameSaveResponse response = BddUtils.mapToGameSaveResponse(row);
+      expected.add(response);
     }
 
     assertThat(actual).hasSameSizeAs(expected);
 
     for (int i = 0; i < actual.size(); i++) {
-      GameSave actualGameSave = actual.get(i);
-      GameSave expectedGameSave = expected.get(i);
-      assertThat(actualGameSave)
+      GameSaveResponse actualGameSaveResponse = actual.get(i);
+      GameSaveResponse expectedGameSaveResponse = expected.get(i);
+      assertThat(actualGameSaveResponse)
           .usingRecursiveComparison()
           .ignoringFields("id", "createdAt", "updatedAt")
-          .isEqualTo(expectedGameSave);
+          .isEqualTo(expectedGameSaveResponse);
     }
   }
 

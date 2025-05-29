@@ -26,6 +26,8 @@ import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
+import com.lsadf.core.infra.web.responses.game.stage.StageResponseMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,19 +43,22 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   private final GameSaveService gameSaveService;
   private final CacheService cacheService;
-  private final StageRequestMapper mapper;
+  private final StageRequestMapper stageRequestMapper;
+  private final StageResponseMapper stageResponseMapper;
   private final StageService stageService;
 
   @Autowired
   public StageControllerImpl(
       GameSaveService gameSaveService,
       CacheService cacheService,
-      StageRequestMapper mapper,
-      StageService stageService) {
+      StageRequestMapper stageRequestMapper,
+      StageService stageService,
+      StageResponseMapper stageResponseMapper) {
     this.gameSaveService = gameSaveService;
     this.cacheService = cacheService;
-    this.mapper = mapper;
+    this.stageRequestMapper = stageRequestMapper;
     this.stageService = stageService;
+    this.stageResponseMapper = stageResponseMapper;
   }
 
   /** {@inheritDoc} */
@@ -64,7 +69,7 @@ public class StageControllerImpl extends BaseController implements StageControll
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
 
-    Stage stage = mapper.mapToModel(stageRequest);
+    Stage stage = stageRequestMapper.mapToModel(stageRequest);
     stageService.saveStage(gameSaveId, stage, cacheService.isEnabled());
 
     return generateResponse(HttpStatus.OK);
@@ -72,12 +77,13 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<Void>> getStage(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<StageResponse>> getStage(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
     Stage stage = stageService.getStage(gameSaveId);
-    return generateResponse(HttpStatus.OK, stage);
+    StageResponse stageResponse = stageResponseMapper.mapToResponse(stage);
+    return generateResponse(HttpStatus.OK, stageResponse);
   }
 
   /** {@inheritDoc} */

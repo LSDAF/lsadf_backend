@@ -16,12 +16,13 @@
 
 package com.lsadf.core.infra.web.responses.user;
 
-import static com.lsadf.core.infra.web.responses.user.UserInfoResponse.Attributes.EMAIL;
-import static com.lsadf.core.infra.web.responses.user.UserInfoResponse.Attributes.NAME;
+import static com.lsadf.core.infra.web.responses.user.UserInfoResponse.Attributes.*;
+import static com.lsadf.core.infra.web.responses.user.UserInfoResponse.Attributes.ROLES;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.infra.web.responses.Response;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.util.Set;
 import lombok.AccessLevel;
@@ -29,17 +30,13 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Builder
-@JsonPropertyOrder({
-  NAME,
-  EMAIL,
-  UserInfoResponse.Attributes.VERIFIED,
-  UserInfoResponse.Attributes.ROLES
-})
+@JsonPropertyOrder({NAME, EMAIL, VERIFIED, ROLES})
+@Schema(name = "UserInfo", description = "UserInfo response object")
 public record UserInfoResponse(
     @JsonProperty(value = NAME) String name,
     @JsonProperty(value = EMAIL) String email,
-    @JsonProperty(value = Attributes.VERIFIED) boolean verified,
-    @JsonProperty(value = Attributes.ROLES) Set<String> roles)
+    @JsonProperty(value = VERIFIED) boolean verified,
+    @JsonProperty(value = ROLES) Set<String> roles)
     implements Response {
   @Serial private static final long serialVersionUID = -5863483742674101453L;
 

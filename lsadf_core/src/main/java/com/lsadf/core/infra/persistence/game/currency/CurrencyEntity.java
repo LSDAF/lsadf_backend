@@ -24,14 +24,16 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.io.Serial;
+import java.util.Objects;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@Data
 @Entity(name = CURRENCY_ENTITY)
 @Table(name = CURRENCY_ENTITY)
 @SuperBuilder
 @AllArgsConstructor
+@Getter
+@Setter
 @ToString(callSuper = true)
 public class CurrencyEntity implements com.lsadf.core.infra.persistence.Entity {
 
@@ -82,5 +84,23 @@ public class CurrencyEntity implements com.lsadf.core.infra.persistence.Entity {
     public static final String CURRENCY_EMERALD_AMOUNT = "emerald_amount";
     public static final String CURRENCY_AMETHYST_AMOUNT = "amethyst_amount";
     public static final String CURRENCY_USER_EMAIL = "user_email";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    CurrencyEntity that = (CurrencyEntity) o;
+    return Objects.equals(id, that.id)
+        && Objects.equals(gameSave, that.gameSave)
+        && Objects.equals(userEmail, that.userEmail)
+        && Objects.equals(goldAmount, that.goldAmount)
+        && Objects.equals(diamondAmount, that.diamondAmount)
+        && Objects.equals(emeraldAmount, that.emeraldAmount)
+        && Objects.equals(amethystAmount, that.amethystAmount);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, userEmail, goldAmount, diamondAmount, emeraldAmount, amethystAmount);
   }
 }

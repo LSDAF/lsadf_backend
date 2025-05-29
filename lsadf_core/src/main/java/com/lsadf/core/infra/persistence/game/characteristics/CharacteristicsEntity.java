@@ -23,15 +23,17 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Positive;
 import java.io.Serial;
+import java.util.Objects;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@Data
 @Entity(name = CHARACTERISTICS_ENTITY)
 @Table(name = CHARACTERISTICS_ENTITY)
 @SuperBuilder
 @AllArgsConstructor
 @ToString(callSuper = true)
+@Getter
+@Setter
 public class CharacteristicsEntity implements com.lsadf.core.infra.persistence.Entity {
 
   @Serial private static final long serialVersionUID = 2100417080983225675L;
@@ -83,5 +85,23 @@ public class CharacteristicsEntity implements com.lsadf.core.infra.persistence.E
     public static final String CHARACTERISTICS_CRIT_DAMAGE = "crit_damage";
     public static final String CHARACTERISTICS_HEALTH = "health";
     public static final String CHARACTERISTICS_RESISTANCE = "resistance";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    CharacteristicsEntity that = (CharacteristicsEntity) o;
+    return Objects.equals(id, that.id)
+        && Objects.equals(gameSave, that.gameSave)
+        && Objects.equals(attack, that.attack)
+        && Objects.equals(critChance, that.critChance)
+        && Objects.equals(critDamage, that.critDamage)
+        && Objects.equals(health, that.health)
+        && Objects.equals(resistance, that.resistance);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, attack, critChance, critDamage, health, resistance);
   }
 }

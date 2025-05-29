@@ -31,6 +31,7 @@ import com.lsadf.core.infra.web.requests.user.creation.SimpleUserCreationRequest
 import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.Collections;
@@ -228,16 +229,6 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
   }
 
-  @When("^we want to get all game saves for the user with email (.*)$")
-  public void when_we_want_to_get_all_game_saves_for_the_user_with_email(String email) {
-    try {
-      List<GameSave> gameSaves = gameSaveService.getGameSavesByUsername(email).toList();
-      gameSaveListStack.push(gameSaves);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
   @When(
       "^we want to update the game save with id (.*) with the following GameSaveNicknameUpdateRequest")
   public void
@@ -281,10 +272,10 @@ public class BddWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(jwtAuthenticationResponse.accessToken());
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<GameSave>> result =
+      ResponseEntity<ApiResponse<GameSaveResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedGameSaveResponse());
-      ApiResponse<GameSave> body = result.getBody();
+      ApiResponse<GameSaveResponse> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -300,10 +291,10 @@ public class BddWhenStepDefinitions extends BddLoader {
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       HttpEntity<Void> request = new HttpEntity<>(new HttpHeaders());
-      ResponseEntity<ApiResponse<GameSave>> result =
+      ResponseEntity<ApiResponse<GameSaveResponse>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedGameSaveResponse());
-      ApiResponse<GameSave> body = result.getBody();
+      ApiResponse<GameSaveResponse> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -425,11 +416,11 @@ public class BddWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<List<GameSave>>> result =
+      ResponseEntity<ApiResponse<List<GameSaveResponse>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
-      ApiResponse<List<GameSave>> body = result.getBody();
-      gameSaveListStack.push(body.getData());
+      ApiResponse<List<GameSaveResponse>> body = result.getBody();
+      gameSaveResponseListStack.push(body.getData());
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -445,10 +436,10 @@ public class BddWhenStepDefinitions extends BddLoader {
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       HttpEntity<Void> request = new HttpEntity<>(new HttpHeaders());
-      ResponseEntity<ApiResponse<List<GameSave>>> result =
+      ResponseEntity<ApiResponse<List<GameSaveResponse>>> result =
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
-      ApiResponse<List<GameSave>> body = result.getBody();
+      ApiResponse<List<GameSaveResponse>> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 

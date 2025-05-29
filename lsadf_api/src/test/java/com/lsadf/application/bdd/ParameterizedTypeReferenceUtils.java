@@ -15,16 +15,16 @@
  */
 package com.lsadf.application.bdd;
 
-import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
 import com.lsadf.core.infra.web.responses.user.UserInfoResponse;
 import java.util.List;
 import java.util.Set;
@@ -56,11 +56,11 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of GameSave
+   * Builds a ParameterizedTypeReference for a ApiResponse of GameSaveResponse
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<GameSave>>
+  public static ParameterizedTypeReference<ApiResponse<GameSaveResponse>>
       buildParameterizedGameSaveResponse() {
     return new ParameterizedTypeReference<>() {};
   }
@@ -70,7 +70,7 @@ public class ParameterizedTypeReferenceUtils {
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<Characteristics>>
+  public static ParameterizedTypeReference<ApiResponse<CharacteristicsResponse>>
       buildParameterizedCharacteristicsResponse() {
     return new ParameterizedTypeReference<>() {};
   }
@@ -80,7 +80,7 @@ public class ParameterizedTypeReferenceUtils {
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<Currency>>
+  public static ParameterizedTypeReference<ApiResponse<CurrencyResponse>>
       buildParameterizedCurrencyResponse() {
     return new ParameterizedTypeReference<>() {};
   }
@@ -107,11 +107,12 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of Stage
+   * Builds a ParameterizedTypeReference for a ApiResponse of StageResponse
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<Stage>> buildParameterizedStageResponse() {
+  public static ParameterizedTypeReference<ApiResponse<StageResponse>>
+      buildParameterizedStageResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
@@ -129,7 +130,7 @@ public class ParameterizedTypeReferenceUtils {
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<List<GameSave>>>
+  public static ParameterizedTypeReference<ApiResponse<List<GameSaveResponse>>>
       buildParameterizedGameSaveListResponse() {
     return new ParameterizedTypeReference<>() {};
   }

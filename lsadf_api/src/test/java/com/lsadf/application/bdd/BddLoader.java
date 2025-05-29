@@ -67,6 +67,7 @@ import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.advices.DynamicJsonViewAdvice;
 import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import java.util.List;
@@ -191,6 +192,8 @@ public class BddLoader {
   // BDD Specific Stacks & Maps
 
   @Autowired protected Stack<List<GameSave>> gameSaveListStack;
+
+  @Autowired protected Stack<List<GameSaveResponse>> gameSaveResponseListStack;
 
   @Autowired protected Stack<List<GameSaveEntity>> gameSaveEntityListStack;
 

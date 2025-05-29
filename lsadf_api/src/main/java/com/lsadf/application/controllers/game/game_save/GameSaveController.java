@@ -19,12 +19,12 @@ import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.A
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -69,7 +69,8 @@ public interface GameSaveController {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @JsonView(JsonViews.Internal.class)
-  ResponseEntity<ApiResponse<GameSave>> generateNewGameSave(@AuthenticationPrincipal Jwt jwt);
+  ResponseEntity<ApiResponse<GameSaveResponse>> generateNewGameSave(
+      @AuthenticationPrincipal Jwt jwt);
 
   /**
    * Updates the nickname of a game save
@@ -127,5 +128,5 @@ public interface GameSaveController {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @JsonView(JsonViews.Internal.class)
-  ResponseEntity<ApiResponse<List<GameSave>>> getUserGameSaves(Jwt jwt);
+  ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(Jwt jwt);
 }

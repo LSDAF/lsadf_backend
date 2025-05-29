@@ -21,17 +21,18 @@ import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import java.io.Serial;
+import java.util.Objects;
 import java.util.Set;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@Data
 @Entity(name = InventoryEntity.InventoryAttributes.INVENTORY_ENTITY)
 @Table(name = InventoryEntity.InventoryAttributes.INVENTORY_ENTITY)
 @SuperBuilder
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@Getter
+@Setter
 public class InventoryEntity extends AEntity {
   @Serial private static final long serialVersionUID = 8543208469573180701L;
 
@@ -53,5 +54,18 @@ public class InventoryEntity extends AEntity {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class InventoryAttributes {
     public static final String INVENTORY_ENTITY = "t_inventory";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+    InventoryEntity that = (InventoryEntity) o;
+    return Objects.equals(gameSave, that.gameSave) && Objects.equals(items, that.items);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(items, id, createdAt, updatedAt);
   }
 }

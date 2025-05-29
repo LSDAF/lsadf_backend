@@ -20,7 +20,6 @@ import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.A
 import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.controllers.Controller;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.controllers.JsonViews;
@@ -28,6 +27,7 @@ import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCr
 import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -104,7 +104,7 @@ public interface AdminGameSaveController extends Controller {
   @Operation(summary = "Generates a new game save")
   @PostMapping
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<ApiResponse<GameSave>> generateNewSaveGame(
+  ResponseEntity<ApiResponse<GameSaveResponse>> generateNewSaveGame(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody AdminGameSaveCreationRequest creationRequest);
 
@@ -136,7 +136,7 @@ public interface AdminGameSaveController extends Controller {
   @Operation(summary = "Gets a game save by its id")
   @GetMapping(value = ControllerConstants.AdminGameSave.GAME_SAVE_ID)
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<ApiResponse<GameSave>> getGameSave(
+  ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
 
@@ -168,7 +168,7 @@ public interface AdminGameSaveController extends Controller {
   @Operation(summary = "Gets a user's game saves")
   @GetMapping(value = ControllerConstants.AdminGameSave.USER_GAME_SAVES)
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<ApiResponse<List<GameSave>>> getUserGameSaves(
+  ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @PathVariable(value = USERNAME) @Email String username);
 
@@ -197,7 +197,7 @@ public interface AdminGameSaveController extends Controller {
   @Operation(summary = "Gets all game saves")
   @GetMapping
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<ApiResponse<List<GameSave>>> getSaveGames(
+  ResponseEntity<ApiResponse<List<GameSaveResponse>>> getSaveGames(
       @AuthenticationPrincipal Jwt jwt,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);
 
@@ -230,7 +230,7 @@ public interface AdminGameSaveController extends Controller {
   @Operation(summary = "Updates a new game")
   @PostMapping(value = ControllerConstants.AdminGameSave.GAME_SAVE_ID)
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<ApiResponse<GameSave>> updateGameSave(
+  ResponseEntity<ApiResponse<GameSaveResponse>> updateGameSave(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @Valid @RequestBody AdminGameSaveUpdateRequest adminGameSaveUpdateRequest);

@@ -27,6 +27,8 @@ import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter
 import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.update.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponseMapper;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -54,9 +56,13 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
 
   private final GameSaveService gameSaveService;
 
+  private final GameSaveResponseMapper gameSaveResponseMapper;
+
   @Autowired
-  public AdminGameSaveControllerImpl(GameSaveService gameSaveService) {
+  public AdminGameSaveControllerImpl(
+      GameSaveService gameSaveService, GameSaveResponseMapper gameSaveResponseMapper) {
     this.gameSaveService = gameSaveService;
+    this.gameSaveResponseMapper = gameSaveResponseMapper;
   }
 
   /** {@inheritDoc} */
@@ -72,7 +78,8 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    */
   @Override
   @JsonView(JsonViews.Admin.class)
-  public ResponseEntity<ApiResponse<List<GameSave>>> getSaveGames(Jwt jwt, List<String> orderBy) {
+  public ResponseEntity<ApiResponse<List<GameSaveResponse>>> getSaveGames(
+      Jwt jwt, List<String> orderBy) {
     List<GameSaveSortingParameter> gameSaveOrderBy =
         Collections.singletonList(GameSaveSortingParameter.NONE);
     if (orderBy != null && !orderBy.isEmpty()) {
@@ -82,16 +89,19 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     try (Stream<GameSave> stream = gameSaveService.getGameSaves()) {
       Stream<GameSave> orderedStream = StreamUtils.sortGameSaves(stream, gameSaveOrderBy);
       List<GameSave> gameSaves = orderedStream.toList();
-      return generateResponse(HttpStatus.OK, gameSaves);
+      List<GameSaveResponse> responses =
+          gameSaves.stream().map(gameSaveResponseMapper::mapToResponse).toList();
+      return generateResponse(HttpStatus.OK, responses);
     }
   }
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<List<GameSave>>> getUserGameSaves(Jwt jwt, String username) {
+  public ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(
+      Jwt jwt, String username) {
     validateUser(jwt);
     try (Stream<GameSave> stream = gameSaveService.getGameSavesByUsername(username)) {
-      List<GameSave> gameSaves = stream.toList();
+      List<GameSaveResponse> gameSaves = stream.map(gameSaveResponseMapper::mapToResponse).toList();
       return generateResponse(HttpStatus.OK, gameSaves);
     }
   }
@@ -103,10 +113,11 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    */
   @Override
   @JsonView(JsonViews.Admin.class)
-  public ResponseEntity<ApiResponse<GameSave>> getGameSave(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     GameSave gameSave = gameSaveService.getGameSave(gameSaveId);
-    return generateResponse(HttpStatus.OK, gameSave);
+    GameSaveResponse response = gameSaveResponseMapper.mapToResponse(gameSave);
+    return generateResponse(HttpStatus.OK, response);
   }
 
   /**
@@ -116,12 +127,13 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    */
   @Override
   @JsonView(JsonViews.Admin.class)
-  public ResponseEntity<ApiResponse<GameSave>> updateGameSave(
+  public ResponseEntity<ApiResponse<GameSaveResponse>> updateGameSave(
       Jwt jwt, String gameSaveId, AdminGameSaveUpdateRequest adminGameSaveUpdateRequest) {
 
     validateUser(jwt);
     GameSave gameSave = gameSaveService.updateGameSave(gameSaveId, adminGameSaveUpdateRequest);
-    return generateResponse(HttpStatus.OK, gameSave);
+    GameSaveResponse response = gameSaveResponseMapper.mapToResponse(gameSave);
+    return generateResponse(HttpStatus.OK, response);
   }
 
   /**
@@ -131,12 +143,13 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    */
   @Override
   @JsonView(JsonViews.Admin.class)
-  public ResponseEntity<ApiResponse<GameSave>> generateNewSaveGame(
+  public ResponseEntity<ApiResponse<GameSaveResponse>> generateNewSaveGame(
       Jwt jwt, AdminGameSaveCreationRequest creationRequest) {
 
     validateUser(jwt);
     GameSave gameSave = gameSaveService.createGameSave(creationRequest);
-    return generateResponse(HttpStatus.OK, gameSave);
+    GameSaveResponse response = gameSaveResponseMapper.mapToResponse(gameSave);
+    return generateResponse(HttpStatus.OK, response);
   }
 
   /** {@inheritDoc} */
