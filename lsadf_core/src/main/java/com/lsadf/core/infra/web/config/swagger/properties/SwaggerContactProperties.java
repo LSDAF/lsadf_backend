@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.config.swagger;
+package com.lsadf.core.infra.web.config.swagger.properties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/** Properties for configuring Swagger */
+/** Properties for configuring the data source */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class SwaggerProperties {
-  private String title;
-  private String description;
-  private String version;
-  private String authenticationUri;
-  private SwaggerContactProperties contact;
+@AllArgsConstructor
+public class SwaggerContactProperties {
+  private String email;
+  private String name;
+  private String url;
 }
