@@ -28,7 +28,7 @@ import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
-import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;
+import com.lsadf.core.infra.persistence.mapper.game.StageEntityMapper;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;

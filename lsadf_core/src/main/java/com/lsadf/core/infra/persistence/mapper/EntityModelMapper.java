@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.mappers;
+package com.lsadf.core.infra.persistence.mapper;
 
 import com.lsadf.core.infra.persistence.Entity;
 import com.lsadf.core.shared.model.Model;

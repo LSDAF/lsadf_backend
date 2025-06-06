@@ -17,7 +17,7 @@
 package com.lsadf.core.infra.persistence.game.currency;
 
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
+import com.lsadf.core.infra.persistence.mapper.EntityModelMapper;
 
 /**
  * A mapper class that provides the implementation to transform a {@link CurrencyEntity} object into

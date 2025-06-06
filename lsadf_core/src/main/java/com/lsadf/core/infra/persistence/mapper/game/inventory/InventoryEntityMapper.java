@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.mappers.game.inventory;
+package com.lsadf.core.infra.persistence.mapper.game.inventory;
 
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntityMapper;
-import com.lsadf.core.infra.persistence.mappers.EntityModelMapper;
+import com.lsadf.core.infra.persistence.mapper.EntityModelMapper;
 import java.util.Set;
 import java.util.stream.Collectors;
 
