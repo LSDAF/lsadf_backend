@@ -13,21 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.config.security;
+package com.lsadf.core.infra.web.config.security.properties;
 
-import java.util.List;
+import com.lsadf.core.infra.web.controller.JsonViews;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/** Properties for configuring CORS */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CorsConfigurationProperties {
-  private List<String> allowedOrigins;
-  private List<String> allowedMethods;
-  private List<String> allowedHeaders;
-  private List<String> exposedHeaders;
-  private Boolean allowCredentials;
+public class JsonViewProperties {
+  private JsonViews.JsonViewType defaultJsonView;
+  private boolean defaultJsonViewEnabled;
 }

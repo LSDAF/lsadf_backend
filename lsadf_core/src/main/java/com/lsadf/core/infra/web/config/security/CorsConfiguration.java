@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.infra.web.config.security;
 
+import com.lsadf.core.infra.web.config.security.properties.CorsConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfigurationSource;
