@@ -23,7 +23,7 @@ import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.controller.game.characteristics.CharacteristicsController;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;

@@ -15,7 +15,7 @@
  */
 package com.lsadf.application.controller.auth;
 
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;

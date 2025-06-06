@@ -24,7 +24,7 @@ import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.admin.application.bdd.CacheEntryType;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.requests.user.creation.SimpleUserCreationRequest;

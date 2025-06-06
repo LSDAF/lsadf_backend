@@ -42,7 +42,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableScheduling
 @EnableTransactionManagement
-@EnableFeignClients(basePackages = "com.lsadf.core.infra.web.clients")
+@EnableFeignClients(basePackages = "com.lsadf.core.infra.web.client")
 @Import({
   DataSourceConfiguration.class,
   PropertiesConfiguration.class,

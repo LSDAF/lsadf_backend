@@ -22,7 +22,7 @@ import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;

@@ -18,8 +18,8 @@ package com.lsadf.application.controller.auth;
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.core.infra.config.ServerProperties;
-import com.lsadf.core.infra.web.clients.keycloak.KeycloakClient;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
+import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.controllers.ControllerConstants;
