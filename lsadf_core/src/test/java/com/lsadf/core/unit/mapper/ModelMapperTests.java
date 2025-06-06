@@ -30,7 +30,7 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import com.lsadf.core.infra.persistence.mapper.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.persistence.mapper.game.StageEntityMapper;
-import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationMapper;
+import com.lsadf.core.infra.web.config.keycloak.mapper.UserRepresentationMapper;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
