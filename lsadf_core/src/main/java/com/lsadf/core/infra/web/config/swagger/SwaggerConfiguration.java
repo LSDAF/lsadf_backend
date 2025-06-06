@@ -18,6 +18,8 @@ package com.lsadf.core.infra.web.config.swagger;
 import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
+import com.lsadf.core.infra.web.config.swagger.properties.SwaggerContactProperties;
+import com.lsadf.core.infra.web.config.swagger.properties.SwaggerProperties;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
