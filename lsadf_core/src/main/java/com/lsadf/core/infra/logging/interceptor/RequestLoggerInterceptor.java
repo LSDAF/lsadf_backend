@@ -19,9 +19,9 @@ import static com.lsadf.core.infra.logging.LogColor.*;
 
 import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.logging.ColorUtils;
-import com.lsadf.core.infra.logging.HttpLogProperties;
 import com.lsadf.core.infra.logging.LogColor;
 import com.lsadf.core.infra.logging.RequestLog;
+import com.lsadf.core.infra.logging.properties.HttpLogProperties;
 import com.lsadf.core.infra.util.DateUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
