@@ -17,7 +17,7 @@
 package com.lsadf.core.infra.web.config.keycloak.mappers;
 
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.mappers.ModelMapper;
+import com.lsadf.core.shared.model.ModelMapper;
 import java.util.Date;
 import org.keycloak.representations.idm.UserRepresentation;
 
