@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.exceptions;
+package com.lsadf.core.infra.exception.http;
 
-/** Exception for when a user already exists */
-public class AlreadyExistingUserException extends RuntimeException {
-  public AlreadyExistingUserException(String message) {
+/** Authentication Exception */
+public class UnauthorizedException extends RuntimeException {
+  public UnauthorizedException(String message) {
     super(message);
   }
 }

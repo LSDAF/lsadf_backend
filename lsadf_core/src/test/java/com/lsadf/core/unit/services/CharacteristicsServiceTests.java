@@ -25,7 +25,7 @@ import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.characteristics.CharacteristicsServiceImpl;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.exceptions.http.NotFoundException;
+import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;

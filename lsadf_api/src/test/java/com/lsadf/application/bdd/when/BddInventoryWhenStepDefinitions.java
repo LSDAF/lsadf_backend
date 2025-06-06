@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.infra.exceptions.http.NotFoundException;
+import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
 import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;

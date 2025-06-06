@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.exceptions;
+package com.lsadf.core.infra.exception;
 
-public class DynamicJsonViewException extends RuntimeException {
-  public DynamicJsonViewException(String message) {
+/** Exception for when an item client id already exists */
+public class AlreadyExistingItemClientIdException extends RuntimeException {
+  public AlreadyExistingItemClientIdException(String message) {
     super(message);
-  }
-
-  public DynamicJsonViewException(String message, Throwable cause) {
-    super(message, cause);
   }
 }
