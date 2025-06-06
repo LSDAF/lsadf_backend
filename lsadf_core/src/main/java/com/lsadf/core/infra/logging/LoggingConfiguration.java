@@ -16,7 +16,7 @@
 package com.lsadf.core.infra.logging;
 
 import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.logging.interceptors.RequestLoggerInterceptor;
+import com.lsadf.core.infra.logging.interceptor.RequestLoggerInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
