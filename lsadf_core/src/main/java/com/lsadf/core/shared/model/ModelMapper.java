@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.mappers;
+package com.lsadf.core.shared.model;
 
-import com.lsadf.core.shared.model.Model;
+import com.lsadf.core.shared.mapper.Mapper;
 
 /**
  * A functional interface designed to provide a mapping mechanism for converting objects of one type
