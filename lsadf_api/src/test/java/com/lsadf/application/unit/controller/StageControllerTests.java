@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.game.stage.StageController;
 import com.lsadf.application.controller.game.stage.StageControllerImpl;
-import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.controller.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;

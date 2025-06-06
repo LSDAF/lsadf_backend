@@ -15,15 +15,15 @@
  */
 package com.lsadf.admin.application.search;
 
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.Params.ORDER_BY;
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.Params.ORDER_BY;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.web.controllers.Controller;
-import com.lsadf.core.infra.web.controllers.ControllerConstants;
-import com.lsadf.core.infra.web.controllers.JsonViews;
+import com.lsadf.core.infra.web.controller.Controller;
+import com.lsadf.core.infra.web.controller.ControllerConstants;
+import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;

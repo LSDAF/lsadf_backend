@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.controllers.advices;
+package com.lsadf.core.infra.web.controller.advices;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.infra.exception.DynamicJsonViewException;
 import com.lsadf.core.infra.web.config.security.JsonViewProperties;
-import com.lsadf.core.infra.web.controllers.JsonViews;
+import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;

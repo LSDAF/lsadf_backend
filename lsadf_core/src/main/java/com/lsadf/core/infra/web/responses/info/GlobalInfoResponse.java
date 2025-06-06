@@ -20,7 +20,7 @@ import static com.lsadf.core.infra.web.JsonAttributes.GlobalInfo.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.infra.web.controllers.JsonViews;
+import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.responses.Response;
 import java.io.Serial;
 import java.time.Instant;

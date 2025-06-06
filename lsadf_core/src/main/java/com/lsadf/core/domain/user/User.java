@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lsadf.core.infra.serializer.DateToLongSerializer;
 import com.lsadf.core.infra.serializer.LongToDateSerializer;
 import com.lsadf.core.infra.web.JsonAttributes;
-import com.lsadf.core.infra.web.controllers.JsonViews;
+import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.shared.model.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
