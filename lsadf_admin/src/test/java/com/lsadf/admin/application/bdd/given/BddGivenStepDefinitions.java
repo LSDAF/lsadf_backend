@@ -27,7 +27,7 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
+import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import java.time.Clock;

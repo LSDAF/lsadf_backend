@@ -18,7 +18,7 @@ package com.lsadf.core.unit.config;
 
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
-import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntityMapper;
+import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntityMapper;
 import com.lsadf.core.infra.persistence.mapper.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.persistence.mapper.game.StageEntityMapper;
 import com.lsadf.core.infra.persistence.mapper.game.inventory.InventoryEntityMapper;

@@ -17,7 +17,7 @@ package com.lsadf.core.infra.persistence.game.inventory;
 
 import com.lsadf.core.infra.persistence.AEntity;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;
+import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import java.io.Serial;
