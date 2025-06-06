@@ -19,7 +19,7 @@ import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntityMapper;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemRepository;
 import com.lsadf.core.infra.persistence.mapper.game.inventory.InventoryEntityMapper;
-import com.lsadf.core.infra.web.responses.game.inventory.ItemResponseMapper;
+import com.lsadf.core.infra.web.response.game.inventory.ItemResponseMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.user;
+package com.lsadf.core.infra.web.response.user;
 
 import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.web.responses.ModelResponseMapper;
+import com.lsadf.core.infra.web.response.ModelResponseMapper;
 
 /**
  * A class that implements the mapping logic from a UserInfo model object to a GlobalInfoResponse

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.game.inventory;
+package com.lsadf.core.infra.web.response.game.inventory;
 
 import static com.lsadf.core.infra.web.JsonAttributes.Inventory.ITEMS;
 import static com.lsadf.core.infra.web.JsonAttributes.Item.*;
@@ -28,7 +28,7 @@ import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.infra.web.JsonAttributes;
 import com.lsadf.core.infra.web.controller.JsonViews;
-import com.lsadf.core.infra.web.responses.Response;
+import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;

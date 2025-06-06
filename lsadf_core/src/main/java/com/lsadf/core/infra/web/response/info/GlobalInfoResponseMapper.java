@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.info;
+package com.lsadf.core.infra.web.response.info;
 
 import com.lsadf.core.domain.info.GlobalInfo;
-import com.lsadf.core.infra.web.responses.ModelResponseMapper;
+import com.lsadf.core.infra.web.response.ModelResponseMapper;
 
 /**
  * A mapper that transforms a {@link GlobalInfo} model object into a {@link GlobalInfoResponse}

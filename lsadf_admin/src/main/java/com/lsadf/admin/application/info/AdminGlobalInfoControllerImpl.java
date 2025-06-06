@@ -15,14 +15,14 @@
  */
 package com.lsadf.admin.application.info;
 
-import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.responses.ApiResponse;
-import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
-import com.lsadf.core.infra.web.responses.info.GlobalInfoResponseMapper;
+import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.response.info.GlobalInfoResponseMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

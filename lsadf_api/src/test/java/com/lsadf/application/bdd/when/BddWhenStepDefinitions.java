@@ -29,9 +29,9 @@ import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUp
 import com.lsadf.core.infra.web.request.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
-import com.lsadf.core.infra.web.responses.ApiResponse;
-import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
-import com.lsadf.core.infra.web.responses.user.UserInfoResponse;
+import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.user.UserInfoResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.*;

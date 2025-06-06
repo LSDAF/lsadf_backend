@@ -21,8 +21,8 @@ import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Au
 import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
-import com.lsadf.core.infra.web.responses.ApiResponse;
-import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

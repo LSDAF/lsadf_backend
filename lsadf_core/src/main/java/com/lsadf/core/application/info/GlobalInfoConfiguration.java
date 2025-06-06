@@ -19,7 +19,7 @@ package com.lsadf.core.application.info;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.web.responses.info.GlobalInfoResponseMapper;
+import com.lsadf.core.infra.web.response.info.GlobalInfoResponseMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

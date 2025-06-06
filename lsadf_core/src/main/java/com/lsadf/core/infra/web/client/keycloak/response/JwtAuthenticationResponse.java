@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticatio
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.lsadf.core.infra.web.responses.Response;
+import com.lsadf.core.infra.web.response.Response;
 import java.io.Serial;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

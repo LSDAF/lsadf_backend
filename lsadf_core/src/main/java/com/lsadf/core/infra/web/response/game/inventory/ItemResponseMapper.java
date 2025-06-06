@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.game.inventory;
+package com.lsadf.core.infra.web.response.game.inventory;
 
 import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.infra.web.responses.ModelResponseMapper;
+import com.lsadf.core.infra.web.response.ModelResponseMapper;
 
 /**
  * This class is responsible for mapping {@link Item} domain objects to their corresponding {@link

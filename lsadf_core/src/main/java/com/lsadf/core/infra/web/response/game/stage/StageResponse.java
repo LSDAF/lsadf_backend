@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.game.stage;
+package com.lsadf.core.infra.web.response.game.stage;
 
 import static com.lsadf.core.infra.web.JsonAttributes.Stage.CURRENT_STAGE;
 import static com.lsadf.core.infra.web.JsonAttributes.Stage.MAX_STAGE;
@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.infra.web.controller.JsonViews;
-import com.lsadf.core.infra.web.responses.Response;
+import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

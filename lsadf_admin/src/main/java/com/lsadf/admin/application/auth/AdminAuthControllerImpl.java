@@ -15,7 +15,7 @@
  */
 package com.lsadf.admin.application.auth;
 
-import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
@@ -25,7 +25,7 @@ import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
-import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.response.ApiResponse;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URLEncoder;

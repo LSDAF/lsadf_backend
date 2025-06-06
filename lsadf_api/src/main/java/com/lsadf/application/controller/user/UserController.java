@@ -19,9 +19,9 @@ import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Au
 import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.responses.ApiResponse;
-import com.lsadf.core.infra.web.responses.ResponseMessages;
-import com.lsadf.core.infra.web.responses.user.UserInfoResponse;
+import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.ResponseMessages;
+import com.lsadf.core.infra.web.response.user.UserInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
