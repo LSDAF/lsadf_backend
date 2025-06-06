@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.utils;
+package com.lsadf.core.infra.util;
 
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.User;

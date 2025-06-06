@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.utils.StreamUtils;
+import com.lsadf.core.infra.util.StreamUtils;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
 import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;

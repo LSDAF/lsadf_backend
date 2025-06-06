@@ -18,7 +18,7 @@ package com.lsadf.admin.application.ui.user;
 import com.lsadf.admin.util.FilterUtils;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.utils.StreamUtils;
+import com.lsadf.core.infra.util.StreamUtils;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
 import com.vaadin.hilla.BrowserCallable;
 import com.vaadin.hilla.Nonnull;

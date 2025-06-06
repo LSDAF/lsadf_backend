@@ -20,7 +20,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.utils.StreamUtils;
+import com.lsadf.core.infra.util.StreamUtils;
 import com.lsadf.core.infra.web.controllers.BaseController;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;

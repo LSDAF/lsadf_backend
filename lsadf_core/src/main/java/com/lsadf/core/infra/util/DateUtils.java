@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.utils;
+package com.lsadf.core.infra.util;
 
 import java.sql.Timestamp;
 import java.time.Clock;

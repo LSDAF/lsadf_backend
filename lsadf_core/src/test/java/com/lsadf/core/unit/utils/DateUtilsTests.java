@@ -17,7 +17,7 @@ package com.lsadf.core.unit.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.lsadf.core.infra.utils.DateUtils;
+import com.lsadf.core.infra.util.DateUtils;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
