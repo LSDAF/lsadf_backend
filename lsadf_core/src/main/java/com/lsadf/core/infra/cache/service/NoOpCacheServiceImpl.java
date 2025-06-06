@@ -13,27 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.services;
+package com.lsadf.core.infra.cache.service;
 
-public interface CacheService {
+public class NoOpCacheServiceImpl implements CacheService {
 
-  /**
-   * Check if the cache is enabled
-   *
-   * @return true if cache is enabled, false otherwise
-   */
-  Boolean isEnabled();
+  /** {@inheritDoc} */
+  @Override
+  public Boolean isEnabled() {
+    return false;
+  }
 
-  /** Toggle the cache enabling */
-  void toggleCacheEnabling();
+  /** {@inheritDoc} */
+  @Override
+  public void toggleCacheEnabling() {
+    // Do nothing
+  }
 
-  /** Clear all the caches */
-  void clearCaches();
+  /** {@inheritDoc} */
+  @Override
+  public void clearCaches() {
+    // Do nothing
+  }
 
-  /**
-   * Clears the cache entry associated with the specified key.
-   *
-   * @param key the key for the cache entry to be cleared
-   */
-  void clearGameSaveValues(String key);
+  /** {@inheritDoc} */
+  @Override
+  public void clearGameSaveValues(String key) {
+    // Do nothing
+  }
 }

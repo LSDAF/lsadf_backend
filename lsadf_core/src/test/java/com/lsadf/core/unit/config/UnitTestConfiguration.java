@@ -24,7 +24,7 @@ import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
-import com.lsadf.core.infra.cache.services.CacheService;
+import com.lsadf.core.infra.cache.service.CacheService;
 import com.lsadf.core.infra.config.ShutdownListener;
 import com.lsadf.core.infra.web.clients.keycloak.KeycloakClient;
 import javax.sql.DataSource;

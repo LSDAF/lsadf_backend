@@ -17,8 +17,8 @@ package com.lsadf.core.infra.cache.config;
 
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.flush.NoOpFlushServiceImpl;
-import com.lsadf.core.infra.cache.services.CacheService;
-import com.lsadf.core.infra.cache.services.NoOpCacheServiceImpl;
+import com.lsadf.core.infra.cache.service.CacheService;
+import com.lsadf.core.infra.cache.service.NoOpCacheServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

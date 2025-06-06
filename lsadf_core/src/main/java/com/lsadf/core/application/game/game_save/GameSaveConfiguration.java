@@ -27,7 +27,7 @@ import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.ValkeyCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.cache.services.CacheService;
+import com.lsadf.core.infra.cache.service.CacheService;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
