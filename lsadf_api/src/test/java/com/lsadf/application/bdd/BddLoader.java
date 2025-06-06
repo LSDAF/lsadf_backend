@@ -51,7 +51,7 @@ import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.cache.services.CacheService;
+import com.lsadf.core.infra.cache.service.CacheService;
 import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;

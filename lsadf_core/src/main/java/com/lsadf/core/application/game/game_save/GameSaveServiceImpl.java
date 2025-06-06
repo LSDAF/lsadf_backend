@@ -23,7 +23,7 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.infra.cache.services.CacheService;
+import com.lsadf.core.infra.cache.service.CacheService;
 import com.lsadf.core.infra.exceptions.AlreadyExistingGameSaveException;
 import com.lsadf.core.infra.exceptions.AlreadyTakenNicknameException;
 import com.lsadf.core.infra.exceptions.http.ForbiddenException;
