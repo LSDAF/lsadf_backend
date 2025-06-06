@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.game.game_save;
+package com.lsadf.core.infra.web.response.game.game_save;
 
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.web.responses.ModelResponseMapper;
-import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponseMapper;
-import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
-import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponseMapper;
-import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
-import com.lsadf.core.infra.web.responses.game.stage.StageResponseMapper;
+import com.lsadf.core.infra.web.response.ModelResponseMapper;
+import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponseMapper;
+import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.response.game.currency.CurrencyResponseMapper;
+import com.lsadf.core.infra.web.response.game.stage.StageResponse;
+import com.lsadf.core.infra.web.response.game.stage.StageResponseMapper;
 import lombok.AllArgsConstructor;
 
 /**

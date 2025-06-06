@@ -16,7 +16,7 @@
 package com.lsadf.application.controller.game.characteristics;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
-import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.game_save.GameSaveService;
@@ -25,9 +25,9 @@ import com.lsadf.core.infra.cache.service.CacheService;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequestMapper;
-import com.lsadf.core.infra.web.responses.ApiResponse;
-import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponseMapper;
+import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponseMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

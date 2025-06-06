@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.user;
+package com.lsadf.core.infra.web.response.user;
 
-import static com.lsadf.core.infra.web.responses.user.UserInfoResponse.Attributes.*;
-import static com.lsadf.core.infra.web.responses.user.UserInfoResponse.Attributes.ROLES;
+import static com.lsadf.core.infra.web.response.user.UserInfoResponse.Attributes.*;
+import static com.lsadf.core.infra.web.response.user.UserInfoResponse.Attributes.ROLES;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.lsadf.core.infra.web.responses.Response;
+import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.util.Set;

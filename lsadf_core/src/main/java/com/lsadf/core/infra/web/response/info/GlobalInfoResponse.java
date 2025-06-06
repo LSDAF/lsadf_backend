@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.info;
+package com.lsadf.core.infra.web.response.info;
 
 import static com.lsadf.core.infra.web.JsonAttributes.GlobalInfo.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.infra.web.controller.JsonViews;
-import com.lsadf.core.infra.web.responses.Response;
+import com.lsadf.core.infra.web.response.Response;
 import java.io.Serial;
 import java.time.Instant;
 import lombok.Builder;

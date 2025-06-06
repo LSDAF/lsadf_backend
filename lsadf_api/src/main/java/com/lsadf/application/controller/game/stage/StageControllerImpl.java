@@ -16,7 +16,7 @@
 package com.lsadf.application.controller.game.stage;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
-import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.game.stage.StageService;
@@ -25,9 +25,9 @@ import com.lsadf.core.infra.cache.service.CacheService;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequestMapper;
-import com.lsadf.core.infra.web.responses.ApiResponse;
-import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
-import com.lsadf.core.infra.web.responses.game.stage.StageResponseMapper;
+import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.game.stage.StageResponse;
+import com.lsadf.core.infra.web.response.game.stage.StageResponseMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

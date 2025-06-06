@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.game.game_save;
+package com.lsadf.core.infra.web.response.game.game_save;
 
 import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
 
@@ -22,10 +22,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.infra.web.JsonAttributes;
 import com.lsadf.core.infra.web.controller.JsonViews;
-import com.lsadf.core.infra.web.responses.Response;
-import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
-import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
+import com.lsadf.core.infra.web.response.Response;
+import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.response.game.stage.StageResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.util.Date;

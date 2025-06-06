@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.game.characteristics;
+package com.lsadf.core.infra.web.response.game.characteristics;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.infra.web.responses.ModelResponseMapper;
+import com.lsadf.core.infra.web.response.ModelResponseMapper;
 
 /**
  * Class responsible for mapping {@link Characteristics} model objects to their corresponding {@link

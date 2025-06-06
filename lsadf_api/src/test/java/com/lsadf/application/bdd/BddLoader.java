@@ -64,9 +64,9 @@ import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationRespon
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.DynamicJsonViewAdvice;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.responses.ApiResponse;
-import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
-import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import java.util.List;

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.game.stage;
+package com.lsadf.core.infra.web.response.game.stage;
 
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.infra.web.responses.ModelResponseMapper;
+import com.lsadf.core.infra.web.response.ModelResponseMapper;
 
 /**
  * Concrete implementation of {@link ModelResponseMapper} for mapping {@link Stage} model objects to

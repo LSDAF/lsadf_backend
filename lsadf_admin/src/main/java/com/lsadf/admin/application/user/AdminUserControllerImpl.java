@@ -15,7 +15,7 @@
  */
 package com.lsadf.admin.application.user;
 
-import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.user.User;
@@ -24,7 +24,7 @@ import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.user.UserSortingParameter;
 import com.lsadf.core.infra.web.request.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.response.ApiResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;

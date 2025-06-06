@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.infra.exception.DynamicJsonViewException;
 import com.lsadf.core.infra.web.config.security.JsonViewProperties;
 import com.lsadf.core.infra.web.controller.JsonViews;
-import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

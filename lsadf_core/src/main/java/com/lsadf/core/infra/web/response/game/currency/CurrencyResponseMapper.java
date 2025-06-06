@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.game.currency;
+package com.lsadf.core.infra.web.response.game.currency;
 
 import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.infra.web.responses.ModelResponseMapper;
+import com.lsadf.core.infra.web.response.ModelResponseMapper;
 
 /**
  * Maps a {@link Currency} model object to a corresponding {@link CurrencyResponse} response object.

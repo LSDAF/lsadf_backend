@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses;
+package com.lsadf.core.infra.web.response;
 
 import java.io.Serializable;
 

@@ -15,11 +15,11 @@
  */
 package com.lsadf.core.infra.web.controller.advice;
 
-import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.infra.exception.*;
 import com.lsadf.core.infra.exception.http.*;
-import com.lsadf.core.infra.web.responses.ApiResponse;
+import com.lsadf.core.infra.web.response.ApiResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

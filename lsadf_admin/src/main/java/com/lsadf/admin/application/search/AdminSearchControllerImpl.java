@@ -15,7 +15,7 @@
  */
 package com.lsadf.admin.application.search;
 
-import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.domain.game.GameSave;
@@ -24,9 +24,9 @@ import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.game_save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.request.search.SearchRequest;
 import com.lsadf.core.infra.web.request.user.UserSortingParameter;
-import com.lsadf.core.infra.web.responses.ApiResponse;
-import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
-import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponseMapper;
+import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponseMapper;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;

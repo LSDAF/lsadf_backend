@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.responses.game.currency;
+package com.lsadf.core.infra.web.response.game.currency;
 
 import static com.lsadf.core.infra.web.JsonAttributes.Currency.*;
 import static com.lsadf.core.infra.web.JsonAttributes.Currency.AMETHYST;
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.infra.web.controller.JsonViews;
-import com.lsadf.core.infra.web.responses.Response;
+import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 

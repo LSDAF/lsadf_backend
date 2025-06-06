@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.responses;
+package com.lsadf.core.infra.web.response;
 
-import static com.lsadf.core.infra.web.responses.ApiResponse.Attributes.*;
+import static com.lsadf.core.infra.web.response.ApiResponse.Attributes.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
