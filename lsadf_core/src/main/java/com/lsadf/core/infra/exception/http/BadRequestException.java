@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.exceptions.http;
+package com.lsadf.core.infra.exception.http;
 
-/** Authentication Exception */
-public class UnauthorizedException extends RuntimeException {
-  public UnauthorizedException(String message) {
+/** Bad Request Exception */
+public class BadRequestException extends RuntimeException {
+  public BadRequestException(String message) {
     super(message);
   }
 }

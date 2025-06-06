@@ -16,11 +16,11 @@
 package com.lsadf.core.application.game.game_save;
 
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.exceptions.AlreadyExistingGameSaveException;
-import com.lsadf.core.infra.exceptions.AlreadyTakenNicknameException;
-import com.lsadf.core.infra.exceptions.http.ForbiddenException;
-import com.lsadf.core.infra.exceptions.http.NotFoundException;
-import com.lsadf.core.infra.exceptions.http.UnauthorizedException;
+import com.lsadf.core.infra.exception.AlreadyExistingGameSaveException;
+import com.lsadf.core.infra.exception.AlreadyTakenNicknameException;
+import com.lsadf.core.infra.exception.http.ForbiddenException;
+import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.infra.exception.http.UnauthorizedException;
 import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveUpdateRequest;
 import java.util.stream.Stream;

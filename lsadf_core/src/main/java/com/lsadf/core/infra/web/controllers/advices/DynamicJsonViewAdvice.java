@@ -18,7 +18,7 @@ package com.lsadf.core.infra.web.controllers.advices;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.core.infra.exceptions.DynamicJsonViewException;
+import com.lsadf.core.infra.exception.DynamicJsonViewException;
 import com.lsadf.core.infra.web.config.security.JsonViewProperties;
 import com.lsadf.core.infra.web.controllers.JsonViews;
 import com.lsadf.core.infra.web.responses.ApiResponse;

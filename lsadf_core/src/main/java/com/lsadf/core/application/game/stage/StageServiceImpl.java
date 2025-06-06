@@ -17,7 +17,7 @@ package com.lsadf.core.application.game.stage;
 
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.exceptions.http.NotFoundException;
+import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import com.lsadf.core.infra.persistence.mappers.game.StageEntityMapper;

@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.exceptions;
+package com.lsadf.core.infra.exception;
 
-/** Exception for when there is an error processing a filter */
-public class FilterProcessingException extends RuntimeException {
-  public FilterProcessingException(String message) {
+public class DynamicJsonViewException extends RuntimeException {
+  public DynamicJsonViewException(String message) {
     super(message);
   }
 
-  public FilterProcessingException(String message, Throwable cause) {
+  public DynamicJsonViewException(String message, Throwable cause) {
     super(message, cause);
   }
 }

@@ -23,7 +23,7 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.exceptions.http.NotFoundException;
+import com.lsadf.core.infra.exception.http.NotFoundException;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;

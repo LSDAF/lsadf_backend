@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.exceptions;
+package com.lsadf.core.infra.exception;
 
-/** Exception for when an item client id already exists */
-public class AlreadyExistingItemClientIdException extends RuntimeException {
-  public AlreadyExistingItemClientIdException(String message) {
+/** Exception for when a nickname is already taken */
+public class AlreadyTakenNicknameException extends RuntimeException {
+  public AlreadyTakenNicknameException(String message) {
     super(message);
   }
 }

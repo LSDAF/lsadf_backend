@@ -24,7 +24,7 @@ import com.lsadf.admin.application.bdd.CacheEntryType;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.infra.exceptions.http.NotFoundException;
+import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity;

@@ -17,7 +17,7 @@ package com.lsadf.core.application.game.currency;
 
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.exceptions.http.NotFoundException;
+import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;

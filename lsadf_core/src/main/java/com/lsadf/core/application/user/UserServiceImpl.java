@@ -17,9 +17,9 @@ package com.lsadf.core.application.user;
 
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.exceptions.AlreadyExistingUserException;
-import com.lsadf.core.infra.exceptions.http.InternalServerErrorException;
-import com.lsadf.core.infra.exceptions.http.NotFoundException;
+import com.lsadf.core.infra.exception.AlreadyExistingUserException;
+import com.lsadf.core.infra.exception.http.InternalServerErrorException;
+import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.config.keycloak.mappers.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mappers.UserToUserRepresentationMapper;

@@ -13,19 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.exceptions.http;
+package com.lsadf.core.infra.exception.http;
 
-/** Exception for when a resource is not found. */
-public class NotFoundException extends RuntimeException {
-  public NotFoundException() {
-    super();
-  }
-
-  public NotFoundException(String message) {
+/** Internal Server Error Exception when something goes wrong on the server */
+public class InternalServerErrorException extends RuntimeException {
+  public InternalServerErrorException(String message) {
     super(message);
   }
 
-  public NotFoundException(String message, Throwable cause) {
+  public InternalServerErrorException(String message, Throwable cause) {
     super(message, cause);
   }
 }
