@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.controller.advices;
+package com.lsadf.core.infra.web.controller.advice;
 
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 

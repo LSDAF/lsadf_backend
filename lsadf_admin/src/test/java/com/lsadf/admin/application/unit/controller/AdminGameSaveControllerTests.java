@@ -20,7 +20,7 @@ import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.admin.application.game.AdminGameSaveControllerImpl;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.controller.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
