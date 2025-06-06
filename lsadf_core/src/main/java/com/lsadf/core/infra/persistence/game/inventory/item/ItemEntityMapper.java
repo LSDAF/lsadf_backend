@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.game.inventory.items;
+package com.lsadf.core.infra.persistence.game.inventory.item;
 
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.persistence.mapper.EntityModelMapper;

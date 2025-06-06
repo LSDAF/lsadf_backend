@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.game.inventory.items;
+package com.lsadf.core.infra.persistence.game.inventory.item;
 
-import static com.lsadf.core.infra.persistence.game.inventory.items.ItemEntity.ItemAttributes.*;
+import static com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity.ItemAttributes.*;
 
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;

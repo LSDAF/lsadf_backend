@@ -16,8 +16,8 @@
 package com.lsadf.core.application.game.inventory;
 
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
-import com.lsadf.core.infra.persistence.game.inventory.items.ItemEntityMapper;
-import com.lsadf.core.infra.persistence.game.inventory.items.ItemRepository;
+import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntityMapper;
+import com.lsadf.core.infra.persistence.game.inventory.item.ItemRepository;
 import com.lsadf.core.infra.persistence.mapper.game.inventory.InventoryEntityMapper;
 import com.lsadf.core.infra.web.responses.game.inventory.ItemResponseMapper;
 import org.springframework.context.annotation.Bean;
