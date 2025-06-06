@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
+import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponseMapper;

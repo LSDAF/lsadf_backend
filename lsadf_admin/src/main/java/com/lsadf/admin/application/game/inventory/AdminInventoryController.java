@@ -20,7 +20,7 @@ import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Au
 
 import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
 import com.lsadf.core.shared.validation.Uuid;

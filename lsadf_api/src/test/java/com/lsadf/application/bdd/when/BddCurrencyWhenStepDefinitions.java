@@ -25,7 +25,7 @@ import com.lsadf.application.controller.game.currency.CurrencyController;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
 import io.cucumber.datatable.DataTable;

@@ -17,8 +17,8 @@ package com.lsadf.application.controller.auth;
 
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
-import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
+import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
+import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import io.swagger.v3.oas.annotations.Operation;

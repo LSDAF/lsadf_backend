@@ -23,8 +23,8 @@ import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationRespon
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
-import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
+import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
+import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import jakarta.validation.Valid;
 import java.net.URI;

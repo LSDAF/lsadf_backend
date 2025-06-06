@@ -21,7 +21,7 @@ import com.lsadf.admin.application.game.inventory.AdminInventoryControllerImpl;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;

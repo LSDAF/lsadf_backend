@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.game.characteristics.CharacteristicsController;
 import com.lsadf.application.controller.game.characteristics.CharacteristicsControllerImpl;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import lombok.SneakyThrows;

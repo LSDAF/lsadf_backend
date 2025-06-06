@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.controller.ControllerConstants.STAGE;
 import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
-import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
+import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
 import com.lsadf.core.shared.validation.Uuid;

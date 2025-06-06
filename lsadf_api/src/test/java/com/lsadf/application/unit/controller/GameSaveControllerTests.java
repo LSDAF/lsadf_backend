@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.game.game_save.GameSaveController;
 import com.lsadf.application.controller.game.game_save.GameSaveControllerImpl;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
+import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import lombok.SneakyThrows;

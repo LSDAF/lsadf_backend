@@ -21,8 +21,8 @@ import com.lsadf.core.infra.exception.AlreadyTakenNicknameException;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.exception.http.UnauthorizedException;
-import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveUpdateRequest;
+import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveUpdateRequest;
 import java.util.stream.Stream;
 
 /** Service for managing game saves */

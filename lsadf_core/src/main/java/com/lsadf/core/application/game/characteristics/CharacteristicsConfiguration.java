@@ -25,7 +25,7 @@ import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequestMapper;
+import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequestMapper;
 import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponseMapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

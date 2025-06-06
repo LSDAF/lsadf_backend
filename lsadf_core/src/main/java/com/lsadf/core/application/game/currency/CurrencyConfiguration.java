@@ -25,7 +25,7 @@ import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequestMapper;
+import com.lsadf.core.infra.web.request.game.currency.CurrencyRequestMapper;
 import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponseMapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

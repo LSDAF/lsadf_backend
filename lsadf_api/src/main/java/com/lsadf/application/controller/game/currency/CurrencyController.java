@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Au
 import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;
 import com.lsadf.core.shared.validation.Uuid;
