@@ -39,7 +39,7 @@ import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
-import com.lsadf.core.infra.persistence.mappers.game.GameSaveEntityMapper;
+import com.lsadf.core.infra.persistence.mapper.game.GameSaveEntityMapper;
 import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.requests.game.game_save.creation.AdminGameSaveCreationRequest;
