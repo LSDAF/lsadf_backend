@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.infra.exception.DynamicJsonViewException;
-import com.lsadf.core.infra.web.config.security.JsonViewProperties;
+import com.lsadf.core.infra.web.config.security.properties.JsonViewProperties;
 import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
