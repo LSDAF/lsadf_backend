@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUserInfoFromJwt
 import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.web.controllers.BaseController;
+import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.user.UserInfoResponse;
 import com.lsadf.core.infra.web.responses.user.UserInfoResponseMapper;

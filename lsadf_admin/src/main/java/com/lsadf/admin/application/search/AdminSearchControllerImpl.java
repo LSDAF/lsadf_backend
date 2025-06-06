@@ -20,7 +20,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.web.controllers.BaseController;
+import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.requests.game.game_save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;

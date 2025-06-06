@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.config.security;
 
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.ADMIN;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.ADMIN;
 
 import com.lsadf.core.infra.logging.HttpLogProperties;
 import com.lsadf.core.infra.logging.interceptor.RequestLoggerInterceptor;

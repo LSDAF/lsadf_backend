@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.infra.web.JsonAttributes;
-import com.lsadf.core.infra.web.controllers.JsonViews;
+import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.responses.Response;
 import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;

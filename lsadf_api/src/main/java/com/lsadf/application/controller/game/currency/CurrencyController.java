@@ -15,10 +15,10 @@
  */
 package com.lsadf.application.controller.game.currency;
 
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
-import com.lsadf.core.infra.web.controllers.ControllerConstants;
+import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.requests.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.currency.CurrencyResponse;

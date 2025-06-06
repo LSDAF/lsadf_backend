@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.responses.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.domain.info.GlobalInfo;
-import com.lsadf.core.infra.web.controllers.BaseController;
+import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.responses.info.GlobalInfoResponseMapper;

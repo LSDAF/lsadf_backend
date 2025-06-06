@@ -15,12 +15,12 @@
  */
 package com.lsadf.application.controller.game.game_save;
 
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.infra.web.controllers.ControllerConstants;
-import com.lsadf.core.infra.web.controllers.JsonViews;
+import com.lsadf.core.infra.web.controller.ControllerConstants;
+import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;

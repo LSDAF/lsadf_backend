@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.auth.AuthController;
 import com.lsadf.application.controller.auth.AuthControllerImpl;
-import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.controller.advices.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.requests.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.requests.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;

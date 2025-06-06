@@ -22,7 +22,7 @@ import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.game.stage.StageService;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.service.CacheService;
-import com.lsadf.core.infra.web.controllers.BaseController;
+import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.web.responses.ApiResponse;

@@ -17,7 +17,7 @@ package com.lsadf.admin.application.unit.controller;
 
 import com.lsadf.admin.application.info.AdminGlobalInfoController;
 import com.lsadf.admin.application.info.AdminGlobalInfoControllerImpl;
-import com.lsadf.core.infra.web.controllers.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.controller.advices.GlobalExceptionHandler;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import lombok.SneakyThrows;

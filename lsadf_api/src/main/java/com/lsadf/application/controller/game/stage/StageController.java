@@ -15,9 +15,9 @@
  */
 package com.lsadf.application.controller.game.stage;
 
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.STAGE;
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controllers.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.STAGE;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;

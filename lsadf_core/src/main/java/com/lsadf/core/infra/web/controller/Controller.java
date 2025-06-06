@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.controllers;
+package com.lsadf.core.infra.web.controller;
 
 import com.lsadf.core.infra.exception.http.UnauthorizedException;
 import org.slf4j.Logger;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-/** Base controller for all controllers */
-public abstract class BaseController implements Controller {
+public interface Controller {
+
+  /**
+   * Gets the controller logger
+   *
+   * @return the logger
+   */
+  Logger getLogger();
 
   /**
    * Validates the user
@@ -28,11 +34,5 @@ public abstract class BaseController implements Controller {
    * @param jwt the jwt
    * @throws UnauthorizedException if the user is not valid
    */
-  public void validateUser(Jwt jwt) throws UnauthorizedException {
-    if (jwt == null) {
-      Logger logger = getLogger();
-      logger.error("Unauthorized. Didn't manage to build UserInfo from token. Please login");
-      throw new UnauthorizedException("Didn't manage to build UserInfo from token. Please login");
-    }
-  }
+  void validateUser(Jwt jwt) throws UnauthorizedException;
 }
