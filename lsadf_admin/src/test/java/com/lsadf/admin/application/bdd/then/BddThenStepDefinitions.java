@@ -28,7 +28,7 @@ import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.web.clients.keycloak.response.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.responses.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.responses.info.GlobalInfoResponse;
