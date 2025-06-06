@@ -24,7 +24,7 @@ import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import com.lsadf.core.infra.persistence.mapper.game.StageEntityMapper;
-import com.lsadf.core.infra.web.requests.game.stage.StageRequestMapper;
+import com.lsadf.core.infra.web.request.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.web.responses.game.stage.StageResponseMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

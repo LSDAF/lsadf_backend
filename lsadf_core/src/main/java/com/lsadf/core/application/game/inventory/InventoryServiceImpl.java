@@ -26,7 +26,7 @@ import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntityMapper;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemRepository;
-import com.lsadf.core.infra.web.requests.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;

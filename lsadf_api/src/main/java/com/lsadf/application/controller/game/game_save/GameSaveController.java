@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Au
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.controller.JsonViews;
-import com.lsadf.core.infra.web.requests.game.game_save.update.GameSaveNicknameUpdateRequest;
+import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.ResponseMessages;
 import com.lsadf.core.infra.web.responses.game.game_save.GameSaveResponse;

@@ -16,9 +16,9 @@
 package com.lsadf.core.application.user;
 
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequest;
-import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.requests.user.update.UserUpdateRequest;
+import com.lsadf.core.infra.web.request.user.creation.UserCreationRequest;
+import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
+import com.lsadf.core.infra.web.request.user.update.UserUpdateRequest;
 import java.util.List;
 import java.util.stream.Stream;
 

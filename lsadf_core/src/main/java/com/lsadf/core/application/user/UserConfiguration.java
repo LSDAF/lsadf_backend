@@ -19,7 +19,7 @@ import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserToUserRepresentationMapper;
-import com.lsadf.core.infra.web.requests.user.creation.UserCreationRequestMapper;
+import com.lsadf.core.infra.web.request.user.creation.UserCreationRequestMapper;
 import com.lsadf.core.infra.web.responses.user.UserInfoResponseMapper;
 import org.keycloak.admin.client.Keycloak;
 import org.springframework.context.annotation.Bean;

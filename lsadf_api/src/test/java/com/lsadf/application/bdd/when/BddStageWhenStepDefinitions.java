@@ -25,7 +25,7 @@ import com.lsadf.application.controller.game.stage.StageController;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.requests.game.stage.StageRequest;
+import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.stage.StageResponse;
 import io.cucumber.datatable.DataTable;

@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Au
 import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponse;
 import com.lsadf.core.shared.validation.Uuid;

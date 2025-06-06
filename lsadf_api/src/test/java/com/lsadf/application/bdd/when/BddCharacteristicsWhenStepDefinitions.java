@@ -25,7 +25,7 @@ import com.lsadf.application.controller.game.characteristics.CharacteristicsCont
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.requests.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.responses.ApiResponse;
 import com.lsadf.core.infra.web.responses.game.characteristics.CharacteristicsResponse;
 import io.cucumber.datatable.DataTable;
