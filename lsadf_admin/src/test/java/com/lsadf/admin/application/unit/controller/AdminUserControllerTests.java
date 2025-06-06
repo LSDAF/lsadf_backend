@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.user.AdminUserController;
 import com.lsadf.admin.application.user.AdminUserControllerImpl;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.controller.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
 import com.lsadf.core.infra.web.requests.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.requests.user.update.AdminUserUpdateRequest;

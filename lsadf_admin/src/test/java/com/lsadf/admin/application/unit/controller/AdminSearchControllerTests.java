@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.search.AdminSearchController;
 import com.lsadf.admin.application.search.AdminSearchControllerImpl;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
-import com.lsadf.core.infra.web.controller.advices.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.requests.common.Filter;
 import com.lsadf.core.infra.web.requests.search.SearchRequest;
 import com.lsadf.core.infra.web.requests.user.UserSortingParameter;
