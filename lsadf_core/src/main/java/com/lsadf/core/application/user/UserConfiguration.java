@@ -16,9 +16,9 @@
 package com.lsadf.core.application.user;
 
 import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.web.config.keycloak.KeycloakProperties;
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserToUserRepresentationMapper;
+import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.request.user.creation.UserCreationRequestMapper;
 import com.lsadf.core.infra.web.response.user.UserInfoResponseMapper;
 import org.keycloak.admin.client.Keycloak;

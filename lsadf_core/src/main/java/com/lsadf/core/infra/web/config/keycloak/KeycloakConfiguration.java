@@ -17,6 +17,8 @@ package com.lsadf.core.infra.web.config.keycloak;
 
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserToUserRepresentationMapper;
+import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakAdminProperties;
+import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
