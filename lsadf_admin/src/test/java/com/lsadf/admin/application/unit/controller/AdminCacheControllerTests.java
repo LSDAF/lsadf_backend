@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.unit.controllers;
+package com.lsadf.admin.application.unit.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.cache.AdminCacheController;

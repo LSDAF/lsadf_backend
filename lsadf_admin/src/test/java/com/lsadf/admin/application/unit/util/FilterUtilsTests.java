@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.unit.utils;
+package com.lsadf.admin.application.unit.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.lsadf.admin.utils.FilterUtils;
+import com.lsadf.admin.util.FilterUtils;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.utils.DateUtils;
 import com.vaadin.hilla.crud.filter.AndFilter;
