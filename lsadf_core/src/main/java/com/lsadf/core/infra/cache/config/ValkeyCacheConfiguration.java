@@ -15,8 +15,6 @@
  */
 package com.lsadf.core.infra.cache.config;
 
-import static com.lsadf.core.infra.config.BeanConstants.Cache.*;
-
 import com.lsadf.core.application.game.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.inventory.InventoryService;
@@ -29,7 +27,7 @@ import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.flush.RedisCacheFlushServiceImpl;
-import com.lsadf.core.infra.cache.listeners.ValkeyKeyExpirationListener;
+import com.lsadf.core.infra.cache.listener.ValkeyKeyExpirationListener;
 import com.lsadf.core.infra.cache.services.CacheService;
 import com.lsadf.core.infra.cache.services.ValkeyCacheServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
