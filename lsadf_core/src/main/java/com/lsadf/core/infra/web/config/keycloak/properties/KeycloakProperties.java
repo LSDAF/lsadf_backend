@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.config.keycloak;
+package com.lsadf.core.infra.web.config.keycloak.properties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class KeycloakAdminProperties {
+@NoArgsConstructor
+public class KeycloakProperties {
+  private String adminUrl;
+  private String url;
+  private String realm;
   private String clientId;
   private String clientSecret;
 }
