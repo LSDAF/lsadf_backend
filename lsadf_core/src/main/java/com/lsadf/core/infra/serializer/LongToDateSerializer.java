@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.serialization;
+package com.lsadf.core.infra.serializer;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -25,7 +24,7 @@ import java.util.Date;
 public class LongToDateSerializer extends JsonDeserializer<Date> {
   @Override
   public Date deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-      throws IOException, JacksonException {
+      throws IOException {
     return new Date(jsonParser.getLongValue());
   }
 }
