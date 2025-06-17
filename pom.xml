@@ -36,6 +36,7 @@
         <module>lsadf_dependencies</module>
         <module>build_parent</module>
         <module>lsadf_bom</module>
+        <module>lsadf_test_report</module>
     </modules>
 
     <properties>
@@ -64,6 +65,7 @@
         <commons-compress.version>1.27.1</commons-compress.version>
         <maven-surefire-report-plugin.version>3.5.2</maven-surefire-report-plugin.version>
         <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
         <google-java-format.version>1.25.0</google-java-format.version>
         <vaadin.version>24.5.7</vaadin.version>
         <flyway.version>11.1.0</flyway.version>
@@ -73,6 +75,11 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+                </plugin>
                 <plugin>
                     <groupId>com.diffplug.spotless</groupId>
                     <artifactId>spotless-maven-plugin</artifactId>
