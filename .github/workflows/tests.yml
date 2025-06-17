@@ -141,7 +141,7 @@ jobs:
         with:
           header: coverage
           message: |
-            ## 📊 Code Coverage: ${{ steps.jacoco.outputs.coverage }}%
+            ## 📊 Code Coverage: ${{ format('{0:.1f}', steps.jacoco.outputs.coverage * 100) }}%
             
             [📋 Full Coverage Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
         if: github.event_name == 'pull_request'
