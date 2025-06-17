@@ -136,12 +136,19 @@ jobs:
           comment-id: ${{ steps.ftcc.outputs.comment-id }}
         if: always()
 
+      - name: 🧮 Calculate Coverage Percentage
+        id: coverage_calc
+        run: |
+          coverage_percent=$(echo "${{ steps.jacoco.outputs.coverage }} * 100" | bc -l)
+          echo "percentage=${coverage_percent}" >> $GITHUB_OUTPUT
+
+
       - name: 📝 Add Coverage to PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: coverage
           message: |
-            ## 📊 Code Coverage: ${{ format('{0:.1f}', steps.jacoco.outputs.coverage * 100) }}%
+            ## 📊 Code Coverage: ${{ steps.coverage_calc.outputs.coverage_percent }}%
             
             [📋 Full Coverage Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
         if: github.event_name == 'pull_request'
