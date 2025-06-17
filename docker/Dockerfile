@@ -7,6 +7,7 @@ COPY lsadf_dependencies/ lsadf_dependencies/
 COPY lsadf_core/ lsadf_core/
 COPY lsadf_api/ lsadf_api/
 COPY lsadf_admin/ lsadf_admin/
+COPY lsadf_test_report/ lsadf_test_report/
 
 COPY pom.xml .
 COPY ./docker/startup.sh .

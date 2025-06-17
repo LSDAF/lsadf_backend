@@ -91,9 +91,16 @@ jobs:
           path: test-summary.md
         if: always()
 
-      - name: 🔎 Find Comment
+      - name: 📊 Generate JaCoCo Badge
+        id: jacoco
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          jacoco-csv-file: lsadf_test_report/target/site/jacoco-aggregate/jacoco.csv
+          generate-coverage-badge: true
+
+      - name: 🔎 Find Tests Comment
         uses: peter-evans/find-comment@v3
-        id: fc
+        id: ftc
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
@@ -103,7 +110,7 @@ jobs:
       - name: 🗑️ Delete Comment
         uses: detomarco/delete-comments@1.1.0
         with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
+          comment-id: ${{ steps.ftc.outputs.comment-id }}
         if: always()
 
       - name: ✏️ Create Comment
@@ -113,3 +120,36 @@ jobs:
           body-path: 'test-summary.md'
           edit-mode: replace
         if: always()
+
+      - name: 🔎 Find Test Coverage Comment
+        uses: peter-evans/find-comment@v3
+        id: ftcc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Code Coverage'
+        if: always()
+
+      - name: 🗑️ Delete Comment
+        uses: detomarco/delete-comments@1.1.0
+        with:
+          comment-id: ${{ steps.ftcc.outputs.comment-id }}
+        if: always()
+
+      - name: 🧮 Calculate Coverage Percentage
+        id: coverage_calc
+        run: |
+          coverage_percent=$(echo "${{ steps.jacoco.outputs.coverage }} * 100" | bc -l)
+          echo $coverage_percent
+          echo "percentage=$coverage_percent" >> $GITHUB_OUTPUT
+
+
+      - name: 📝 Add Coverage to PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: coverage
+          message: |
+            ## 📊 Code Coverage: ${{ steps.coverage_calc.outputs.percentage }}%
+            
+            [📋 Full Coverage Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+        if: github.event_name == 'pull_request'
