@@ -91,9 +91,16 @@ jobs:
           path: test-summary.md
         if: always()
 
-      - name: 🔎 Find Comment
+      - name: 📊 Generate JaCoCo Badge
+        id: jacoco
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          jacoco-csv-file: lsadf_test_report/target/site/jacoco-aggregate/jacoco.csv
+          generate-coverage-badge: true
+
+      - name: 🔎 Find Tests Comment
         uses: peter-evans/find-comment@v3
-        id: fc
+        id: ftc
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
@@ -103,7 +110,7 @@ jobs:
       - name: 🗑️ Delete Comment
         uses: detomarco/delete-comments@1.1.0
         with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
+          comment-id: ${{ steps.ftc.outputs.comment-id }}
         if: always()
 
       - name: ✏️ Create Comment
@@ -114,12 +121,20 @@ jobs:
           edit-mode: replace
         if: always()
 
-      - name: 📊 Generate JaCoCo Badge
-        id: jacoco
-        uses: cicirello/jacoco-badge-generator@v2
+      - name: 🔎 Find Test Coverage Comment
+        uses: peter-evans/find-comment@v3
+        id: ftcc
         with:
-          jacoco-csv-file: lsadf_test_report/target/site/jacoco-aggregate/jacoco.csv
-          generate-coverage-badge: true
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Code Coverage'
+        if: always()
+
+      - name: 🗑️ Delete Comment
+        uses: detomarco/delete-comments@1.1.0
+        with:
+          comment-id: ${{ steps.ftcc.outputs.comment-id }}
+        if: always()
 
       - name: 📝 Add Coverage to PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
