@@ -140,7 +140,8 @@ jobs:
         id: coverage_calc
         run: |
           coverage_percent=$(echo "${{ steps.jacoco.outputs.coverage }} * 100" | bc -l)
-          echo "percentage=${coverage_percent}" >> $GITHUB_OUTPUT
+          echo $coverage_percent
+          echo "percentage=$coverage_percent" >> $GITHUB_OUTPUT
 
 
       - name: 📝 Add Coverage to PR Comment
@@ -148,7 +149,7 @@ jobs:
         with:
           header: coverage
           message: |
-            ## 📊 Code Coverage: ${{ steps.coverage_calc.outputs.coverage_percent }}%
+            ## 📊 Code Coverage: ${{ steps.coverage_calc.outputs.percentage }}%
             
             [📋 Full Coverage Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
         if: github.event_name == 'pull_request'
