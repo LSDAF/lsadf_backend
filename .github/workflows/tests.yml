@@ -113,3 +113,20 @@ jobs:
           body-path: 'test-summary.md'
           edit-mode: replace
         if: always()
+
+      - name: 📊 Generate JaCoCo Badge
+        id: jacoco
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          jacoco-csv-file: lsadf_test_report/target/site/jacoco-aggregate/jacoco.csv
+          generate-coverage-badge: true
+
+      - name: 📝 Add Coverage to PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: coverage
+          message: |
+            ## 📊 Code Coverage: ${{ steps.jacoco.outputs.coverage }}%
+            
+            [📋 Full Coverage Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+        if: github.event_name == 'pull_request'
