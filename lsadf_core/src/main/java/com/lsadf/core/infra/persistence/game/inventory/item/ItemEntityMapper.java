@@ -34,7 +34,7 @@ public class ItemEntityMapper implements EntityModelMapper<ItemEntity, Item> {
    * @return an {@link Item} object constructed based on the provided {@link ItemEntity}
    */
   @Override
-  public Item mapToModel(ItemEntity itemEntity) {
+  public Item map(ItemEntity itemEntity) {
     return Item.builder()
         .id(itemEntity.getId())
         .clientId(itemEntity.getClientId())

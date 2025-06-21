@@ -35,7 +35,7 @@ public class ItemResponseMapper implements ModelResponseMapper<Item, ItemRespons
    *     Item}
    */
   @Override
-  public ItemResponse mapToResponse(Item model) {
+  public ItemResponse map(Item model) {
     return ItemResponse.builder()
         .id(model.getId())
         .additionalStats(model.getAdditionalStats())

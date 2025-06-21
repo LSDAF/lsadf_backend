@@ -36,7 +36,7 @@ import java.util.Date;
 public class UserCreationRequestMapper implements RequestModelMapper<UserCreationRequest, User> {
   /** {@inheritDoc} */
   @Override
-  public User mapToModel(UserCreationRequest userCreationRequestImpl) {
+  public User map(UserCreationRequest userCreationRequestImpl) {
     return User.builder()
         .firstName(userCreationRequestImpl.getFirstName())
         .lastName(userCreationRequestImpl.getLastName())

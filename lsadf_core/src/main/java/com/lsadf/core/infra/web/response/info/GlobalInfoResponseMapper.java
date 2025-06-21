@@ -37,7 +37,7 @@ public class GlobalInfoResponseMapper
    * @return a GlobalInfoResponse object populated with data from the given GlobalInfo model
    */
   @Override
-  public GlobalInfoResponse mapToResponse(GlobalInfo model) {
+  public GlobalInfoResponse map(GlobalInfo model) {
     return GlobalInfoResponse.builder()
         .now(model.now())
         .gameSaveCounter(model.gameSaveCounter())

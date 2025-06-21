@@ -20,21 +20,25 @@ import com.lsadf.core.shared.model.Model;
 import com.lsadf.core.shared.model.ModelMapper;
 
 /**
- * Represents a functional interface responsible for converting a request object into its
- * corresponding model representation. Implementations of this interface define the concrete mapping
- * logic that transforms instances of {@code Request} into {@code Model}.
+ * A functional interface designed to map request-layer objects of type {@code R} that extend the
+ * {@link Request} interface to model-layer objects of type {@code M} that extend the {@link Model}
+ * interface.
  *
- * @param <R> the type of the request object, which must extend the {@code Request} interface
- * @param <M> the type of the model object, which must extend the {@code Model} interface
+ * <p>Implementations of this interface provide the necessary logic to transform specific request
+ * objects into matching domain or data-layer models. This is typically used for converting
+ * externally received data, such as API request payloads, into the application's internal
+ * representation.
+ *
+ * @param <R> the type parameter representing the request object that extends {@link Request}
+ * @param <M> the type parameter representing the model object that extends {@link Model}
  */
 @FunctionalInterface
 public interface RequestModelMapper<R extends Request, M extends Model> extends ModelMapper<R, M> {
-
   /**
-   * Maps a given request object to a corresponding model representation.
+   * Maps the provided request object to a corresponding model object.
    *
-   * @param request the request object to be mapped; must not be null
-   * @return the model representation corresponding to the provided request
+   * @param request the request object to be mapped
+   * @return the mapped model object
    */
-  M mapToModel(R request);
+  M map(R request);
 }

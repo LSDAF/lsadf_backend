@@ -21,21 +21,34 @@ import com.lsadf.core.shared.model.Model;
 import com.lsadf.core.shared.model.ModelMapper;
 
 /**
- * A functional interface that provides a mapping capability to transform an entity of type {@code
- * E} into a model of type {@code M}. This is typically used to convert domain-specific entities
- * used in persistence layers into models used within the application's business logic or service
- * layers.
+ * A functional interface representing a mapper that transforms an entity of type {@code E} into a
+ * model of type {@code M}.
  *
- * @param <E> the type of the entity to be transformed, which extends {@link Entity}
- * @param <M> the type of the model that will result from the mapping, which extends {@link Model}
+ * <p>This interface extends {@link ModelMapper} and specializes it for use with entity-to-model
+ * mapping, where the input type is an implementation of {@link Entity} and the output type is an
+ * implementation of {@link Model}. It is primarily intended for converting persistence-layer
+ * entities into domain models used in the application layer, promoting modularity and separation of
+ * concerns.
+ *
+ * <p>Implementations of this interface are responsible for defining the mapping logic specific to
+ * their domain, allowing for consistent and reusable transformation between entities and models.
+ *
+ * <p>Design Considerations: - This interface is a {@link FunctionalInterface}, meaning it can be
+ * implemented using a lambda expression or method reference. - The {@link #map(Entity)} method
+ * should ensure that all relevant fields from the entity are correctly and completely transferred
+ * to the model. - Implementations should handle any necessary validation of the input or
+ * transformations required to align with business rules.
+ *
+ * @param <E> the type of the entity to be mapped (must extend {@link Entity})
+ * @param <M> the type of the model to be produced (must extend {@link Model})
  */
 @FunctionalInterface
 public interface EntityModelMapper<E extends Entity, M extends Model> extends ModelMapper<E, M> {
   /**
-   * Maps a provided entity to its corresponding model representation.
+   * Maps an entity object of type {@code E} to a model object of type {@code M}.
    *
-   * @param entity the entity to be mapped
-   * @return the mapped model representation of the entity
+   * @param entity the entity object of type {@code E} to be mapped, must not be null
+   * @return the corresponding model object of type {@code M} resulting from the mapping
    */
-  M mapToModel(E entity);
+  M map(E entity);
 }

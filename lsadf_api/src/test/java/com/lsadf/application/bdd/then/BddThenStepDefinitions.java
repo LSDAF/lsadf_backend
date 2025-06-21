@@ -151,7 +151,7 @@ public class BddThenStepDefinitions extends BddLoader {
 
     UserInfoResponse actual = (UserInfoResponse) responseStack.peek().getData();
     UserInfo expected = BddUtils.mapToUserInfo(row);
-    UserInfoResponse expectedResponse = userInfoResponseMapper.mapToResponse(expected);
+    UserInfoResponse expectedResponse = userInfoResponseMapper.map(expected);
 
     assertThat(actual)
         .usingRecursiveComparison()
@@ -255,7 +255,7 @@ public class BddThenStepDefinitions extends BddLoader {
     Map<String, String> row = rows.get(0);
 
     CharacteristicsResponse expected =
-        characteristicsResponseMapper.mapToResponse(BddUtils.mapToCharacteristics(row));
+        characteristicsResponseMapper.map(BddUtils.mapToCharacteristics(row));
     CharacteristicsResponse actual = (CharacteristicsResponse) responseStack.peek().getData();
 
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);

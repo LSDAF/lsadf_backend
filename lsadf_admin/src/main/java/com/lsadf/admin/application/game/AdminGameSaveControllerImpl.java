@@ -90,7 +90,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       Stream<GameSave> orderedStream = StreamUtils.sortGameSaves(stream, gameSaveOrderBy);
       List<GameSave> gameSaves = orderedStream.toList();
       List<GameSaveResponse> responses =
-          gameSaves.stream().map(gameSaveResponseMapper::mapToResponse).toList();
+          gameSaves.stream().map(gameSaveResponseMapper::map).toList();
       return generateResponse(HttpStatus.OK, responses);
     }
   }
@@ -101,7 +101,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       Jwt jwt, String username) {
     validateUser(jwt);
     try (Stream<GameSave> stream = gameSaveService.getGameSavesByUsername(username)) {
-      List<GameSaveResponse> gameSaves = stream.map(gameSaveResponseMapper::mapToResponse).toList();
+      List<GameSaveResponse> gameSaves = stream.map(gameSaveResponseMapper::map).toList();
       return generateResponse(HttpStatus.OK, gameSaves);
     }
   }
@@ -116,7 +116,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
   public ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     GameSave gameSave = gameSaveService.getGameSave(gameSaveId);
-    GameSaveResponse response = gameSaveResponseMapper.mapToResponse(gameSave);
+    GameSaveResponse response = gameSaveResponseMapper.map(gameSave);
     return generateResponse(HttpStatus.OK, response);
   }
 
@@ -132,7 +132,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
 
     validateUser(jwt);
     GameSave gameSave = gameSaveService.updateGameSave(gameSaveId, adminGameSaveUpdateRequest);
-    GameSaveResponse response = gameSaveResponseMapper.mapToResponse(gameSave);
+    GameSaveResponse response = gameSaveResponseMapper.map(gameSave);
     return generateResponse(HttpStatus.OK, response);
   }
 
@@ -148,7 +148,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
 
     validateUser(jwt);
     GameSave gameSave = gameSaveService.createGameSave(creationRequest);
-    GameSaveResponse response = gameSaveResponseMapper.mapToResponse(gameSave);
+    GameSaveResponse response = gameSaveResponseMapper.map(gameSave);
     return generateResponse(HttpStatus.OK, response);
   }
 

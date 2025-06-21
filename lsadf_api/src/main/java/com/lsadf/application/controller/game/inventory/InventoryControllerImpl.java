@@ -64,7 +64,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
     Set<Item> items = inventoryService.getInventoryItems(gameSaveId);
     Set<ItemResponse> itemResponses =
-        items.stream().map(itemResponseMapper::mapToResponse).collect(Collectors.toSet());
+        items.stream().map(itemResponseMapper::map).collect(Collectors.toSet());
     return generateResponse(HttpStatus.OK, itemResponses);
   }
 
@@ -76,7 +76,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
     Item item = inventoryService.createItemInInventory(gameSaveId, itemRequest);
-    ItemResponse itemResponse = itemResponseMapper.mapToResponse(item);
+    ItemResponse itemResponse = itemResponseMapper.map(item);
     return generateResponse(HttpStatus.OK, itemResponse);
   }
 
@@ -99,7 +99,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
     Item item = inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
-    ItemResponse itemResponse = itemResponseMapper.mapToResponse(item);
+    ItemResponse itemResponse = itemResponseMapper.map(item);
     return generateResponse(HttpStatus.OK, itemResponse);
   }
 

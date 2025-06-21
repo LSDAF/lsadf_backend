@@ -63,7 +63,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     }
     CharacteristicsEntity characteristicsEntity = getCharacteristicsEntity(gameSaveId);
 
-    return characteristicsEntityModelMapper.mapToModel(characteristicsEntity);
+    return characteristicsEntityModelMapper.map(characteristicsEntity);
   }
 
   /**

@@ -66,7 +66,7 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
     GameSave newSave = gameSaveService.createGameSave(username);
     log.info("Successfully created new game for user with username {}", username);
 
-    GameSaveResponse newSaveResponse = gameSaveResponseMapper.mapToResponse(newSave);
+    GameSaveResponse newSaveResponse = gameSaveResponseMapper.map(newSave);
     return generateResponse(HttpStatus.OK, newSaveResponse);
   }
 
@@ -91,7 +91,7 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
 
     try (Stream<GameSave> gameSaveStream = gameSaveService.getGameSavesByUsername(username)) {
       List<GameSaveResponse> gameSaveList =
-          gameSaveStream.map(gameSaveResponseMapper::mapToResponse).toList();
+          gameSaveStream.map(gameSaveResponseMapper::map).toList();
       log.info("Successfully retrieved game saves for user with email {}", username);
       return generateResponse(HttpStatus.OK, gameSaveList);
     }

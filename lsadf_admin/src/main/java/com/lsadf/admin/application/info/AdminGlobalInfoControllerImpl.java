@@ -58,7 +58,7 @@ public class AdminGlobalInfoControllerImpl extends BaseController
   public ResponseEntity<ApiResponse<GlobalInfoResponse>> getGlobalInfo(Jwt jwt) {
     validateUser(jwt);
     GlobalInfo globalInfo = globalInfoService.getGlobalInfo();
-    GlobalInfoResponse response = globalInfoResponseMapper.mapToResponse(globalInfo);
+    GlobalInfoResponse response = globalInfoResponseMapper.map(globalInfo);
     return generateResponse(HttpStatus.OK, response);
   }
 }

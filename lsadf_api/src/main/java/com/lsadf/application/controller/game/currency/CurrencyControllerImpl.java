@@ -70,7 +70,7 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
 
-    Currency currency = requestModelMapper.mapToModel(currencyRequest);
+    Currency currency = requestModelMapper.map(currencyRequest);
     currencyService.saveCurrency(gameSaveId, currency, cacheService.isEnabled());
 
     return generateResponse(HttpStatus.OK);
@@ -83,7 +83,7 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
     Currency currency = currencyService.getCurrency(gameSaveId);
-    CurrencyResponse currencyResponse = currencyResponseMapper.mapToResponse(currency);
+    CurrencyResponse currencyResponse = currencyResponseMapper.map(currency);
     return generateResponse(HttpStatus.OK, currencyResponse);
   }
 

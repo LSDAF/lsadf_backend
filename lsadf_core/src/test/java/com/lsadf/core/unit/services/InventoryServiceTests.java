@@ -121,7 +121,7 @@ class InventoryServiceTests {
             .build();
 
     var list = List.of(itemEntity, itemEntity2);
-    var expecteditems = list.stream().map(itemEntityMapper::mapToModel).collect(Collectors.toSet());
+    var expecteditems = list.stream().map(itemEntityMapper::map).collect(Collectors.toSet());
 
     InventoryEntity inventoryEntity = InventoryEntity.builder().items(new HashSet<>(list)).build();
 

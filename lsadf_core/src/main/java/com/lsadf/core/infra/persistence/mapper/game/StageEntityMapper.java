@@ -29,7 +29,7 @@ public class StageEntityMapper implements EntityModelMapper<StageEntity, Stage> 
 
   /** {@inheritDoc} */
   @Override
-  public Stage mapToModel(StageEntity stageEntity) {
+  public Stage map(StageEntity stageEntity) {
     return Stage.builder()
         .maxStage(stageEntity.getMaxStage())
         .currentStage(stageEntity.getCurrentStage())

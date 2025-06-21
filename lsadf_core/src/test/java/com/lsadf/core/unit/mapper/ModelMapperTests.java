@@ -54,7 +54,7 @@ class ModelMapperTests {
     StageRequest stageRequest = new StageRequest(25L, 500L);
     StageRequestMapper mapper = new StageRequestMapper();
     // when
-    Stage stage = mapper.mapToModel(stageRequest);
+    Stage stage = mapper.map(stageRequest);
 
     // then
     assertThat(stage.getCurrentStage()).isEqualTo(25L);
@@ -76,7 +76,7 @@ class ModelMapperTests {
             .build();
 
     // when
-    Stage stage = stageEntityMapper.mapToModel(stageEntity);
+    Stage stage = stageEntityMapper.map(stageEntity);
 
     // then
     assertThat(stage.getCurrentStage()).isEqualTo(25L);
@@ -100,8 +100,7 @@ class ModelMapperTests {
             .build();
 
     // when
-    Characteristics characteristics =
-        characteristicsEntityModelMapper.mapToModel(characteristicsEntity);
+    Characteristics characteristics = characteristicsEntityModelMapper.map(characteristicsEntity);
 
     // then
     assertThat(characteristics.getAttack()).isEqualTo(100L);
@@ -119,7 +118,7 @@ class ModelMapperTests {
         new CharacteristicsRequest(100L, 200L, 300L, 400L, 500L);
 
     // when
-    Characteristics characteristics = mapper.mapToModel(characteristicsRequest);
+    Characteristics characteristics = mapper.map(characteristicsRequest);
 
     // then
     assertThat(characteristics.getAttack()).isEqualTo(100L);
@@ -135,7 +134,7 @@ class ModelMapperTests {
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 200L, 300L, 400L);
     CurrencyRequestMapper mapper = new CurrencyRequestMapper();
     // when
-    Currency currency = mapper.mapToModel(currencyRequest);
+    Currency currency = mapper.map(currencyRequest);
 
     // then
     assertThat(currency.getGold()).isEqualTo(100L);
@@ -161,7 +160,7 @@ class ModelMapperTests {
             .build();
 
     // when
-    Currency currency = mapper.mapToModel(currencyEntity);
+    Currency currency = mapper.map(currencyEntity);
 
     // then
     assertThat(currency.getGold()).isEqualTo(100L);
@@ -221,7 +220,7 @@ class ModelMapperTests {
     gameSaveEntity.setStageEntity(stageEntity);
 
     // when
-    GameSave gameSave = mapper.mapToModel(gameSaveEntity);
+    GameSave gameSave = mapper.map(gameSaveEntity);
 
     // then
     assertThat(gameSave.getId()).isEqualTo(gameSaveEntity.getId());
@@ -264,7 +263,7 @@ class ModelMapperTests {
     UserRepresentationMapper mapper = new UserRepresentationMapper();
 
     // when
-    User user = mapper.mapToModel(userRepresentation);
+    User user = mapper.map(userRepresentation);
 
     // then
     assertThat(user.getUsername()).isEqualTo(userRepresentation.getUsername());
@@ -293,7 +292,7 @@ class ModelMapperTests {
             .build();
 
     // when
-    User user = mapper.mapToModel(simpleUserCreationRequest);
+    User user = mapper.map(simpleUserCreationRequest);
 
     // then
     assertThat(user.getUsername()).isEqualTo(simpleUserCreationRequest.getUsername());

@@ -57,7 +57,7 @@ public class StageServiceImpl implements StageService {
       }
     }
     StageEntity stageEntity = getStageEntity(gameSaveId);
-    return mapper.mapToModel(stageEntity);
+    return mapper.map(stageEntity);
   }
 
   private StageEntity getStageEntity(String gameSaveId) {

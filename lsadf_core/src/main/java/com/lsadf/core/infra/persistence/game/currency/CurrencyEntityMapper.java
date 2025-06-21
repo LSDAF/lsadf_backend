@@ -30,7 +30,7 @@ import com.lsadf.core.infra.persistence.mapper.EntityModelMapper;
 public class CurrencyEntityMapper implements EntityModelMapper<CurrencyEntity, Currency> {
   /** {@inheritDoc} */
   @Override
-  public Currency mapToModel(CurrencyEntity currencyEntity) {
+  public Currency map(CurrencyEntity currencyEntity) {
     return new Currency(
         currencyEntity.getGoldAmount(),
         currencyEntity.getDiamondAmount(),

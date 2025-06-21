@@ -57,10 +57,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     InventoryEntity inventoryEntity = getInventoryEntity(gameSaveId);
     Set<ItemEntity> itemEntities = inventoryEntity.getItems();
-    return itemEntities.stream()
-        .parallel()
-        .map(itemEntityMapper::mapToModel)
-        .collect(Collectors.toSet());
+    return itemEntities.stream().parallel().map(itemEntityMapper::map).collect(Collectors.toSet());
   }
 
   /** {@inheritDoc} */
@@ -115,7 +112,7 @@ public class InventoryServiceImpl implements InventoryService {
                 () ->
                     new NotFoundException(
                         "Item not found for item client id " + itemRequest.getClientId()));
-    return itemEntityMapper.mapToModel(item);
+    return itemEntityMapper.map(item);
   }
 
   /** {@inheritDoc} */
@@ -199,7 +196,7 @@ public class InventoryServiceImpl implements InventoryService {
             .findFirst()
             .orElseThrow(
                 () -> new NotFoundException("Item not found for item client id " + itemClientId));
-    return itemEntityMapper.mapToModel(updatedItemEntity);
+    return itemEntityMapper.map(updatedItemEntity);
   }
 
   /** {@inheritDoc} */

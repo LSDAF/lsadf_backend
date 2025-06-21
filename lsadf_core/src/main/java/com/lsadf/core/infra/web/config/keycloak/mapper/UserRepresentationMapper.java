@@ -34,7 +34,7 @@ public class UserRepresentationMapper implements ModelMapper<UserRepresentation,
 
   /** {@inheritDoc} */
   @Override
-  public User mapToModel(UserRepresentation userRepresentation) {
+  public User map(UserRepresentation userRepresentation) {
     Date createdTimestamp =
         (userRepresentation.getCreatedTimestamp() != null)
             ? new Date(userRepresentation.getCreatedTimestamp())

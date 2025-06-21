@@ -32,7 +32,7 @@ public class UserInfoResponseMapper implements ModelResponseMapper<UserInfo, Use
    * @return the GlobalInfoResponse object representing the mapped data
    */
   @Override
-  public UserInfoResponse mapToResponse(UserInfo model) {
+  public UserInfoResponse map(UserInfo model) {
     return UserInfoResponse.builder()
         .email(model.email())
         .name(model.name())

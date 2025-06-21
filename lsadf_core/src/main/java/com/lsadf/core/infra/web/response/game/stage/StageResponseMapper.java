@@ -34,7 +34,7 @@ public class StageResponseMapper implements ModelResponseMapper<Stage, StageResp
    * @return the {@link StageResponse} response object that corresponds to the provided model
    */
   @Override
-  public StageResponse mapToResponse(Stage model) {
+  public StageResponse map(Stage model) {
     return StageResponse.builder()
         .currentStage(model.getCurrentStage())
         .maxStage(model.getMaxStage())

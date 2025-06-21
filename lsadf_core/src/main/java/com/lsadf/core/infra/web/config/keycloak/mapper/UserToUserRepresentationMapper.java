@@ -33,7 +33,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 public class UserToUserRepresentationMapper implements Mapper<User, UserRepresentation> {
   /** {@inheritDoc} */
   @Override
-  public UserRepresentation mapToModel(User user) {
+  public UserRepresentation map(User user) {
     UserRepresentation userRepresentation = new UserRepresentation();
     userRepresentation.setCreatedTimestamp(new Date().getTime());
     userRepresentation.setUsername(user.getUsername());

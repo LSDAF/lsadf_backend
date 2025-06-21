@@ -30,7 +30,7 @@ public class CharacteristicsResponseMapper
     implements ModelResponseMapper<Characteristics, CharacteristicsResponse> {
   /** {@inheritDoc} */
   @Override
-  public CharacteristicsResponse mapToResponse(Characteristics characteristics) {
+  public CharacteristicsResponse map(Characteristics characteristics) {
     return CharacteristicsResponse.builder()
         .attack(characteristics.getAttack())
         .critDamage(characteristics.getCritDamage())

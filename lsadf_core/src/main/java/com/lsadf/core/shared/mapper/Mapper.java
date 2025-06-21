@@ -16,22 +16,27 @@
 package com.lsadf.core.shared.mapper;
 
 /**
- * A generic interface for mapping an object of one type to another.
+ * A functional interface for mapping an input object of type {@code I} to an output object of type
+ * {@code O}.
  *
- * <p>This interface establishes a contract for implementing mapping functionality between a source
- * type and a target type. It provides a single method, {@code mapToModel}, which should be
- * implemented by any class that performs the mapping logic.
+ * <p>The Mapper interface allows developers to define custom mapping logic to convert an input to a
+ * desired output format. It serves as a foundational contract for defining mapping operations in
+ * various contexts, such as transforming domain models, DTOs, or API response objects.
  *
- * @param <I> the source type to be mapped
- * @param <O> the target type resulting from the mapping
+ * <p>The use of the {@link FunctionalInterface} annotation ensures that this interface can be used
+ * as the assignment target for a lambda expression or method reference, providing concise and
+ * reusable mapping functionality across different layers of an application.
+ *
+ * @param <I> the type of the input object to be mapped
+ * @param <O> the type of the output object resulting from the mapping
  */
 @FunctionalInterface
 public interface Mapper<I, O> {
   /**
-   * Maps an input object of type I to an output object of type O.
+   * Maps an input object of type {@code I} to an output object of type {@code O}.
    *
-   * @param input the input object of type I to be mapped
-   * @return the mapped output object of type O
+   * @param input the input object to be mapped
+   * @return the output object resulting from the mapping
    */
-  O mapToModel(I input);
+  O map(I input);
 }

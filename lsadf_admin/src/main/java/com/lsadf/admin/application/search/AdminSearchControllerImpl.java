@@ -96,8 +96,7 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
     validateUser(jwt);
     try (Stream<GameSave> gameSaveStream =
         searchService.searchGameSaves(searchRequest, gameSaveOrderBy)) {
-      List<GameSaveResponse> gameSaves =
-          gameSaveStream.map(gameSaveResponseMapper::mapToResponse).toList();
+      List<GameSaveResponse> gameSaves = gameSaveStream.map(gameSaveResponseMapper::map).toList();
       return generateResponse(HttpStatus.OK, gameSaves);
     }
   }

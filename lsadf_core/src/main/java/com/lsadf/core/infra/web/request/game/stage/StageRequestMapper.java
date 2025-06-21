@@ -30,7 +30,7 @@ import com.lsadf.core.infra.web.request.RequestModelMapper;
 public class StageRequestMapper implements RequestModelMapper<StageRequest, Stage> {
   /** {@inheritDoc} */
   @Override
-  public Stage mapToModel(StageRequest stageRequest) {
+  public Stage map(StageRequest stageRequest) {
     return Stage.builder()
         .maxStage(stageRequest.getMaxStage())
         .currentStage(stageRequest.getCurrentStage())

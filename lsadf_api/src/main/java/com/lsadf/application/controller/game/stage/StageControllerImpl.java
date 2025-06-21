@@ -69,7 +69,7 @@ public class StageControllerImpl extends BaseController implements StageControll
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
 
-    Stage stage = stageRequestMapper.mapToModel(stageRequest);
+    Stage stage = stageRequestMapper.map(stageRequest);
     stageService.saveStage(gameSaveId, stage, cacheService.isEnabled());
 
     return generateResponse(HttpStatus.OK);
@@ -82,7 +82,7 @@ public class StageControllerImpl extends BaseController implements StageControll
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
     Stage stage = stageService.getStage(gameSaveId);
-    StageResponse stageResponse = stageResponseMapper.mapToResponse(stage);
+    StageResponse stageResponse = stageResponseMapper.map(stage);
     return generateResponse(HttpStatus.OK, stageResponse);
   }
 

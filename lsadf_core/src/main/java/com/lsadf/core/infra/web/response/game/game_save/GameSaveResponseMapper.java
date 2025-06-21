@@ -47,11 +47,11 @@ public class GameSaveResponseMapper implements ModelResponseMapper<GameSave, Gam
    * @return a GameSaveResponse object containing the mapped data
    */
   @Override
-  public GameSaveResponse mapToResponse(GameSave model) {
+  public GameSaveResponse map(GameSave model) {
     CharacteristicsResponse characteristicsResponse =
-        characteristicsResponseMapper.mapToResponse(model.getCharacteristics());
-    StageResponse stageResponse = stageResponseMapper.mapToResponse(model.getStage());
-    CurrencyResponse currencyResponse = currencyResponseMapper.mapToResponse(model.getCurrency());
+        characteristicsResponseMapper.map(model.getCharacteristics());
+    StageResponse stageResponse = stageResponseMapper.map(model.getStage());
+    CurrencyResponse currencyResponse = currencyResponseMapper.map(model.getCurrency());
 
     return GameSaveResponse.builder()
         .id(model.getId())

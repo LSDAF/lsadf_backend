@@ -129,7 +129,7 @@ public class GameSaveServiceImpl implements GameSaveService {
     saved.setStageEntity(stageEntity);
 
     var results = gameSaveRepository.save(saved);
-    return gameSaveEntityMapper.mapToModel(results);
+    return gameSaveEntityMapper.map(results);
   }
 
   /** {@inheritDoc} */
@@ -137,7 +137,7 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Transactional(readOnly = true)
   public GameSave getGameSave(String saveId) throws NotFoundException {
     GameSaveEntity gameSaveEntity = getGameSaveEntity(saveId);
-    GameSave gameSave = gameSaveEntityMapper.mapToModel(gameSaveEntity);
+    GameSave gameSave = gameSaveEntityMapper.map(gameSaveEntity);
     return enrichGameSaveWithCachedData(gameSave);
   }
 
@@ -203,7 +203,7 @@ public class GameSaveServiceImpl implements GameSaveService {
     saved.setStageEntity(stageEntity);
 
     var result = gameSaveRepository.save(saved);
-    return gameSaveEntityMapper.mapToModel(result);
+    return gameSaveEntityMapper.map(result);
   }
 
   /** {@inheritDoc} */
@@ -245,7 +245,7 @@ public class GameSaveServiceImpl implements GameSaveService {
 
     GameSaveEntity updated = gameSaveRepository.save(gameSaveEntity);
 
-    return gameSaveEntityMapper.mapToModel(updated);
+    return gameSaveEntityMapper.map(updated);
   }
 
   /** {@inheritDoc} */
@@ -280,7 +280,7 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Transactional(readOnly = true)
   public Stream<GameSave> getGameSaves() {
     try (var resultStream = gameSaveRepository.findAllGameSaves()) {
-      List<GameSave> results = resultStream.map(gameSaveEntityMapper::mapToModel).toList();
+      List<GameSave> results = resultStream.map(gameSaveEntityMapper::map).toList();
       return results.stream().map(this::enrichGameSaveWithCachedData);
     }
   }
@@ -329,7 +329,7 @@ public class GameSaveServiceImpl implements GameSaveService {
       throw new NotFoundException("User with username " + username + " not found");
     }
     try (var resultStream = gameSaveRepository.findGameSaveEntitiesByUserEmail(username)) {
-      List<GameSave> results = resultStream.map(gameSaveEntityMapper::mapToModel).toList();
+      List<GameSave> results = resultStream.map(gameSaveEntityMapper::map).toList();
       return results.stream().map(this::enrichGameSaveWithCachedData);
     }
   }

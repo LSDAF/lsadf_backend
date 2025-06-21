@@ -69,7 +69,7 @@ public class CharacteristicsControllerImpl extends BaseController
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
 
-    Characteristics characteristics = requestMapper.mapToModel(characteristicsRequest);
+    Characteristics characteristics = requestMapper.map(characteristicsRequest);
     characteristicsService.saveCharacteristics(
         gameSaveId, characteristics, cacheService.isEnabled());
 
@@ -84,7 +84,7 @@ public class CharacteristicsControllerImpl extends BaseController
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
     Characteristics characteristics = characteristicsService.getCharacteristics(gameSaveId);
-    CharacteristicsResponse characteristicsResponse = responseMapper.mapToResponse(characteristics);
+    CharacteristicsResponse characteristicsResponse = responseMapper.map(characteristics);
     return generateResponse(HttpStatus.OK, characteristicsResponse);
   }
 

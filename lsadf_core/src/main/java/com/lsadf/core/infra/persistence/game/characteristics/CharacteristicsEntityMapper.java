@@ -39,7 +39,7 @@ public class CharacteristicsEntityMapper
 
   /** {@inheritDoc} */
   @Override
-  public Characteristics mapToModel(CharacteristicsEntity characteristicsEntity) {
+  public Characteristics map(CharacteristicsEntity characteristicsEntity) {
     return new Characteristics(
         characteristicsEntity.getAttack(),
         characteristicsEntity.getCritChance(),

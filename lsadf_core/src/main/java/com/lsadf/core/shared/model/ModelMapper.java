@@ -19,19 +19,27 @@ package com.lsadf.core.shared.model;
 import com.lsadf.core.shared.mapper.Mapper;
 
 /**
- * A functional interface designed to provide a mapping mechanism for converting objects of one type
- * into another. The mapping operation is defined by implementing the {@code mapToModel} method.
+ * A functional interface for mapping an input model of type {@code I} to an output model of type
+ * {@code O}, where the output model extends the {@link Model} interface.
  *
- * @param <I> the source type to be mapped
- * @param <O> the target type resulting from the mapping
+ * <p>This interface provides a streamlined approach for implementing custom mapping logic between
+ * different types of models, facilitating type-safe conversions. It builds upon the general-purpose
+ * {@link Mapper} interface, specializing its generic type parameters to ensure the output type
+ * aligns with the {@link Model} contract.
+ *
+ * <p>Implementations of this interface are intended to handle the mapping logic specific to their
+ * domain, ensuring proper translation of relevant fields from the input model to the output model.
+ *
+ * @param <I> the type of the input model to be mapped
+ * @param <O> the type of the output model to be produced (must extend {@link Model})
  */
 @FunctionalInterface
 public interface ModelMapper<I, O extends Model> extends Mapper<I, O> {
   /**
-   * Converts an object of type M1 into an object of type M2.
+   * Maps the input model of type I to an output model of type O.
    *
-   * @param model the input object of type M1 to be converted
-   * @return the transformed object of type M2
+   * @param model the input model to be mapped
+   * @return the mapped output model of type O
    */
-  O mapToModel(I model);
+  O map(I model);
 }

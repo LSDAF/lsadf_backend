@@ -16,21 +16,35 @@
 
 package com.lsadf.core.infra.web.response;
 
+import com.lsadf.core.shared.mapper.Mapper;
 import com.lsadf.core.shared.model.Model;
 
 /**
- * Interface for mapping model objects to their corresponding response representations.
+ * A specialized functional interface for mapping objects of a domain model type {@code M} to
+ * corresponding response objects of type {@code R}.
  *
- * @param <M> the type of the model object
- * @param <R> the type of the response object
+ * <p>This interface extends the {@link Mapper} interface, providing additional semantic context
+ * specific to mapping domain models to API response objects or other externally exposed
+ * representations. The interface is particularly useful for defining a consistent mapping strategy
+ * across various domain models and their respective response types.
+ *
+ * <p>It enforces a single abstract method {@code map}, making it compatible with lambda expressions
+ * and method references for lightweight and reusable mapping definitions. Developers can implement
+ * this interface to define the transformation logic between specific domain model classes and their
+ * corresponding response representations.
+ *
+ * @param <M> the type of the domain model object to be mapped, which must extend the {@link Model}
+ *     interface
+ * @param <R> the type of the response object resulting from the mapping, which must extend the
+ *     {@link Response} interface
  */
 @FunctionalInterface
-public interface ModelResponseMapper<M extends Model, R extends Response> {
+public interface ModelResponseMapper<M extends Model, R extends Response> extends Mapper<M, R> {
   /**
-   * Maps a given model object to its corresponding response representation.
+   * Maps a model object of type {@code M} to a response object of type {@code R}.
    *
-   * @param model the model object to be mapped to a response
-   * @return the response object that corresponds to the provided model
+   * @param model the model object to be mapped
+   * @return the mapped response object
    */
-  R mapToResponse(M model);
+  R map(M model);
 }

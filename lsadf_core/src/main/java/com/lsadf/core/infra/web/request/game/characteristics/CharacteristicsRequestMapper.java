@@ -36,7 +36,7 @@ public class CharacteristicsRequestMapper
     implements RequestModelMapper<CharacteristicsRequest, Characteristics> {
   /** {@inheritDoc} */
   @Override
-  public Characteristics mapToModel(CharacteristicsRequest characteristicsRequest) {
+  public Characteristics map(CharacteristicsRequest characteristicsRequest) {
     return new Characteristics(
         characteristicsRequest.getAttack(),
         characteristicsRequest.getCritChance(),

@@ -33,7 +33,7 @@ import com.lsadf.core.infra.web.request.RequestModelMapper;
 public class CurrencyRequestMapper implements RequestModelMapper<CurrencyRequest, Currency> {
   /** {@inheritDoc} */
   @Override
-  public Currency mapToModel(CurrencyRequest currencyRequest) {
+  public Currency map(CurrencyRequest currencyRequest) {
     return new Currency(
         currencyRequest.getGold(),
         currencyRequest.getDiamond(),

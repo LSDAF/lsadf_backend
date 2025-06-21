@@ -44,10 +44,10 @@ public class InventoryEntityMapper implements EntityModelMapper<InventoryEntity,
 
   /** {@inheritDoc} */
   @Override
-  public Inventory mapToModel(InventoryEntity inventoryEntity) {
+  public Inventory map(InventoryEntity inventoryEntity) {
     Set<Item> items =
         inventoryEntity.getItems().parallelStream()
-            .map(itemEntityMapper::mapToModel)
+            .map(itemEntityMapper::map)
             .collect(Collectors.toSet());
     return new Inventory(items);
   }

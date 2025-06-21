@@ -61,7 +61,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
     CurrencyEntity currencyEntity = getCurrencyEntity(gameSaveId);
 
-    return mapper.mapToModel(currencyEntity);
+    return mapper.map(currencyEntity);
   }
 
   /**

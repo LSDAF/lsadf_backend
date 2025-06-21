@@ -51,7 +51,7 @@ public class UserControllerImpl extends BaseController implements UserController
   @Override
   public ResponseEntity<ApiResponse<UserInfoResponse>> getUserInfo(Jwt jwt) {
     UserInfo userInfo = getUserInfoFromJwt(jwt);
-    var response = userInfoResponseMapper.mapToResponse(userInfo);
+    var response = userInfoResponseMapper.map(userInfo);
     return generateResponse(HttpStatus.OK, response);
   }
 }

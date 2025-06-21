@@ -36,7 +36,7 @@ public class CurrencyResponseMapper implements ModelResponseMapper<Currency, Cur
    * @return the {@link CurrencyResponse} response object that corresponds to the provided model
    */
   @Override
-  public CurrencyResponse mapToResponse(Currency currency) {
+  public CurrencyResponse map(Currency currency) {
     return CurrencyResponse.builder()
         .amethyst(currency.getAmethyst())
         .gold(currency.getGold())

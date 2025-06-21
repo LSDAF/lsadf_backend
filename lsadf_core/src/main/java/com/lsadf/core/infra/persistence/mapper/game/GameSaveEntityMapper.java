@@ -58,11 +58,11 @@ public class GameSaveEntityMapper implements EntityModelMapper<GameSaveEntity, G
 
   /** {@inheritDoc} */
   @Override
-  public GameSave mapToModel(GameSaveEntity gameSaveEntity) {
-    Stage stage = stageEntityMapper.mapToModel(gameSaveEntity.getStageEntity());
+  public GameSave map(GameSaveEntity gameSaveEntity) {
+    Stage stage = stageEntityMapper.map(gameSaveEntity.getStageEntity());
     Characteristics characteristics =
-        characteristicsEntityModelMapper.mapToModel(gameSaveEntity.getCharacteristicsEntity());
-    Currency currency = currencyEntityMapper.mapToModel(gameSaveEntity.getCurrencyEntity());
+        characteristicsEntityModelMapper.map(gameSaveEntity.getCharacteristicsEntity());
+    Currency currency = currencyEntityMapper.map(gameSaveEntity.getCurrencyEntity());
 
     return GameSave.builder()
         .id(gameSaveEntity.getId())

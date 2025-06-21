@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     // return keycloakAdminClient.getUsers(realm).stream();
     try {
       List<UserRepresentation> userlist = getUsersResource().list();
-      return userlist.stream().map(this::enrichUserRoles).map(userRepresentationMapper::mapToModel);
+      return userlist.stream().map(this::enrichUserRoles).map(userRepresentationMapper::map);
     } catch (Exception e) {
       log.error("Failed to get users", e);
       throw new InternalServerErrorException("Failed to get users");
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
     try {
       return getUsersResource().search(search).stream()
           .map(this::enrichUserRoles)
-          .map(userRepresentationMapper::mapToModel);
+          .map(userRepresentationMapper::map);
     } catch (Exception e) {
       log.error("Failed to get users with search: {}", search, e);
       throw new InternalServerErrorException("Failed to get users with search: " + search);
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
     try {
       UserRepresentation userResource = getUserRepresentation(id);
       UserRepresentation enrichedUser = enrichUserRoles(userResource);
-      return userRepresentationMapper.mapToModel(enrichedUser);
+      return userRepresentationMapper.map(enrichedUser);
     } catch (jakarta.ws.rs.NotFoundException e) {
       log.error("User with id {} not found", id);
       throw new NotFoundException("User with id " + id + " not found");
@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
     }
     var user = userRepresentationResults.get(0);
     var enrichedUser = enrichUserRoles(user);
-    return userRepresentationMapper.mapToModel(enrichedUser);
+    return userRepresentationMapper.map(enrichedUser);
   }
 
   /** {@inheritDoc} */
@@ -270,8 +270,8 @@ public class UserServiceImpl implements UserService {
     }
 
     // Create user
-    User user = userCreationRequestMapper.mapToModel(request);
-    UserRepresentation userRepresentation = userToUserRepresentationMapper.mapToModel(user);
+    User user = userCreationRequestMapper.map(request);
+    UserRepresentation userRepresentation = userToUserRepresentationMapper.map(user);
     try (var response = getUsersResource().create(userRepresentation)) {
       if (response.getStatus() != HttpStatus.CREATED.value()) {
         throw new InternalServerErrorException("Failed to create user");
