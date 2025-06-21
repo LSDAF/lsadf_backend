@@ -15,8 +15,6 @@
  */
 package com.lsadf.core.application.game.characteristics;
 
-import static com.lsadf.core.infra.config.BeanConstants.Cache.CHARACTERISTICS_CACHE;
-
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
@@ -41,6 +39,9 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @Configuration
 public class CharacteristicsConfiguration {
+
+  public static final String CHARACTERISTICS_CACHE = "characteristicsCache";
+
   @Bean
   public CharacteristicsService characteristicsService(
       CharacteristicsRepository characteristicsRepository,

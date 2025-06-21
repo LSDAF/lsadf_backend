@@ -15,8 +15,6 @@
  */
 package com.lsadf.core.application.game.currency;
 
-import static com.lsadf.core.infra.config.BeanConstants.Cache.CURRENCY_CACHE;
-
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
@@ -40,6 +38,9 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @Configuration
 public class CurrencyConfiguration {
+
+  public static final String CURRENCY_CACHE = "currencyCache";
+
   @Bean
   public CurrencyService currencyService(
       CurrencyRepository currencyRepository,

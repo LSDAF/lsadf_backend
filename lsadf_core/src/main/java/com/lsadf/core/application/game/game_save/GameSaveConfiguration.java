@@ -16,7 +16,6 @@
 package com.lsadf.core.application.game.game_save;
 
 import static com.lsadf.core.infra.cache.RedisConstants.GAME_SAVE_OWNERSHIP;
-import static com.lsadf.core.infra.config.BeanConstants.Cache.GAME_SAVE_OWNERSHIP_CACHE;
 
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
@@ -59,6 +58,9 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @Configuration
 public class GameSaveConfiguration {
+
+  public static final String GAME_SAVE_OWNERSHIP_CACHE = "gameSaveOwnershipCache";
+
   @Bean
   public GameSaveService gameSaveService(
       UserService userService,
