@@ -18,9 +18,9 @@ package com.lsadf.core.infra.persistence.game.inventory;
 
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.inventory.item.Item;
+import com.lsadf.core.infra.persistence.EntityModelMapper;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntityMapper;
-import com.lsadf.core.infra.persistence.EntityModelMapper;
 import java.util.Set;
 import java.util.stream.Collectors;
 
