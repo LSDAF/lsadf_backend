@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.mapper.game;
+package com.lsadf.core.infra.persistence.game.game_save;
 
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
@@ -24,9 +24,9 @@ import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEnti
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.mapper.EntityModelMapper;
+import com.lsadf.core.infra.persistence.EntityModelMapper;
+import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
 
 /**
  * Maps {@link GameSaveEntity} objects to their corresponding {@link GameSave} models. This mapper

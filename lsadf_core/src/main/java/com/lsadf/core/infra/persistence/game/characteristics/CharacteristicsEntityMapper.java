@@ -17,7 +17,7 @@
 package com.lsadf.core.infra.persistence.game.characteristics;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.infra.persistence.mapper.EntityModelMapper;
+import com.lsadf.core.infra.persistence.EntityModelMapper;
 
 /**
  * Maps a {@link CharacteristicsEntity} to a {@link Characteristics} model. This class implements

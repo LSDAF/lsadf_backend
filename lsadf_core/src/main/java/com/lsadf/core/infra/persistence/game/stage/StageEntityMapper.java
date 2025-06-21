@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.mapper.game;
+package com.lsadf.core.infra.persistence.game.stage;
 
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.mapper.EntityModelMapper;
+import com.lsadf.core.infra.persistence.EntityModelMapper;
 
 /**
  * A mapper implementation for converting a {@link StageEntity} to a {@link Stage}. This class

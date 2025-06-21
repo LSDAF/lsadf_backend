@@ -17,7 +17,7 @@
 package com.lsadf.core.infra.persistence.game.inventory.item;
 
 import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.infra.persistence.mapper.EntityModelMapper;
+import com.lsadf.core.infra.persistence.EntityModelMapper;
 
 /**
  * The {@code ItemEntityMapper} class is a concrete implementation of the {@link EntityModelMapper}
