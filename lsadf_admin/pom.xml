@@ -35,7 +35,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.lsadf.admin.LsadfAdminApplication</mainClass>
+                    <mainClass>com.lsadf.admin.application.LsadfAdminApplication</mainClass>
                 </configuration>
             </plugin>
             <plugin>

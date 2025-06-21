@@ -42,7 +42,7 @@ Feature: Currency Controller BDD tests
 
     Then the response status code should be 200
 
-    And the response should have the following Currency
+    And the response should have the following CurrencyResponse
       | gold     | diamond  | emerald  | amethyst |
       | 56302802 | 56302802 | 56302802 | 56302802 |
 
@@ -59,7 +59,7 @@ Feature: Currency Controller BDD tests
 
     Then the response status code should be 200
 
-    And the response should have the following Currency
+    And the response should have the following CurrencyResponse
       | gold | diamond | emerald | amethyst |
       | 100  | 200     | 300     | 400      |
 
