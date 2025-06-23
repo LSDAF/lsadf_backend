@@ -140,8 +140,8 @@ jobs:
         id: coverage_calc
         run: |
           coverage_percent=$(echo "${{ steps.jacoco.outputs.coverage }} * 100" | bc -l)
-          echo $coverage_percent
-          echo "percentage=$coverage_percent" >> $GITHUB_OUTPUT
+          rounded_percent=$(printf "%.3f" $coverage_percent)
+          echo "percentage=$rounded_percent" >> $GITHUB_OUTPUT
 
 
       - name: 📝 Add Coverage to PR Comment
