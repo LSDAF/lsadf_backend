@@ -21,15 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.cache.Cache;
-import com.lsadf.core.entities.CurrencyEntity;
-import com.lsadf.core.exceptions.http.NotFoundException;
-import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.mappers.impl.MapperImpl;
-import com.lsadf.core.models.Currency;
-import com.lsadf.core.repositories.CurrencyRepository;
-import com.lsadf.core.services.CurrencyService;
-import com.lsadf.core.services.impl.CurrencyServiceImpl;
+import com.lsadf.core.application.game.currency.CurrencyService;
+import com.lsadf.core.application.game.currency.CurrencyServiceImpl;
+import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
+import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -46,10 +45,10 @@ class CurrencyServiceTests {
 
   @Mock private Cache<Currency> currencyCache;
 
-  private final Mapper mapper = new MapperImpl();
+  private final CurrencyEntityMapper mapper = new CurrencyEntityMapper();
 
   @BeforeEach
-  public void init() {
+  void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 

@@ -21,15 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.cache.Cache;
-import com.lsadf.core.entities.CharacteristicsEntity;
-import com.lsadf.core.exceptions.http.NotFoundException;
-import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.mappers.impl.MapperImpl;
-import com.lsadf.core.models.Characteristics;
-import com.lsadf.core.repositories.CharacteristicsRepository;
-import com.lsadf.core.services.CharacteristicsService;
-import com.lsadf.core.services.impl.CharacteristicsServiceImpl;
+import com.lsadf.core.application.game.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.characteristics.CharacteristicsServiceImpl;
+import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
+import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -46,10 +45,10 @@ class CharacteristicsServiceTests {
 
   @Mock private Cache<Characteristics> characteristicsCache;
 
-  private final Mapper mapper = new MapperImpl();
+  private final CharacteristicsEntityMapper mapper = new CharacteristicsEntityMapper();
 
   @BeforeEach
-  public void init() {
+  void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 

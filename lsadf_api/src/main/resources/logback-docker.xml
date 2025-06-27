@@ -19,7 +19,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="com.lsadf.core.configurations.logback_filter.MarkerSkippingFilter">
+        <filter class="com.lsadf.core.infra.logging.filter.MarkerSkippingFilter">
             <markerToMatch>CONSOLE</markerToMatch>
         </filter>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -29,7 +29,7 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/app/logs/application.log</file>
-        <filter class="com.lsadf.core.configurations.logback_filter.MarkerSkippingFilter">
+        <filter class="com.lsadf.core.infra.logging.filter.MarkerSkippingFilter">
             <markerToMatch>FILE</markerToMatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">

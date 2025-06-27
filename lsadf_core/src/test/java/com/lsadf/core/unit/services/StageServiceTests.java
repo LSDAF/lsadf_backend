@@ -21,15 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.cache.Cache;
-import com.lsadf.core.entities.StageEntity;
-import com.lsadf.core.exceptions.http.NotFoundException;
-import com.lsadf.core.mappers.Mapper;
-import com.lsadf.core.mappers.impl.MapperImpl;
-import com.lsadf.core.models.Stage;
-import com.lsadf.core.repositories.StageRepository;
-import com.lsadf.core.services.StageService;
-import com.lsadf.core.services.impl.StageServiceImpl;
+import com.lsadf.core.application.game.stage.StageService;
+import com.lsadf.core.application.game.stage.StageServiceImpl;
+import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.infra.cache.Cache;
+import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.infra.persistence.game.stage.StageEntity;
+import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
+import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -48,11 +47,11 @@ class StageServiceTests {
   @Mock private Cache<Stage> stageCache;
 
   @BeforeEach
-  public void init() {
+  void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    Mapper mapper = new MapperImpl();
+    StageEntityMapper mapper = new StageEntityMapper();
 
     stageService = new StageServiceImpl(stageRepository, stageCache, mapper);
   }
