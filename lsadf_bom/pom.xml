@@ -48,6 +48,16 @@
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
+                <groupId>com.lsadf</groupId>
+                <artifactId>lsadf-workflow</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lsadf</groupId>
+                <artifactId>lsadf-engine</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
                 <groupId>com.lsdaf</groupId>
                 <artifactId>lsadf-core</artifactId>
                 <scope>test</scope>

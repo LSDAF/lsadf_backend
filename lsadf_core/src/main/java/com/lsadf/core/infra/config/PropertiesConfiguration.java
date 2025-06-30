@@ -30,6 +30,7 @@ import com.lsadf.core.infra.web.config.security.properties.CorsConfigurationProp
 import com.lsadf.core.infra.web.config.security.properties.JsonViewProperties;
 import com.lsadf.core.infra.web.config.swagger.properties.SwaggerContactProperties;
 import com.lsadf.core.infra.web.config.swagger.properties.SwaggerProperties;
+import com.lsadf.core.infra.worker.TemporalProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -96,6 +97,12 @@ public class PropertiesConfiguration {
   @ConfigurationProperties(prefix = "cache.expiration")
   public CacheExpirationProperties cacheExpirationProperties() {
     return new CacheExpirationProperties();
+  }
+
+  @Bean
+  @ConfigurationProperties(prefix = "temporal")
+  public TemporalProperties temporalProperties() {
+    return new TemporalProperties();
   }
 
   @Bean

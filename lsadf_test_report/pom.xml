@@ -47,6 +47,11 @@
             <artifactId>lsadf-admin</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.lsadf</groupId>
+            <artifactId>lsadf-workflow</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

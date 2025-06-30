@@ -68,6 +68,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>io.temporal</groupId>
+                <artifactId>temporal-bom</artifactId>
+                <version>${temporal.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
 
             <dependency>

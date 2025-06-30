@@ -166,25 +166,6 @@ oauth2:
       token-uri: https://accounts.google.com/o/oauth2/token
       jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 
-cache:
-  redis:
-    enabled: ${CACHE_ENABLED}
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-    password: ${REDIS_PASSWORD}
-    database: ${REDIS_DATABASE}
-    embedded: false
-  expiration:
-    game-save-ownership-expiration-seconds: ${GAME_SAVE_OWNERSHIP_EXPIRATION_SECONDS}
-    local-user-expiration-seconds: ${LOCAL_USER_EXPIRATION_SECONDS}
-    characteristics-expiration-seconds: ${CHARACTERISTICS_EXPIRATION_SECONDS}
-    currency-expiration-seconds: ${CURRENCY_EXPIRATION_SECONDS}
-    inventory-expiration-seconds: ${INVENTORY_EXPIRATION_SECONDS}
-    stage-expiration-seconds: ${STAGE_EXPIRATION_SECONDS}
-
-shutdown:
-  flush-cache-at-shutdown: true
-
 
 clock:
   time-zone: "Europe/Paris"

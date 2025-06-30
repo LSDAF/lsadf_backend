@@ -34,6 +34,8 @@
     <modules>
         <module>../lsadf_api</module>
         <module>../lsadf_core</module>
+        <module>../lsadf_workflow</module>
+        <module>../lsadf_engine</module>
         <module>../lsadf_admin</module>
     </modules>
 
