@@ -1,5 +1,7 @@
 package com.lsadf.workflow.game;
 
+import static com.lsadf.workflow.utils.GameSessionUtils.extractGameSaveIdFromSessionId;
+
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.inventory.item.Item;
@@ -7,38 +9,34 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.workflow.activity.game.characteristics.CharacteristicsActivity;
 import com.lsadf.workflow.activity.game.currency.CurrencyActivity;
-import com.lsadf.workflow.activity.game.game_save.GameSaveActivity;
 import com.lsadf.workflow.activity.game.inventory.InventoryActivity;
 import com.lsadf.workflow.activity.game.stage.StageActivity;
+import io.temporal.workflow.Workflow;
 import java.util.Set;
 
 /** The GameSessionWorkflowImpl class provides an implementation for the GameSessionWorkflow */
 public class GameSessionWorkflowImpl implements GameSessionWorkflow {
 
-  private final String sessionId;
-  private final String gameSaveId;
+  private String sessionId;
+  private String gameSaveId;
 
-  private final CurrencyActivity currencyActivity;
-  private final InventoryActivity inventoryActivity;
-  private final StageActivity stageActivity;
-  private final CharacteristicsActivity characteristicsActivity;
-  private final GameSaveActivity gameSaveActivity;
+  private CurrencyActivity currencyActivity;
+  private InventoryActivity inventoryActivity;
+  private StageActivity stageActivity;
+  private CharacteristicsActivity characteristicsActivity;
 
-  public GameSessionWorkflowImpl(
-      String sessionId,
-      String gameSaveId,
-      CurrencyActivity currencyActivity,
-      InventoryActivity inventoryActivity,
-      StageActivity stageActivity,
-      CharacteristicsActivity characteristicsActivity,
-      GameSaveActivity gameSaveActivity) {
+  public GameSessionWorkflowImpl() {
+    this.characteristicsActivity = Workflow.newActivityStub(CharacteristicsActivity.class);
+    this.inventoryActivity = Workflow.newActivityStub(InventoryActivity.class);
+    this.stageActivity = Workflow.newActivityStub(StageActivity.class);
+    this.currencyActivity = Workflow.newActivityStub(CurrencyActivity.class);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void startSession(String sessionId) {
     this.sessionId = sessionId;
-    this.gameSaveId = gameSaveId;
-    this.currencyActivity = currencyActivity;
-    this.inventoryActivity = inventoryActivity;
-    this.stageActivity = stageActivity;
-    this.characteristicsActivity = characteristicsActivity;
-    this.gameSaveActivity = gameSaveActivity;
+    this.gameSaveId = extractGameSaveIdFromSessionId(sessionId);
   }
 
   /** {@inheritDoc} */

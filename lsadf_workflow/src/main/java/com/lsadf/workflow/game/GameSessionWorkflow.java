@@ -8,6 +8,7 @@ import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import io.temporal.workflow.QueryMethod;
 import io.temporal.workflow.SignalMethod;
 import io.temporal.workflow.WorkflowInterface;
+import io.temporal.workflow.WorkflowMethod;
 import java.util.Set;
 
 /**
@@ -17,6 +18,14 @@ import java.util.Set;
  */
 @WorkflowInterface
 public interface GameSessionWorkflow {
+
+  /**
+   * Starts a new game session for the specified user and links it to the provided game save.
+   *
+   * @param sessionId the unique identifier of the user starting the session
+   */
+  @WorkflowMethod
+  void startSession(String sessionId);
 
   /**
    * Updates the currency details associated with the current game session.
