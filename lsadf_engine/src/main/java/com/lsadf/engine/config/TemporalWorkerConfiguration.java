@@ -8,7 +8,7 @@ import com.lsadf.workflow.activity.game.game_save.GameSaveActivity;
 import com.lsadf.workflow.activity.game.inventory.InventoryActivity;
 import com.lsadf.workflow.activity.game.stage.StageActivity;
 import com.lsadf.workflow.game.GameSessionWorkflow;
-import com.lsadf.workflow.game.GameSessionWorkflowConfiguration;
+import com.lsadf.workflow.game.config.GameSessionWorkflowConfiguration;
 import io.temporal.client.WorkflowClient;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
