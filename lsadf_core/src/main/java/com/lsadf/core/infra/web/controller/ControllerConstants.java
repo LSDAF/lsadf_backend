@@ -51,12 +51,6 @@ public final class ControllerConstants {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class Swagger {
 
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static final class Authentications {
-      public static final String BEARER_AUTHENTICATION = "Bearer Authentication";
-      public static final String OAUTH2_AUTHENTICATION = "OAuth2 Authentication";
-    }
-
     public static final String AUTH_CONTROLLER = "Auth Controller";
     public static final String CHARACTERISTICS_CONTROLLER = "Characteristics Controller";
     public static final String CURRENCY_CONTROLLER = "Currency Controller";

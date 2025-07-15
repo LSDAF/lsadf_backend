@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.infra.web.config.swagger;
 
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 
 import com.lsadf.core.infra.web.config.swagger.properties.SwaggerContactProperties;
 import com.lsadf.core.infra.web.config.swagger.properties.SwaggerProperties;
