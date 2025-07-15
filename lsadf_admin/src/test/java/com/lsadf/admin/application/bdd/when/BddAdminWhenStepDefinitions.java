@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
+import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.admin.application.user.AdminUserController;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
@@ -153,7 +154,8 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       String gameSaveId) {
     String fullPath =
         ControllerConstants.ADMIN_GAME_SAVES
-            + ControllerConstants.AdminGameSave.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
+            + AdminGameSaveController.Constants.ApiPaths.GAME_SAVE_ID.replace(
+                "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -201,7 +203,8 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       String gameSaveId) {
     String fullPath =
         ControllerConstants.ADMIN_GAME_SAVES
-            + ControllerConstants.AdminGameSave.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
+            + AdminGameSaveController.Constants.ApiPaths.GAME_SAVE_ID.replace(
+                "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -484,7 +487,8 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           String username) {
     String fullPath =
         ControllerConstants.ADMIN_GAME_SAVES
-            + ControllerConstants.AdminGameSave.USER_GAME_SAVES.replace("{username}", username);
+            + AdminGameSaveController.Constants.ApiPaths.USER_GAME_SAVES.replace(
+                "{username}", username);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -519,7 +523,8 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
     String fullPath =
         ControllerConstants.ADMIN_GAME_SAVES
-            + ControllerConstants.AdminGameSave.GAME_SAVE_ID.replace("{game_save_id}", saveId);
+            + AdminGameSaveController.Constants.ApiPaths.GAME_SAVE_ID.replace(
+                "{game_save_id}", saveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
