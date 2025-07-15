@@ -16,10 +16,12 @@
 package com.lsadf.application.bdd.when;
 
 import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.application.controller.game.inventory.InventoryController.Constants.ApiPaths.CLIENT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
@@ -78,7 +80,8 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       String gameSaveId) {
     String fullPath =
         ControllerConstants.INVENTORY
-            + ControllerConstants.Inventory.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
+            + InventoryController.Constants.ApiPaths.GAME_SAVE_ID.replace(
+                "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -111,7 +114,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
 
     String fullPath =
         ControllerConstants.INVENTORY
-            + ControllerConstants.Inventory.ITEMS.replace("{game_save_id}", gameSaveId);
+            + InventoryController.Constants.ApiPaths.ITEMS.replace("{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -137,9 +140,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
           String clientId, String gameSaveId) {
     String fullPath =
         ControllerConstants.INVENTORY
-            + ControllerConstants.Inventory.CLIENT_ID
-                .replace("{game_save_id}", gameSaveId)
-                .replace("{client_id}", clientId);
+            + CLIENT_ID.replace("{game_save_id}", gameSaveId).replace("{client_id}", clientId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -171,7 +172,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
 
     String fullPath =
         ControllerConstants.INVENTORY
-            + ControllerConstants.Inventory.CLIENT_ID
+            + InventoryController.Constants.ApiPaths.CLIENT_ID
                 .replace("{game_save_id}", gameSaveId)
                 .replace("{client_id}", clientId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);

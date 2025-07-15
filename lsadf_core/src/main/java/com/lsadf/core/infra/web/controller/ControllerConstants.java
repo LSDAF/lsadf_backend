@@ -78,11 +78,4 @@ public final class ControllerConstants {
     public static final String ADMIN_SEARCH_CONTROLLER = "Admin Search Controller";
     public static final String ADMIN_GLOBAL_INFO_CONTROLLER = "Admin Global Info Controller";
   }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class Inventory {
-    public static final String GAME_SAVE_ID = "/{game_save_id}";
-    public static final String ITEMS = "/{game_save_id}/items";
-    public static final String CLIENT_ID = "/{game_save_id}/items/{client_id}";
-  }
 }

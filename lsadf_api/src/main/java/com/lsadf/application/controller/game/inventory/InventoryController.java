@@ -29,6 +29,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.Set;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -57,7 +59,7 @@ public interface InventoryController {
    * @param gameSaveId The UUID of the game save to retrieve the inventory from
    * @return ResponseEntity containing the inventory data
    */
-  @GetMapping(value = ControllerConstants.Inventory.GAME_SAVE_ID)
+  @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Gets the inventory for a game save")
   @ApiResponses(
       value = {
@@ -89,7 +91,7 @@ public interface InventoryController {
    * @param itemRequest The request containing the item details.
    * @return ResponseEntity containing the updated inventory data.
    */
-  @PostMapping(value = ControllerConstants.Inventory.ITEMS)
+  @PostMapping(value = Constants.ApiPaths.ITEMS)
   @Operation(summary = "Creates an item in the inventory of a game save")
   @ApiResponses(
       value = {
@@ -122,7 +124,7 @@ public interface InventoryController {
    * @param itemClientId The client-side identifier of the item to delete
    * @return ResponseEntity containing the updated inventory data
    */
-  @DeleteMapping(value = ControllerConstants.Inventory.CLIENT_ID)
+  @DeleteMapping(value = Constants.ApiPaths.CLIENT_ID)
   @Operation(summary = "Deletes an item from the inventory of a game save")
   @ApiResponses(
       value = {
@@ -156,7 +158,7 @@ public interface InventoryController {
    * @param itemRequest The request containing the updated item details.
    * @return ResponseEntity containing the updated item data.
    */
-  @PutMapping(value = ControllerConstants.Inventory.CLIENT_ID)
+  @PutMapping(value = Constants.ApiPaths.CLIENT_ID)
   @Operation(summary = "Updates an item in the inventory of a game save")
   @ApiResponses(
       value = {
@@ -181,4 +183,14 @@ public interface InventoryController {
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @PathVariable(value = CLIENT_ID) String itemClientId,
       @RequestBody @Valid ItemRequest itemRequest);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String GAME_SAVE_ID = "/{game_save_id}";
+      public static final String ITEMS = "/{game_save_id}/items";
+      public static final String CLIENT_ID = "/{game_save_id}/items/{client_id}";
+    }
+  }
 }
