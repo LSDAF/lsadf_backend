@@ -17,9 +17,11 @@ package com.lsadf.application.controller.game.game_save;
 
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
+import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.application.controller.constant.SwaggerConstants;
 import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -40,13 +42,11 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 /** Controller for game save operations */
-@RequestMapping(value = ControllerConstants.GAME_SAVE)
-@Tag(name = ControllerConstants.Swagger.GAME_SAVE_CONTROLLER)
+@RequestMapping(value = ApiPathConstants.GAME_SAVE)
+@Tag(name = SwaggerConstants.GAME_SAVE_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface GameSaveController {
-
-  String GAME_SAVE_ID = "game_save_id";
 
   /**
    * Generates a new game, returns the generated game save

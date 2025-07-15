@@ -18,7 +18,8 @@ package com.lsadf.application.controller.user;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 
-import com.lsadf.core.infra.web.controller.ControllerConstants;
+import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.application.controller.constant.SwaggerConstants;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.ResponseMessages;
 import com.lsadf.core.infra.web.response.user.UserInfoResponse;
@@ -35,8 +36,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /** Controller for user operations */
-@RequestMapping(value = ControllerConstants.USER)
-@Tag(name = ControllerConstants.Swagger.USER_CONTROLLER)
+@RequestMapping(value = ApiPathConstants.USER)
+@Tag(name = SwaggerConstants.USER_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface UserController {

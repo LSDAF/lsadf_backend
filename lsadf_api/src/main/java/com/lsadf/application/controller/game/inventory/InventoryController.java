@@ -17,8 +17,11 @@ package com.lsadf.application.controller.game.inventory;
 
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.CLIENT_ID;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
 
-import com.lsadf.core.infra.web.controller.ControllerConstants;
+import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.application.controller.constant.SwaggerConstants;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
@@ -40,17 +43,11 @@ import org.springframework.web.bind.annotation.*;
  * Controller interface that handles inventory-related operations for game saves. This controller
  * requires bearer token or OAuth2 authentication for all operations.
  */
-@RequestMapping(value = ControllerConstants.INVENTORY)
-@Tag(name = ControllerConstants.Swagger.INVENTORY_CONTROLLER)
+@RequestMapping(value = ApiPathConstants.INVENTORY)
+@Tag(name = SwaggerConstants.INVENTORY_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface InventoryController {
-
-  /** Path variable name for the game save identifier. */
-  String GAME_SAVE_ID = "game_save_id";
-
-  /** Path variable name for the client-side item identifier. */
-  String CLIENT_ID = "client_id";
 
   /**
    * Retrieves the inventory associated with a specific game save.

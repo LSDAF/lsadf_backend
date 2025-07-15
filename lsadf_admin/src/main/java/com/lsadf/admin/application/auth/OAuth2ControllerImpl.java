@@ -17,12 +17,12 @@ package com.lsadf.admin.application.auth;
 
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -68,7 +68,7 @@ public class OAuth2ControllerImpl extends BaseController implements OAuth2Contro
                 + serverProperties.getHostName()
                 + ":"
                 + serverProperties.getPort()
-                + ControllerConstants.OAUTH2
+                + AdminApiPathConstants.OAUTH2
                 + Constants.ApiPaths.CALLBACK;
 
     String bodyString =

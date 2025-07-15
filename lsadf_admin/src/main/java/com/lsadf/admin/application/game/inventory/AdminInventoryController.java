@@ -17,9 +17,12 @@ package com.lsadf.admin.application.game.inventory;
 
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.CLIENT_ID;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
 
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
+import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
@@ -44,16 +47,11 @@ import org.springframework.web.bind.annotation.*;
  * <p>This interface includes operations secured with authentication and authorization, requiring
  * valid JWT tokens and proper permissions.
  */
-@RequestMapping(value = ControllerConstants.ADMIN_INVENTORIES)
-@Tag(name = ControllerConstants.Swagger.ADMIN_INVENTORIES_CONTROLLER)
+@RequestMapping(value = AdminApiPathConstants.ADMIN_INVENTORY)
+@Tag(name = AdminSwaggerConstants.ADMIN_INVENTORY_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface AdminInventoryController extends Controller {
-  /** Path variable name for the game save identifier. */
-  String GAME_SAVE_ID = "game_save_id";
-
-  /** Path variable name for the client-side item identifier. */
-  String CLIENT_ID = "client_id";
 
   /**
    * Retrieves the inventory associated with a specific game save.
@@ -223,8 +221,8 @@ public interface AdminInventoryController extends Controller {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class ApiPaths {
       public static final String GAME_SAVE_ID = "/{game_save_id}";
-      public static final String ITEMS = "/{game_save_id}/items";
-      public static final String CLIENT_ID = "/{game_save_id}/items/{client_id}";
+      public static final String ITEMS = "/{game_save_id}/item";
+      public static final String CLIENT_ID = "/{game_save_id}/item/{client_id}";
     }
   }
 }

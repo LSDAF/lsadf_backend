@@ -17,12 +17,13 @@ package com.lsadf.admin.application.user;
 
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Params.*;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
+import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
@@ -43,8 +44,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(value = ControllerConstants.ADMIN_USERS)
-@Tag(name = ControllerConstants.Swagger.ADMIN_USERS_CONTROLLER)
+@RequestMapping(value = AdminApiPathConstants.ADMIN_USER)
+@Tag(name = AdminSwaggerConstants.ADMIN_USER_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface AdminUserController extends Controller {

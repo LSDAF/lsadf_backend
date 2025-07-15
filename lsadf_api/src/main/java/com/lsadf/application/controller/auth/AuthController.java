@@ -18,8 +18,9 @@ package com.lsadf.application.controller.auth;
 import static com.lsadf.application.controller.auth.AuthController.Constants.ApiPaths.LOGIN;
 import static com.lsadf.application.controller.auth.AuthController.Constants.ApiPaths.REFRESH;
 
+import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.application.controller.constant.SwaggerConstants;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -34,8 +35,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping(value = ControllerConstants.AUTH)
-@Tag(name = ControllerConstants.Swagger.AUTH_CONTROLLER)
+@RequestMapping(value = ApiPathConstants.AUTH)
+@Tag(name = SwaggerConstants.AUTH_CONTROLLER)
 public interface AuthController {
 
   /**

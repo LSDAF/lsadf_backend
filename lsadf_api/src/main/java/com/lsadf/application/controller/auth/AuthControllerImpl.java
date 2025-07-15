@@ -17,12 +17,12 @@ package com.lsadf.application.controller.auth;
 
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
+import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -145,7 +145,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
                 + serverProperties.getHostName()
                 + ":"
                 + serverProperties.getPort()
-                + ControllerConstants.OAUTH2
+                + ApiPathConstants.OAUTH2
                 + OAuth2Controller.Constants.ApiPaths.CALLBACK;
     sb.append("&redirect_uri=").append(encode(redirectUri));
     return sb.toString();

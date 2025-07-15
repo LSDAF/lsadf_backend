@@ -24,11 +24,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.admin.application.user.AdminUserController;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.common.Filter;
 import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.request.game.game_save.update.AdminGameSaveUpdateRequest;
@@ -56,7 +56,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the admin endpoint to get the global info$")
   public void when_the_user_requests_the_admin_endpoint_for_global_info() {
-    String fullPath = ControllerConstants.ADMIN_GLOBAL_INFO;
+    String fullPath = AdminApiPathConstants.ADMIN_GLOBAL_INFO;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -79,7 +79,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   @When("^the user requests the admin endpoint to get all the users ordered by (.*)$")
   public void when_the_user_requests_the_admin_endpoint_to_get_all_the_users_ordered_by(
       String orderBy) {
-    String fullPath = ControllerConstants.ADMIN_USERS + "?order_by=" + orderBy;
+    String fullPath = AdminApiPathConstants.ADMIN_USER + "?order_by=" + orderBy;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -104,7 +104,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   @When("^the user requests the admin endpoint to get all the game saves ordered by (.*)$")
   public void when_the_user_requests_the_admin_endpoint_to_get_all_save_games_ordered_by(
       String orderBy) {
-    String fullPath = ControllerConstants.ADMIN_GAME_SAVES + "?order_by=" + orderBy;
+    String fullPath = AdminApiPathConstants.ADMIN_GAME_SAVE + "?order_by=" + orderBy;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -129,7 +129,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   @And("^the user requests the admin endpoint to delete the user with id (.*)$")
   public void when_the_user_requests_the_admin_endpoint_to_delete_the_user_with_id(String userId) {
     String fullPath =
-        ControllerConstants.ADMIN_USERS
+        AdminApiPathConstants.ADMIN_USER
             + AdminUserController.Constants.ApiPaths.USER_ID.replace("{user_id}", userId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -153,7 +153,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   public void when_the_user_requests_the_admin_endpoint_to_delete_the_game_save_with_id(
       String gameSaveId) {
     String fullPath =
-        ControllerConstants.ADMIN_GAME_SAVES
+        AdminApiPathConstants.ADMIN_GAME_SAVE
             + AdminGameSaveController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -177,7 +177,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   @When("^the user requests the admin endpoint to get the user with the following id (.*)$")
   public void when_the_user_requests_the_admin_endpoint_to_get_the_user_with_the_following_id(
       String userId) {
-    String fullPath = ControllerConstants.ADMIN_USERS + USER_ID.replace("{user_id}", userId);
+    String fullPath = AdminApiPathConstants.ADMIN_USER + USER_ID.replace("{user_id}", userId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -202,7 +202,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   public void when_the_user_requests_the_admin_endpoint_to_get_the_game_save_with_the_following_id(
       String gameSaveId) {
     String fullPath =
-        ControllerConstants.ADMIN_GAME_SAVES
+        AdminApiPathConstants.ADMIN_GAME_SAVE
             + AdminGameSaveController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -230,7 +230,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   public void when_the_user_requests_the_admin_endpoint_to_get_the_user_with_the_following_username(
       String username) {
     String fullPath =
-        ControllerConstants.ADMIN_USERS
+        AdminApiPathConstants.ADMIN_USER
             + AdminUserController.Constants.ApiPaths.USERNAME.replace("{username}", username);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -259,7 +259,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           String orderBy, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    String fullPath = ControllerConstants.ADMIN_SEARCH + SEARCH_USERS + "?order_by=" + orderBy;
+    String fullPath = AdminApiPathConstants.ADMIN_SEARCH + SEARCH_USERS + "?order_by=" + orderBy;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
 
     List<Filter> filters = rows.stream().map(BddUtils::mapToFilter).toList();
@@ -291,7 +291,8 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           String orderBy, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    String fullPath = ControllerConstants.ADMIN_SEARCH + SEARCH_GAME_SAVES + "?order_by=" + orderBy;
+    String fullPath =
+        AdminApiPathConstants.ADMIN_SEARCH + SEARCH_GAME_SAVES + "?order_by=" + orderBy;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
 
     List<Filter> filters = rows.stream().map(BddUtils::mapToFilter).toList();
@@ -326,7 +327,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
         BddUtils.mapToAdminUserUpdateRequest(rows.get(0));
 
     String fullPath =
-        ControllerConstants.ADMIN_USERS
+        AdminApiPathConstants.ADMIN_USER
             + AdminUserController.Constants.ApiPaths.USER_ID.replace("{user_id}", id);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
 
@@ -357,7 +358,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    String fullPath = ControllerConstants.ADMIN_USERS;
+    String fullPath = AdminApiPathConstants.ADMIN_USER;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
 
     List<AdminUserCreationRequest> requests =
@@ -388,7 +389,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the admin endpoint to toggle the cache status$")
   public void when_the_user_requests_the_admin_endpoint_to_toggle_the_cache_status() {
-    String fullPath = ControllerConstants.ADMIN_CACHE + TOGGLE;
+    String fullPath = AdminApiPathConstants.ADMIN_CACHE + TOGGLE;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -408,7 +409,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the admin endpoint to get the cache status$")
   public void when_the_user_requests_the_admin_endpoint_to_get_the_cache_status() {
-    String fullPath = ControllerConstants.ADMIN_CACHE + ENABLED;
+    String fullPath = AdminApiPathConstants.ADMIN_CACHE + ENABLED;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -428,7 +429,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the admin endpoint to flush and clear the cache$")
   public void when_the_user_requests_the_admin_endpoint_to_clear_the_cache() {
-    String fullPath = ControllerConstants.ADMIN_CACHE + FLUSH;
+    String fullPath = AdminApiPathConstants.ADMIN_CACHE + FLUSH;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -452,7 +453,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    String fullPath = ControllerConstants.ADMIN_GAME_SAVES;
+    String fullPath = AdminApiPathConstants.ADMIN_GAME_SAVE;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
 
     List<AdminGameSaveCreationRequest> requests =
@@ -486,7 +487,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       when_the_user_requests_the_admin_endpoint_to_get_all_the_game_saves_of_the_user_with_the_following_username(
           String username) {
     String fullPath =
-        ControllerConstants.ADMIN_GAME_SAVES
+        AdminApiPathConstants.ADMIN_GAME_SAVE
             + AdminGameSaveController.Constants.ApiPaths.USER_GAME_SAVES.replace(
                 "{username}", username);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -522,7 +523,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
     AdminGameSaveUpdateRequest updateRequest = BddUtils.mapToAdminGameSaveUpdateRequest(row);
 
     String fullPath =
-        ControllerConstants.ADMIN_GAME_SAVES
+        AdminApiPathConstants.ADMIN_GAME_SAVE
             + AdminGameSaveController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", saveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);

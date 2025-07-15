@@ -20,9 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.inventory.AdminInventoryController;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
@@ -49,7 +49,7 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
   public void when_the_user_requests_the_admin_endpoint_to_get_the_inventory_for_game_save_with_id(
       String gameSaveId) {
     String fullPath =
-        ControllerConstants.ADMIN_INVENTORIES
+        AdminApiPathConstants.ADMIN_INVENTORY
             + AdminInventoryController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -83,7 +83,7 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
     ItemRequest itemRequest = BddUtils.mapToItemRequest(row);
 
     String fullPath =
-        ControllerConstants.ADMIN_INVENTORIES
+        AdminApiPathConstants.ADMIN_INVENTORY
             + AdminInventoryController.Constants.ApiPaths.ITEMS.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -114,7 +114,7 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
       when_the_user_requests_the_admin_endpoint_to_delete_an_item_with_client_id_from_the_inventory_for_game_save_with_id(
           String itemClientId, String gameSaveId) {
     String fullPath =
-        ControllerConstants.ADMIN_INVENTORIES
+        AdminApiPathConstants.ADMIN_INVENTORY
             + AdminInventoryController.Constants.ApiPaths.CLIENT_ID
                 .replace("{game_save_id}", gameSaveId)
                 .replace("{client_id}", itemClientId);
@@ -148,7 +148,7 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
     ItemRequest itemRequest = BddUtils.mapToItemRequest(row);
 
     String fullPath =
-        ControllerConstants.ADMIN_INVENTORIES
+        AdminApiPathConstants.ADMIN_INVENTORY
             + AdminInventoryController.Constants.ApiPaths.CLIENT_ID
                 .replace("{game_save_id}", gameSaveId)
                 .replace("{client_id}", itemClientId);
@@ -178,7 +178,7 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
       when_the_user_requests_the_admin_endpoint_to_clear_the_inventory_for_game_save_with_id(
           String gameSaveId) {
     String fullPath =
-        ControllerConstants.ADMIN_INVENTORIES
+        AdminApiPathConstants.ADMIN_INVENTORY
             + AdminInventoryController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);

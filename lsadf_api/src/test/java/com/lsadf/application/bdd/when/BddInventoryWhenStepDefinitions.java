@@ -21,13 +21,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
@@ -79,7 +79,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   public void when_the_user_requests_the_endpoint_to_get_the_inventory_of_the_game_save_with_id(
       String gameSaveId) {
     String fullPath =
-        ControllerConstants.INVENTORY
+        ApiPathConstants.INVENTORY
             + InventoryController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -113,7 +113,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     ItemRequest itemRequest = BddUtils.mapToItemRequest(row);
 
     String fullPath =
-        ControllerConstants.INVENTORY
+        ApiPathConstants.INVENTORY
             + InventoryController.Constants.ApiPaths.ITEMS.replace("{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -139,7 +139,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       when_the_user_requests_the_endpoint_to_delete_an_item_with_id_in_the_inventory_of_the_game_save_with_id(
           String clientId, String gameSaveId) {
     String fullPath =
-        ControllerConstants.INVENTORY
+        ApiPathConstants.INVENTORY
             + CLIENT_ID.replace("{game_save_id}", gameSaveId).replace("{client_id}", clientId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -171,7 +171,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     ItemRequest itemRequest = BddUtils.mapToItemRequest(row);
 
     String fullPath =
-        ControllerConstants.INVENTORY
+        ApiPathConstants.INVENTORY
             + InventoryController.Constants.ApiPaths.CLIENT_ID
                 .replace("{game_save_id}", gameSaveId)
                 .replace("{client_id}", clientId);

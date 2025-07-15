@@ -15,10 +15,11 @@
  */
 package com.lsadf.admin.application.unit.controller;
 
+import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.search.AdminSearchController;
 import com.lsadf.admin.application.search.AdminSearchControllerImpl;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.request.common.Filter;
 import com.lsadf.core.infra.web.request.search.SearchRequest;
@@ -193,7 +194,7 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param(ControllerConstants.Params.ORDER_BY, UserSortingParameter.ID_DESC.name()))
+                .param(ORDER_BY, UserSortingParameter.ID_DESC.name()))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -212,7 +213,7 @@ class AdminSearchControllerTests {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .param(
-                    ControllerConstants.Params.ORDER_BY,
+                    ORDER_BY,
                     Collections.singletonList(UserSortingParameter.ID_DESC.name())
                         .toArray(new String[0])))
         // then
@@ -232,7 +233,7 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param(ControllerConstants.Params.ORDER_BY, "INVALID_ORDER_BY"))
+                .param(ORDER_BY, "INVALID_ORDER_BY"))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -250,7 +251,7 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/game_saves")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param(ControllerConstants.Params.ORDER_BY, "INVALID_ORDER_BY"))
+                .param(ORDER_BY, "INVALID_ORDER_BY"))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }

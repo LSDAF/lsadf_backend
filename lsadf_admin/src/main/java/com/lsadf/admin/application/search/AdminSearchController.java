@@ -17,12 +17,13 @@ package com.lsadf.admin.application.search;
 
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Params.ORDER_BY;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
+import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.search.SearchRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -44,8 +45,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@RequestMapping(value = ControllerConstants.ADMIN_SEARCH)
-@Tag(name = ControllerConstants.Swagger.ADMIN_SEARCH_CONTROLLER)
+@RequestMapping(value = AdminApiPathConstants.ADMIN_SEARCH)
+@Tag(name = AdminSwaggerConstants.ADMIN_SEARCH_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface AdminSearchController extends Controller {

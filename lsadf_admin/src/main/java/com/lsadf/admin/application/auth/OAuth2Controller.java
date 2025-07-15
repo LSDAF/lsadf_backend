@@ -15,8 +15,10 @@
  */
 package com.lsadf.admin.application.auth;
 
+import static com.lsadf.admin.application.constant.AdminSwaggerConstants.OAUTH_2_CONTROLLER;
+
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -27,8 +29,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping(value = ControllerConstants.OAUTH2)
-@Tag(name = ControllerConstants.Swagger.OAUTH_2_CONTROLLER)
+@RequestMapping(value = AdminApiPathConstants.OAUTH2)
+@Tag(name = OAUTH_2_CONTROLLER)
 public interface OAuth2Controller {
 
   String CODE = "code";

@@ -16,11 +16,12 @@
 package com.lsadf.admin.application.cache;
 
 import static com.lsadf.admin.application.cache.AdminCacheController.Constants.ApiPaths.*;
+import static com.lsadf.admin.application.constant.AdminSwaggerConstants.ADMIN_CACHE_CONTROLLER;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.ResponseMessages;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,8 +37,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping(value = ControllerConstants.ADMIN_CACHE)
-@Tag(name = ControllerConstants.Swagger.ADMIN_CACHE_CONTROLLER)
+@RequestMapping(value = AdminApiPathConstants.ADMIN_CACHE)
+@Tag(name = ADMIN_CACHE_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface AdminCacheController extends Controller {

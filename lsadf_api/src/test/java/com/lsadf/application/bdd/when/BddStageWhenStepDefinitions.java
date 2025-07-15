@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.stage.StageController;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.stage.StageResponse;
@@ -78,7 +78,7 @@ public class BddStageWhenStepDefinitions extends BddLoader {
     StageRequest request = BddUtils.mapToStageRequest(data.get(0));
 
     String fullPath =
-        ControllerConstants.STAGE
+        ApiPathConstants.STAGE
             + StageController.Constants.ApiPaths.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -104,7 +104,7 @@ public class BddStageWhenStepDefinitions extends BddLoader {
   public void when_the_user_requests_the_endpoint_to_get_the_stages_of_the_game_save_with_id(
       String gameSaveId) {
     String fullPath =
-        ControllerConstants.STAGE
+        ApiPathConstants.STAGE
             + StageController.Constants.ApiPaths.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {

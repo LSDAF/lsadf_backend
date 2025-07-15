@@ -17,11 +17,12 @@ package com.lsadf.admin.application.game;
 
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Params.*;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
+import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.request.game.game_save.update.AdminGameSaveUpdateRequest;
@@ -43,8 +44,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(value = ControllerConstants.ADMIN_GAME_SAVES)
-@Tag(name = ControllerConstants.Swagger.ADMIN_GAME_SAVES_CONTROLLER)
+@RequestMapping(value = AdminApiPathConstants.ADMIN_GAME_SAVE)
+@Tag(name = AdminSwaggerConstants.ADMIN_GAME_SAVE_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface AdminGameSaveController extends Controller {

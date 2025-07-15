@@ -15,11 +15,12 @@
  */
 package com.lsadf.admin.application.unit.controller;
 
+import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.admin.application.game.AdminGameSaveControllerImpl;
 import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
@@ -95,7 +96,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                    "/api/v1/admin/game_saves/id/{game_save_id}",
+                    "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -114,7 +115,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                    "/api/v1/admin/game_saves/id/{game_save_id}", "testtesttest")
+                    "/api/v1/admin/game_save/id/{game_save_id}", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -132,7 +133,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                    "/api/v1/admin/game_saves/id/{game_save_id}",
+                    "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -159,7 +160,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/game_saves")
+            MockMvcRequestBuilders.post("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -185,7 +186,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/game_saves")
+            MockMvcRequestBuilders.post("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -299,7 +300,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/game_saves")
+            MockMvcRequestBuilders.post("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -318,7 +319,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/game_saves")
+            MockMvcRequestBuilders.post("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -377,7 +378,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/game_saves")
+            MockMvcRequestBuilders.post("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -391,7 +392,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/game_saves/id/{game_save_id}",
+                    "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -407,7 +408,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/game_saves/id/{game_save_id}",
+                    "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -425,7 +426,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/game_saves/id/{game_save_id}", "testtesttest")
+            MockMvcRequestBuilders.get("/api/v1/admin/game_save/id/{game_save_id}", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -443,7 +444,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/game_saves/id/{game_save_id}",
+                    "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -457,7 +458,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/game_saves")
+            MockMvcRequestBuilders.get("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -471,7 +472,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/game_saves")
+            MockMvcRequestBuilders.get("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -488,8 +489,8 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/game_saves")
-                .param(ControllerConstants.Params.ORDER_BY, "INVALID_ORDER_BY")
+            MockMvcRequestBuilders.get("/api/v1/admin/game_save")
+                .param(ORDER_BY, "INVALID_ORDER_BY")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -506,7 +507,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/game_saves")
+            MockMvcRequestBuilders.get("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -523,10 +524,9 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/game_saves")
+            MockMvcRequestBuilders.get("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .param(
-                    ControllerConstants.Params.ORDER_BY, GameSaveSortingParameter.NICKNAME.name())
+                .param(ORDER_BY, GameSaveSortingParameter.NICKNAME.name())
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
@@ -539,7 +539,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/game_saves/user/{username}", "paul.ochon@test.com")
+                    "/api/v1/admin/game_save/user/{username}", "paul.ochon@test.com")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -554,7 +554,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/game_saves/user/{username}", "paul.ochon@test.com")
+                    "/api/v1/admin/game_save/user/{username}", "paul.ochon@test.com")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -572,7 +572,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/game_saves/user/{username}", "paul.ochon@test.com")
+                    "/api/v1/admin/game_save/user/{username}", "paul.ochon@test.com")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -589,7 +589,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/game_saves/user/{username}", "testtesttest")
+            MockMvcRequestBuilders.get("/api/v1/admin/game_save/user/{username}", "testtesttest")
                 .content(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -607,7 +607,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    "/api/v1/admin/game_saves/{game_save_id}",
+                    "/api/v1/admin/game_save/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -626,7 +626,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    "/api/v1/admin/game_saves/{game_save_id}",
+                    "/api/v1/admin/game_save/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -647,8 +647,7 @@ class AdminGameSaveControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post(
-                    "/api/v1/admin/game_saves/id/{game_save_id}", "testtesttest")
+            MockMvcRequestBuilders.post("/api/v1/admin/game_save/id/{game_save_id}", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -676,7 +675,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    "/api/v1/admin/game_saves/id/{game_save_id}",
+                    "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -697,7 +696,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    "/api/v1/admin/game_saves/id/{game_save_id}",
+                    "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
@@ -719,7 +718,7 @@ class AdminGameSaveControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    "/api/v1/admin/game_saves/id/{game_save_id}",
+                    "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
