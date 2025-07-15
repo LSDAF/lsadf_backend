@@ -16,6 +16,7 @@
 package com.lsadf.application.bdd.when;
 
 import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.application.controller.auth.AuthController.Constants.ApiPaths.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.awaitility.Awaitility.await;
 
@@ -97,7 +98,7 @@ public class BddWhenStepDefinitions extends BddLoader {
   @When("^the user logs in with the following refresh token (.*)$")
   public void logInWithRefreshToken(String refreshToken) {
     try {
-      String fullPath = ControllerConstants.AUTH + ControllerConstants.Auth.REFRESH;
+      String fullPath = ControllerConstants.AUTH + REFRESH;
 
       String url = BddUtils.buildUrl(this.serverPort, fullPath);
       UserRefreshLoginRequest userRefreshLoginRequest = new UserRefreshLoginRequest(refreshToken);
@@ -131,7 +132,7 @@ public class BddWhenStepDefinitions extends BddLoader {
       }
 
       Map<String, String> row = rows.get(0);
-      String fullPath = ControllerConstants.AUTH + ControllerConstants.Auth.LOGIN;
+      String fullPath = ControllerConstants.AUTH + LOGIN;
 
       String url = BddUtils.buildUrl(this.serverPort, fullPath);
       UserLoginRequest userLoginRequest = BddUtils.mapToUserLoginRequest(row);
@@ -167,7 +168,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
     SimpleUserCreationRequest simpleUserCreationRequest = BddUtils.mapToUserCreationRequest(row);
-    String fullPath = ControllerConstants.AUTH + ControllerConstants.Auth.REGISTER;
+    String fullPath = ControllerConstants.AUTH + REGISTER;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     HttpEntity<SimpleUserCreationRequest> request =

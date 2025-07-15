@@ -110,13 +110,4 @@ public final class ControllerConstants {
     public static final String ME = "/me";
     public static final String UPDATE_NICKNAME = "/{game_save_id}/nickname";
   }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class Auth {
-    public static final String LOGIN = "/login";
-    public static final String REFRESH = "/refresh";
-    public static final String LOGOUT = "/logout";
-    public static final String REGISTER = "/register";
-    public static final String VALIDATE_TOKEN = "/validate";
-  }
 }

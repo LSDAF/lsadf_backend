@@ -15,6 +15,9 @@
  */
 package com.lsadf.application.controller.auth;
 
+import static com.lsadf.application.controller.auth.AuthController.Constants.ApiPaths.LOGIN;
+import static com.lsadf.application.controller.auth.AuthController.Constants.ApiPaths.REFRESH;
+
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
@@ -24,6 +27,8 @@ import com.lsadf.core.infra.web.response.ResponseMessages;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +43,7 @@ public interface AuthController {
    *
    * @return the JWT object containing the token
    */
-  @GetMapping(value = ControllerConstants.Auth.LOGIN)
+  @GetMapping(value = LOGIN)
   @Operation(
       summary = "Logins a user, returns a JWT object contaning the token to request the API",
       hidden = true)
@@ -59,7 +64,7 @@ public interface AuthController {
    * @param userLoginRequest the user login request containing the username and the password
    * @return the JWT object containing the token
    */
-  @PostMapping(value = ControllerConstants.Auth.LOGIN)
+  @PostMapping(value = LOGIN)
   @Operation(summary = "Logins a user, returns a JWT object contaning the token to request the API")
   @ApiResponses(
       value = {
@@ -85,7 +90,7 @@ public interface AuthController {
    *     refresh token
    * @return the new JWT object containing the new token
    */
-  @PostMapping(value = ControllerConstants.Auth.REFRESH)
+  @PostMapping(value = REFRESH)
   @Operation(summary = "Refreshes the token of a user")
   @ApiResponses(
       value = {
@@ -104,4 +109,16 @@ public interface AuthController {
       })
   ResponseEntity<ApiResponse<JwtAuthenticationResponse>> refresh(
       UserRefreshLoginRequest userRefreshLoginRequest);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String LOGIN = "/login";
+      public static final String REFRESH = "/refresh";
+      public static final String LOGOUT = "/logout";
+      public static final String REGISTER = "/register";
+      public static final String VALIDATE_TOKEN = "/validate";
+    }
+  }
 }
