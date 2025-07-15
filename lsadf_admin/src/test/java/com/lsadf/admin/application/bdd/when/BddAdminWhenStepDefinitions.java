@@ -17,6 +17,8 @@ package com.lsadf.admin.application.bdd.when;
 
 import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.*;
 import static com.lsadf.admin.application.cache.AdminCacheController.Constants.ApiPaths.*;
+import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_GAME_SAVES;
+import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_USERS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
@@ -254,11 +256,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           String orderBy, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    String fullPath =
-        ControllerConstants.ADMIN_SEARCH
-            + ControllerConstants.AdminSearch.SEARCH_USERS
-            + "?order_by="
-            + orderBy;
+    String fullPath = ControllerConstants.ADMIN_SEARCH + SEARCH_USERS + "?order_by=" + orderBy;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
 
     List<Filter> filters = rows.stream().map(BddUtils::mapToFilter).toList();
@@ -290,11 +288,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           String orderBy, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    String fullPath =
-        ControllerConstants.ADMIN_SEARCH
-            + ControllerConstants.AdminSearch.SEARCH_GAME_SAVES
-            + "?order_by="
-            + orderBy;
+    String fullPath = ControllerConstants.ADMIN_SEARCH + SEARCH_GAME_SAVES + "?order_by=" + orderBy;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
 
     List<Filter> filters = rows.stream().map(BddUtils::mapToFilter).toList();

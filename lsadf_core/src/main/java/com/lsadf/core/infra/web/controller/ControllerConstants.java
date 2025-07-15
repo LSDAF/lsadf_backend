@@ -99,12 +99,6 @@ public final class ControllerConstants {
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class AdminSearch {
-    public static final String SEARCH_GAME_SAVES = "/game_saves";
-    public static final String SEARCH_USERS = "/users";
-  }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class GameSave {
     public static final String GENERATE = "/generate";
     public static final String ME = "/me";

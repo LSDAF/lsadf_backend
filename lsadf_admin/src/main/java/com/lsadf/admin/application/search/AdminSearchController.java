@@ -34,6 +34,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -74,7 +76,7 @@ public interface AdminSearchController extends Controller {
             responseCode = "500",
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  @PostMapping(value = ControllerConstants.AdminSearch.SEARCH_USERS)
+  @PostMapping(value = Constants.ApiPaths.SEARCH_USERS)
   @Operation(summary = "Searches for users in function of the give search criteria")
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<List<User>>> searchUsers(
@@ -108,11 +110,20 @@ public interface AdminSearchController extends Controller {
             responseCode = "500",
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  @PostMapping(value = ControllerConstants.AdminSearch.SEARCH_GAME_SAVES)
+  @PostMapping(value = Constants.ApiPaths.SEARCH_GAME_SAVES)
   @Operation(summary = "Searches for game saves in function of the give search criteria")
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<List<GameSaveResponse>>> searchGameSaves(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody(required = false) SearchRequest searchRequest,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String SEARCH_GAME_SAVES = "/game_saves";
+      public static final String SEARCH_USERS = "/users";
+    }
+  }
 }
