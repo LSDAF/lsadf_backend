@@ -22,6 +22,7 @@ import static org.awaitility.Awaitility.await;
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.bdd.CacheEntryType;
+import com.lsadf.application.controller.user.UserController;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
@@ -316,7 +317,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to get his UserInfo with no token$")
   public void when_the_user_requests_the_endpoint_to_get_his_user_info_with_no_token() {
-    String fullPath = ControllerConstants.USER + ControllerConstants.User.ME;
+    String fullPath = ControllerConstants.USER + UserController.Constants.ApiPaths.ME;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -335,7 +336,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to get his UserInfo$")
   public void when_the_user_requests_the_endpoint_to_get_his_user_info() {
-    String fullPath = ControllerConstants.USER + ControllerConstants.User.ME;
+    String fullPath = ControllerConstants.USER + UserController.Constants.ApiPaths.ME;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -374,25 +375,6 @@ public class BddWhenStepDefinitions extends BddLoader {
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
       ApiResponse<List<GameSaveResponse>> body = result.getBody();
       gameSaveResponseListStack.push(body.getData());
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^the user requests the endpoint to get his GameSaves with no token$")
-  public void when_the_user_requests_the_endpoint_to_get_his_game_saves_with_no_token() {
-    String fullPath = ControllerConstants.USER + ControllerConstants.User.USER_ME_GAME_SAVES;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-      HttpEntity<Void> request = new HttpEntity<>(new HttpHeaders());
-      ResponseEntity<ApiResponse<List<GameSaveResponse>>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
-      ApiResponse<List<GameSaveResponse>> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 

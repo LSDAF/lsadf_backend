@@ -26,6 +26,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -46,7 +48,7 @@ public interface UserController {
    * @return a ResponseEntity containing a ApiResponse object with user information encapsulated as
    *     a GlobalInfoResponse. The response status and message will also be included.
    */
-  @GetMapping(value = ControllerConstants.User.ME)
+  @GetMapping(value = Constants.ApiPaths.ME)
   @Operation(summary = "Gets the logged UserInfo user info")
   @ApiResponses(
       value = {
@@ -67,4 +69,12 @@ public interface UserController {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   ResponseEntity<ApiResponse<UserInfoResponse>> getUserInfo(@AuthenticationPrincipal Jwt jwt);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String ME = "/me";
+    }
+  }
 }
