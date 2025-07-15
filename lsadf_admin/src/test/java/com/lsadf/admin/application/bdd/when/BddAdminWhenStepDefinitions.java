@@ -16,6 +16,7 @@
 package com.lsadf.admin.application.bdd.when;
 
 import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.admin.application.cache.AdminCacheController.Constants.ApiPaths.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
@@ -390,7 +391,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the admin endpoint to toggle the cache status$")
   public void when_the_user_requests_the_admin_endpoint_to_toggle_the_cache_status() {
-    String fullPath = ControllerConstants.ADMIN_CACHE + ControllerConstants.AdminCache.TOGGLE;
+    String fullPath = ControllerConstants.ADMIN_CACHE + TOGGLE;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -410,7 +411,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the admin endpoint to get the cache status$")
   public void when_the_user_requests_the_admin_endpoint_to_get_the_cache_status() {
-    String fullPath = ControllerConstants.ADMIN_CACHE + ControllerConstants.AdminCache.ENABLED;
+    String fullPath = ControllerConstants.ADMIN_CACHE + ENABLED;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -430,7 +431,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the admin endpoint to flush and clear the cache$")
   public void when_the_user_requests_the_admin_endpoint_to_clear_the_cache() {
-    String fullPath = ControllerConstants.ADMIN_CACHE + ControllerConstants.AdminCache.FLUSH;
+    String fullPath = ControllerConstants.ADMIN_CACHE + FLUSH;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();

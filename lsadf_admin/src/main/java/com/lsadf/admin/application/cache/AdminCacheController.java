@@ -15,6 +15,7 @@
  */
 package com.lsadf.admin.application.cache;
 
+import static com.lsadf.admin.application.cache.AdminCacheController.Constants.ApiPaths.*;
 import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
 
@@ -26,6 +27,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -45,7 +48,7 @@ public interface AdminCacheController extends Controller {
    * @param jwt the requester JWT
    * @return empty response
    */
-  @PutMapping(value = ControllerConstants.AdminCache.FLUSH)
+  @PutMapping(value = FLUSH)
   @ApiResponses(
       value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -70,7 +73,7 @@ public interface AdminCacheController extends Controller {
    * @param jwt the requester JWT
    * @return true if the cache is enabled, false otherwise
    */
-  @GetMapping(value = ControllerConstants.AdminCache.ENABLED)
+  @GetMapping(value = ENABLED)
   @ApiResponses(
       value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -95,7 +98,7 @@ public interface AdminCacheController extends Controller {
    * @param jwt the requester JWT
    * @return empty response
    */
-  @PutMapping(value = ControllerConstants.AdminCache.TOGGLE)
+  @PutMapping(value = TOGGLE)
   @ApiResponses(
       value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -113,4 +116,14 @@ public interface AdminCacheController extends Controller {
       })
   @Operation(summary = "Enables/Disables the cache")
   ResponseEntity<ApiResponse<Boolean>> toggleRedisCacheEnabling(@AuthenticationPrincipal Jwt jwt);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String FLUSH = "/flush";
+      public static final String TOGGLE = "/toggle";
+      public static final String ENABLED = "/enabled";
+    }
+  }
 }

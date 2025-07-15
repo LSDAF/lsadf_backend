@@ -105,13 +105,6 @@ public final class ControllerConstants {
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class AdminCache {
-    public static final String FLUSH = "/flush";
-    public static final String TOGGLE = "/toggle";
-    public static final String ENABLED = "/enabled";
-  }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class GameSave {
     public static final String GENERATE = "/generate";
     public static final String ME = "/me";
