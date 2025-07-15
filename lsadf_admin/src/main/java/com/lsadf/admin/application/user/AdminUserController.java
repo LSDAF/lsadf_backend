@@ -75,7 +75,7 @@ public interface AdminUserController extends Controller {
             responseCode = "500",
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  @PostMapping(value = ControllerConstants.AdminUser.USER_ID)
+  @PostMapping(value = Constants.ApiPaths.USER_ID)
   @Operation(summary = "Updates a user")
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<User>> updateUser(
@@ -141,7 +141,7 @@ public interface AdminUserController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Deletes a user")
-  @DeleteMapping(value = ControllerConstants.AdminUser.USER_ID)
+  @DeleteMapping(value = Constants.ApiPaths.USER_ID)
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<Void>> deleteUser(
       @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) @Uuid String userId);
@@ -153,7 +153,7 @@ public interface AdminUserController extends Controller {
    * @param username the email of the user
    * @return the user
    */
-  @GetMapping(value = ControllerConstants.AdminUser.USERNAME)
+  @GetMapping(value = Constants.ApiPaths.USERNAME)
   @ApiResponses(
       value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -185,7 +185,7 @@ public interface AdminUserController extends Controller {
    * @param userId the id of the user
    * @return the user details
    */
-  @GetMapping(value = ControllerConstants.AdminUser.USER_ID)
+  @GetMapping(value = Constants.ApiPaths.USER_ID)
   @ApiResponses(
       value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -241,6 +241,8 @@ public interface AdminUserController extends Controller {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class ApiPaths {
       public static final String ME = "/me";
+      public static final String USER_ID = "/id/{user_id}";
+      public static final String USERNAME = "/username/{username}";
     }
   }
 }

@@ -19,10 +19,12 @@ import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.*;
 import static com.lsadf.admin.application.cache.AdminCacheController.Constants.ApiPaths.*;
 import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_GAME_SAVES;
 import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_USERS;
+import static com.lsadf.admin.application.user.AdminUserController.Constants.ApiPaths.USER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
+import com.lsadf.admin.application.user.AdminUserController;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.controller.ControllerConstants;
@@ -127,7 +129,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   public void when_the_user_requests_the_admin_endpoint_to_delete_the_user_with_id(String userId) {
     String fullPath =
         ControllerConstants.ADMIN_USERS
-            + ControllerConstants.AdminUser.USER_ID.replace("{user_id}", userId);
+            + AdminUserController.Constants.ApiPaths.USER_ID.replace("{user_id}", userId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -173,9 +175,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   @When("^the user requests the admin endpoint to get the user with the following id (.*)$")
   public void when_the_user_requests_the_admin_endpoint_to_get_the_user_with_the_following_id(
       String userId) {
-    String fullPath =
-        ControllerConstants.ADMIN_USERS
-            + ControllerConstants.AdminUser.USER_ID.replace("{user_id}", userId);
+    String fullPath = ControllerConstants.ADMIN_USERS + USER_ID.replace("{user_id}", userId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -228,7 +228,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       String username) {
     String fullPath =
         ControllerConstants.ADMIN_USERS
-            + ControllerConstants.AdminUser.USERNAME.replace("{username}", username);
+            + AdminUserController.Constants.ApiPaths.USERNAME.replace("{username}", username);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -324,7 +324,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
     String fullPath =
         ControllerConstants.ADMIN_USERS
-            + ControllerConstants.AdminUser.USER_ID.replace("{user_id}", id);
+            + AdminUserController.Constants.ApiPaths.USER_ID.replace("{user_id}", id);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
 
     try {

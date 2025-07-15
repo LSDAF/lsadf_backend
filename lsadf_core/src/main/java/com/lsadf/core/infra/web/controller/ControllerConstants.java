@@ -93,12 +93,6 @@ public final class ControllerConstants {
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class AdminUser {
-    public static final String USER_ID = "/id/{user_id}";
-    public static final String USERNAME = "/username/{username}";
-  }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class GameSave {
     public static final String GENERATE = "/generate";
     public static final String ME = "/me";
