@@ -69,7 +69,7 @@ public class OAuth2ControllerImpl extends BaseController implements OAuth2Contro
                 + ":"
                 + serverProperties.getPort()
                 + ControllerConstants.OAUTH2
-                + ControllerConstants.OAuth2.CALLBACK;
+                + Constants.ApiPaths.CALLBACK;
 
     String bodyString =
         "grant_type=authorization_code"

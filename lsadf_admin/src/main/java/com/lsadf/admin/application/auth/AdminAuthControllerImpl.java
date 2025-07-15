@@ -15,6 +15,7 @@
  */
 package com.lsadf.admin.application.auth;
 
+import static com.lsadf.admin.application.auth.OAuth2Controller.Constants.ApiPaths.CALLBACK;
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.infra.config.ServerProperties;
@@ -146,7 +147,7 @@ public class AdminAuthControllerImpl extends BaseController implements AdminAuth
                 + ":"
                 + serverProperties.getPort()
                 + ControllerConstants.OAUTH2
-                + ControllerConstants.OAuth2.CALLBACK;
+                + CALLBACK;
     sb.append("&redirect_uri=").append(encode(redirectUri));
     return sb.toString();
   }

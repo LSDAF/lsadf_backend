@@ -49,11 +49,6 @@ public final class ControllerConstants {
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class OAuth2 {
-    public static final String CALLBACK = "/callback";
-  }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class Swagger {
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)

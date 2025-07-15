@@ -146,7 +146,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
                 + ":"
                 + serverProperties.getPort()
                 + ControllerConstants.OAUTH2
-                + ControllerConstants.OAuth2.CALLBACK;
+                + OAuth2Controller.Constants.ApiPaths.CALLBACK;
     sb.append("&redirect_uri=").append(encode(redirectUri));
     return sb.toString();
   }
