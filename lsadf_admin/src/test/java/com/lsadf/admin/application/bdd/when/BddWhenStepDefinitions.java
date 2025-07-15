@@ -24,6 +24,7 @@ import static org.awaitility.Awaitility.await;
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.admin.application.bdd.CacheEntryType;
+import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
@@ -254,7 +255,8 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to generate a GameSave$")
   public void when_the_user_requests_the_endpoint_to_create_a_game_save() {
-    String fullPath = ControllerConstants.GAME_SAVE + ControllerConstants.GameSave.GENERATE;
+    String fullPath =
+        ControllerConstants.GAME_SAVE + AdminGameSaveController.Constants.ApiPaths.GENERATE;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -277,7 +279,8 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to generate a game save with no token$")
   public void when_the_user_requests_the_endpoint_to_create_a_game_save_with_no_token() {
-    String fullPath = ControllerConstants.GAME_SAVE + ControllerConstants.GameSave.GENERATE;
+    String fullPath =
+        ControllerConstants.GAME_SAVE + AdminGameSaveController.Constants.ApiPaths.GENERATE;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -397,7 +400,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to get his GameSaves$")
   public void when_the_user_requests_the_endpoint_to_get_his_game_saves() {
-    String fullPath = ControllerConstants.GAME_SAVE + ControllerConstants.GameSave.ME;
+    String fullPath = ControllerConstants.GAME_SAVE + AdminGameSaveController.Constants.ApiPaths.ME;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {

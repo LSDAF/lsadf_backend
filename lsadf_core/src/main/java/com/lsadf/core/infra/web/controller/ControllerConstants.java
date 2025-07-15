@@ -85,11 +85,4 @@ public final class ControllerConstants {
     public static final String ITEMS = "/{game_save_id}/items";
     public static final String CLIENT_ID = "/{game_save_id}/items/{client_id}";
   }
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class GameSave {
-    public static final String GENERATE = "/generate";
-    public static final String ME = "/me";
-    public static final String UPDATE_NICKNAME = "/{game_save_id}/nickname";
-  }
 }

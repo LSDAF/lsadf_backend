@@ -32,6 +32,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -51,7 +53,7 @@ public interface GameSaveController {
    *
    * @return the generated game save
    */
-  @PostMapping(value = ControllerConstants.GameSave.GENERATE)
+  @PostMapping(value = Constants.ApiPaths.GENERATE)
   @Operation(summary = "Generates a new game, returns the generated game save")
   @ApiResponses(
       value = {
@@ -80,7 +82,7 @@ public interface GameSaveController {
    * @param gameSaveNicknameUpdateRequest GameSaveNicknameUpdateRequest
    * @return ApiResponse
    */
-  @PostMapping(value = ControllerConstants.GameSave.UPDATE_NICKNAME)
+  @PostMapping(value = Constants.ApiPaths.UPDATE_NICKNAME)
   @Operation(summary = "Updates the nickname of a game save")
   @ApiResponses(
       value = {
@@ -107,7 +109,7 @@ public interface GameSaveController {
       @Valid @RequestBody GameSaveNicknameUpdateRequest gameSaveNicknameUpdateRequest);
 
   /** Gets the user game saves */
-  @GetMapping(value = ControllerConstants.GameSave.ME)
+  @GetMapping(value = Constants.ApiPaths.ME)
   @Operation(summary = "Gets the game saves of the logged user")
   @ApiResponses(
       value = {
@@ -129,4 +131,14 @@ public interface GameSaveController {
       })
   @JsonView(JsonViews.Internal.class)
   ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(Jwt jwt);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String GENERATE = "/generate";
+      public static final String ME = "/me";
+      public static final String UPDATE_NICKNAME = "/{game_save_id}/nickname";
+    }
+  }
 }

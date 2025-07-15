@@ -243,6 +243,8 @@ public interface AdminGameSaveController extends Controller {
     public static final class ApiPaths {
       public static final String USER_GAME_SAVES = "/user/{username}";
       public static final String GAME_SAVE_ID = "/id/{game_save_id}";
+      public static final String GENERATE = "/generate";
+      public static final String ME = "/me";
     }
   }
 }
