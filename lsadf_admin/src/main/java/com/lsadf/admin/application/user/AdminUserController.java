@@ -15,14 +15,15 @@
  */
 package com.lsadf.admin.application.user;
 
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Params.*;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
+import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
@@ -36,13 +37,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(value = ControllerConstants.ADMIN_USERS)
-@Tag(name = ControllerConstants.Swagger.ADMIN_USERS_CONTROLLER)
+@RequestMapping(value = AdminApiPathConstants.ADMIN_USER)
+@Tag(name = AdminSwaggerConstants.ADMIN_USER_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface AdminUserController extends Controller {
@@ -73,7 +76,7 @@ public interface AdminUserController extends Controller {
             responseCode = "500",
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  @PostMapping(value = ControllerConstants.AdminUser.USER_ID)
+  @PostMapping(value = Constants.ApiPaths.USER_ID)
   @Operation(summary = "Updates a user")
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<User>> updateUser(
@@ -139,7 +142,7 @@ public interface AdminUserController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Deletes a user")
-  @DeleteMapping(value = ControllerConstants.AdminUser.USER_ID)
+  @DeleteMapping(value = Constants.ApiPaths.USER_ID)
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<Void>> deleteUser(
       @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) @Uuid String userId);
@@ -151,7 +154,7 @@ public interface AdminUserController extends Controller {
    * @param username the email of the user
    * @return the user
    */
-  @GetMapping(value = ControllerConstants.AdminUser.USERNAME)
+  @GetMapping(value = Constants.ApiPaths.USERNAME)
   @ApiResponses(
       value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -183,7 +186,7 @@ public interface AdminUserController extends Controller {
    * @param userId the id of the user
    * @return the user details
    */
-  @GetMapping(value = ControllerConstants.AdminUser.USER_ID)
+  @GetMapping(value = Constants.ApiPaths.USER_ID)
   @ApiResponses(
       value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -233,4 +236,14 @@ public interface AdminUserController extends Controller {
   ResponseEntity<ApiResponse<List<User>>> getUsers(
       @AuthenticationPrincipal Jwt jwt,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String ME = "/me";
+      public static final String USER_ID = "/id/{user_id}";
+      public static final String USERNAME = "/username/{username}";
+    }
+  }
 }

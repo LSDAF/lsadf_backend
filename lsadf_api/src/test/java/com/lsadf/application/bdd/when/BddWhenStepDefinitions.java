@@ -16,15 +16,18 @@
 package com.lsadf.application.bdd.when;
 
 import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.application.controller.auth.AuthController.Constants.ApiPaths.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.awaitility.Awaitility.await;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.bdd.CacheEntryType;
+import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.application.controller.game.game_save.GameSaveController;
+import com.lsadf.application.controller.user.UserController;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.request.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
@@ -96,7 +99,7 @@ public class BddWhenStepDefinitions extends BddLoader {
   @When("^the user logs in with the following refresh token (.*)$")
   public void logInWithRefreshToken(String refreshToken) {
     try {
-      String fullPath = ControllerConstants.AUTH + ControllerConstants.Auth.REFRESH;
+      String fullPath = ApiPathConstants.AUTH + REFRESH;
 
       String url = BddUtils.buildUrl(this.serverPort, fullPath);
       UserRefreshLoginRequest userRefreshLoginRequest = new UserRefreshLoginRequest(refreshToken);
@@ -130,7 +133,7 @@ public class BddWhenStepDefinitions extends BddLoader {
       }
 
       Map<String, String> row = rows.get(0);
-      String fullPath = ControllerConstants.AUTH + ControllerConstants.Auth.LOGIN;
+      String fullPath = ApiPathConstants.AUTH + LOGIN;
 
       String url = BddUtils.buildUrl(this.serverPort, fullPath);
       UserLoginRequest userLoginRequest = BddUtils.mapToUserLoginRequest(row);
@@ -166,7 +169,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
     SimpleUserCreationRequest simpleUserCreationRequest = BddUtils.mapToUserCreationRequest(row);
-    String fullPath = ControllerConstants.AUTH + ControllerConstants.Auth.REGISTER;
+    String fullPath = ApiPathConstants.AUTH + REGISTER;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     HttpEntity<SimpleUserCreationRequest> request =
@@ -216,7 +219,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to generate a GameSave$")
   public void when_the_user_requests_the_endpoint_to_create_a_game_save() {
-    String fullPath = ControllerConstants.GAME_SAVE + ControllerConstants.GameSave.GENERATE;
+    String fullPath = ApiPathConstants.GAME_SAVE + GameSaveController.Constants.ApiPaths.GENERATE;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -239,7 +242,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to generate a game save with no token$")
   public void when_the_user_requests_the_endpoint_to_create_a_game_save_with_no_token() {
-    String fullPath = ControllerConstants.GAME_SAVE + ControllerConstants.GameSave.GENERATE;
+    String fullPath = ApiPathConstants.GAME_SAVE + GameSaveController.Constants.ApiPaths.GENERATE;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -258,7 +261,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to update a GameSave with no token$")
   public void when_the_user_requests_the_endpoint_to_update_a_game_save_with_no_token() {
-    String fullPath = ControllerConstants.GAME_SAVE + "/1";
+    String fullPath = ApiPathConstants.GAME_SAVE + "/1";
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -292,7 +295,7 @@ public class BddWhenStepDefinitions extends BddLoader {
     Map<String, String> row = rows.get(0);
     GameSaveNicknameUpdateRequest updateRequest = BddUtils.mapToGameSaveUpdateUserRequest(row);
 
-    String fullPath = ControllerConstants.GAME_SAVE + "/" + gameSaveId + "/nickname";
+    String fullPath = ApiPathConstants.GAME_SAVE + "/" + gameSaveId + "/nickname";
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -316,7 +319,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to get his UserInfo with no token$")
   public void when_the_user_requests_the_endpoint_to_get_his_user_info_with_no_token() {
-    String fullPath = ControllerConstants.USER + ControllerConstants.User.ME;
+    String fullPath = ApiPathConstants.USER + UserController.Constants.ApiPaths.ME;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -335,7 +338,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to get his UserInfo$")
   public void when_the_user_requests_the_endpoint_to_get_his_user_info() {
-    String fullPath = ControllerConstants.USER + ControllerConstants.User.ME;
+    String fullPath = ApiPathConstants.USER + UserController.Constants.ApiPaths.ME;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -359,7 +362,7 @@ public class BddWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to get his GameSaves$")
   public void when_the_user_requests_the_endpoint_to_get_his_game_saves() {
-    String fullPath = ControllerConstants.GAME_SAVE + ControllerConstants.GameSave.ME;
+    String fullPath = ApiPathConstants.GAME_SAVE + GameSaveController.Constants.ApiPaths.ME;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -374,25 +377,6 @@ public class BddWhenStepDefinitions extends BddLoader {
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
       ApiResponse<List<GameSaveResponse>> body = result.getBody();
       gameSaveResponseListStack.push(body.getData());
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^the user requests the endpoint to get his GameSaves with no token$")
-  public void when_the_user_requests_the_endpoint_to_get_his_game_saves_with_no_token() {
-    String fullPath = ControllerConstants.USER + ControllerConstants.User.USER_ME_GAME_SAVES;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-      HttpEntity<Void> request = new HttpEntity<>(new HttpHeaders());
-      ResponseEntity<ApiResponse<List<GameSaveResponse>>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
-      ApiResponse<List<GameSaveResponse>> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 

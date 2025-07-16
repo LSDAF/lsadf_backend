@@ -15,8 +15,6 @@
  */
 package com.lsadf.core.infra.web.config.security;
 
-import static com.lsadf.core.infra.web.controller.ControllerConstants.ADMIN;
-
 import com.lsadf.core.infra.logging.interceptor.RequestLoggerInterceptor;
 import com.lsadf.core.infra.logging.properties.HttpLogProperties;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakJwtAuthenticationConverter;
@@ -74,7 +72,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     "/actuator/**"
   };
 
-  public static final String ADMIN_URLS = ADMIN + "/**";
+  public static final String ADMIN_URLS = "/api/v1/admin/**";
 
   @Bean
   public SecurityFilterChain filterChain(

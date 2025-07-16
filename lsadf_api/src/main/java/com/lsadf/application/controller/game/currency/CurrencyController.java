@@ -15,10 +15,12 @@
  */
 package com.lsadf.application.controller.game.currency;
 
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
 
-import com.lsadf.core.infra.web.controller.ControllerConstants;
+import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.application.controller.constant.SwaggerConstants;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
@@ -36,17 +38,11 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 /** Controller for currency related operations. */
-@RequestMapping(value = ControllerConstants.CURRENCY)
-@Tag(name = ControllerConstants.Swagger.CURRENCY_CONTROLLER)
+@RequestMapping(value = ApiPathConstants.CURRENCY)
+@Tag(name = SwaggerConstants.CURRENCY_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface CurrencyController {
-
-  String GAME_SAVE_ID = "game_save_id";
-  String GOLD = "gold";
-  String DIAMOND = "diamond";
-  String EMERALD = "emerald";
-  String AMETHYST = "amethyst";
 
   @PostMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Saves one or several currency amounts for a game save")

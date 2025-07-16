@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.controller.auth;
+package com.lsadf.admin.application.auth;
 
-import com.lsadf.application.controller.constant.ApiPathConstants;
-import com.lsadf.application.controller.constant.SwaggerConstants;
+import static com.lsadf.admin.application.constant.AdminSwaggerConstants.OAUTH_2_CONTROLLER;
+
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,9 +29,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping(value = ApiPathConstants.OAUTH2)
-@Tag(name = SwaggerConstants.OAUTH_2_CONTROLLER)
+@RequestMapping(value = AdminApiPathConstants.OAUTH2)
+@Tag(name = OAUTH_2_CONTROLLER)
 public interface OAuth2Controller {
+
+  String CODE = "code";
 
   /**
    * Handle OAuth2 callback

@@ -80,7 +80,7 @@ class AdminInventoryControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/inventories/" + GAME_SAVE_ID)
+            MockMvcRequestBuilders.get("/api/v1/admin/inventory/" + GAME_SAVE_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -94,7 +94,7 @@ class AdminInventoryControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/inventories/" + GAME_SAVE_ID)
+            MockMvcRequestBuilders.get("/api/v1/admin/inventory/" + GAME_SAVE_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -111,7 +111,7 @@ class AdminInventoryControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/inventories/" + GAME_SAVE_ID)
+            MockMvcRequestBuilders.get("/api/v1/admin/inventory/" + GAME_SAVE_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -128,7 +128,7 @@ class AdminInventoryControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/inventories/" + GAME_SAVE_ID + "/items")
+            MockMvcRequestBuilders.post("/api/v1/admin/inventory/" + GAME_SAVE_ID + "/item")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(itemRequest)))
@@ -146,7 +146,7 @@ class AdminInventoryControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/inventories/" + GAME_SAVE_ID + "/items")
+            MockMvcRequestBuilders.post("/api/v1/admin/inventory/" + GAME_SAVE_ID + "/item")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(itemRequest)))
@@ -167,7 +167,7 @@ class AdminInventoryControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/inventories/" + GAME_SAVE_ID + "/items")
+            MockMvcRequestBuilders.post("/api/v1/admin/inventory/" + GAME_SAVE_ID + "/item")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(itemRequest)))
@@ -183,7 +183,7 @@ class AdminInventoryControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                    "/api/v1/admin/inventories/" + GAME_SAVE_ID + "/items/" + ITEM_CLIENT_ID)
+                    "/api/v1/admin/inventory/" + GAME_SAVE_ID + "/item/" + ITEM_CLIENT_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -198,7 +198,7 @@ class AdminInventoryControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                    "/api/v1/admin/inventories/" + GAME_SAVE_ID + "/items/" + ITEM_CLIENT_ID)
+                    "/api/v1/admin/inventory/" + GAME_SAVE_ID + "/item/" + ITEM_CLIENT_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -216,7 +216,7 @@ class AdminInventoryControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                    "/api/v1/admin/inventories/" + GAME_SAVE_ID + "/items/" + ITEM_CLIENT_ID)
+                    "/api/v1/admin/inventory/" + GAME_SAVE_ID + "/item/" + ITEM_CLIENT_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -234,7 +234,7 @@ class AdminInventoryControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.put(
-                    "/api/v1/admin/inventories/" + GAME_SAVE_ID + "/items/" + ITEM_CLIENT_ID)
+                    "/api/v1/admin/inventory/" + GAME_SAVE_ID + "/item/" + ITEM_CLIENT_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(itemRequest)))
@@ -253,7 +253,7 @@ class AdminInventoryControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.put(
-                    "/api/v1/admin/inventories/" + GAME_SAVE_ID + "/items/" + ITEM_CLIENT_ID)
+                    "/api/v1/admin/inventory/" + GAME_SAVE_ID + "/item/" + ITEM_CLIENT_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(itemRequest)))
@@ -275,7 +275,7 @@ class AdminInventoryControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.put(
-                    "/api/v1/admin/inventories/" + GAME_SAVE_ID + "/items/" + ITEM_CLIENT_ID)
+                    "/api/v1/admin/inventory/" + GAME_SAVE_ID + "/item/" + ITEM_CLIENT_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(itemRequest)))
@@ -290,7 +290,7 @@ class AdminInventoryControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.delete("/api/v1/admin/inventories/" + GAME_SAVE_ID)
+            MockMvcRequestBuilders.delete("/api/v1/admin/inventory/" + GAME_SAVE_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -304,7 +304,7 @@ class AdminInventoryControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.delete("/api/v1/admin/inventories/" + GAME_SAVE_ID)
+            MockMvcRequestBuilders.delete("/api/v1/admin/inventory/" + GAME_SAVE_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -321,7 +321,7 @@ class AdminInventoryControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.delete("/api/v1/admin/inventories/" + GAME_SAVE_ID)
+            MockMvcRequestBuilders.delete("/api/v1/admin/inventory/" + GAME_SAVE_ID)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then

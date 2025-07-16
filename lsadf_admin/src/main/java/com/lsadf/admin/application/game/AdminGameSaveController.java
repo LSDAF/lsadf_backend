@@ -15,13 +15,14 @@
  */
 package com.lsadf.admin.application.game;
 
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Params.*;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
+import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.request.game.game_save.update.AdminGameSaveUpdateRequest;
@@ -36,13 +37,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(value = ControllerConstants.ADMIN_GAME_SAVES)
-@Tag(name = ControllerConstants.Swagger.ADMIN_GAME_SAVES_CONTROLLER)
+@RequestMapping(value = AdminApiPathConstants.ADMIN_GAME_SAVE)
+@Tag(name = AdminSwaggerConstants.ADMIN_GAME_SAVE_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface AdminGameSaveController extends Controller {
@@ -73,7 +76,7 @@ public interface AdminGameSaveController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Deletes a game save")
-  @DeleteMapping(value = ControllerConstants.AdminGameSave.GAME_SAVE_ID)
+  @DeleteMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<Void>> deleteGameSave(
       @AuthenticationPrincipal Jwt jwt,
@@ -134,7 +137,7 @@ public interface AdminGameSaveController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets a game save by its id")
-  @GetMapping(value = ControllerConstants.AdminGameSave.GAME_SAVE_ID)
+  @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(
       @AuthenticationPrincipal Jwt jwt,
@@ -166,7 +169,7 @@ public interface AdminGameSaveController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets a user's game saves")
-  @GetMapping(value = ControllerConstants.AdminGameSave.USER_GAME_SAVES)
+  @GetMapping(value = Constants.ApiPaths.USER_GAME_SAVES)
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(
       @AuthenticationPrincipal Jwt jwt,
@@ -228,10 +231,21 @@ public interface AdminGameSaveController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Updates a new game")
-  @PostMapping(value = ControllerConstants.AdminGameSave.GAME_SAVE_ID)
+  @PostMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<GameSaveResponse>> updateGameSave(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @Valid @RequestBody AdminGameSaveUpdateRequest adminGameSaveUpdateRequest);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String USER_GAME_SAVES = "/user/{username}";
+      public static final String GAME_SAVE_ID = "/id/{game_save_id}";
+      public static final String GENERATE = "/generate";
+      public static final String ME = "/me";
+    }
+  }
 }

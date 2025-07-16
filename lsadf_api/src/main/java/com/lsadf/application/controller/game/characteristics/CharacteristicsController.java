@@ -15,10 +15,12 @@
  */
 package com.lsadf.application.controller.game.characteristics;
 
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
 
-import com.lsadf.core.infra.web.controller.ControllerConstants;
+import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.application.controller.constant.SwaggerConstants;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
@@ -40,13 +42,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /** Controller for characteristics operations */
-@RequestMapping(value = ControllerConstants.CHARACTERISTICS)
-@Tag(name = ControllerConstants.Swagger.CHARACTERISTICS_CONTROLLER)
+@RequestMapping(value = ApiPathConstants.CHARACTERISTICS)
+@Tag(name = SwaggerConstants.CHARACTERISTICS_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface CharacteristicsController {
-  String GAME_SAVE_ID = "game_save_id";
-
   /**
    * Updates the characteristics of a game save
    *

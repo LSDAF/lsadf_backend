@@ -19,6 +19,8 @@ import static com.lsadf.core.application.game.game_save.GameSaveConfiguration.GA
 
 import com.lsadf.admin.application.auth.AdminAuthController;
 import com.lsadf.admin.application.auth.AdminAuthControllerImpl;
+import com.lsadf.admin.application.auth.OAuth2Controller;
+import com.lsadf.admin.application.auth.OAuth2ControllerImpl;
 import com.lsadf.admin.application.bdd.config.LsadfAdminBddConfiguration;
 import com.lsadf.admin.application.cache.AdminCacheController;
 import com.lsadf.admin.application.cache.AdminCacheControllerImpl;
@@ -107,6 +109,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
       LsadfAdminBddConfiguration.class,
       AdminAuthController.class,
       AdminAuthControllerImpl.class,
+      OAuth2Controller.class,
+      OAuth2ControllerImpl.class,
       AdminInventoryController.class,
       AdminInventoryControllerImpl.class,
       AdminCacheController.class,

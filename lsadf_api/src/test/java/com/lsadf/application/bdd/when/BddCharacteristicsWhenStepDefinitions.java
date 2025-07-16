@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.characteristics.CharacteristicsController;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
@@ -73,7 +73,7 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
       when_the_user_requests_the_endpoint_to_get_the_characteristics_of_the_game_save_with_id(
           String gameSaveId) {
     String fullPath =
-        ControllerConstants.CHARACTERISTICS
+        ApiPathConstants.CHARACTERISTICS
             + CharacteristicsController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -105,7 +105,7 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
     CharacteristicsRequest request = BddUtils.mapToCharacteristicsRequest(data.get(0));
 
     String fullPath =
-        ControllerConstants.CHARACTERISTICS
+        ApiPathConstants.CHARACTERISTICS
             + CharacteristicsController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);

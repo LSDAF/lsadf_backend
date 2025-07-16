@@ -15,10 +15,11 @@
  */
 package com.lsadf.admin.application.unit.controller;
 
+import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.user.AdminUserController;
 import com.lsadf.admin.application.user.AdminUserControllerImpl;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.request.user.UserSortingParameter;
 import com.lsadf.core.infra.web.request.user.creation.AdminUserCreationRequest;
@@ -77,7 +78,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    "/api/v1/admin/users/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                    "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -101,7 +102,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    "/api/v1/admin/users/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                    "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -127,7 +128,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/users/id/{user_id}", "testtesttest")
+            MockMvcRequestBuilders.post("/api/v1/admin/user/id/{user_id}", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -154,7 +155,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    "/api/v1/admin/users/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                    "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -194,7 +195,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.post(
-                    "/api/v1/admin/users/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                    "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -217,7 +218,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/users")
+            MockMvcRequestBuilders.post("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -241,7 +242,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/users")
+            MockMvcRequestBuilders.post("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -268,7 +269,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/users")
+            MockMvcRequestBuilders.post("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -309,7 +310,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/users")
+            MockMvcRequestBuilders.post("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         // then
@@ -323,7 +324,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                "/api/v1/admin/users/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
+                "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
         // then
         .andExpect(MockMvcResultMatchers.status().isUnauthorized());
   }
@@ -336,7 +337,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                "/api/v1/admin/users/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
+                "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
@@ -350,7 +351,7 @@ class AdminUserControllerTests {
   void deleteUser_should_return_400_when_id_is_not_uuid() {
     // when
     mockMvc
-        .perform(MockMvcRequestBuilders.delete("/api/v1/admin/users/id/{user_id}", "testtesttest"))
+        .perform(MockMvcRequestBuilders.delete("/api/v1/admin/user/id/{user_id}", "testtesttest"))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -366,7 +367,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                "/api/v1/admin/users/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
+                "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -378,7 +379,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/users/username/{username}", "paul.ochon@test.com")
+                    "/api/v1/admin/user/username/{username}", "paul.ochon@test.com")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -393,7 +394,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/users/username/{username}", "paul.ochon@test.com")
+                    "/api/v1/admin/user/username/{username}", "paul.ochon@test.com")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -410,7 +411,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/users/username/{username}", "test@test.com")
+            MockMvcRequestBuilders.get("/api/v1/admin/user/username/{username}", "test@test.com")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -427,7 +428,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/users/username/{username}", "test")
+            MockMvcRequestBuilders.get("/api/v1/admin/user/username/{username}", "test")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -441,7 +442,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/users/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                    "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -456,7 +457,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/users/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                    "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -474,7 +475,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.get(
-                    "/api/v1/admin/users/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                    "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -491,7 +492,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/users/id/{user_id}", "testtesttest")
+            MockMvcRequestBuilders.get("/api/v1/admin/user/id/{user_id}", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -504,7 +505,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/users")
+            MockMvcRequestBuilders.get("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -518,7 +519,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/users")
+            MockMvcRequestBuilders.get("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -535,7 +536,7 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/users")
+            MockMvcRequestBuilders.get("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
@@ -552,10 +553,10 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/users")
+            MockMvcRequestBuilders.get("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param(ControllerConstants.Params.ORDER_BY, "INVALID_ORDER_BY"))
+                .param(ORDER_BY, "INVALID_ORDER_BY"))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -570,12 +571,10 @@ class AdminUserControllerTests {
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.get("/api/v1/admin/users")
+            MockMvcRequestBuilders.get("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param(
-                    ControllerConstants.Params.ORDER_BY,
-                    UserSortingParameter.FIRST_NAME_DESC.name()))
+                .param(ORDER_BY, UserSortingParameter.FIRST_NAME_DESC.name()))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }

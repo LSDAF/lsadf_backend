@@ -15,10 +15,11 @@
  */
 package com.lsadf.application.controller.game.stage;
 
-import static com.lsadf.core.infra.web.controller.ControllerConstants.STAGE;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
 
+import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.stage.StageResponse;
@@ -36,13 +37,25 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 /** Controller for stage related operations. */
-@RequestMapping(value = STAGE)
+@RequestMapping(value = ApiPathConstants.STAGE)
 @Tag(name = StageController.Constants.Swagger.STAGE_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface StageController {
-  String GAME_SAVE_ID = "game_save_id";
 
+  /**
+   * Saves the current stage for a specified game save.
+   *
+   * <p>This method allows authenticated users to save the game stage data for a specific game save
+   * ID. The stage details must be provided within a valid {@link StageRequest} object.
+   *
+   * @param jwt the authentication principal containing user details.
+   * @param gameSaveId the unique identifier of the game save.
+   * @param stageRequest the request body containing stage details, including current stage and
+   *     maximum stage.
+   * @return a {@link ResponseEntity} containing an {@link ApiResponse} with no data. The response
+   *     status code indicates the result of the operation.
+   */
   @PostMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Saves the stage for a game save")
   @ApiResponses(
@@ -71,6 +84,15 @@ public interface StageController {
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @Valid @RequestBody StageRequest stageRequest);
 
+  /**
+   * Retrieves the current and maximum stage details for a specified game save.
+   *
+   * @param jwt the authentication principal containing user details.
+   * @param gameSaveId the unique identifier of the game save.
+   * @return a {@link ResponseEntity} containing an {@link ApiResponse} with a {@link StageResponse}
+   *     object that holds the current and maximum stage details. The response status code indicates
+   *     the result of the operation.
+   */
   @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Gets the stage for a game save")
   @ApiResponses(

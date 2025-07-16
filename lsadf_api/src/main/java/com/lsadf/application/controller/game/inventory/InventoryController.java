@@ -15,10 +15,13 @@
  */
 package com.lsadf.application.controller.game.inventory;
 
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.CLIENT_ID;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
 
-import com.lsadf.core.infra.web.controller.ControllerConstants;
+import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.application.controller.constant.SwaggerConstants;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
@@ -29,6 +32,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.Set;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -38,17 +43,11 @@ import org.springframework.web.bind.annotation.*;
  * Controller interface that handles inventory-related operations for game saves. This controller
  * requires bearer token or OAuth2 authentication for all operations.
  */
-@RequestMapping(value = ControllerConstants.INVENTORY)
-@Tag(name = ControllerConstants.Swagger.INVENTORY_CONTROLLER)
+@RequestMapping(value = ApiPathConstants.INVENTORY)
+@Tag(name = SwaggerConstants.INVENTORY_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface InventoryController {
-
-  /** Path variable name for the game save identifier. */
-  String GAME_SAVE_ID = "game_save_id";
-
-  /** Path variable name for the client-side item identifier. */
-  String CLIENT_ID = "client_id";
 
   /**
    * Retrieves the inventory associated with a specific game save.
@@ -57,7 +56,7 @@ public interface InventoryController {
    * @param gameSaveId The UUID of the game save to retrieve the inventory from
    * @return ResponseEntity containing the inventory data
    */
-  @GetMapping(value = ControllerConstants.Inventory.GAME_SAVE_ID)
+  @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Gets the inventory for a game save")
   @ApiResponses(
       value = {
@@ -89,7 +88,7 @@ public interface InventoryController {
    * @param itemRequest The request containing the item details.
    * @return ResponseEntity containing the updated inventory data.
    */
-  @PostMapping(value = ControllerConstants.Inventory.ITEMS)
+  @PostMapping(value = Constants.ApiPaths.ITEMS)
   @Operation(summary = "Creates an item in the inventory of a game save")
   @ApiResponses(
       value = {
@@ -122,7 +121,7 @@ public interface InventoryController {
    * @param itemClientId The client-side identifier of the item to delete
    * @return ResponseEntity containing the updated inventory data
    */
-  @DeleteMapping(value = ControllerConstants.Inventory.CLIENT_ID)
+  @DeleteMapping(value = Constants.ApiPaths.CLIENT_ID)
   @Operation(summary = "Deletes an item from the inventory of a game save")
   @ApiResponses(
       value = {
@@ -156,7 +155,7 @@ public interface InventoryController {
    * @param itemRequest The request containing the updated item details.
    * @return ResponseEntity containing the updated item data.
    */
-  @PutMapping(value = ControllerConstants.Inventory.CLIENT_ID)
+  @PutMapping(value = Constants.ApiPaths.CLIENT_ID)
   @Operation(summary = "Updates an item in the inventory of a game save")
   @ApiResponses(
       value = {
@@ -181,4 +180,14 @@ public interface InventoryController {
       @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
       @PathVariable(value = CLIENT_ID) String itemClientId,
       @RequestBody @Valid ItemRequest itemRequest);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String GAME_SAVE_ID = "/{game_save_id}";
+      public static final String ITEMS = "/{game_save_id}/items";
+      public static final String CLIENT_ID = "/{game_save_id}/items/{client_id}";
+    }
+  }
 }

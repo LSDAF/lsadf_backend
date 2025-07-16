@@ -15,14 +15,15 @@
  */
 package com.lsadf.admin.application.search;
 
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Params.ORDER_BY;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.BEARER_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ControllerConstants.Swagger.Authentications.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
+import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
+import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.search.SearchRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -34,6 +35,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -42,8 +45,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@RequestMapping(value = ControllerConstants.ADMIN_SEARCH)
-@Tag(name = ControllerConstants.Swagger.ADMIN_SEARCH_CONTROLLER)
+@RequestMapping(value = AdminApiPathConstants.ADMIN_SEARCH)
+@Tag(name = AdminSwaggerConstants.ADMIN_SEARCH_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface AdminSearchController extends Controller {
@@ -74,7 +77,7 @@ public interface AdminSearchController extends Controller {
             responseCode = "500",
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  @PostMapping(value = ControllerConstants.AdminSearch.SEARCH_USERS)
+  @PostMapping(value = Constants.ApiPaths.SEARCH_USERS)
   @Operation(summary = "Searches for users in function of the give search criteria")
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<List<User>>> searchUsers(
@@ -108,11 +111,20 @@ public interface AdminSearchController extends Controller {
             responseCode = "500",
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  @PostMapping(value = ControllerConstants.AdminSearch.SEARCH_GAME_SAVES)
+  @PostMapping(value = Constants.ApiPaths.SEARCH_GAME_SAVES)
   @Operation(summary = "Searches for game saves in function of the give search criteria")
   @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<List<GameSaveResponse>>> searchGameSaves(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody(required = false) SearchRequest searchRequest,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  class Constants {
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ApiPaths {
+      public static final String SEARCH_GAME_SAVES = "/game_saves";
+      public static final String SEARCH_USERS = "/users";
+    }
+  }
 }

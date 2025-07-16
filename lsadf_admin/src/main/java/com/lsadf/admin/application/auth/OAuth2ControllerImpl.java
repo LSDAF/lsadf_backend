@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.controller.auth;
+package com.lsadf.admin.application.auth;
 
-import static com.lsadf.core.infra.web.controller.ParameterConstants.CODE;
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
-import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
@@ -69,7 +68,7 @@ public class OAuth2ControllerImpl extends BaseController implements OAuth2Contro
                 + serverProperties.getHostName()
                 + ":"
                 + serverProperties.getPort()
-                + ApiPathConstants.OAUTH2
+                + AdminApiPathConstants.OAUTH2
                 + Constants.ApiPaths.CALLBACK;
 
     String bodyString =

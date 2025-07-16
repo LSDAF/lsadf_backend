@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.currency.CurrencyController;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.controller.ControllerConstants;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
@@ -71,7 +71,7 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
   public void when_the_user_requests_the_endpoint_to_get_the_currencies_of_the_game_save_with_id(
       String gameSaveId) {
     String fullPath =
-        ControllerConstants.CURRENCY
+        ApiPathConstants.CURRENCY
             + CurrencyController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -102,7 +102,7 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
     CurrencyRequest request = BddUtils.mapToCurrencyRequest(data.get(0));
 
     String fullPath =
-        ControllerConstants.CURRENCY
+        ApiPathConstants.CURRENCY
             + CurrencyController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
