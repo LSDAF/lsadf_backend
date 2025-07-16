@@ -22,13 +22,13 @@ import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.constant.AdminSwaggerConstants;
-import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.ResponseMessages;
+import com.lsadf.core.infra.web.response.user.UserResponse;
 import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -79,7 +79,7 @@ public interface AdminUserController extends Controller {
   @PostMapping(value = Constants.ApiPaths.USER_ID)
   @Operation(summary = "Updates a user")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<ApiResponse<User>> updateUser(
+  ResponseEntity<ApiResponse<UserResponse>> updateUser(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = USER_ID) @Uuid String userId,
       @Valid @RequestBody AdminUserUpdateRequest user);
@@ -112,7 +112,7 @@ public interface AdminUserController extends Controller {
   @Operation(summary = "Creates a new user")
   @JsonView(JsonViews.Admin.class)
   @PostMapping
-  ResponseEntity<ApiResponse<User>> createUser(
+  ResponseEntity<ApiResponse<UserResponse>> createUser(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody AdminUserCreationRequest adminUserCreationRequest);
 
@@ -175,7 +175,7 @@ public interface AdminUserController extends Controller {
       })
   @Operation(summary = "Gets a user by its email")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<ApiResponse<User>> getUserByUsername(
+  ResponseEntity<ApiResponse<UserResponse>> getUserByUsername(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @Email @PathVariable(value = USERNAME) String username);
 
@@ -207,7 +207,7 @@ public interface AdminUserController extends Controller {
       })
   @Operation(summary = "Gets a UserAdminDetails by the user id")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<ApiResponse<User>> getUserById(
+  ResponseEntity<ApiResponse<UserResponse>> getUserById(
       @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) @Uuid String userId);
 
   /**
@@ -233,7 +233,7 @@ public interface AdminUserController extends Controller {
       })
   @Operation(summary = "Gets all users")
   @JsonView(JsonViews.Admin.class)
-  ResponseEntity<ApiResponse<List<User>>> getUsers(
+  ResponseEntity<ApiResponse<List<UserResponse>>> getUsers(
       @AuthenticationPrincipal Jwt jwt,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);
 

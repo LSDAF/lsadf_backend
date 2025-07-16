@@ -51,6 +51,7 @@ import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.game.stage.StageResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.response.user.UserResponse;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
@@ -419,6 +420,36 @@ public class BddUtils {
     boolean verifiedBoolean = Boolean.parseBoolean(verified);
 
     return User.builder()
+        .username(email)
+        .firstName(firstName)
+        .lastName(lastName)
+        .enabled(enabledBoolean)
+        .emailVerified(verifiedBoolean)
+        .userRoles(roles)
+        .build();
+  }
+
+  /**
+   * Maps a row of user data represented as a map to a UserResponse object.
+   *
+   * @param row a map containing user data with keys corresponding to user attributes such as
+   *     username, first name, last name, enabled status, email verification status, and roles.
+   * @return a UserResponse object constructed using the provided user data from the map.
+   */
+  public static UserResponse mapToUserResponse(Map<String, String> row) {
+    String email = row.get(BddFieldConstants.User.USERNAME);
+    String firstName = row.get(BddFieldConstants.User.FIRST_NAME);
+    String lastName = row.get(BddFieldConstants.User.LAST_NAME);
+    String enabled = row.get(BddFieldConstants.User.ENABLED);
+    String verified = row.get(BddFieldConstants.User.EMAIL_VERIFIED);
+    String userRoles = row.get(BddFieldConstants.User.ROLES);
+
+    List<String> roles = Arrays.stream(userRoles.split(COMMA)).toList();
+
+    boolean enabledBoolean = Boolean.parseBoolean(enabled);
+    boolean verifiedBoolean = Boolean.parseBoolean(verified);
+
+    return UserResponse.builder()
         .username(email)
         .firstName(firstName)
         .lastName(lastName)

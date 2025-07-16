@@ -27,6 +27,8 @@ import com.lsadf.core.infra.web.request.user.UserSortingParameter;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponseMapper;
+import com.lsadf.core.infra.web.response.user.UserResponse;
+import com.lsadf.core.infra.web.response.user.UserResponseMapper;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -46,12 +48,16 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
   private final SearchService searchService;
 
   private final GameSaveResponseMapper gameSaveResponseMapper;
+  private final UserResponseMapper userResponseMapper;
 
   @Autowired
   public AdminSearchControllerImpl(
-      SearchService searchService, GameSaveResponseMapper gameSaveResponseMapper) {
+      SearchService searchService,
+      GameSaveResponseMapper gameSaveResponseMapper,
+      UserResponseMapper userResponseMapper) {
     this.searchService = searchService;
     this.gameSaveResponseMapper = gameSaveResponseMapper;
+    this.userResponseMapper = userResponseMapper;
   }
 
   /** {@inheritDoc} */
@@ -66,7 +72,7 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
    * @return
    */
   @Override
-  public ResponseEntity<ApiResponse<List<User>>> searchUsers(
+  public ResponseEntity<ApiResponse<List<UserResponse>>> searchUsers(
       Jwt jwt, SearchRequest searchRequest, List<String> orderBy) {
     List<UserSortingParameter> sortingParameterList =
         Collections.singletonList(UserSortingParameter.NONE);
@@ -75,7 +81,7 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
     }
     validateUser(jwt);
     try (Stream<User> userStream = searchService.searchUsers(searchRequest, sortingParameterList)) {
-      List<User> users = userStream.toList();
+      List<UserResponse> users = userStream.map(userResponseMapper::map).toList();
       return generateResponse(HttpStatus.OK, users);
     }
   }

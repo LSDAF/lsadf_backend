@@ -33,7 +33,7 @@ Feature: Admin User Controller BDD tests
     And the user requests the admin endpoint to get all the users ordered by NONE
 
     Then the response status code should be 200
-    And the response should have the following Users
+    And the response should have the following UserResponses
       | id                                   | firstName | lastName | username            | enabled | emailVerified | roles      |
       | ce60ea41-3765-4562-8c96-8673de8f96b0 | Paul      | OCHON    | paul.ochon@test.com | true    | true          | USER,ADMIN |
 
@@ -44,7 +44,7 @@ Feature: Admin User Controller BDD tests
     And the user requests the admin endpoint to get all the users ordered by USERNAME_DESC
 
     Then the response status code should be 200
-    And the response should have the following Users in exact order
+    And the response should have the following UserResponses in exact order
       | id                                   | firstName | lastName | username             | enabled | emailVerified | roles      |
       | ce60ea41-3765-4562-8c96-8673de8f96b0 | Paul      | OCHON    | paul.ochon@test.com  | true    | true          | USER,ADMIN |
       | 71d6755e-1dfd-4f1f-8d7b-bdec9a62c6e8 | Paul      | ITESSE   | paul.itesse@test.com | true    | true          | USER       |
@@ -57,7 +57,7 @@ Feature: Admin User Controller BDD tests
     And the user requests the admin endpoint to get the user with the following id 71d6755e-1dfd-4f1f-8d7b-bdec9a62c6e8
 
     Then the response status code should be 200
-    And the response should have the following User
+    And the response should have the following UserResponse
       | id                                   | firstName | lastName | username             | enabled | emailVerified | roles |
       | 71d6755e-1dfd-4f1f-8d7b-bdec9a62c6e8 | Paul      | ITESSE   | paul.itesse@test.com | true    | true          | USER  |
 
@@ -76,7 +76,7 @@ Feature: Admin User Controller BDD tests
     And the user requests the admin endpoint to get the user with the following username paul.itesse@test.com
 
     Then the response status code should be 200
-    And the response should have the following User
+    And the response should have the following UserResponse
       | id                                   | firstName | lastName | username             | enabled | emailVerified | roles |
       | 71d6755e-1dfd-4f1f-8d7b-bdec9a62c6e8 | Paul      | ITESSE   | paul.itesse@test.com | true    | true          | USER  |
 
@@ -100,7 +100,7 @@ Feature: Admin User Controller BDD tests
     Then the response status code should be 200
     And the number of users should be 3
 
-    And the response should have the following User
+    And the response should have the following UserResponse
       | firstName | lastName | username            | enabled | emailVerified | roles |
       | Paul      | ISSON    | paul.isson@test.com | true    | true          | USER  |
 
@@ -138,7 +138,7 @@ Feature: Admin User Controller BDD tests
       | Jean      | DUJARDIN | false   | false         | USER,ADMIN |
 
     Then the response status code should be 200
-    And the response should have the following User
+    And the response should have the following UserResponse
       | id                                   | firstName | lastName | username             | enabled | emailVerified | roles      |
       | 71d6755e-1dfd-4f1f-8d7b-bdec9a62c6e8 | Jean      | DUJARDIN | paul.itesse@test.com | false   | false         | USER,ADMIN |
 
