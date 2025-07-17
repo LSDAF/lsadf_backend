@@ -15,12 +15,10 @@
  */
 package com.lsadf.core.infra.web.response;
 
-import static com.lsadf.core.infra.web.response.ApiResponse.Attributes.*;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import java.io.Serial;
 import java.io.Serializable;
 import lombok.*;
@@ -30,30 +28,12 @@ import lombok.*;
  *
  * @param <T> Type of object to return
  */
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> implements Serializable {
+public record ApiResponse<T>(
+    @JsonProperty(value = STATUS) int status,
+    @JsonProperty(value = MESSAGE) String message,
+    @JsonProperty(value = DATA) T data)
+    implements Serializable {
   @Serial private static final long serialVersionUID = 5392685232533641077L;
-
-  @JsonProperty(value = STATUS)
-  @JsonView(JsonViews.External.class)
-  private int status;
-
-  @JsonProperty(value = MESSAGE)
-  @JsonView(JsonViews.External.class)
-  private String message;
-
-  @JsonProperty(value = DATA)
-  @JsonView(JsonViews.External.class)
-  private transient T data;
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class Attributes implements Serializable {
-    public static final String STATUS = "status";
-    public static final String MESSAGE = "message";
-    public static final String DATA = "data";
-  }
 }

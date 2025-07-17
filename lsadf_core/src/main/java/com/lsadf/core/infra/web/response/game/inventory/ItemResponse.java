@@ -16,16 +16,14 @@
 
 package com.lsadf.core.infra.web.response.game.inventory;
 
-import static com.lsadf.core.infra.web.JsonAttributes.Item.*;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.infra.web.JsonAttributes;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.ElementCollection;
@@ -36,45 +34,28 @@ import lombok.Builder;
 @Schema(name = "Item", description = "Item object")
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonView(JsonViews.External.class)
 public record ItemResponse(
-    @JsonView(JsonViews.Admin.class)
-        @JsonProperty(value = JsonAttributes.ID)
+    @JsonProperty(value = JsonAttributes.ID)
         @Schema(description = "User Id", example = "7d9f92ce-3c8e-4695-9df7-ce10c0bbaaeb")
         String id,
-    @JsonView(JsonViews.External.class)
-        @JsonProperty(value = CLIENT_ID)
+    @JsonProperty(value = CLIENT_ID)
         @Schema(
             description = "Client generated id, concatenation of inventory id and item id",
             example = "36f27c2a-06e8-4bdb-bf59-56999116f5ef__11111111-1111-1111-1111-111111111111")
         String clientId,
-    @JsonView(JsonViews.External.class)
-        @JsonProperty(value = BLUEPRINT_ID)
+    @JsonProperty(value = BLUEPRINT_ID)
         @Schema(description = "Blueprint id", example = "blueprint_id")
         String blueprintId,
-    @JsonView(JsonViews.External.class)
-        @JsonProperty(value = TYPE)
-        @Schema(description = "Item type", example = "BOOTS")
+    @JsonProperty(value = TYPE) @Schema(description = "Item type", example = "BOOTS")
         ItemType itemType,
-    @JsonView(JsonViews.External.class)
-        @JsonProperty(value = RARITY)
-        @Schema(description = "Item rarity", example = "LEGENDARY")
+    @JsonProperty(value = RARITY) @Schema(description = "Item rarity", example = "LEGENDARY")
         ItemRarity itemRarity,
-    @JsonView(JsonViews.External.class)
-        @JsonProperty(value = IS_EQUIPPED)
-        @Schema(description = "Is Equipped", example = "true")
+    @JsonProperty(value = IS_EQUIPPED) @Schema(description = "Is Equipped", example = "true")
         Boolean isEquipped,
-    @JsonView(JsonViews.External.class)
-        @JsonProperty(value = LEVEL)
-        @Schema(description = "Item level", example = "20")
-        Integer level,
-    @JsonView(JsonViews.External.class)
-        @JsonProperty(value = MAIN_STAT)
-        @Schema(description = "Main item stat")
-        @Embedded
+    @JsonProperty(value = LEVEL) @Schema(description = "Item level", example = "20") Integer level,
+    @JsonProperty(value = MAIN_STAT) @Schema(description = "Main item stat") @Embedded
         ItemStat mainStat,
-    @JsonView(JsonViews.External.class)
-        @JsonProperty(value = ADDITIONAL_STATS)
+    @JsonProperty(value = ADDITIONAL_STATS)
         @Schema(description = "Additional item stat list")
         @ElementCollection
         List<ItemStat> additionalStats)

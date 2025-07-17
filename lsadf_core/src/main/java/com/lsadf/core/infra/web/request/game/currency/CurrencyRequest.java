@@ -15,8 +15,7 @@
  */
 package com.lsadf.core.infra.web.request.game.currency;
 
-import static com.lsadf.core.infra.web.JsonAttributes.Currency.*;
-import static com.lsadf.core.infra.web.JsonAttributes.Currency.AMETHYST;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.request.Request;

@@ -169,11 +169,11 @@ public class GameSaveServiceImpl implements GameSaveService {
     CharacteristicsEntity characteristicsEntity =
         CharacteristicsEntity.builder()
             .gameSave(saved)
-            .attack(characteristicsRequest.getAttack())
-            .critChance(characteristicsRequest.getCritChance())
-            .critDamage(characteristicsRequest.getCritDamage())
-            .health(characteristicsRequest.getHealth())
-            .resistance(characteristicsRequest.getResistance())
+            .attack(characteristicsRequest.attack())
+            .critChance(characteristicsRequest.critChance())
+            .critDamage(characteristicsRequest.critDamage())
+            .health(characteristicsRequest.health())
+            .resistance(characteristicsRequest.resistance())
             .build();
 
     saved.setCharacteristicsEntity(characteristicsEntity);

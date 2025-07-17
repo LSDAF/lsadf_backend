@@ -19,11 +19,9 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrat
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -78,7 +76,6 @@ public interface AdminUserController extends Controller {
       })
   @PostMapping(value = Constants.ApiPaths.USER_ID)
   @Operation(summary = "Updates a user")
-  @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<UserResponse>> updateUser(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = USER_ID) @Uuid String userId,
@@ -110,7 +107,6 @@ public interface AdminUserController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Creates a new user")
-  @JsonView(JsonViews.Admin.class)
   @PostMapping
   ResponseEntity<ApiResponse<UserResponse>> createUser(
       @AuthenticationPrincipal Jwt jwt,
@@ -143,7 +139,6 @@ public interface AdminUserController extends Controller {
       })
   @Operation(summary = "Deletes a user")
   @DeleteMapping(value = Constants.ApiPaths.USER_ID)
-  @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<Void>> deleteUser(
       @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) @Uuid String userId);
 
@@ -174,7 +169,6 @@ public interface AdminUserController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets a user by its email")
-  @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<UserResponse>> getUserByUsername(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @Email @PathVariable(value = USERNAME) String username);
@@ -206,7 +200,6 @@ public interface AdminUserController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets a UserAdminDetails by the user id")
-  @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<UserResponse>> getUserById(
       @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) @Uuid String userId);
 
@@ -232,7 +225,6 @@ public interface AdminUserController extends Controller {
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
   @Operation(summary = "Gets all users")
-  @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<List<UserResponse>>> getUsers(
       @AuthenticationPrincipal Jwt jwt,
       @RequestParam(value = ORDER_BY, required = false) List<String> orderBy);

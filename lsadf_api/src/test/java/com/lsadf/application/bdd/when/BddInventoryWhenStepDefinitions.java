@@ -93,7 +93,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
       ApiResponse<Set<ItemResponse>> body = result.getBody();
-      itemResponseSetStack.push(body.getData());
+      itemResponseSetStack.push(body.data());
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {

@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.request.game.game_save.update;
 
-import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.game.characteristics.Characteristics;

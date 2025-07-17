@@ -15,45 +15,37 @@
  */
 package com.lsadf.core.infra.web.request.game.characteristics;
 
-import static com.lsadf.core.infra.web.JsonAttributes.Characteristics.*;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
 import java.io.Serial;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class CharacteristicsRequest implements Request {
+@Builder
+public record CharacteristicsRequest(
+    @Schema(description = "The attack level of the user", example = "100")
+        @JsonProperty(value = ATTACK)
+        @Positive
+        Long attack,
+    @Schema(description = "The critical chance level of the user", example = "100")
+        @JsonProperty(value = CRIT_CHANCE)
+        @Positive
+        Long critChance,
+    @Schema(description = "The critical damage level of the user", example = "100")
+        @JsonProperty(value = CRIT_DAMAGE)
+        @Positive
+        Long critDamage,
+    @Schema(description = "The health level of the user", example = "100")
+        @JsonProperty(value = HEALTH)
+        @Positive
+        Long health,
+    @Schema(description = "The resistance level of the user", example = "100")
+        @JsonProperty(value = RESISTANCE)
+        @Positive
+        Long resistance)
+    implements Request {
   @Serial private static final long serialVersionUID = 1865696066274976174L;
-
-  @Schema(description = "The attack level of the user", example = "100")
-  @JsonProperty(value = ATTACK)
-  @Positive
-  private Long attack;
-
-  @Schema(description = "The critical chance level of the user", example = "100")
-  @JsonProperty(value = CRIT_CHANCE)
-  @Positive
-  private Long critChance;
-
-  @Schema(description = "The critical damage level of the user", example = "100")
-  @JsonProperty(value = CRIT_DAMAGE)
-  @Positive
-  private Long critDamage;
-
-  @Schema(description = "The health level of the user", example = "100")
-  @JsonProperty(value = HEALTH)
-  @Positive
-  private Long health;
-
-  @Schema(description = "The resistance level of the user", example = "100")
-  @JsonProperty(value = RESISTANCE)
-  @Positive
-  private Long resistance;
 }

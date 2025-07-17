@@ -189,10 +189,6 @@ shutdown:
 clock:
   time-zone: "Europe/Paris"
 
-json-view:
-  default-json-view: ADMIN
-  default-json-view-enabled: false
-
 configuration-display:
   enabled: true
 

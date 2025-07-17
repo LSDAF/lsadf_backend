@@ -63,7 +63,7 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
       ApiResponse<Set<ItemResponse>> body = result.getBody();
-      itemResponseSetStack.push(body.getData());
+      itemResponseSetStack.push(body.data());
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -98,8 +98,8 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
               url, HttpMethod.POST, request, buildParameterizedItemResponse());
       ApiResponse<ItemResponse> body = result.getBody();
       responseStack.push(body);
-      if (body.getData() != null) {
-        var data = body.getData();
+      if (body.data() != null) {
+        var data = body.data();
         itemResponseSetStack.push(Set.of(data));
       }
       log.info("Response: {}", result);
@@ -163,8 +163,8 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(url, HttpMethod.PUT, request, buildParameterizedItemResponse());
       ApiResponse<ItemResponse> body = result.getBody();
       responseStack.push(body);
-      if (body.getData() != null) {
-        ItemResponse data = body.getData();
+      if (body.data() != null) {
+        ItemResponse data = body.data();
         itemResponseSetStack.push(Set.of(data));
       }
       log.info("Response: {}", result);

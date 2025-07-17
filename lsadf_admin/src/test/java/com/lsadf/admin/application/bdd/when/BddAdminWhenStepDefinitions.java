@@ -69,7 +69,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGlobalInfoResponse());
       ApiResponse<GlobalInfoResponse> body = result.getBody();
-      globalInfoResponseStack.push(body.getData());
+      globalInfoResponseStack.push(body.data());
       log.info("Response: {}", result);
     } catch (Exception e) {
       exceptionStack.push(e);
@@ -91,7 +91,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedUserResponseList());
       ApiResponse<List<UserResponse>> body = result.getBody();
-      userResponseListStack.push(body.getData());
+      userResponseListStack.push(body.data());
       responseStack.push(body);
 
       log.info("Response: {}", result);
@@ -116,7 +116,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
       ApiResponse<List<GameSaveResponse>> body = result.getBody();
-      gameSaveResponseListStack.push(body.getData());
+      gameSaveResponseListStack.push(body.data());
       responseStack.push(body);
 
       log.info("Response: {}", result);
@@ -188,7 +188,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       ResponseEntity<ApiResponse<UserResponse>> result =
           testRestTemplate.exchange(url, HttpMethod.GET, request, buildParamaterizedUserResponse());
       ApiResponse<UserResponse> body = result.getBody();
-      userResponseListStack.push(Collections.singletonList(body.getData()));
+      userResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -216,7 +216,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveResponse());
       ApiResponse<GameSaveResponse> body = result.getBody();
-      gameSaveResponseListStack.push(Collections.singletonList(body.getData()));
+      gameSaveResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -242,7 +242,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       ResponseEntity<ApiResponse<UserResponse>> result =
           testRestTemplate.exchange(url, HttpMethod.GET, request, buildParamaterizedUserResponse());
       ApiResponse<UserResponse> body = result.getBody();
-      userResponseListStack.push(Collections.singletonList(body.getData()));
+      userResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -274,7 +274,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedUserResponseList());
       ApiResponse<List<UserResponse>> body = result.getBody();
-      userResponseListStack.push(body.getData());
+      userResponseListStack.push(body.data());
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -307,7 +307,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedGameSaveListResponse());
       ApiResponse<List<GameSaveResponse>> body = result.getBody();
-      gameSaveResponseListStack.push(body.getData());
+      gameSaveResponseListStack.push(body.data());
       responseStack.push(body);
       log.info("Response: {}", result);
 
@@ -342,7 +342,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParamaterizedUserResponse());
       ApiResponse<UserResponse> body = result.getBody();
-      userResponseListStack.push(Collections.singletonList(body.getData()));
+      userResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -378,7 +378,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParamaterizedUserResponse());
       ApiResponse<UserResponse> body = result.getBody();
-      userResponseListStack.push(Collections.singletonList(body.getData()));
+      userResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -473,7 +473,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedGameSaveResponse());
       ApiResponse<GameSaveResponse> body = result.getBody();
-      gameSaveResponseListStack.push(Collections.singletonList(body.getData()));
+      gameSaveResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -501,7 +501,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
       ApiResponse<List<GameSaveResponse>> body = result.getBody();
-      gameSaveResponseListStack.push(body.getData());
+      gameSaveResponseListStack.push(body.data());
       responseStack.push(body);
       log.info("Response: {}", result);
 

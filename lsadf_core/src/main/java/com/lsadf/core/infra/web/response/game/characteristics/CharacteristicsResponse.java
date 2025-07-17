@@ -16,14 +16,10 @@
 
 package com.lsadf.core.infra.web.response.game.characteristics;
 
-import static com.lsadf.core.infra.web.JsonAttributes.Characteristics.*;
-import static com.lsadf.core.infra.web.JsonAttributes.Characteristics.HEALTH;
-import static com.lsadf.core.infra.web.JsonAttributes.Characteristics.RESISTANCE;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
@@ -46,7 +42,6 @@ import lombok.Builder;
 @Builder
 @Schema(name = "Characteristics", description = "Characteristics object")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonView(JsonViews.External.class)
 public record CharacteristicsResponse(
     @JsonProperty(value = ATTACK) @Schema(description = "Attack level", example = "100")
         Long attack,

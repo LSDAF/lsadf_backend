@@ -16,13 +16,13 @@
 
 package com.lsadf.core.infra.web.response.game.currency;
 
-import static com.lsadf.core.infra.web.JsonAttributes.Currency.*;
-import static com.lsadf.core.infra.web.JsonAttributes.Currency.AMETHYST;
+import static com.lsadf.core.infra.web.JsonAttributes.AMETHYST;
+import static com.lsadf.core.infra.web.JsonAttributes.DIAMOND;
+import static com.lsadf.core.infra.web.JsonAttributes.EMERALD;
+import static com.lsadf.core.infra.web.JsonAttributes.GOLD;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -30,7 +30,6 @@ import lombok.Builder;
 @Builder
 @Schema(name = "Currency", description = "Currency object")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonView(JsonViews.External.class)
 public record CurrencyResponse(
     @Schema(description = "The amount of gold", example = "100") @JsonProperty(value = GOLD)
         Long gold,

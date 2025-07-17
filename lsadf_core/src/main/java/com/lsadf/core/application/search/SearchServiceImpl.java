@@ -15,10 +15,7 @@
  */
 package com.lsadf.core.application.search;
 
-import static com.lsadf.core.infra.web.JsonAttributes.GameSave.NICKNAME;
-import static com.lsadf.core.infra.web.JsonAttributes.GameSave.USER_EMAIL;
-import static com.lsadf.core.infra.web.JsonAttributes.ID;
-import static com.lsadf.core.infra.web.JsonAttributes.User.*;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.user.UserService;
@@ -50,20 +47,19 @@ public class SearchServiceImpl implements SearchService {
     Stream<User> userStream = userService.getUsers();
     List<Filter> filters = searchRequest.getFilters();
     for (Filter filter : filters) {
-      switch (filter.getType()) {
+      switch (filter.type()) {
         case FIRST_NAME ->
-            userStream = userStream.filter(user -> user.getFirstName().equals(filter.getValue()));
+            userStream = userStream.filter(user -> user.getFirstName().equals(filter.value()));
         case LAST_NAME ->
-            userStream = userStream.filter(user -> user.getLastName().equals(filter.getValue()));
+            userStream = userStream.filter(user -> user.getLastName().equals(filter.value()));
         case USERNAME, USER_EMAIL ->
-            userStream = userStream.filter(user -> user.getUsername().equals(filter.getValue()));
-        case ID -> userStream = userStream.filter(user -> user.getId().equals(filter.getValue()));
+            userStream = userStream.filter(user -> user.getUsername().equals(filter.value()));
+        case ID -> userStream = userStream.filter(user -> user.getId().equals(filter.value()));
         case USER_ROLES ->
             userStream =
                 userStream.filter(
                     user ->
-                        user.getUserRoles().stream()
-                            .anyMatch(role -> role.equals(filter.getValue())));
+                        user.getUserRoles().stream().anyMatch(role -> role.equals(filter.value())));
         default -> throw new IllegalArgumentException("Invalid filter type");
       }
     }
@@ -79,17 +75,16 @@ public class SearchServiceImpl implements SearchService {
     Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves();
     List<Filter> filters = searchRequest.getFilters();
     for (Filter filter : filters) {
-      switch (filter.getType()) {
+      switch (filter.type()) {
         case ID ->
             gameSaveStream =
-                gameSaveStream.filter(gameSave -> gameSave.getId().equals(filter.getValue()));
+                gameSaveStream.filter(gameSave -> gameSave.getId().equals(filter.value()));
         case USER_EMAIL ->
             gameSaveStream =
-                gameSaveStream.filter(
-                    gameSave -> gameSave.getUserEmail().equals(filter.getValue()));
+                gameSaveStream.filter(gameSave -> gameSave.getUserEmail().equals(filter.value()));
         case NICKNAME ->
             gameSaveStream =
-                gameSaveStream.filter(gameSave -> gameSave.getNickname().equals(filter.getValue()));
+                gameSaveStream.filter(gameSave -> gameSave.getNickname().equals(filter.value()));
         default -> throw new IllegalArgumentException("Invalid filter type");
       }
     }

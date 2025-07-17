@@ -16,19 +16,16 @@
 
 package com.lsadf.core.infra.web.response.game.stage;
 
-import static com.lsadf.core.infra.web.JsonAttributes.Stage.CURRENT_STAGE;
-import static com.lsadf.core.infra.web.JsonAttributes.Stage.MAX_STAGE;
+import static com.lsadf.core.infra.web.JsonAttributes.CURRENT_STAGE;
+import static com.lsadf.core.infra.web.JsonAttributes.MAX_STAGE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Builder
 @Schema(name = "Stage", description = "Stage object containing the player's game progress")
-@JsonView(JsonViews.External.class)
 public record StageResponse(
     @Schema(description = "The Current game stage", example = "26")
         @JsonProperty(value = CURRENT_STAGE)

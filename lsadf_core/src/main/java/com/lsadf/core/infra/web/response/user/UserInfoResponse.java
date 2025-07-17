@@ -16,33 +16,22 @@
 
 package com.lsadf.core.infra.web.response.user;
 
-import static com.lsadf.core.infra.web.response.user.UserInfoResponse.Attributes.*;
-import static com.lsadf.core.infra.web.response.user.UserInfoResponse.Attributes.ROLES;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.util.Set;
-import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 
 @Builder
 @Schema(name = "UserInfo", description = "UserInfo response object")
 public record UserInfoResponse(
     @JsonProperty(value = NAME) String name,
-    @JsonProperty(value = EMAIL) String email,
+    @JsonProperty(value = USERNAME) String username,
     @JsonProperty(value = VERIFIED) boolean verified,
     @JsonProperty(value = ROLES) Set<String> roles)
     implements Response {
   @Serial private static final long serialVersionUID = -5863483742674101453L;
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class Attributes {
-    public static final String NAME = "name";
-    public static final String EMAIL = "email";
-    public static final String ROLES = "roles";
-    public static final String VERIFIED = "validated";
-  }
 }

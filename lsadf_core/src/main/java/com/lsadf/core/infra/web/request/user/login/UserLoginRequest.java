@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.infra.web.request.user.login;
 
-import static com.lsadf.core.infra.web.JsonAttributes.User.PASSWORD;
-import static com.lsadf.core.infra.web.JsonAttributes.User.USERNAME;
+import static com.lsadf.core.infra.web.JsonAttributes.PASSWORD;
+import static com.lsadf.core.infra.web.JsonAttributes.USERNAME;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.request.Request;

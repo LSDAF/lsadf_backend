@@ -112,7 +112,7 @@ public class BddWhenStepDefinitions extends BddLoader {
       var response = result.getBody();
       assertThat(response).isNotNull();
       responseStack.push(response);
-      var jwtAuthentication = response.getData();
+      var jwtAuthentication = response.data();
       if (jwtAuthentication != null) {
         jwtAuthenticationResponseStack.push(jwtAuthentication);
       }
@@ -145,7 +145,7 @@ public class BddWhenStepDefinitions extends BddLoader {
       var response = result.getBody();
       assertThat(response).isNotNull();
       responseStack.push(response);
-      var jwtAuthentication = response.getData();
+      var jwtAuthentication = response.data();
       if (jwtAuthentication != null) {
         jwtAuthenticationResponseStack.push(jwtAuthentication);
       }
@@ -376,7 +376,7 @@ public class BddWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
       ApiResponse<List<GameSaveResponse>> body = result.getBody();
-      gameSaveResponseListStack.push(body.getData());
+      gameSaveResponseListStack.push(body.data());
       responseStack.push(body);
       log.info("Response: {}", result);
 
