@@ -45,12 +45,11 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
 
   private final UserService userService;
 
-  private final UserResponseMapper userResponseMapper;
+  private static final UserResponseMapper userResponseMapper = UserResponseMapper.INSTANCE;
 
   @Autowired
-  public AdminUserControllerImpl(UserService userService, UserResponseMapper userResponseMapper) {
+  public AdminUserControllerImpl(UserService userService) {
     this.userService = userService;
-    this.userResponseMapper = userResponseMapper;
   }
 
   /** {@inheritDoc} */

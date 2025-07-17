@@ -19,21 +19,29 @@ package com.lsadf.core.infra.web.response.user;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * A mapper interface responsible for mapping instances of the {@link User} domain model to
- * instances of the {@link UserResponse} response data transfer object (DTO).
+ * Interface representing a mapper for converting a User domain model to its corresponding
+ * UserResponse Data Transfer Object (DTO).
  *
- * <p>This implementation of the {@link ModelResponseMapper} interface uses MapStruct to generate
- * the mapping logic necessary for converting domain-specific {@link User} entities into
- * corresponding externally exposed representations of {@link UserResponse}.
+ * <p>This interface extends the {@link ModelResponseMapper} interface, which provides a generic
+ * definition for mapping domain models to their associated response objects. The UserResponseMapper
+ * serves as a concrete mapper specifically designed for handling the mapping logic from {@code
+ * User} to {@code UserResponse}.
  *
- * <p>The mapping process involves extracting relevant fields from the {@link User} instance (e.g.,
- * user ID, first name, last name, username, roles, etc.) and populating the equivalent fields in a
- * {@link UserResponse} instance.
+ * <p>The implementation of this mapper is automatically generated at runtime by the MapStruct
+ * library. The generated implementation is responsible for mapping all relevant fields between the
+ * User and UserResponse objects and is accessible as a static instance variable {@code INSTANCE}.
+ *
+ * <p>The map method defined by this interface ensures that a given User domain model is transformed
+ * into a corresponding UserResponse DTO, which conforms to the structure required for API responses
+ * or other external representations.
  */
-@Mapper(componentModel = "spring")
+@Mapper
 public interface UserResponseMapper extends ModelResponseMapper<User, UserResponse> {
+  UserResponseMapper INSTANCE = Mappers.getMapper(UserResponseMapper.class);
+
   /**
    * Maps a User domain model to a UserResponse DTO.
    *

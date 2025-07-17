@@ -22,13 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 /** Main class for the application */
 @SpringBootApplication
 @Import(LsadfConfiguration.class)
-@ComponentScan(basePackages = {"com.lsadf.application", "com.lsadf.core.infra.web.response"})
 @Slf4j
 public class LsadfApplication {
 
