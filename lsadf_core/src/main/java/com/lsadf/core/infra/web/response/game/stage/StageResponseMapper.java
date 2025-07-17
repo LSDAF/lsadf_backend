@@ -18,15 +18,21 @@ package com.lsadf.core.infra.web.response.game.stage;
 
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * Concrete implementation of {@link ModelResponseMapper} for mapping {@link Stage} model objects to
- * {@link StageResponse} response objects.
+ * A mapper interface for converting {@link Stage} objects to {@link StageResponse} objects.
  *
- * <p>This class handles the transformation of Stage model data, such as currentStage and maxStage,
- * into their corresponding representation suited for API responses through StageResponse.
+ * <p>This interface extends {@link ModelResponseMapper} to provide a specific mapper for mapping
+ * `Stage` domain model instances to their corresponding API response representations. It uses
+ * MapStruct as the underlying mapping framework.
  */
-public class StageResponseMapper implements ModelResponseMapper<Stage, StageResponse> {
+@Mapper
+public interface StageResponseMapper extends ModelResponseMapper<Stage, StageResponse> {
+
+  StageResponseMapper INSTANCE = Mappers.getMapper(StageResponseMapper.class);
+
   /**
    * Maps a {@link Stage} model object to a {@link StageResponse} response object.
    *
@@ -34,10 +40,5 @@ public class StageResponseMapper implements ModelResponseMapper<Stage, StageResp
    * @return the {@link StageResponse} response object that corresponds to the provided model
    */
   @Override
-  public StageResponse map(Stage model) {
-    return StageResponse.builder()
-        .currentStage(model.getCurrentStage())
-        .maxStage(model.getMaxStage())
-        .build();
-  }
+  StageResponse map(Stage model);
 }

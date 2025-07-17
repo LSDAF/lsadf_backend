@@ -44,7 +44,7 @@ public class StageControllerImpl extends BaseController implements StageControll
   private final GameSaveService gameSaveService;
   private final CacheService cacheService;
   private final StageRequestMapper stageRequestMapper;
-  private final StageResponseMapper stageResponseMapper;
+  private static final StageResponseMapper stageResponseMapper = StageResponseMapper.INSTANCE;
   private final StageService stageService;
 
   @Autowired
@@ -52,13 +52,11 @@ public class StageControllerImpl extends BaseController implements StageControll
       GameSaveService gameSaveService,
       CacheService cacheService,
       StageRequestMapper stageRequestMapper,
-      StageService stageService,
-      StageResponseMapper stageResponseMapper) {
+      StageService stageService) {
     this.gameSaveService = gameSaveService;
     this.cacheService = cacheService;
     this.stageRequestMapper = stageRequestMapper;
     this.stageService = stageService;
-    this.stageResponseMapper = stageResponseMapper;
   }
 
   /** {@inheritDoc} */

@@ -19,7 +19,6 @@ package com.lsadf.core.application.info;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.web.response.info.GlobalInfoResponseMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,10 +41,5 @@ public class GlobalInfoConfiguration {
   public GlobalInfoService globalInfoService(
       UserService userService, GameSaveService gameSaveService, ClockService clockService) {
     return new GlobalInfoServiceImpl(userService, clockService, gameSaveService);
-  }
-
-  @Bean
-  public GlobalInfoResponseMapper globalInfoResponseMapper() {
-    return new GlobalInfoResponseMapper();
   }
 }

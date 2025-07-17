@@ -38,12 +38,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminInventoryControllerImpl extends BaseController
     implements AdminInventoryController {
 
-  private final ItemResponseMapper itemResponseMapper;
+  private static final ItemResponseMapper itemResponseMapper = ItemResponseMapper.INSTANCE;
 
-  public AdminInventoryControllerImpl(
-      InventoryService inventoryService, ItemResponseMapper itemResponseMapper) {
+  public AdminInventoryControllerImpl(InventoryService inventoryService) {
     this.inventoryService = inventoryService;
-    this.itemResponseMapper = itemResponseMapper;
   }
 
   private final InventoryService inventoryService;

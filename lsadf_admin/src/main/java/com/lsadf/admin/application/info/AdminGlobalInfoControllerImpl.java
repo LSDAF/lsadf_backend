@@ -38,13 +38,12 @@ public class AdminGlobalInfoControllerImpl extends BaseController
     implements AdminGlobalInfoController {
 
   private final GlobalInfoService globalInfoService;
-  private final GlobalInfoResponseMapper globalInfoResponseMapper;
+  private static final GlobalInfoResponseMapper globalInfoResponseMapper =
+      GlobalInfoResponseMapper.INSTANCE;
 
   @Autowired
-  public AdminGlobalInfoControllerImpl(
-      GlobalInfoService globalInfoService, GlobalInfoResponseMapper globalInfoResponseMapper) {
+  public AdminGlobalInfoControllerImpl(GlobalInfoService globalInfoService) {
     this.globalInfoService = globalInfoService;
-    this.globalInfoResponseMapper = globalInfoResponseMapper;
   }
 
   /** {@inheritDoc} */
