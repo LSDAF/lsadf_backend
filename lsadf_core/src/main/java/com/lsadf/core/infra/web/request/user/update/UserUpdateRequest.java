@@ -13,33 +13,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.lsadf.core.infra.web.request.user.update;
 
-import static com.lsadf.core.infra.web.JsonAttributes.FIRST_NAME;
-import static com.lsadf.core.infra.web.JsonAttributes.LAST_NAME;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.request.Request;
-import jakarta.validation.constraints.NotBlank;
-import java.io.Serial;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
-@Builder
-public class UserUpdateRequest implements Request {
+/**
+ * Represents a request to update user information. This interface defines the contract for
+ * retrieving user-related details such as personal information, account status, and roles in the
+ * context of an update request.
+ *
+ * <p>Implementations of this interface should provide the necessary data for updating specific user
+ * details while adhering to the defined structure.
+ */
+public interface UserUpdateRequest extends Request {
+  /**
+   * Retrieves the first name of the user associated with the update request.
+   *
+   * @return the first name of the user as a String
+   */
+  String getFirstName();
 
-  @Serial private static final long serialVersionUID = 3391683431995156829L;
+  /**
+   * Retrieves the last name of the user associated with the update request.
+   *
+   * @return the last name of the user as a String
+   */
+  String getLastName();
 
-  @JsonProperty(value = FIRST_NAME)
-  @NotBlank
-  private String firstName;
+  /**
+   * Retrieves the email verification status of the user associated with the update request.
+   *
+   * @return the email verification status of the user as a Boolean, where true indicates the email
+   *     is verified and false indicates it is not
+   */
+  Boolean getEmailVerified();
 
-  @JsonProperty(value = LAST_NAME)
-  @NotBlank
-  private String lastName;
+  /**
+   * Retrieves the enabled status of the user associated with the update request.
+   *
+   * @return the enabled status of the user as a Boolean, where true indicates the user is enabled
+   *     and false indicates the user is disabled
+   */
+  Boolean getEnabled();
+
+  /**
+   * Retrieves the roles assigned to the user associated with the update request.
+   *
+   * @return a list of role names as Strings assigned to the user
+   */
+  List<String> getUserRoles();
 }

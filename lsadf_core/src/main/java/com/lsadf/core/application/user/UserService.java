@@ -17,7 +17,6 @@ package com.lsadf.core.application.user;
 
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.request.user.creation.UserCreationRequest;
-import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.request.user.update.UserUpdateRequest;
 import java.util.List;
 import java.util.stream.Stream;
@@ -73,15 +72,7 @@ public interface UserService {
    *
    * @param user user to update
    */
-  User updateUser(String id, AdminUserUpdateRequest user);
-
-  /**
-   * Update existing user
-   *
-   * @param id user id
-   * @param user user to update
-   */
-  void updateUser(String id, UserUpdateRequest user);
+  User updateUser(String id, UserUpdateRequest user);
 
   /**
    * Reset user password

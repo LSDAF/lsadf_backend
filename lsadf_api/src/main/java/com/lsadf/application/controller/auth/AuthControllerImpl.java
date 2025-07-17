@@ -84,7 +84,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
   @Override
   public ResponseEntity<ApiResponse<JwtAuthenticationResponse>> login(
       @RequestBody @Valid UserLoginRequest userLoginRequest) {
-    log.info("User {} wants to login with grant_type=password", userLoginRequest.getUsername());
+    log.info("User {} wants to login with grant_type=password", userLoginRequest.username());
 
     String clientId = keycloakProperties.getClientId();
     String clientSecret = keycloakProperties.getClientSecret();
@@ -96,9 +96,9 @@ public class AuthControllerImpl extends BaseController implements AuthController
             + "&client_secret="
             + clientSecret
             + "&username="
-            + userLoginRequest.getUsername()
+            + userLoginRequest.username()
             + "&password="
-            + userLoginRequest.getPassword();
+            + userLoginRequest.password();
 
     JwtAuthenticationResponse jwt =
         keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
@@ -123,7 +123,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
             + "&client_secret="
             + clientSecret
             + "&refresh_token="
-            + userRefreshLoginRequest.getRefreshToken();
+            + userRefreshLoginRequest.refreshToken();
 
     JwtAuthenticationResponse response =
         keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);

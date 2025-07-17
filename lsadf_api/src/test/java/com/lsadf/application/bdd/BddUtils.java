@@ -46,7 +46,7 @@ import com.lsadf.core.infra.web.request.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.request.user.update.UserUpdateRequest;
+import com.lsadf.core.infra.web.request.user.update.SimpleUserUpdateRequest;
 import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
@@ -739,11 +739,11 @@ public class BddUtils {
    * @param row row from BDD table
    * @return JwtAuthenticationResponse
    */
-  public static UserUpdateRequest mapToUserUpdateRequest(Map<String, String> row) {
+  public static SimpleUserUpdateRequest mapToUserUpdateRequest(Map<String, String> row) {
     String firstName = row.get(BddFieldConstants.UserUpdateRequest.FIRST_NAME);
     String lastName = row.get(BddFieldConstants.UserUpdateRequest.LAST_NAME);
 
-    return new UserUpdateRequest(firstName, lastName);
+    return new SimpleUserUpdateRequest(firstName, lastName);
   }
 
   /**
