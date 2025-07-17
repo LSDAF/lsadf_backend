@@ -50,7 +50,19 @@ class InventoryServiceTests {
 
   @Mock private ItemRepository itemRepository;
 
-  private ItemEntityMapper itemEntityMapper = new ItemEntityMapper();
+  private static final ItemEntityMapper itemEntityMapper = new ItemEntityMapper();
+
+  private static final ItemRequest itemRequest =
+      ItemRequest.builder()
+          .itemRarity(ItemRarity.EPIC.getRarity())
+          .itemType(ItemType.SWORD.getType())
+          .level(12)
+          .additionalStats(new LinkedList<>())
+          .mainStat(new ItemStat(ItemStatistic.CRIT_DAMAGE, 100f))
+          .blueprintId(UUID.randomUUID().toString())
+          .clientId(UUID.randomUUID().toString())
+          .isEquipped(false)
+          .build();
 
   @BeforeEach
   void init() {
@@ -140,7 +152,7 @@ class InventoryServiceTests {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> inventoryService.createItemInInventory(null, new ItemRequest()));
+        () -> inventoryService.createItemInInventory(null, itemRequest));
   }
 
   @Test
@@ -150,25 +162,13 @@ class InventoryServiceTests {
 
     // Assert
     assertThrows(
-        NotFoundException.class,
-        () -> inventoryService.createItemInInventory("1", new ItemRequest()));
+        NotFoundException.class, () -> inventoryService.createItemInInventory("1", itemRequest));
   }
 
   @Test
   void createItemInInventory_on_existing_gamesave_id_with_empty_inventory() {
     // Arrange
     InventoryEntity inventoryEntity = InventoryEntity.builder().items(new HashSet<>()).build();
-
-    ItemRequest itemRequest =
-        new ItemRequest(
-            "36f27c2a-06e8-4bdb-bf59-56999116f5ef__11111111-1111-1111-1111-111111111111",
-            ItemType.BOOTS.getType(),
-            "blueprint_id",
-            ItemRarity.LEGENDARY.getRarity(),
-            true,
-            20,
-            new ItemStat(ItemStatistic.ATTACK_ADD, 100f),
-            List.of(new ItemStat(ItemStatistic.ATTACK_MULT, 2f)));
 
     when(inventoryRepository.findById(anyString())).thenReturn(Optional.of(inventoryEntity));
     when(inventoryRepository.save(any())).thenReturn(inventoryEntity);
@@ -207,17 +207,6 @@ class InventoryServiceTests {
             .build();
 
     inventoryEntity.getItems().add(presentItemEntity);
-
-    ItemRequest itemRequest =
-        new ItemRequest(
-            "36f27c2a-06e8-4bdb-bf59-56999116f5ef__11111111-1111-1111-1111-111111111111",
-            ItemType.SWORD.getType(),
-            "blueprint_id",
-            ItemRarity.LEGENDARY.getRarity(),
-            true,
-            20,
-            new ItemStat(ItemStatistic.ATTACK_ADD, 100f),
-            List.of(new ItemStat(ItemStatistic.ATTACK_MULT, 2f)));
 
     when(inventoryRepository.findById(anyString())).thenReturn(Optional.of(inventoryEntity));
     when(inventoryRepository.save(any())).thenReturn(inventoryEntity);
@@ -349,7 +338,7 @@ class InventoryServiceTests {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> inventoryService.updateItemInInventory(null, "1", new ItemRequest()));
+        () -> inventoryService.updateItemInInventory(null, "1", itemRequest));
   }
 
   @Test
@@ -357,7 +346,7 @@ class InventoryServiceTests {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> inventoryService.updateItemInInventory("1", null, new ItemRequest()));
+        () -> inventoryService.updateItemInInventory("1", null, itemRequest));
   }
 
   @Test
@@ -376,7 +365,7 @@ class InventoryServiceTests {
     // Assert
     assertThrows(
         NotFoundException.class,
-        () -> inventoryService.updateItemInInventory("1", "2", new ItemRequest()));
+        () -> inventoryService.updateItemInInventory("1", "2", itemRequest));
   }
 
   @Test
@@ -387,7 +376,7 @@ class InventoryServiceTests {
     // Assert
     assertThrows(
         NotFoundException.class,
-        () -> inventoryService.updateItemInInventory("1", "2", new ItemRequest()));
+        () -> inventoryService.updateItemInInventory("1", "2", itemRequest));
   }
 
   @Test

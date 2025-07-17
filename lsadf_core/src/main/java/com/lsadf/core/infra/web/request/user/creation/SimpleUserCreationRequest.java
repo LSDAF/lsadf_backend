@@ -17,51 +17,71 @@ package com.lsadf.core.infra.web.request.user.creation;
 
 import static com.lsadf.core.infra.web.JsonAttributes.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class SimpleUserCreationRequest implements UserCreationRequest {
+public record SimpleUserCreationRequest(
+    @Schema(description = "Name of user to create", example = "Toto Dupont")
+        @JsonProperty(value = FIRST_NAME)
+        @NotBlank
+        String firstName,
+    @Schema(description = "Lastname of user to create", example = "Dupont")
+        @JsonProperty(value = LAST_NAME)
+        @NotBlank
+        String lastName,
+    @Schema(description = "Password of user to create", example = "k127F978")
+        @JsonProperty(value = PASSWORD)
+        @Size(min = 8)
+        String password,
+    @Schema(description = "Username of user to create", example = "toto@toto.fr")
+        @JsonProperty(value = USERNAME)
+        @Email
+        @NotBlank
+        String username)
+    implements UserCreationRequest {
 
   @Serial private static final long serialVersionUID = 7976141604912528826L;
 
-  @NotBlank
-  @Schema(description = "Name of user to create", example = "Toto Dupont")
-  @JsonProperty(value = FIRST_NAME)
-  private String firstName;
+  @Override
+  public String getFirstName() {
+    return firstName;
+  }
 
-  @NotBlank
-  @Schema(description = "Lastname of user to create", example = "Dupont")
-  @JsonProperty(value = LAST_NAME)
-  private String lastName;
+  @Override
+  public String getLastName() {
+    return lastName;
+  }
 
-  @Size(min = 8)
-  @Schema(description = "Password of user to create", example = "k127F978")
-  @JsonProperty(value = PASSWORD)
-  private String password;
+  @Override
+  public String getPassword() {
+    return password;
+  }
 
-  @Email
-  @NotBlank
-  @Schema(description = "Username of user to create", example = "toto@toto.fr")
-  @JsonProperty(value = USERNAME)
-  private String username;
+  @Override
+  public String getUsername() {
+    return username;
+  }
 
-  @JsonIgnore @Builder.Default private Boolean enabled = true;
+  @Override
+  public Boolean getEnabled() {
+    return true;
+  }
 
-  @JsonIgnore @Builder.Default private Boolean emailVerified = false;
+  @Override
+  public Boolean getEmailVerified() {
+    return false;
+  }
 
-  @JsonIgnore private List<String> userRoles;
+  @Override
+  public List<String> getUserRoles() {
+    return new ArrayList<>();
+  }
 }

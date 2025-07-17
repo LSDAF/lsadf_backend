@@ -25,6 +25,23 @@ import java.io.Serial;
 import java.io.Serializable;
 import lombok.*;
 
+/**
+ * Represents a filter with specified type and value. This record is used to define filtering
+ * criteria for various search or query purposes.
+ *
+ * <p>This class is immutable and serializable. It may be used in scenarios where filtering is
+ * needed based on a key (type) and a corresponding value.
+ *
+ * <p>Attributes: - type: Defines the type or key of the filter. - value: The corresponding value
+ * for the given filter type.
+ *
+ * <p>Annotations: - {@link Builder}: Enables builder pattern for this class. - {@link
+ * JsonProperty}: Specifies serialized property names. - {@link Schema}: Describes schema details
+ * for documentation.
+ *
+ * <p>Implements: - {@link Serializable}: Allows objects of this class to be serialized for storage
+ * or transmission.
+ */
 @Builder
 public record Filter(
     @Schema(description = "Type of filter", example = "name") @JsonProperty(value = TYPE) @NotNull

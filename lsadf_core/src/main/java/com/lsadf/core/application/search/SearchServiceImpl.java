@@ -45,7 +45,7 @@ public class SearchServiceImpl implements SearchService {
   @Override
   public Stream<User> searchUsers(SearchRequest searchRequest, List<UserSortingParameter> orderBy) {
     Stream<User> userStream = userService.getUsers();
-    List<Filter> filters = searchRequest.getFilters();
+    List<Filter> filters = searchRequest.filters();
     for (Filter filter : filters) {
       switch (filter.type()) {
         case FIRST_NAME ->
@@ -73,7 +73,7 @@ public class SearchServiceImpl implements SearchService {
   public Stream<GameSave> searchGameSaves(
       SearchRequest searchRequest, List<GameSaveSortingParameter> orderBy) {
     Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves();
-    List<Filter> filters = searchRequest.getFilters();
+    List<Filter> filters = searchRequest.filters();
     for (Filter filter : filters) {
       switch (filter.type()) {
         case ID ->

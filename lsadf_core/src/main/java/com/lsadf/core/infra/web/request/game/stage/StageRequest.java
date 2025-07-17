@@ -24,25 +24,18 @@ import com.lsadf.core.infra.web.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
 import java.io.Serial;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @StageConsistency(currentStageField = "currentStage", maxStageField = "maxStage")
-public class StageRequest implements Request {
+public record StageRequest(
+    @Schema(description = "The Current game stage", example = "26")
+        @JsonProperty(value = CURRENT_STAGE)
+        @Positive
+        Long currentStage,
+    @Schema(description = "The Maximum game stage", example = "260")
+        @JsonProperty(value = MAX_STAGE)
+        @Positive
+        Long maxStage)
+    implements Request {
 
   @Serial private static final long serialVersionUID = -2154269413949156805L;
-
-  @Schema(description = "The Current game stage", example = "26")
-  @JsonProperty(value = CURRENT_STAGE)
-  @Positive
-  private Long currentStage;
-
-  @Schema(description = "The Maximum game stage", example = "260")
-  @JsonProperty(value = MAX_STAGE)
-  @Positive
-  private Long maxStage;
 }

@@ -61,16 +61,16 @@ class AdminInventoryControllerTests {
 
   private ItemRequest createTestItemRequest() {
     ItemStat mainStat = new ItemStat(ItemStatistic.ATTACK_ADD, 100.0f);
-    ItemRequest itemRequest = new ItemRequest();
-    itemRequest.setClientId(ITEM_CLIENT_ID);
-    itemRequest.setItemType("weapon");
-    itemRequest.setBlueprintId("test_blueprint");
-    itemRequest.setItemRarity("COMMON");
-    itemRequest.setIsEquipped(false);
-    itemRequest.setLevel(1);
-    itemRequest.setMainStat(mainStat);
-    itemRequest.setAdditionalStats(Collections.emptyList());
-    return itemRequest;
+    return ItemRequest.builder()
+        .clientId(ITEM_CLIENT_ID)
+        .itemType("weapon")
+        .blueprintId("test_blueprint")
+        .itemRarity("COMMON")
+        .isEquipped(false)
+        .level(1)
+        .mainStat(mainStat)
+        .additionalStats(Collections.emptyList())
+        .build();
   }
 
   // Tests for getInventory

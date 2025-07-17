@@ -24,6 +24,16 @@ import jakarta.validation.constraints.Positive;
 import java.io.Serial;
 import lombok.Builder;
 
+/**
+ * Represents a request for user characteristics with various attribute levels.
+ *
+ * <p>This record is used for capturing user-provided input regarding the user's specific
+ * characteristics such as attack level, critical chance, critical damage, health, and resistance.
+ * All attributes are expected to be positive numbers.
+ *
+ * <p>It is a serializable record and implements the {@link Request} interface which forms part of
+ * the request handling mechanism.
+ */
 @Builder
 public record CharacteristicsRequest(
     @Schema(description = "The attack level of the user", example = "100")

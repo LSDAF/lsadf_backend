@@ -267,7 +267,7 @@ public class BddWhenStepDefinitions extends BddLoader {
     try {
       HttpHeaders headers = new HttpHeaders();
       HttpEntity<GameSaveNicknameUpdateRequest> request =
-          new HttpEntity<>(new GameSaveNicknameUpdateRequest(), headers);
+          new HttpEntity<>(new GameSaveNicknameUpdateRequest("Test"), headers);
       ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedVoidResponse());
