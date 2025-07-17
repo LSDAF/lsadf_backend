@@ -59,6 +59,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   NoValkeyCacheConfiguration.class,
   ClockConfiguration.class,
   KeycloakConfiguration.class,
-  LsadfAdminSecurityConfiguration.class
+  LsadfAdminSecurityConfiguration.class,
+  MapperConfiguration.class
 })
 public class LsadfAdminConfiguration {}

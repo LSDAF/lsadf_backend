@@ -70,6 +70,7 @@
         <vaadin.version>24.5.7</vaadin.version>
         <flyway.version>11.1.0</flyway.version>
         <license-maven-plugin.version>5.0.0</license-maven-plugin.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
     </properties>
 
     <build>

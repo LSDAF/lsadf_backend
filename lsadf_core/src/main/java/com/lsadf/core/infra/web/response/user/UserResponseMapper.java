@@ -18,20 +18,22 @@ package com.lsadf.core.infra.web.response.user;
 
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
+import org.mapstruct.Mapper;
 
 /**
- * A class responsible for mapping instances of the {@link User} domain model to instances of the
- * {@link UserResponse} response data transfer object (DTO).
+ * A mapper interface responsible for mapping instances of the {@link User} domain model to
+ * instances of the {@link UserResponse} response data transfer object (DTO).
  *
- * <p>This implementation of the {@link ModelResponseMapper} interface provides the mapping logic
- * necessary for converting domain-specific {@link User} entities into corresponding externally
- * exposed representations of {@link UserResponse}.
+ * <p>This implementation of the {@link ModelResponseMapper} interface uses MapStruct to generate
+ * the mapping logic necessary for converting domain-specific {@link User} entities into
+ * corresponding externally exposed representations of {@link UserResponse}.
  *
  * <p>The mapping process involves extracting relevant fields from the {@link User} instance (e.g.,
  * user ID, first name, last name, username, roles, etc.) and populating the equivalent fields in a
- * {@link UserResponse} instance using the builder pattern.
+ * {@link UserResponse} instance.
  */
-public class UserResponseMapper implements ModelResponseMapper<User, UserResponse> {
+@Mapper(componentModel = "spring")
+public interface UserResponseMapper extends ModelResponseMapper<User, UserResponse> {
   /**
    * Maps a User domain model to a UserResponse DTO.
    *
@@ -39,16 +41,5 @@ public class UserResponseMapper implements ModelResponseMapper<User, UserRespons
    * @return a UserResponse instance containing the mapped data
    */
   @Override
-  public UserResponse map(User model) {
-    return UserResponse.builder()
-        .id(model.getId())
-        .firstName(model.getFirstName())
-        .lastName(model.getLastName())
-        .username(model.getUsername())
-        .userRoles(model.getUserRoles())
-        .emailVerified(model.getEmailVerified())
-        .enabled(model.getEnabled())
-        .createdTimestamp(model.getCreatedTimestamp())
-        .build();
-  }
+  UserResponse map(User model);
 }
