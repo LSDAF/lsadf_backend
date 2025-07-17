@@ -45,20 +45,16 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
   private final CurrencyService currencyService;
   private final CacheService cacheService;
 
-  private final CurrencyRequestMapper requestModelMapper;
+  private static final CurrencyRequestMapper requestModelMapper = CurrencyRequestMapper.INSTANCE;
   private static final CurrencyResponseMapper currencyResponseMapper =
       CurrencyResponseMapper.INSTANCE;
 
   @Autowired
   public CurrencyControllerImpl(
-      GameSaveService gameSaveService,
-      CurrencyService currencyService,
-      CacheService cacheService,
-      CurrencyRequestMapper requestModelMapper) {
+      GameSaveService gameSaveService, CurrencyService currencyService, CacheService cacheService) {
     this.gameSaveService = gameSaveService;
     this.currencyService = currencyService;
     this.cacheService = cacheService;
-    this.requestModelMapper = requestModelMapper;
   }
 
   /** {@inheritDoc} */

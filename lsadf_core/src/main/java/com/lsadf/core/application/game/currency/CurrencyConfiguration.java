@@ -23,7 +23,6 @@ import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.web.request.game.currency.CurrencyRequestMapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -51,11 +50,6 @@ public class CurrencyConfiguration {
   @Bean
   public CurrencyEntityMapper currencyEntityModelMapper() {
     return new CurrencyEntityMapper();
-  }
-
-  @Bean
-  public CurrencyRequestMapper currencyRequestModelMapper() {
-    return new CurrencyRequestMapper();
   }
 
   @Bean(name = CURRENCY_CACHE)

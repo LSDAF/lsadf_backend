@@ -44,7 +44,8 @@ public class CharacteristicsControllerImpl extends BaseController
   private final CharacteristicsService characteristicsService;
   private final CacheService cacheService;
 
-  private final CharacteristicsRequestMapper requestMapper;
+  private static final CharacteristicsRequestMapper requestMapper =
+      CharacteristicsRequestMapper.INSTANCE;
   private static final CharacteristicsResponseMapper responseMapper =
       CharacteristicsResponseMapper.INSTANCE;
 
@@ -52,12 +53,10 @@ public class CharacteristicsControllerImpl extends BaseController
   public CharacteristicsControllerImpl(
       GameSaveService gameSaveService,
       CharacteristicsService characteristicsService,
-      CacheService cacheService,
-      CharacteristicsRequestMapper requestMapper) {
+      CacheService cacheService) {
     this.gameSaveService = gameSaveService;
     this.characteristicsService = characteristicsService;
     this.cacheService = cacheService;
-    this.requestMapper = requestMapper;
   }
 
   /** {@inheritDoc} */
