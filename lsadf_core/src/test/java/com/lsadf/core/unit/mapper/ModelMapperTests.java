@@ -52,7 +52,7 @@ class ModelMapperTests {
   void should_map_stage_request_to_stage() {
     // given
     StageRequest stageRequest = new StageRequest(25L, 500L);
-    StageRequestMapper mapper = new StageRequestMapper();
+    StageRequestMapper mapper = StageRequestMapper.INSTANCE;
     // when
     Stage stage = mapper.map(stageRequest);
 
@@ -113,7 +113,7 @@ class ModelMapperTests {
   @Test
   void should_map_characteristics_request_to_characteristics() {
     // given
-    CharacteristicsRequestMapper mapper = new CharacteristicsRequestMapper();
+    CharacteristicsRequestMapper mapper = CharacteristicsRequestMapper.INSTANCE;
     CharacteristicsRequest characteristicsRequest =
         new CharacteristicsRequest(100L, 200L, 300L, 400L, 500L);
 
@@ -132,7 +132,7 @@ class ModelMapperTests {
   void should_map_currency_request_to_currency() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 200L, 300L, 400L);
-    CurrencyRequestMapper mapper = new CurrencyRequestMapper();
+    CurrencyRequestMapper mapper = CurrencyRequestMapper.INSTANCE;
     // when
     Currency currency = mapper.map(currencyRequest);
 
@@ -279,7 +279,7 @@ class ModelMapperTests {
   @Test
   void should_map_user_creation_request_to_user_representation() {
     // given
-    UserCreationRequestMapper mapper = new UserCreationRequestMapper();
+    UserCreationRequestMapper mapper = UserCreationRequestMapper.INSTANCE;
     SimpleUserCreationRequest simpleUserCreationRequest =
         SimpleUserCreationRequest.builder()
             .username(userEmail)

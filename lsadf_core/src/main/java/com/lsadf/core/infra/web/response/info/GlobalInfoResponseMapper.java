@@ -18,17 +18,41 @@ package com.lsadf.core.infra.web.response.info;
 
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * A mapper that transforms a {@link GlobalInfo} model object into a {@link GlobalInfoResponse}
- * object. This is useful for converting internal model data structures into response
- * representations suitable for API communication.
+ * Mapper interface for converting {@link GlobalInfo} model objects into {@link GlobalInfoResponse}
+ * representation objects.
  *
- * <p>This class implements the {@link ModelResponseMapper} interface, providing a specific mapping
- * logic for {@link GlobalInfo} to {@link GlobalInfoResponse}.
+ * <p>This interface extends {@link ModelResponseMapper} to define the mapping logic specific to
+ * transforming {@code GlobalInfo} domain model objects into their API response format, {@code
+ * GlobalInfoResponse}. It enables consistent and reusable mapping strategies using the MapStruct
+ * library.
+ *
+ * <p>The primary use case for this interface is to facilitate the mapping of backend data
+ * structures to API responses in a way that supports immutability and serialization requirements.
+ *
+ * <p>The {@code GlobalInfoResponseMapper} provides a singleton instance via the {@code INSTANCE}
+ * field, which is automatically generated and initialized by MapStruct.
+ *
+ * <p>Key features include: - Supports automatic mapping of fields between {@code GlobalInfo} and
+ * {@code GlobalInfoResponse}, provided their names and types are compatible. - Enables
+ * extensibility via MapStruct annotations for custom mapping configurations or advanced use cases.
+ *
+ * <p>This interface is utilized in the context of controller implementations to convert data
+ * retrieved from services into format-ready response objects that comply with API contracts.
+ *
+ * <p>Example usage context includes scenarios where controllers (such as {@code
+ * AdminGlobalInfoControllerImpl}) need a lightweight and efficient conversion of domain objects
+ * into API responses.
  */
-public class GlobalInfoResponseMapper
-    implements ModelResponseMapper<GlobalInfo, GlobalInfoResponse> {
+@Mapper
+public interface GlobalInfoResponseMapper
+    extends ModelResponseMapper<GlobalInfo, GlobalInfoResponse> {
+
+  GlobalInfoResponseMapper INSTANCE = Mappers.getMapper(GlobalInfoResponseMapper.class);
+
   /**
    * Maps a GlobalInfo model object to a GlobalInfoResponse object.
    *
@@ -37,11 +61,5 @@ public class GlobalInfoResponseMapper
    * @return a GlobalInfoResponse object populated with data from the given GlobalInfo model
    */
   @Override
-  public GlobalInfoResponse map(GlobalInfo model) {
-    return GlobalInfoResponse.builder()
-        .now(model.now())
-        .gameSaveCounter(model.gameSaveCounter())
-        .userCounter(model.userCounter())
-        .build();
-  }
+  GlobalInfoResponse map(GlobalInfo model);
 }

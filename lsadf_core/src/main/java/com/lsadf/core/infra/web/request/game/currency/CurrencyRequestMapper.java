@@ -18,26 +18,27 @@ package com.lsadf.core.infra.web.request.game.currency;
 
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.web.request.RequestModelMapper;
+import org.mapstruct.Mapper;
 
 /**
- * A mapper implementation for transforming a {@link CurrencyRequest} object into its corresponding
- * {@link Currency} model representation. This class provides the necessary mapping logic for
- * transferring data from a request-layer representation to a domain-layer representation.
+ * Interface for mapping {@link CurrencyRequest} objects to {@link Currency} model objects. This
+ * mapper uses the MapStruct library to generate implementation code at compile time. It extends
+ * {@link RequestModelMapper} to inherit generic mapping capabilities.
  *
- * <p>The mapping operation utilizes the fields of {@link CurrencyRequest} to construct an instance
- * of {@link Currency}, ensuring alignment between the input request and the target domain model.
+ * <p>The primary purpose of this mapper is to handle conversions between the request layer
+ * representation of currency-related data and the application's internal domain representation.
  *
- * <p>Implements the {@link RequestModelMapper} interface with {@link CurrencyRequest} as the
- * request type and {@link Currency} as the target model type.
+ * <p>Implementing Classes: - Uses MapStruct-generated implementation via {@link
+ * org.mapstruct.factory.Mappers}.
+ *
+ * <p>Features: - Ensures consistency between JSON-based input requests and internal model objects.
  */
-public class CurrencyRequestMapper implements RequestModelMapper<CurrencyRequest, Currency> {
+@Mapper
+public interface CurrencyRequestMapper extends RequestModelMapper<CurrencyRequest, Currency> {
+  CurrencyRequestMapper INSTANCE =
+      org.mapstruct.factory.Mappers.getMapper(CurrencyRequestMapper.class);
+
   /** {@inheritDoc} */
   @Override
-  public Currency map(CurrencyRequest currencyRequest) {
-    return new Currency(
-        currencyRequest.getGold(),
-        currencyRequest.getDiamond(),
-        currencyRequest.getEmerald(),
-        currencyRequest.getAmethyst());
-  }
+  Currency map(CurrencyRequest currencyRequest);
 }

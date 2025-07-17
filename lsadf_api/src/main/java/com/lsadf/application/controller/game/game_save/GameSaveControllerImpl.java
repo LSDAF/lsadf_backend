@@ -42,12 +42,11 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
 
   private final GameSaveService gameSaveService;
 
-  private final GameSaveResponseMapper gameSaveResponseMapper;
+  private static final GameSaveResponseMapper gameSaveResponseMapper =
+      GameSaveResponseMapper.INSTANCE;
 
-  public GameSaveControllerImpl(
-      GameSaveService gameSaveService, GameSaveResponseMapper gameSaveResponseMapper) {
+  public GameSaveControllerImpl(GameSaveService gameSaveService) {
     this.gameSaveService = gameSaveService;
-    this.gameSaveResponseMapper = gameSaveResponseMapper;
   }
 
   /** {@inheritDoc} */

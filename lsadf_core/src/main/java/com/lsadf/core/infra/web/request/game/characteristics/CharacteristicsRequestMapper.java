@@ -18,6 +18,7 @@ package com.lsadf.core.infra.web.request.game.characteristics;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.web.request.RequestModelMapper;
+import org.mapstruct.Mapper;
 
 /**
  * Maps {@link CharacteristicsRequest} objects to {@link Characteristics} domain models. This class
@@ -32,16 +33,13 @@ import com.lsadf.core.infra.web.request.RequestModelMapper;
  * ensures that input values from the request are accurately translated into the corresponding
  * fields of the domain model.
  */
-public class CharacteristicsRequestMapper
-    implements RequestModelMapper<CharacteristicsRequest, Characteristics> {
+@Mapper
+public interface CharacteristicsRequestMapper
+    extends RequestModelMapper<CharacteristicsRequest, Characteristics> {
+  CharacteristicsRequestMapper INSTANCE =
+      org.mapstruct.factory.Mappers.getMapper(CharacteristicsRequestMapper.class);
+
   /** {@inheritDoc} */
   @Override
-  public Characteristics map(CharacteristicsRequest characteristicsRequest) {
-    return new Characteristics(
-        characteristicsRequest.getAttack(),
-        characteristicsRequest.getCritChance(),
-        characteristicsRequest.getCritDamage(),
-        characteristicsRequest.getHealth(),
-        characteristicsRequest.getResistance());
-  }
+  Characteristics map(CharacteristicsRequest characteristicsRequest);
 }

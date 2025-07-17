@@ -18,25 +18,32 @@ package com.lsadf.core.infra.web.response.game.characteristics;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * Class responsible for mapping {@link Characteristics} model objects to their corresponding {@link
- * CharacteristicsResponse} representations.
+ * Interface responsible for mapping {@link Characteristics} model objects to their corresponding
+ * {@link CharacteristicsResponse} representations.
  *
- * <p>Implements the {@link ModelResponseMapper} interface to provide a concrete implementation of
- * the mapping process.
+ * <p>This interface extends the {@link ModelResponseMapper} interface, which provides a generic
+ * definition for mapping domain models to their associated response objects.
+ *
+ * <p>The implementation of this mapper is automatically generated at runtime by the MapStruct
+ * library. The generated implementation is responsible for mapping all relevant fields between the
+ * Characteristics and CharacteristicsResponse objects and is accessible as a static instance
+ * variable {@code INSTANCE}.
  */
-public class CharacteristicsResponseMapper
-    implements ModelResponseMapper<Characteristics, CharacteristicsResponse> {
-  /** {@inheritDoc} */
+@Mapper
+public interface CharacteristicsResponseMapper
+    extends ModelResponseMapper<Characteristics, CharacteristicsResponse> {
+  CharacteristicsResponseMapper INSTANCE = Mappers.getMapper(CharacteristicsResponseMapper.class);
+
+  /**
+   * Maps a Characteristics domain model to a CharacteristicsResponse DTO.
+   *
+   * @param characteristics the Characteristics instance to be mapped
+   * @return a CharacteristicsResponse instance containing the mapped data
+   */
   @Override
-  public CharacteristicsResponse map(Characteristics characteristics) {
-    return CharacteristicsResponse.builder()
-        .attack(characteristics.getAttack())
-        .critDamage(characteristics.getCritDamage())
-        .critChance(characteristics.getCritChance())
-        .health(characteristics.getHealth())
-        .resistance(characteristics.getResistance())
-        .build();
-  }
+  CharacteristicsResponse map(Characteristics characteristics);
 }

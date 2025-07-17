@@ -56,13 +56,12 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
 
   private final GameSaveService gameSaveService;
 
-  private final GameSaveResponseMapper gameSaveResponseMapper;
+  private static final GameSaveResponseMapper gameSaveResponseMapper =
+      GameSaveResponseMapper.INSTANCE;
 
   @Autowired
-  public AdminGameSaveControllerImpl(
-      GameSaveService gameSaveService, GameSaveResponseMapper gameSaveResponseMapper) {
+  public AdminGameSaveControllerImpl(GameSaveService gameSaveService) {
     this.gameSaveService = gameSaveService;
-    this.gameSaveResponseMapper = gameSaveResponseMapper;
   }
 
   /** {@inheritDoc} */

@@ -24,7 +24,6 @@ import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
@@ -32,18 +31,19 @@ import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationRespon
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.response.user.UserResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Step definitions for the then steps in the BDD scenarios */
 @Slf4j(topic = "[THEN STEP DEFINITIONS]")
 public class BddThenStepDefinitions extends BddLoader {
+
+  @Autowired private Stack<List<UserResponse>> userResponseListStack;
 
   @Then("^I should return true$")
   public void then_i_should_return_true() {
@@ -312,23 +312,23 @@ public class BddThenStepDefinitions extends BddLoader {
     }
   }
 
-  @Then("^the response should have the following Users in exact order$")
-  public void then_the_response_should_have_the_following_users_in_exact_order(
+  @Then("^the response should have the following UserResponses in exact order$")
+  public void then_the_response_should_have_the_following_user_responses_in_exact_order(
       DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-    List<User> actual = userListStack.peek();
-    List<User> expected = new ArrayList<>();
+    List<UserResponse> actual = userResponseListStack.peek();
+    List<UserResponse> expected = new ArrayList<>();
 
     for (Map<String, String> row : rows) {
-      User expectedEntity = BddUtils.mapToUser(row);
+      UserResponse expectedEntity = BddUtils.mapToUserResponse(row);
       expected.add(expectedEntity);
     }
 
     assertThat(actual).hasSameSizeAs(expected);
 
     for (int i = 0; i < actual.size(); i++) {
-      User actualUser = actual.get(i);
-      User expectedUser = expected.get(i);
+      UserResponse actualUser = actual.get(i);
+      UserResponse expectedUser = expected.get(i);
       assertThat(actualUser)
           .usingRecursiveComparison()
           .ignoringExpectedNullFields()
@@ -337,8 +337,8 @@ public class BddThenStepDefinitions extends BddLoader {
     }
   }
 
-  @Then("^the response should have the following User$")
-  public void then_the_response_should_have_the_following_user(DataTable dataTable) {
+  @Then("^the response should have the following UserResponse$")
+  public void then_the_response_should_have_the_following_userResponse(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     if (rows.size() > 1) {
@@ -347,8 +347,8 @@ public class BddThenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
 
-    User actual = (User) responseStack.peek().getData();
-    User expected = BddUtils.mapToUser(row);
+    UserResponse actual = (UserResponse) responseStack.peek().getData();
+    UserResponse expected = BddUtils.mapToUserResponse(row);
 
     assertThat(actual)
         .usingRecursiveComparison()
@@ -356,20 +356,20 @@ public class BddThenStepDefinitions extends BddLoader {
         .ignoringExpectedNullFields()
         .isEqualTo(expected);
 
-    expected.getUserRoles().forEach(role -> assertThat(actual.getUserRoles()).contains(role));
+    expected.userRoles().forEach(role -> assertThat(actual.userRoles()).contains(role));
   }
 
-  @Then("^the response should have the following Users$")
+  @Then("^the response should have the following UserResponses$")
   public void then_the_response_should_have_the_following_users(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    List<User> actual = userListStack.peek();
+    List<UserResponse> actual = userResponseListStack.peek();
 
     for (Map<String, String> row : rows) {
-      User expectedUser = BddUtils.mapToUser(row);
-      User actualUser =
+      UserResponse expectedUser = BddUtils.mapToUserResponse(row);
+      UserResponse actualUser =
           actual.stream()
-              .filter(u -> u.getUsername().equals(expectedUser.getUsername()))
+              .filter(u -> u.username().equals(expectedUser.username()))
               .findFirst()
               .orElseThrow();
 
@@ -379,9 +379,7 @@ public class BddThenStepDefinitions extends BddLoader {
           .ignoringFields("userRoles", "createdTimestamp")
           .isEqualTo(expectedUser);
 
-      expectedUser
-          .getUserRoles()
-          .forEach(role -> assertThat(actualUser.getUserRoles()).contains(role));
+      expectedUser.userRoles().forEach(role -> assertThat(actualUser.userRoles()).contains(role));
     }
   }
 

@@ -25,6 +25,8 @@ import com.lsadf.core.infra.web.request.user.UserSortingParameter;
 import com.lsadf.core.infra.web.request.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.user.UserResponse;
+import com.lsadf.core.infra.web.response.user.UserResponseMapper;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -43,6 +45,8 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
 
   private final UserService userService;
 
+  private static final UserResponseMapper userResponseMapper = UserResponseMapper.INSTANCE;
+
   @Autowired
   public AdminUserControllerImpl(UserService userService) {
     this.userService = userService;
@@ -60,14 +64,14 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<ApiResponse<List<User>>> getUsers(Jwt jwt, List<String> orderBy) {
+  public ResponseEntity<ApiResponse<List<UserResponse>>> getUsers(Jwt jwt, List<String> orderBy) {
     List<UserSortingParameter> sortingParameterList =
         Collections.singletonList(UserSortingParameter.NONE);
     if (orderBy != null && !orderBy.isEmpty()) {
       sortingParameterList = orderBy.stream().map(UserSortingParameter::fromString).toList();
     }
     Stream<User> users = StreamUtils.sortUsers(userService.getUsers(), sortingParameterList);
-    List<User> userList = users.toList();
+    List<UserResponse> userList = users.map(userResponseMapper::map).toList();
     return generateResponse(HttpStatus.OK, userList);
   }
 
@@ -77,10 +81,11 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<ApiResponse<User>> getUserById(Jwt jwt, String userId) {
+  public ResponseEntity<ApiResponse<UserResponse>> getUserById(Jwt jwt, String userId) {
     validateUser(jwt);
     User user = userService.getUserById(userId);
-    return generateResponse(HttpStatus.OK, user);
+    UserResponse response = userResponseMapper.map(user);
+    return generateResponse(HttpStatus.OK, response);
   }
 
   /**
@@ -89,10 +94,11 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<ApiResponse<User>> getUserByUsername(Jwt jwt, String username) {
+  public ResponseEntity<ApiResponse<UserResponse>> getUserByUsername(Jwt jwt, String username) {
     validateUser(jwt);
     User user = userService.getUserByUsername(username);
-    return generateResponse(HttpStatus.OK, user);
+    UserResponse response = userResponseMapper.map(user);
+    return generateResponse(HttpStatus.OK, response);
   }
 
   /**
@@ -101,11 +107,12 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<ApiResponse<User>> updateUser(
+  public ResponseEntity<ApiResponse<UserResponse>> updateUser(
       Jwt jwt, String userId, AdminUserUpdateRequest user) {
     validateUser(jwt);
     User updatedUser = userService.updateUser(userId, user);
-    return generateResponse(HttpStatus.OK, updatedUser);
+    UserResponse response = userResponseMapper.map(updatedUser);
+    return generateResponse(HttpStatus.OK, response);
   }
 
   /**
@@ -126,11 +133,11 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
    * @return
    */
   @Override
-  public ResponseEntity<ApiResponse<User>> createUser(
+  public ResponseEntity<ApiResponse<UserResponse>> createUser(
       Jwt jwt, AdminUserCreationRequest adminUserCreationRequest) {
     validateUser(jwt);
     User user = userService.createUser(adminUserCreationRequest);
-
-    return generateResponse(HttpStatus.OK, user);
+    UserResponse userResponse = userResponseMapper.map(user);
+    return generateResponse(HttpStatus.OK, userResponse);
   }
 }

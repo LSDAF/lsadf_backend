@@ -18,13 +18,13 @@ package com.lsadf.admin.application.bdd;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.response.user.UserResponse;
 import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -154,12 +154,14 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of list of User
+   * Builds a ParameterizedTypeReference for an ApiResponse containing a list of UserResponse
+   * objects.
    *
-   * @return ParameterizedTypeReference
+   * @return a ParameterizedTypeReference representing an ApiResponse with a List of UserResponse
+   *     objects as its data type
    */
-  public static ParameterizedTypeReference<ApiResponse<List<User>>>
-      buildParameterizedUserListResponse() {
+  public static ParameterizedTypeReference<ApiResponse<List<UserResponse>>>
+      buildParameterizedUserResponseList() {
     return new ParameterizedTypeReference<>() {};
   }
 
@@ -168,7 +170,8 @@ public class ParameterizedTypeReferenceUtils {
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<User>> buildParamaterizedUserResponse() {
+  public static ParameterizedTypeReference<ApiResponse<UserResponse>>
+      buildParamaterizedUserResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 }

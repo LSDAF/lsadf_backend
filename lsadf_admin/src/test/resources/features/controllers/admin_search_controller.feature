@@ -216,7 +216,7 @@ Feature: Admin Search Controller BDD tests
       | key | value |
 
     Then the response status code should be 200
-    And the response should have the following Users
+    And the response should have the following UserResponses
       | firstName | lastName | username             | enabled | emailVerified | roles      |
       | Paul      | OCHON    | paul.ochon@test.com  | true    | true          | USER,ADMIN |
       | Paul      | ITESSE   | paul.itesse@test.com | true    | true          | USER       |
@@ -232,7 +232,7 @@ Feature: Admin Search Controller BDD tests
       | user_email | paul.ochon@test.com |
 
     Then the response status code should be 200
-    And the response should have the following Users
+    And the response should have the following UserResponses
       | firstName | lastName | username             | enabled | emailVerified | roles      |
       | Paul      | OCHON    | paul.ochon@test.com  | true    | true          | USER,ADMIN |
 
@@ -244,7 +244,7 @@ Feature: Admin Search Controller BDD tests
       | key | value |
 
     Then the response status code should be 200
-    And the response should have the following Users in exact order
+    And the response should have the following UserResponses in exact order
       | firstName | lastName | username             | enabled | emailVerified | roles      |
       | Paul      | ITESSE   | paul.itesse@test.com | true    | true          | USER       |
       | Paul      | OCHON    | paul.ochon@test.com  | true    | true          | USER,ADMIN |
@@ -258,7 +258,7 @@ Feature: Admin Search Controller BDD tests
       | first_name | Paul  |
 
     Then the response status code should be 200
-    And the response should have the following Users in exact order
+    And the response should have the following UserResponses in exact order
       | firstName | lastName | username             | enabled | emailVerified | roles      |
       | Paul      | ITESSE   | paul.itesse@test.com | true    | true          | USER       |
       | Paul      | OCHON    | paul.ochon@test.com  | true    | true          | USER,ADMIN |
@@ -275,7 +275,7 @@ Feature: Admin Search Controller BDD tests
       | user_roles | ADMIN |
 
     Then the response status code should be 200
-    And the response should have the following Users
+    And the response should have the following UserResponses
       | firstName | lastName | username             | enabled | emailVerified | roles      |
       | Paul      | OCHON    | paul.ochon@test.com  | true    | true          | USER,ADMIN |
 

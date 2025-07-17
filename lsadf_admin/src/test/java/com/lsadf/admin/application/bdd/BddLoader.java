@@ -45,7 +45,6 @@ import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
@@ -66,6 +65,7 @@ import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.response.user.UserResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import jakarta.mail.internet.MimeMessage;
@@ -196,7 +196,7 @@ public class BddLoader {
 
   @Autowired protected Stack<List<GameSaveResponse>> gameSaveResponseListStack;
 
-  @Autowired protected Stack<List<User>> userListStack;
+  @Autowired protected Stack<List<UserResponse>> userResponseListStack;
 
   @Autowired protected Stack<MimeMessage> mimeMessageStack;
 

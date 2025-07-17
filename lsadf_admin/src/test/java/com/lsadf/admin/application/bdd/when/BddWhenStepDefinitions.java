@@ -26,7 +26,6 @@ import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.admin.application.bdd.CacheEntryType;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.AdminGameSaveController;
-import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
@@ -37,7 +36,6 @@ import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -186,58 +184,6 @@ public class BddWhenStepDefinitions extends BddLoader {
   public void when_the_user_with_email_deletes_a_game_save(String saveId) {
     try {
       gameSaveService.deleteGameSave(saveId);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^we want to create a new game save for the user with email (.*)$")
-  public void when_we_want_to_create_a_new_game_save_for_the_user_with_email(String userEmail) {
-    try {
-      GameSave gameSave = gameSaveService.createGameSave(userEmail);
-      gameSaveListStack.push(Collections.singletonList(gameSave));
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^we want to get the game save with id (.*)$")
-  public void when_we_want_to_get_the_game_save_with_id(String saveId) {
-    try {
-      GameSave gameSave = gameSaveService.getGameSave(saveId);
-      gameSaveListStack.push(Collections.singletonList(gameSave));
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^we want to get all game saves$")
-  public void when_we_want_to_get_all_game_saves() {
-    try {
-      List<GameSave> gameSaves = gameSaveService.getGameSaves().toList();
-      gameSaveListStack.push(gameSaves);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When(
-      "^we want to update the game save with id (.*) with the following GameSaveNicknameUpdateRequest")
-  public void
-      when_we_want_to_update_the_game_save_with_user_id_with_the_following_GameSaveNicknameUpdateRequest(
-          String saveId, DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    // it should have only one line
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-    GameSaveNicknameUpdateRequest updateRequest = BddUtils.mapToGameSaveUpdateUserRequest(row);
-    try {
-      GameSave updatedGameSave = gameSaveService.updateGameSave(saveId, updateRequest);
-      gameSaveListStack.push(Collections.singletonList(updatedGameSave));
     } catch (Exception e) {
       exceptionStack.push(e);
     }

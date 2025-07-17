@@ -18,13 +18,37 @@ package com.lsadf.core.infra.web.response.user;
 
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * A class that implements the mapping logic from a UserInfo model object to a GlobalInfoResponse
- * object. This class serves to transform the UserInfo domain model into a response format
- * appropriate for API communication.
+ * This interface defines a mapper to transform {@link UserInfo} model instances into {@link
+ * UserInfoResponse} objects.
+ *
+ * <p>It extends {@link ModelResponseMapper} to inherit the general mapping contract between domain
+ * model and response types, specifically specializing in mapping {@link UserInfo} to {@link
+ * UserInfoResponse}.
+ *
+ * <p>The implementation relies on the MapStruct library to generate the mapping logic at compile
+ * time. The instance {@code INSTANCE} is provided for convenient access to the generated
+ * implementation.
+ *
+ * <p>Key functionality includes translating the attributes of {@link UserInfo}, such as the user's
+ * name, email, verification status, and roles, into the corresponding fields of {@link
+ * UserInfoResponse}.
+ *
+ * <p>Example usage scenarios where this is helpful: - Converting backend domain objects into
+ * user-facing API responses. - Ensuring data consistency and transformation logic is centralized
+ * and reusable.
+ *
+ * <p>This mapper supports immutability by working with immutable data transfer objects ({@code
+ * record} types) for both the input model and the output response.
  */
-public class UserInfoResponseMapper implements ModelResponseMapper<UserInfo, UserInfoResponse> {
+@Mapper
+public interface UserInfoResponseMapper extends ModelResponseMapper<UserInfo, UserInfoResponse> {
+
+  UserInfoResponseMapper INSTANCE = Mappers.getMapper(UserInfoResponseMapper.class);
+
   /**
    * Maps a given UserInfo model object to a corresponding GlobalInfoResponse object.
    *
@@ -32,12 +56,5 @@ public class UserInfoResponseMapper implements ModelResponseMapper<UserInfo, Use
    * @return the GlobalInfoResponse object representing the mapped data
    */
   @Override
-  public UserInfoResponse map(UserInfo model) {
-    return UserInfoResponse.builder()
-        .email(model.email())
-        .name(model.name())
-        .roles(model.roles())
-        .verified(model.verified())
-        .build();
-  }
+  UserInfoResponse map(UserInfo model);
 }

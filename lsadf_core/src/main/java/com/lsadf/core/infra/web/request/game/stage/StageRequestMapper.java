@@ -18,22 +18,32 @@ package com.lsadf.core.infra.web.request.game.stage;
 
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.web.request.RequestModelMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * A mapper class responsible for converting a {@link StageRequest} object into a {@link Stage}
- * object. This class implements {@link RequestModelMapper} to facilitate the mapping process.
+ * The {@code StageRequestMapper} interface is a MapStruct mapper responsible for converting {@link
+ * StageRequest} objects into {@link Stage} objects.
  *
- * <p>The {@code mapToModel} method is overridden to provide the specific logic for mapping the
- * properties of a {@code StageRequest} instance (currentStage and maxStage) to a {@code Stage}
- * instance.
+ * <p>This mapper facilitates the transformation of client-facing request payloads into domain model
+ * objects, adhering to the contract defined by the {@link RequestModelMapper} interface.
+ *
+ * <p>Using MapStruct's automatic mapping capabilities, this interface simplifies the mapping logic,
+ * removing the need for manual transformation of properties between {@code StageRequest} and {@code
+ * Stage}.
+ *
+ * <p>Key features: - Maps all fields between {@code StageRequest} and {@code Stage} directly,
+ * provided they share compatible types. - Uses the {@link Mappers#getMapper(Class)} method to
+ * automatically provide an implementation of this interface.
+ *
+ * <p>See {@link StageRequest} for details on the request-layer object. See {@link Stage} for
+ * details on the domain-layer model.
  */
-public class StageRequestMapper implements RequestModelMapper<StageRequest, Stage> {
+@Mapper
+public interface StageRequestMapper extends RequestModelMapper<StageRequest, Stage> {
+  StageRequestMapper INSTANCE = Mappers.getMapper(StageRequestMapper.class);
+
   /** {@inheritDoc} */
   @Override
-  public Stage map(StageRequest stageRequest) {
-    return Stage.builder()
-        .maxStage(stageRequest.getMaxStage())
-        .currentStage(stageRequest.getCurrentStage())
-        .build();
-  }
+  Stage map(StageRequest stageRequest);
 }

@@ -18,15 +18,27 @@ package com.lsadf.core.infra.web.response.game.inventory;
 
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * This class is responsible for mapping {@link Item} domain objects to their corresponding {@link
- * ItemResponse} representations used in external interactions or API responses.
+ * A mapper interface for transforming {@link Item} objects into their corresponding {@link
+ * ItemResponse} representations. This interface extends the generic {@code ModelResponseMapper} to
+ * provide specific mapping functionality between the domain model {@link Item} and its response
+ * counterpart {@link ItemResponse}.
  *
- * <p>It implements the {@link ModelResponseMapper} interface, ensuring a contract for mapping
- * between a model and a response type.
+ * <p>The intended use of this mapper is to encapsulate the logic required for converting the
+ * internal representation of an {@link Item} into a format suitable for external APIs or other
+ * external representations. By leveraging MapStruct annotations and features, the implementation
+ * can be generated at compile time, ensuring efficiency and reducing manual mapping efforts.
+ *
+ * <p>The {@link ItemResponseMapper#INSTANCE} field serves as the singleton instance for accessing
+ * the generated implementation of this interface.
  */
-public class ItemResponseMapper implements ModelResponseMapper<Item, ItemResponse> {
+@Mapper
+public interface ItemResponseMapper extends ModelResponseMapper<Item, ItemResponse> {
+  ItemResponseMapper INSTANCE = Mappers.getMapper(ItemResponseMapper.class);
+
   /**
    * Maps an {@link Item} object to its corresponding {@link ItemResponse} representation.
    *
@@ -35,17 +47,5 @@ public class ItemResponseMapper implements ModelResponseMapper<Item, ItemRespons
    *     Item}
    */
   @Override
-  public ItemResponse map(Item model) {
-    return ItemResponse.builder()
-        .id(model.getId())
-        .additionalStats(model.getAdditionalStats())
-        .level(model.getLevel())
-        .itemType(model.getItemType())
-        .itemRarity(model.getItemRarity())
-        .blueprintId(model.getBlueprintId())
-        .clientId(model.getClientId())
-        .isEquipped(model.getIsEquipped())
-        .mainStat(model.getMainStat())
-        .build();
-  }
+  ItemResponse map(Item model);
 }

@@ -43,16 +43,13 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   private final GameSaveService gameSaveService;
   private final InventoryService inventoryService;
-  private final ItemResponseMapper itemResponseMapper;
+  private static final ItemResponseMapper itemResponseMapper = ItemResponseMapper.INSTANCE;
 
   @Autowired
   public InventoryControllerImpl(
-      GameSaveService gameSaveService,
-      InventoryService inventoryService,
-      ItemResponseMapper itemResponseMapper) {
+      GameSaveService gameSaveService, InventoryService inventoryService) {
     this.gameSaveService = gameSaveService;
     this.inventoryService = inventoryService;
-    this.itemResponseMapper = itemResponseMapper;
   }
 
   /** {@inheritDoc} */
