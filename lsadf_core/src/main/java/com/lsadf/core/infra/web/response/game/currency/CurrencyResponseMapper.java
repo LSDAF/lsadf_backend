@@ -18,30 +18,31 @@ package com.lsadf.core.infra.web.response.game.currency;
 
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * Maps a {@link Currency} model object to a corresponding {@link CurrencyResponse} response object.
- * This class implements the {@link ModelResponseMapper} interface, providing a specific mapping
- * between the {@link Currency} domain model and its externally exposed {@link CurrencyResponse}
- * representation.
+ * Interface representing a mapper for converting a Currency domain model to its corresponding
+ * CurrencyResponse Data Transfer Object (DTO).
  *
- * <p>The implementation uses the builder pattern to construct a new {@link CurrencyResponse} object
- * by transferring the properties from the provided {@link Currency} instance.
+ * <p>This interface extends the {@link ModelResponseMapper} interface, which provides a generic
+ * definition for mapping domain models to their associated response objects.
+ *
+ * <p>The implementation of this mapper is automatically generated at runtime by the MapStruct
+ * library. The generated implementation is responsible for mapping all relevant fields between the
+ * Currency and CurrencyResponse objects and is accessible as a static instance variable {@code
+ * INSTANCE}.
  */
-public class CurrencyResponseMapper implements ModelResponseMapper<Currency, CurrencyResponse> {
+@Mapper
+public interface CurrencyResponseMapper extends ModelResponseMapper<Currency, CurrencyResponse> {
+  CurrencyResponseMapper INSTANCE = Mappers.getMapper(CurrencyResponseMapper.class);
+
   /**
-   * Maps a {@link Currency} model object to a {@link CurrencyResponse} response object.
+   * Maps a Currency domain model to a CurrencyResponse DTO.
    *
-   * @param currency the {@link Currency} model object to be mapped
-   * @return the {@link CurrencyResponse} response object that corresponds to the provided model
+   * @param currency the Currency instance to be mapped
+   * @return a CurrencyResponse instance containing the mapped data
    */
   @Override
-  public CurrencyResponse map(Currency currency) {
-    return CurrencyResponse.builder()
-        .amethyst(currency.getAmethyst())
-        .gold(currency.getGold())
-        .diamond(currency.getDiamond())
-        .emerald(currency.getEmerald())
-        .build();
-  }
+  CurrencyResponse map(Currency currency);
 }

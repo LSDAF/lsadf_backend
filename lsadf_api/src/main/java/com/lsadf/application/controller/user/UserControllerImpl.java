@@ -35,11 +35,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class UserControllerImpl extends BaseController implements UserController {
 
-  private final UserInfoResponseMapper userInfoResponseMapper;
-
-  public UserControllerImpl(UserInfoResponseMapper userInfoResponseMapper) {
-    this.userInfoResponseMapper = userInfoResponseMapper;
-  }
+  private static final UserInfoResponseMapper userInfoResponseMapper =
+      UserInfoResponseMapper.INSTANCE;
 
   /** {@inheritDoc} */
   @Override

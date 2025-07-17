@@ -47,14 +47,13 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
 
   private final SearchService searchService;
 
-  private final GameSaveResponseMapper gameSaveResponseMapper;
+  private static final GameSaveResponseMapper gameSaveResponseMapper =
+      GameSaveResponseMapper.INSTANCE;
   private static final UserResponseMapper userResponseMapper = UserResponseMapper.INSTANCE;
 
   @Autowired
-  public AdminSearchControllerImpl(
-      SearchService searchService, GameSaveResponseMapper gameSaveResponseMapper) {
+  public AdminSearchControllerImpl(SearchService searchService) {
     this.searchService = searchService;
-    this.gameSaveResponseMapper = gameSaveResponseMapper;
   }
 
   /** {@inheritDoc} */

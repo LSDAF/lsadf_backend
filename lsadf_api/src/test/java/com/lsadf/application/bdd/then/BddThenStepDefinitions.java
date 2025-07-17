@@ -42,15 +42,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Step definitions for the then steps in the BDD scenarios */
 @Slf4j(topic = "[THEN STEP DEFINITIONS]")
 public class BddThenStepDefinitions extends BddLoader {
 
-  @Autowired private UserInfoResponseMapper userInfoResponseMapper;
-  @Autowired private CharacteristicsResponseMapper characteristicsResponseMapper;
+  private static final UserInfoResponseMapper userInfoResponseMapper =
+      UserInfoResponseMapper.INSTANCE;
+  private static final CharacteristicsResponseMapper characteristicsResponseMapper =
+      CharacteristicsResponseMapper.INSTANCE;
 
   @Then("^I should return the following game saves$")
   public void then_i_should_return_the_following_game_saves(DataTable dataTable)

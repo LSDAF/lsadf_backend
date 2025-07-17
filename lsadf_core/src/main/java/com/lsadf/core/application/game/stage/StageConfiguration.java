@@ -23,7 +23,6 @@ import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import com.lsadf.core.infra.web.request.game.stage.StageRequestMapper;
-import com.lsadf.core.infra.web.response.game.stage.StageResponseMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -54,11 +53,6 @@ public class StageConfiguration {
   @Bean
   public StageRequestMapper stageRequestModelMapper() {
     return new StageRequestMapper();
-  }
-
-  @Bean
-  public StageResponseMapper stageResponseModelMapper() {
-    return new StageResponseMapper();
   }
 
   @Bean(name = STAGE_CACHE)
