@@ -254,7 +254,7 @@ class ModelMapperTests {
     userRepresentation.setEnabled(false);
     userRepresentation.setRealmRoles(List.of("user", "admin"));
 
-    UserRepresentationMapper mapper = new UserRepresentationMapper();
+    UserRepresentationMapper mapper = UserRepresentationMapper.INSTANCE;
 
     // when
     User user = mapper.map(userRepresentation);

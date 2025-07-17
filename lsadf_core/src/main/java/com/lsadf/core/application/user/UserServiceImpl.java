@@ -46,22 +46,18 @@ public class UserServiceImpl implements UserService {
   private final ClockService clockService;
   private static final UserCreationRequestMapper userCreationRequestMapper =
       UserCreationRequestMapper.INSTANCE;
-  private final UserToUserRepresentationMapper userToUserRepresentationMapper;
-  private final UserRepresentationMapper userRepresentationMapper;
+  private static final UserToUserRepresentationMapper userToUserRepresentationMapper =
+      UserToUserRepresentationMapper.INSTANCE;
+  private static final UserRepresentationMapper userRepresentationMapper =
+      UserRepresentationMapper.INSTANCE;
 
   private final String realm;
 
   public UserServiceImpl(
-      Keycloak keycloak,
-      KeycloakProperties keycloakProperties,
-      ClockService clockService,
-      UserToUserRepresentationMapper userToUserRepresentationMapper,
-      UserRepresentationMapper userRepresentationMapper) {
+      Keycloak keycloak, KeycloakProperties keycloakProperties, ClockService clockService) {
     this.keycloakProperties = keycloakProperties;
     this.clockService = clockService;
     this.keycloak = keycloak;
-    this.userToUserRepresentationMapper = userToUserRepresentationMapper;
-    this.userRepresentationMapper = userRepresentationMapper;
 
     this.realm = keycloakProperties.getRealm();
   }

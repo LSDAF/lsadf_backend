@@ -17,37 +17,51 @@
 package com.lsadf.core.infra.web.config.keycloak.mapper;
 
 import com.lsadf.core.domain.user.User;
+import com.lsadf.core.infra.util.DateUtils;
 import com.lsadf.core.shared.model.ModelMapper;
 import java.util.Date;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.factory.Mappers;
 
 /**
- * UserRepresentationMapper maps a {@link UserRepresentation} object to a {@link User} object.
+ * UserRepresentationMapper is an interface that defines the mapping behavior for converting {@link
+ * UserRepresentation} objects to {@link User} objects.
  *
- * <p>This implementation of the {@link ModelMapper} interface processes and converts specific
- * properties of a {@link UserRepresentation}, including attributes such as username, first name,
- * last name, email verification status, account activation status, roles, and creation timestamp.
- * Additionally, it ensures proper handling of optional fields by verifying null values before
- * setting them to avoid potential runtime exceptions.
+ * <p>This interface extends the {@link ModelMapper} interface, specializing its type parameters for
+ * mapping from UserRepresentation to User. It provides a centralized and reusable mapping logic
+ * between these specific types.
+ *
+ * <p>The implementation of this interface is generated at runtime by the {@link Mappers} utility,
+ * ensuring type safety and reducing the need for boilerplate mapping code.
+ *
+ * <p>Usage of this interface typically involves injecting the generated instance and calling the
+ * defined {@link #map(UserRepresentation)} method for direct model conversion.
+ *
+ * <p>Example scenarios where this mapper might be used include: - Converting a UserRepresentation
+ * object fetched from an external system (e.g., Keycloak) into a User object used within the
+ * application domain. - Ensuring consistency and standardization in mapping logic across the
+ * application.
+ *
+ * <p>Note: The instance of this mapper is initialized as a singleton using {@link
+ * Mappers#getMapper(Class)} for efficient memory use and centralized mapping logic.
  */
-public class UserRepresentationMapper implements ModelMapper<UserRepresentation, User> {
+@Mapper(imports = DateUtils.class)
+public interface UserRepresentationMapper extends ModelMapper<UserRepresentation, User> {
+  UserRepresentationMapper INSTANCE = Mappers.getMapper(UserRepresentationMapper.class);
 
-  /** {@inheritDoc} */
   @Override
-  public User map(UserRepresentation userRepresentation) {
-    Date createdTimestamp =
-        (userRepresentation.getCreatedTimestamp() != null)
-            ? new Date(userRepresentation.getCreatedTimestamp())
-            : null;
-    return User.builder()
-        .username(userRepresentation.getUsername())
-        .firstName(userRepresentation.getFirstName())
-        .lastName(userRepresentation.getLastName())
-        .id(userRepresentation.getId())
-        .emailVerified(userRepresentation.isEmailVerified())
-        .enabled(userRepresentation.isEnabled())
-        .createdTimestamp(createdTimestamp)
-        .userRoles(userRepresentation.getRealmRoles())
-        .build();
+  @Mapping(
+      source = "createdTimestamp",
+      target = "createdTimestamp",
+      qualifiedByName = "mapTimestampToDate")
+  @Mapping(source = "realmRoles", target = "userRoles")
+  User map(UserRepresentation userRepresentation);
+
+  @Named("mapTimestampToDate")
+  default Date map(Long timestamp) {
+    return DateUtils.dateFromTimestamp(timestamp);
   }
 }

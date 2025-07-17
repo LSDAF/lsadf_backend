@@ -92,4 +92,15 @@ public class DateUtils {
     Instant instant = Instant.now(clock);
     return Date.from(instant);
   }
+
+  /**
+   * Converts a given timestamp to a Date object. If the provided timestamp is null, this method
+   * returns null.
+   *
+   * @param timestamp the timestamp to convert, expressed in milliseconds since the epoch
+   * @return the corresponding Date object, or null if the input timestamp is null
+   */
+  public static Date dateFromTimestamp(Long timestamp) {
+    return (timestamp == null) ? null : new Date(timestamp);
+  }
 }
