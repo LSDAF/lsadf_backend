@@ -59,6 +59,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   ClockConfiguration.class,
   KeycloakConfiguration.class,
   JpaConfiguration.class,
-  LsadfSecurityConfiguration.class
+  LsadfSecurityConfiguration.class,
+  MapperConfiguration.class
 })
 public class LsadfConfiguration {}
