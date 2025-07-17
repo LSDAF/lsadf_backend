@@ -15,39 +15,22 @@
  */
 package com.lsadf.core.infra.web.request.user.update;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
+import static com.lsadf.core.infra.web.JsonAttributes.FIRST_NAME;
+import static com.lsadf.core.infra.web.JsonAttributes.LAST_NAME;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record AdminUserUpdateRequest(
-    @Schema(description = "Name of user to update", example = "Toto Dupont")
-        @JsonProperty(value = FIRST_NAME)
-        @NotBlank
-        String firstName,
-    @Schema(description = "Lastname of user to update", example = "Dupont")
-        @JsonProperty(value = LAST_NAME)
-        @NotBlank
-        String lastName,
-    @Schema(description = "Verified status of user to update", example = "true")
-        @JsonProperty(value = EMAIL_VERIFIED)
-        @NotNull
-        Boolean emailVerified,
-    @Schema(description = "Enabled status of user to update", example = "true")
-        @JsonProperty(value = ENABLED)
-        @NotNull
-        Boolean enabled,
-    @Schema(description = "Roles of user to update", example = "[\"USER\"]")
-        @JsonProperty(value = USER_ROLES)
-        List<String> userRoles)
+public record SimpleUserUpdateRequest(
+    @JsonProperty(value = FIRST_NAME) @NotBlank String firstName,
+    @JsonProperty(value = LAST_NAME) @NotBlank String lastName)
     implements UserUpdateRequest {
-  @Serial private static final long serialVersionUID = -4515896456126778133L;
+
+  @Serial private static final long serialVersionUID = 3391683431995156829L;
 
   @Override
   public String getFirstName() {
@@ -61,16 +44,16 @@ public record AdminUserUpdateRequest(
 
   @Override
   public Boolean getEmailVerified() {
-    return emailVerified;
+    return null;
   }
 
   @Override
   public Boolean getEnabled() {
-    return enabled;
+    return null;
   }
 
   @Override
   public List<String> getUserRoles() {
-    return userRoles;
+    return null;
   }
 }

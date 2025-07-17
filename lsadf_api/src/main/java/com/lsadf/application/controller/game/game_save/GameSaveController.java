@@ -19,10 +19,8 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrat
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.ResponseMessages;
@@ -70,7 +68,6 @@ public interface GameSaveController {
             responseCode = "500",
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  @JsonView(JsonViews.Internal.class)
   ResponseEntity<ApiResponse<GameSaveResponse>> generateNewGameSave(
       @AuthenticationPrincipal Jwt jwt);
 
@@ -102,7 +99,6 @@ public interface GameSaveController {
             responseCode = "500",
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  @JsonView(JsonViews.Internal.class)
   ResponseEntity<ApiResponse<Void>> updateNickname(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) @Uuid String id,
@@ -129,7 +125,6 @@ public interface GameSaveController {
             responseCode = "500",
             description = ResponseMessages.INTERNAL_SERVER_ERROR)
       })
-  @JsonView(JsonViews.Internal.class)
   ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(Jwt jwt);
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)

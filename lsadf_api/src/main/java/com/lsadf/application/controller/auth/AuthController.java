@@ -20,11 +20,11 @@ import static com.lsadf.application.controller.auth.AuthController.Constants.Api
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
-import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.ResponseMessages;
+import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -13,32 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.client.keycloak.response;
+package com.lsadf.core.infra.web.response.jwt;
 
-import static com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse.Attributes.*;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.infra.web.response.Response;
 import java.io.Serial;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
-@JsonPropertyOrder({ACCESS_TOKEN, EXPIRES_IN, REFRESH_TOKEN, REFRESH_EXPIRES_IN})
 public record JwtAuthenticationResponse(
     @JsonProperty(value = ACCESS_TOKEN) String accessToken,
     @JsonProperty(value = EXPIRES_IN) Long expiresIn,
     @JsonProperty(value = REFRESH_TOKEN) String refreshToken,
-    @JsonProperty(value = Attributes.REFRESH_EXPIRES_IN) Long refreshExpiresIn)
+    @JsonProperty(value = REFRESH_EXPIRES_IN) Long refreshExpiresIn)
     implements Response {
 
   @Serial private static final long serialVersionUID = -5360094704215801310L;
-
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static final class Attributes {
-    public static final String ACCESS_TOKEN = "access_token";
-    public static final String REFRESH_TOKEN = "refresh_token";
-    public static final String EXPIRES_IN = "expires_in";
-    public static final String REFRESH_EXPIRES_IN = "refresh_expires_in";
-  }
 }

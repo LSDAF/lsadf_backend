@@ -24,7 +24,6 @@ import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
@@ -44,7 +43,7 @@ import com.lsadf.core.infra.web.request.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.request.user.update.UserUpdateRequest;
+import com.lsadf.core.infra.web.request.user.update.SimpleUserUpdateRequest;
 import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
@@ -58,8 +57,6 @@ import java.util.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -311,24 +308,6 @@ public class BddUtils {
     gameSaveEntity.setInventoryEntity(inventoryEntity);
 
     return gameSaveEntity;
-  }
-
-  /**
-   * Maps a row from a BDD table to a UserInfo
-   *
-   * @param row row from BDD table
-   * @return UserInfo
-   */
-  public static UserInfo mapToUserInfo(Map<String, String> row) {
-    String email = row.get(BddFieldConstants.UserInfo.EMAIL);
-    String name = row.get(BddFieldConstants.UserInfo.NAME);
-    String rolesString = row.get(BddFieldConstants.UserInfo.ROLES);
-    String verifiedString = row.get(BddFieldConstants.UserInfo.VERIFIED);
-
-    Set<String> roles = Arrays.stream(rolesString.split(COMMA)).collect(Collectors.toSet());
-
-    boolean verified = Boolean.parseBoolean(verifiedString);
-    return new UserInfo(name, email, verified, roles);
   }
 
   /**
@@ -776,7 +755,7 @@ public class BddUtils {
    * @return SimpleUserCreationRequest
    */
   public static SimpleUserCreationRequest mapToUserCreationRequest(Map<String, String> row) {
-    String email = row.get(BddFieldConstants.UserCreationRequest.EMAIL);
+    String email = row.get(BddFieldConstants.UserCreationRequest.USERNAME);
     String firstName = row.get(BddFieldConstants.UserCreationRequest.FIRST_NAME);
     String lastName = row.get(BddFieldConstants.UserCreationRequest.LAST_NAME);
     String password = row.get(BddFieldConstants.UserCreationRequest.PASSWORD);
@@ -832,11 +811,11 @@ public class BddUtils {
    * @param row row from BDD table
    * @return JwtAuthenticationResponse
    */
-  public static UserUpdateRequest mapToUserUpdateRequest(Map<String, String> row) {
+  public static SimpleUserUpdateRequest mapToUserUpdateRequest(Map<String, String> row) {
     String firstName = row.get(BddFieldConstants.UserUpdateRequest.FIRST_NAME);
     String lastName = row.get(BddFieldConstants.UserUpdateRequest.LAST_NAME);
 
-    return new UserUpdateRequest(firstName, lastName);
+    return new SimpleUserUpdateRequest(firstName, lastName);
   }
 
   /**

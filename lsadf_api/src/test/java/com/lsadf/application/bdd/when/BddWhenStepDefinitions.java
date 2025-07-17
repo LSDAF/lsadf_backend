@@ -27,13 +27,13 @@ import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.game_save.GameSaveController;
 import com.lsadf.application.controller.user.UserController;
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.request.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.user.UserInfoResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
@@ -112,7 +112,7 @@ public class BddWhenStepDefinitions extends BddLoader {
       var response = result.getBody();
       assertThat(response).isNotNull();
       responseStack.push(response);
-      var jwtAuthentication = response.getData();
+      var jwtAuthentication = response.data();
       if (jwtAuthentication != null) {
         jwtAuthenticationResponseStack.push(jwtAuthentication);
       }
@@ -145,7 +145,7 @@ public class BddWhenStepDefinitions extends BddLoader {
       var response = result.getBody();
       assertThat(response).isNotNull();
       responseStack.push(response);
-      var jwtAuthentication = response.getData();
+      var jwtAuthentication = response.data();
       if (jwtAuthentication != null) {
         jwtAuthenticationResponseStack.push(jwtAuthentication);
       }
@@ -267,7 +267,7 @@ public class BddWhenStepDefinitions extends BddLoader {
     try {
       HttpHeaders headers = new HttpHeaders();
       HttpEntity<GameSaveNicknameUpdateRequest> request =
-          new HttpEntity<>(new GameSaveNicknameUpdateRequest(), headers);
+          new HttpEntity<>(new GameSaveNicknameUpdateRequest("Test"), headers);
       ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedVoidResponse());
@@ -376,7 +376,7 @@ public class BddWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedGameSaveListResponse());
       ApiResponse<List<GameSaveResponse>> body = result.getBody();
-      gameSaveResponseListStack.push(body.getData());
+      gameSaveResponseListStack.push(body.data());
       responseStack.push(body);
       log.info("Response: {}", result);
 

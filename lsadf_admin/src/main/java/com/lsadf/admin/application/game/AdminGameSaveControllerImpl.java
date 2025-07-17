@@ -17,12 +17,10 @@ package com.lsadf.admin.application.game;
 
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.infra.util.StreamUtils;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.game.game_save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.request.game.game_save.update.AdminGameSaveUpdateRequest;
@@ -76,7 +74,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    * @return
    */
   @Override
-  @JsonView(JsonViews.Admin.class)
   public ResponseEntity<ApiResponse<List<GameSaveResponse>>> getSaveGames(
       Jwt jwt, List<String> orderBy) {
     List<GameSaveSortingParameter> gameSaveOrderBy =
@@ -111,7 +108,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    * @return
    */
   @Override
-  @JsonView(JsonViews.Admin.class)
   public ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(Jwt jwt, String gameSaveId) {
     validateUser(jwt);
     GameSave gameSave = gameSaveService.getGameSave(gameSaveId);
@@ -125,7 +121,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    * @return
    */
   @Override
-  @JsonView(JsonViews.Admin.class)
   public ResponseEntity<ApiResponse<GameSaveResponse>> updateGameSave(
       Jwt jwt, String gameSaveId, AdminGameSaveUpdateRequest adminGameSaveUpdateRequest) {
 
@@ -141,7 +136,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    * @return
    */
   @Override
-  @JsonView(JsonViews.Admin.class)
   public ResponseEntity<ApiResponse<GameSaveResponse>> generateNewSaveGame(
       Jwt jwt, AdminGameSaveCreationRequest creationRequest) {
 
@@ -153,7 +147,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
 
   /** {@inheritDoc} */
   @Override
-  @JsonView(JsonViews.Admin.class)
   public ResponseEntity<ApiResponse<Void>> deleteGameSave(Jwt jwt, String gameSaveId) {
 
     validateUser(jwt);

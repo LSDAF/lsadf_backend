@@ -25,7 +25,6 @@ import com.lsadf.core.infra.web.config.keycloak.mapper.UserToUserRepresentationM
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.request.user.creation.UserCreationRequest;
 import com.lsadf.core.infra.web.request.user.creation.UserCreationRequestMapper;
-import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.request.user.update.UserUpdateRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,7 +153,7 @@ public class UserServiceImpl implements UserService {
 
   /** {@inheritDoc} */
   @Override
-  public User updateUser(String id, AdminUserUpdateRequest adminUpdateRequest) {
+  public User updateUser(String id, UserUpdateRequest adminUpdateRequest) {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
@@ -202,22 +201,6 @@ public class UserServiceImpl implements UserService {
     }
 
     return getUserById(id);
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void updateUser(String id, UserUpdateRequest updateRequest) {
-    if (id == null) {
-      throw new IllegalArgumentException("Id cannot be null");
-    }
-    UserRepresentation existingUser = getUserRepresentation(id);
-    if (updateRequest.getFirstName() != null) {
-      existingUser.setFirstName(updateRequest.getFirstName());
-    }
-    if (updateRequest.getLastName() != null) {
-      existingUser.setLastName(updateRequest.getLastName());
-    }
-    getUsersResource().get(id).update(existingUser);
   }
 
   /** {@inheritDoc} */

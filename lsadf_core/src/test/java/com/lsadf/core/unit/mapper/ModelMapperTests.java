@@ -286,19 +286,19 @@ class ModelMapperTests {
             .password("password")
             .lastName("tata")
             .firstName("toto")
-            .userRoles(List.of("user", "admin"))
-            .emailVerified(false)
-            .enabled(false)
             .build();
 
     // when
     User user = mapper.map(simpleUserCreationRequest);
 
     // then
-    assertThat(user.getUsername()).isEqualTo(simpleUserCreationRequest.getUsername());
-    assertThat(user.getFirstName()).isEqualTo(simpleUserCreationRequest.getFirstName());
-    assertThat(user.getLastName()).isEqualTo(simpleUserCreationRequest.getLastName());
+    assertThat(user.getUsername()).isEqualTo(simpleUserCreationRequest.username());
+    assertThat(user.getFirstName()).isEqualTo(simpleUserCreationRequest.firstName());
+    assertThat(user.getLastName()).isEqualTo(simpleUserCreationRequest.lastName());
     assertThat(user.getEmailVerified()).isEqualTo(simpleUserCreationRequest.getEmailVerified());
     assertThat(user.getEnabled()).isEqualTo(simpleUserCreationRequest.getEnabled());
+    assertThat(user.getUserRoles()).isEqualTo(simpleUserCreationRequest.getUserRoles());
+    assertThat(user.getCreatedTimestamp()).isNull();
+    assertThat(user.getId()).isNull();
   }
 }

@@ -27,10 +27,10 @@ import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
-import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -93,7 +93,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
       ApiResponse<Set<ItemResponse>> body = result.getBody();
-      itemResponseSetStack.push(body.getData());
+      itemResponseSetStack.push(body.data());
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {

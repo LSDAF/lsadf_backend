@@ -22,10 +22,10 @@ import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.inventory.AdminInventoryController;
-import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.List;
@@ -63,7 +63,7 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
       ApiResponse<Set<ItemResponse>> body = result.getBody();
-      itemResponseSetStack.push(body.getData());
+      itemResponseSetStack.push(body.data());
       responseStack.push(body);
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -98,8 +98,8 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
               url, HttpMethod.POST, request, buildParameterizedItemResponse());
       ApiResponse<ItemResponse> body = result.getBody();
       responseStack.push(body);
-      if (body.getData() != null) {
-        var data = body.getData();
+      if (body.data() != null) {
+        var data = body.data();
         itemResponseSetStack.push(Set.of(data));
       }
       log.info("Response: {}", result);
@@ -163,8 +163,8 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(url, HttpMethod.PUT, request, buildParameterizedItemResponse());
       ApiResponse<ItemResponse> body = result.getBody();
       responseStack.push(body);
-      if (body.getData() != null) {
-        ItemResponse data = body.getData();
+      if (body.data() != null) {
+        ItemResponse data = body.data();
         itemResponseSetStack.push(Set.of(data));
       }
       log.info("Response: {}", result);

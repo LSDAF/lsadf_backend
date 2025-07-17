@@ -27,7 +27,6 @@ import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakAdminProperti
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.config.security.OAuth2Properties;
 import com.lsadf.core.infra.web.config.security.properties.CorsConfigurationProperties;
-import com.lsadf.core.infra.web.config.security.properties.JsonViewProperties;
 import com.lsadf.core.infra.web.config.swagger.properties.SwaggerContactProperties;
 import com.lsadf.core.infra.web.config.swagger.properties.SwaggerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -42,12 +41,6 @@ public class PropertiesConfiguration {
   @ConfigurationProperties(prefix = "jpa")
   public JpaProperties jpaProperties() {
     return new JpaProperties();
-  }
-
-  @Bean
-  @ConfigurationProperties(prefix = "json-view")
-  public JsonViewProperties jsonViewProperties() {
-    return new JsonViewProperties();
   }
 
   @Bean
