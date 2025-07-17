@@ -50,15 +50,14 @@ class InventoryServiceTests {
 
   @Mock private ItemRepository itemRepository;
 
-  private ItemEntityMapper itemEntityMapper = new ItemEntityMapper();
+  private static final ItemEntityMapper itemEntityMapper = ItemEntityMapper.INSTANCE;
 
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    inventoryService =
-        new InventoryServiceImpl(inventoryRepository, itemRepository, itemEntityMapper);
+    inventoryService = new InventoryServiceImpl(inventoryRepository, itemRepository);
   }
 
   /* GET */

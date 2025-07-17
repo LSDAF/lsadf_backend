@@ -21,7 +21,6 @@ import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.NoOpHistoCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -41,15 +40,8 @@ public class CurrencyConfiguration {
 
   @Bean
   public CurrencyService currencyService(
-      CurrencyRepository currencyRepository,
-      Cache<Currency> currencyCache,
-      CurrencyEntityMapper mapper) {
-    return new CurrencyServiceImpl(currencyRepository, currencyCache, mapper);
-  }
-
-  @Bean
-  public CurrencyEntityMapper currencyEntityModelMapper() {
-    return new CurrencyEntityMapper();
+      CurrencyRepository currencyRepository, Cache<Currency> currencyCache) {
+    return new CurrencyServiceImpl(currencyRepository, currencyCache);
   }
 
   @Bean(name = CURRENCY_CACHE)

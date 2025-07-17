@@ -67,7 +67,7 @@ public class GameSaveServiceImpl implements GameSaveService {
   private final HistoCache<Currency> currencyCache;
   private final HistoCache<Characteristics> characteristicsCache;
 
-  private final GameSaveEntityMapper gameSaveEntityMapper;
+  private static final GameSaveEntityMapper gameSaveEntityMapper = GameSaveEntityMapper.INSTANCE;
 
   public GameSaveServiceImpl(
       UserService userService,
@@ -76,7 +76,6 @@ public class GameSaveServiceImpl implements GameSaveService {
       CurrencyRepository currencyRepository,
       StageRepository stageRepository,
       InventoryRepository inventoryRepository,
-      GameSaveEntityMapper gameSaveEntityMapper,
       CacheService cacheService,
       Cache<String> gameSaveOwnershipCache,
       HistoCache<Stage> stageCache,
@@ -84,7 +83,6 @@ public class GameSaveServiceImpl implements GameSaveService {
       HistoCache<Characteristics> characteristicsCache) {
     this.userService = userService;
     this.gameSaveRepository = gameSaveRepository;
-    this.gameSaveEntityMapper = gameSaveEntityMapper;
     this.cacheService = cacheService;
     this.gameSaveOwnershipCache = gameSaveOwnershipCache;
     this.stageCache = stageCache;

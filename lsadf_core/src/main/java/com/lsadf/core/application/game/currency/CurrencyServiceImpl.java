@@ -28,15 +28,11 @@ public class CurrencyServiceImpl implements CurrencyService {
 
   private final CurrencyRepository currencyRepository;
   private final Cache<Currency> currencyCache;
-  private final CurrencyEntityMapper mapper;
+  private static final CurrencyEntityMapper mapper = CurrencyEntityMapper.INSTANCE;
 
-  public CurrencyServiceImpl(
-      CurrencyRepository currencyRepository,
-      Cache<Currency> currencyCache,
-      CurrencyEntityMapper mapper) {
+  public CurrencyServiceImpl(CurrencyRepository currencyRepository, Cache<Currency> currencyCache) {
     this.currencyRepository = currencyRepository;
     this.currencyCache = currencyCache;
-    this.mapper = mapper;
   }
 
   @Override

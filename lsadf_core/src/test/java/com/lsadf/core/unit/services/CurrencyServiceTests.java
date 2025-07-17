@@ -27,7 +27,6 @@ import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,14 +44,12 @@ class CurrencyServiceTests {
 
   @Mock private Cache<Currency> currencyCache;
 
-  private final CurrencyEntityMapper mapper = new CurrencyEntityMapper();
-
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    currencyService = new CurrencyServiceImpl(currencyRepository, currencyCache, mapper);
+    currencyService = new CurrencyServiceImpl(currencyRepository, currencyCache);
   }
 
   @Test

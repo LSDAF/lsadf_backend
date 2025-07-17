@@ -21,8 +21,8 @@ import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
 import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntityMapper;
-import java.util.Set;
-import java.util.stream.Collectors;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
  * This class is responsible for mapping between {@link InventoryEntity} and {@link Inventory}. It
@@ -33,21 +33,11 @@ import java.util.stream.Collectors;
  * ItemEntity} instances contained within the {@link InventoryEntity} to their respective {@link
  * Item} objects.
  */
-public class InventoryEntityMapper implements EntityModelMapper<InventoryEntity, Inventory> {
-
-  public InventoryEntityMapper(ItemEntityMapper itemEntityMapper) {
-    this.itemEntityMapper = itemEntityMapper;
-  }
-
-  private final ItemEntityMapper itemEntityMapper;
+@Mapper
+public interface InventoryEntityMapper extends EntityModelMapper<InventoryEntity, Inventory> {
+  InventoryEntityMapper INSTANCE = Mappers.getMapper(InventoryEntityMapper.class);
 
   /** {@inheritDoc} */
   @Override
-  public Inventory map(InventoryEntity inventoryEntity) {
-    Set<Item> items =
-        inventoryEntity.getItems().parallelStream()
-            .map(itemEntityMapper::map)
-            .collect(Collectors.toSet());
-    return new Inventory(items);
-  }
+  Inventory map(InventoryEntity inventoryEntity);
 }

@@ -28,15 +28,14 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
 
   private final CharacteristicsRepository characteristicsRepository;
   private final Cache<Characteristics> characteristicsCache;
-  private final CharacteristicsEntityMapper characteristicsEntityModelMapper;
+  private static final CharacteristicsEntityMapper characteristicsEntityModelMapper =
+      CharacteristicsEntityMapper.INSTANCE;
 
   public CharacteristicsServiceImpl(
       CharacteristicsRepository characteristicsRepository,
-      Cache<Characteristics> characteristicsCache,
-      CharacteristicsEntityMapper characteristicsEntityModelMapper) {
+      Cache<Characteristics> characteristicsCache) {
     this.characteristicsRepository = characteristicsRepository;
     this.characteristicsCache = characteristicsCache;
-    this.characteristicsEntityModelMapper = characteristicsEntityModelMapper;
   }
 
   @Override

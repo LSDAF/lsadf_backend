@@ -28,13 +28,10 @@ import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntityMapper;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
 import com.lsadf.core.infra.web.request.common.Filter;
 import com.lsadf.core.infra.web.request.search.SearchRequest;
 import com.lsadf.core.infra.web.request.user.UserSortingParameter;
@@ -47,6 +44,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -56,9 +54,7 @@ class SearchServiceTests {
 
   @Mock GameSaveService gameSaveService;
 
-  static GameSaveEntityMapper mapper =
-      new GameSaveEntityMapper(
-          new CharacteristicsEntityMapper(), new StageEntityMapper(), new CurrencyEntityMapper());
+  static GameSaveEntityMapper mapper = Mappers.getMapper(GameSaveEntityMapper.class);
 
   SearchService searchService;
 
