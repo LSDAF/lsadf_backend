@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.client.keycloak.response;
+package com.lsadf.core.infra.web.response.jwt;
 
-import static com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse.Attributes.*;
+import static com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse.Attributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
