@@ -18,7 +18,6 @@ package com.lsadf.core.infra.web.request.game.characteristics;
 import static com.lsadf.core.infra.web.JsonAttributes.Characteristics.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.infra.web.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
@@ -30,7 +29,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({ATTACK, CRIT_CHANCE, CRIT_DAMAGE, HEALTH, RESISTANCE})
 public class CharacteristicsRequest implements Request {
   @Serial private static final long serialVersionUID = 1865696066274976174L;
 

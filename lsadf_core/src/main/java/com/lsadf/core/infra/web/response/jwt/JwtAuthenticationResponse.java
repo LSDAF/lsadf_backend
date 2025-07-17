@@ -18,13 +18,11 @@ package com.lsadf.core.infra.web.response.jwt;
 import static com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse.Attributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.infra.web.response.Response;
 import java.io.Serial;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@JsonPropertyOrder({ACCESS_TOKEN, EXPIRES_IN, REFRESH_TOKEN, REFRESH_EXPIRES_IN})
 public record JwtAuthenticationResponse(
     @JsonProperty(value = ACCESS_TOKEN) String accessToken,
     @JsonProperty(value = EXPIRES_IN) Long expiresIn,

@@ -18,7 +18,6 @@ package com.lsadf.core.infra.web.request.game.inventory;
 import static com.lsadf.core.infra.web.JsonAttributes.Item.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.infra.web.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,16 +32,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({
-  CLIENT_ID,
-  TYPE,
-  BLUEPRINT_ID,
-  RARITY,
-  IS_EQUIPPED,
-  LEVEL,
-  MAIN_STAT,
-  ADDITIONAL_STATS
-})
 @Builder
 public class ItemRequest implements Request {
 

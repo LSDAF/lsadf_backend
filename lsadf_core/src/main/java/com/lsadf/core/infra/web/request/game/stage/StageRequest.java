@@ -19,7 +19,6 @@ import static com.lsadf.core.infra.web.JsonAttributes.Stage.CURRENT_STAGE;
 import static com.lsadf.core.infra.web.JsonAttributes.Stage.MAX_STAGE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.domain.game.stage.validation.StageConsistency;
 import com.lsadf.core.infra.web.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,7 +32,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @StageConsistency(currentStageField = "currentStage", maxStageField = "maxStage")
-@JsonPropertyOrder({CURRENT_STAGE, MAX_STAGE})
 public class StageRequest implements Request {
 
   @Serial private static final long serialVersionUID = -2154269413949156805L;

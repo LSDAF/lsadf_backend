@@ -19,7 +19,6 @@ import static com.lsadf.core.infra.web.response.ApiResponse.Attributes.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.infra.web.controller.JsonViews;
 import java.io.Serial;
@@ -36,7 +35,6 @@ import lombok.*;
 @Builder
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({STATUS, MESSAGE, DATA})
 public class ApiResponse<T> implements Serializable {
   @Serial private static final long serialVersionUID = 5392685232533641077L;
 

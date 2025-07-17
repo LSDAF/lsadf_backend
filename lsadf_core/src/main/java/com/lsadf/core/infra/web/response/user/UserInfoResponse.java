@@ -20,7 +20,6 @@ import static com.lsadf.core.infra.web.response.user.UserInfoResponse.Attributes
 import static com.lsadf.core.infra.web.response.user.UserInfoResponse.Attributes.ROLES;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
@@ -30,7 +29,6 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Builder
-@JsonPropertyOrder({NAME, EMAIL, VERIFIED, ROLES})
 @Schema(name = "UserInfo", description = "UserInfo response object")
 public record UserInfoResponse(
     @JsonProperty(value = NAME) String name,

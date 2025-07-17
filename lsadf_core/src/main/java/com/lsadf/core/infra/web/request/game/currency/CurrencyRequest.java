@@ -19,7 +19,6 @@ import static com.lsadf.core.infra.web.JsonAttributes.Currency.*;
 import static com.lsadf.core.infra.web.JsonAttributes.Currency.AMETHYST;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.infra.web.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -31,7 +30,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({GOLD, DIAMOND, EMERALD, AMETHYST})
 public class CurrencyRequest implements Request {
 
   @Serial private static final long serialVersionUID = 1865696066274976174L;

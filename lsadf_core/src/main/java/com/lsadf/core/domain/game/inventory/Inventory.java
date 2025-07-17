@@ -19,7 +19,6 @@ import static com.lsadf.core.infra.web.JsonAttributes.Inventory.ITEMS;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.controller.JsonViews;
@@ -37,7 +36,6 @@ import lombok.NoArgsConstructor;
 @Schema(name = "Inventory", description = "Inventory object")
 @Data
 @Builder
-@JsonPropertyOrder({ITEMS})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonView(JsonViews.External.class)
 public class Inventory implements Model {
