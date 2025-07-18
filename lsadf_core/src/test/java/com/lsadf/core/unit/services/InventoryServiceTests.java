@@ -50,27 +50,26 @@ class InventoryServiceTests {
 
   @Mock private ItemRepository itemRepository;
 
-  private static final ItemEntityMapper itemEntityMapper = new ItemEntityMapper();
+  private static final ItemEntityMapper itemEntityMapper = ItemEntityMapper.INSTANCE;
 
-  private static final ItemRequest itemRequest =
-      ItemRequest.builder()
-          .itemRarity(ItemRarity.EPIC.getRarity())
-          .itemType(ItemType.SWORD.getType())
-          .level(12)
-          .additionalStats(new LinkedList<>())
-          .mainStat(new ItemStat(ItemStatistic.CRIT_DAMAGE, 100f))
-          .blueprintId(UUID.randomUUID().toString())
-          .clientId(UUID.randomUUID().toString())
-          .isEquipped(false)
-          .build();
+    private static final ItemRequest itemRequest =
+            ItemRequest.builder()
+                    .itemRarity(ItemRarity.EPIC.getRarity())
+                    .itemType(ItemType.SWORD.getType())
+                    .level(12)
+                    .additionalStats(new LinkedList<>())
+                    .mainStat(new ItemStat(ItemStatistic.CRIT_DAMAGE, 100f))
+                    .blueprintId(UUID.randomUUID().toString())
+                    .clientId(UUID.randomUUID().toString())
+                    .isEquipped(false)
+                    .build();
 
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    inventoryService =
-        new InventoryServiceImpl(inventoryRepository, itemRepository, itemEntityMapper);
+    inventoryService = new InventoryServiceImpl(inventoryRepository, itemRepository);
   }
 
   /* GET */

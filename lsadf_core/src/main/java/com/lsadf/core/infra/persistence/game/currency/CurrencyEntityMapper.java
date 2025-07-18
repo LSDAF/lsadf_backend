@@ -18,23 +18,37 @@ package com.lsadf.core.infra.persistence.game.currency;
 
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 /**
- * A mapper class that provides the implementation to transform a {@link CurrencyEntity} object into
- * a {@link Currency} object. This is part of the entity-to-model mapping process, typically used
- * for converting persistent data entities into application-level data models.
+ * A mapper interface responsible for converting {@link CurrencyEntity} objects into {@link
+ * Currency} objects and vice versa.
  *
- * <p>This class implements the {@link EntityModelMapper} interface, defining the transformation
- * logic for currency-related data.
+ * <p>This interface extends {@link EntityModelMapper}, inheriting the contract to map entities to
+ * models. It provides an implementation specific to converting currency-related persistence-layer
+ * entities into domain models used in the application layer.
+ *
+ * <p>This mapper is implemented using MapStruct, allowing for automatic generation of the
+ * implementation at build time.
+ *
+ * <p>Key responsibilities: - Facilitates transforming {@link CurrencyEntity} objects into {@link
+ * Currency} domain models. - Promotes separation of concerns by abstracting the conversion logic
+ * out of business logic layers.
+ *
+ * <p>Singleton instance {@code INSTANCE} is provided for use in applications. MapStruct generates
+ * the implementation during compilation, ensuring a consistent and performant mapping process.
  */
-public class CurrencyEntityMapper implements EntityModelMapper<CurrencyEntity, Currency> {
+@Mapper
+public interface CurrencyEntityMapper extends EntityModelMapper<CurrencyEntity, Currency> {
+  CurrencyEntityMapper INSTANCE = Mappers.getMapper(CurrencyEntityMapper.class);
+
   /** {@inheritDoc} */
   @Override
-  public Currency map(CurrencyEntity currencyEntity) {
-    return new Currency(
-        currencyEntity.getGoldAmount(),
-        currencyEntity.getDiamondAmount(),
-        currencyEntity.getEmeraldAmount(),
-        currencyEntity.getAmethystAmount());
-  }
+  @Mapping(source = "goldAmount", target = "gold")
+  @Mapping(source = "diamondAmount", target = "diamond")
+  @Mapping(source = "emeraldAmount", target = "emerald")
+  @Mapping(source = "amethystAmount", target = "amethyst")
+  Currency map(CurrencyEntity currencyEntity);
 }

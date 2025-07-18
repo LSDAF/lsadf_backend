@@ -16,8 +16,6 @@
 package com.lsadf.core.application.user;
 
 import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.web.config.keycloak.mapper.UserRepresentationMapper;
-import com.lsadf.core.infra.web.config.keycloak.mapper.UserToUserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import org.keycloak.admin.client.Keycloak;
 import org.springframework.context.annotation.Bean;
@@ -32,16 +30,7 @@ import org.springframework.context.annotation.Configuration;
 public class UserConfiguration {
   @Bean
   public UserService userService(
-      Keycloak keycloak,
-      KeycloakProperties keycloakProperties,
-      ClockService clockService,
-      UserToUserRepresentationMapper userToUserRepresentationMapper,
-      UserRepresentationMapper userRepresentationMapper) {
-    return new UserServiceImpl(
-        keycloak,
-        keycloakProperties,
-        clockService,
-        userToUserRepresentationMapper,
-        userRepresentationMapper);
+      Keycloak keycloak, KeycloakProperties keycloakProperties, ClockService clockService) {
+    return new UserServiceImpl(keycloak, keycloakProperties, clockService);
   }
 }

@@ -21,7 +21,6 @@ import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.NoOpHistoCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -43,14 +42,8 @@ public class CharacteristicsConfiguration {
   @Bean
   public CharacteristicsService characteristicsService(
       CharacteristicsRepository characteristicsRepository,
-      Cache<Characteristics> characteristicsCache,
-      CharacteristicsEntityMapper mapper) {
-    return new CharacteristicsServiceImpl(characteristicsRepository, characteristicsCache, mapper);
-  }
-
-  @Bean
-  public CharacteristicsEntityMapper characteristicsEntityModelMapper() {
-    return new CharacteristicsEntityMapper();
+      Cache<Characteristics> characteristicsCache) {
+    return new CharacteristicsServiceImpl(characteristicsRepository, characteristicsCache);
   }
 
   @Bean(name = CHARACTERISTICS_CACHE)

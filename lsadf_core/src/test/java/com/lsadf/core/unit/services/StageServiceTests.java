@@ -27,7 +27,6 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,9 +50,7 @@ class StageServiceTests {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    StageEntityMapper mapper = new StageEntityMapper();
-
-    stageService = new StageServiceImpl(stageRepository, stageCache, mapper);
+    stageService = new StageServiceImpl(stageRepository, stageCache);
   }
 
   @Test

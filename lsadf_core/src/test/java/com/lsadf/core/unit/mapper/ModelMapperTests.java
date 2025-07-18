@@ -65,7 +65,7 @@ class ModelMapperTests {
   void should_map_stage_entity_to_stage() {
     // given
     GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
-    StageEntityMapper stageEntityMapper = new StageEntityMapper();
+    StageEntityMapper stageEntityMapper = StageEntityMapper.INSTANCE;
     StageEntity stageEntity =
         StageEntity.builder()
             .maxStage(500L)
@@ -88,7 +88,7 @@ class ModelMapperTests {
     // given
     GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
     CharacteristicsEntityMapper characteristicsEntityModelMapper =
-        new CharacteristicsEntityMapper();
+        CharacteristicsEntityMapper.INSTANCE;
     CharacteristicsEntity characteristicsEntity =
         CharacteristicsEntity.builder()
             .gameSave(gameSaveEntity)
@@ -147,7 +147,7 @@ class ModelMapperTests {
   void should_map_currency_entity_to_currency() {
     // given
     GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
-    CurrencyEntityMapper mapper = new CurrencyEntityMapper();
+    CurrencyEntityMapper mapper = CurrencyEntityMapper.INSTANCE;
     CurrencyEntity currencyEntity =
         CurrencyEntity.builder()
             .goldAmount(100L)
@@ -172,13 +172,7 @@ class ModelMapperTests {
   @Test
   void should_map_game_save_entity_to_game_save() {
     // given
-    CurrencyEntityMapper currencyEntityMapper = new CurrencyEntityMapper();
-    StageEntityMapper stageEntityMapper = new StageEntityMapper();
-    CharacteristicsEntityMapper characteristicsEntityModelMapper =
-        new CharacteristicsEntityMapper();
-    GameSaveEntityMapper mapper =
-        new GameSaveEntityMapper(
-            characteristicsEntityModelMapper, stageEntityMapper, currencyEntityMapper);
+    GameSaveEntityMapper mapper = GameSaveEntityMapper.INSTANCE;
     String id = UUID.randomUUID().toString();
     GameSaveEntity gameSaveEntity =
         GameSaveEntity.builder()
@@ -260,7 +254,7 @@ class ModelMapperTests {
     userRepresentation.setEnabled(false);
     userRepresentation.setRealmRoles(List.of("user", "admin"));
 
-    UserRepresentationMapper mapper = new UserRepresentationMapper();
+    UserRepresentationMapper mapper = UserRepresentationMapper.INSTANCE;
 
     // when
     User user = mapper.map(userRepresentation);

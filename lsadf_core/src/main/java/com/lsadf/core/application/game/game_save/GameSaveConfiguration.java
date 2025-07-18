@@ -27,14 +27,10 @@ import com.lsadf.core.infra.cache.ValkeyCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.cache.service.CacheService;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntityMapper;
 import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
-import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -69,8 +65,7 @@ public class GameSaveConfiguration {
       HistoCache<Currency> currencyCache,
       HistoCache<Characteristics> characteristicsCache,
       @Qualifier(GAME_SAVE_OWNERSHIP_CACHE) Cache<String> gameSaveOwnershipCache,
-      CacheService cacheService,
-      GameSaveEntityMapper gameSaveEntityModelMapper) {
+      CacheService cacheService) {
     return new GameSaveServiceImpl(
         userService,
         gameSaveRepository,
@@ -78,20 +73,11 @@ public class GameSaveConfiguration {
         currencyRepository,
         stageRepository,
         inventoryRepository,
-        gameSaveEntityModelMapper,
         cacheService,
         gameSaveOwnershipCache,
         stageCache,
         currencyCache,
         characteristicsCache);
-  }
-
-  @Bean
-  public GameSaveEntityMapper gameSaveEntityModelMapper(
-      CharacteristicsEntityMapper characteristicsMapper,
-      CurrencyEntityMapper currencyMapper,
-      StageEntityMapper stageMapper) {
-    return new GameSaveEntityMapper(characteristicsMapper, stageMapper, currencyMapper);
   }
 
   @Bean(name = GAME_SAVE_OWNERSHIP_CACHE)

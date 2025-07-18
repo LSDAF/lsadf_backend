@@ -36,15 +36,12 @@ public class InventoryServiceImpl implements InventoryService {
 
   private final InventoryRepository inventoryRepository;
   private final ItemRepository itemRepository;
-  private final ItemEntityMapper itemEntityMapper;
+  private static final ItemEntityMapper itemEntityMapper = ItemEntityMapper.INSTANCE;
 
   public InventoryServiceImpl(
-      InventoryRepository inventoryRepository,
-      ItemRepository itemRepository,
-      ItemEntityMapper itemEntityMapper) {
+      InventoryRepository inventoryRepository, ItemRepository itemRepository) {
     this.inventoryRepository = inventoryRepository;
     this.itemRepository = itemRepository;
-    this.itemEntityMapper = itemEntityMapper;
   }
 
   /** {@inheritDoc} */
@@ -57,7 +54,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     InventoryEntity inventoryEntity = getInventoryEntity(gameSaveId);
     Set<ItemEntity> itemEntities = inventoryEntity.getItems();
-    return itemEntities.stream().parallel().map(itemEntityMapper::map).collect(Collectors.toSet());
+    return itemEntities.stream().map(itemEntityMapper::map).collect(Collectors.toSet());
   }
 
   /** {@inheritDoc} */

@@ -17,62 +17,41 @@
 package com.lsadf.core.infra.persistence.game.game_save;
 
 import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
-import com.lsadf.core.infra.persistence.game.stage.StageEntity;
 import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 /**
- * Maps {@link GameSaveEntity} objects to their corresponding {@link GameSave} models. This mapper
- * facilitates the transformation of data from the persistence layer entity to the application layer
- * model, ensuring that associated entities such as characteristics, stage, and currency are
- * properly mapped as part of the conversion.
+ * A MapStruct mapper interface for converting {@link GameSaveEntity} objects into {@link GameSave}
+ * domain models.
  *
- * <p>This class utilizes other mappers, including: - {@link CharacteristicsEntityMapper} for
- * mapping {@link CharacteristicsEntity}. - {@link StageEntityMapper} for mapping {@link
- * StageEntity}. - {@link CurrencyEntityMapper} for mapping {@link CurrencyEntity}.
+ * <p>This mapper performs the transformation of persistence-layer entities into domain models used
+ * in the application layer. It extends the {@link EntityModelMapper} interface, inheriting the
+ * mapping contract to handle entity-to-model conversions.
  *
- * <p>The mapping allows developers to abstract entity-to-model translations within the business
- * logic, promoting separation of concerns and maintainable structure.
+ * <p>Design Considerations: - Utilizes MapStruct for automatic implementation generation. - Depends
+ * on additional mappers {@link CharacteristicsEntityMapper}, {@link StageEntityMapper}, and {@link
+ * CurrencyEntityMapper} to handle mappings of nested or composite objects within a {@link
+ * GameSaveEntity} object.
+ *
+ * <p>Responsibilities: - Converts the attributes of a {@link GameSaveEntity} to its corresponding
+ * {@link GameSave} representation. - Ensures seamless and accurate mapping for all relevant fields,
+ * promoting clean separation between persistence and domain layers. - Handles nested or composite
+ * objects by delegating to their respective mappers.
  */
-public class GameSaveEntityMapper implements EntityModelMapper<GameSaveEntity, GameSave> {
-
-  public GameSaveEntityMapper(
-      CharacteristicsEntityMapper characteristicsEntityModelMapper,
-      StageEntityMapper stageEntityMapper,
-      CurrencyEntityMapper currencyEntityMapper) {
-    this.characteristicsEntityModelMapper = characteristicsEntityModelMapper;
-    this.stageEntityMapper = stageEntityMapper;
-    this.currencyEntityMapper = currencyEntityMapper;
-  }
-
-  private final CharacteristicsEntityMapper characteristicsEntityModelMapper;
-  private final StageEntityMapper stageEntityMapper;
-  private final CurrencyEntityMapper currencyEntityMapper;
+@Mapper(
+    uses = {CharacteristicsEntityMapper.class, StageEntityMapper.class, CurrencyEntityMapper.class})
+public interface GameSaveEntityMapper extends EntityModelMapper<GameSaveEntity, GameSave> {
+  GameSaveEntityMapper INSTANCE = Mappers.getMapper(GameSaveEntityMapper.class);
 
   /** {@inheritDoc} */
   @Override
-  public GameSave map(GameSaveEntity gameSaveEntity) {
-    Stage stage = stageEntityMapper.map(gameSaveEntity.getStageEntity());
-    Characteristics characteristics =
-        characteristicsEntityModelMapper.map(gameSaveEntity.getCharacteristicsEntity());
-    Currency currency = currencyEntityMapper.map(gameSaveEntity.getCurrencyEntity());
-
-    return GameSave.builder()
-        .id(gameSaveEntity.getId())
-        .userEmail(gameSaveEntity.getUserEmail())
-        .nickname(gameSaveEntity.getNickname())
-        .characteristics(characteristics)
-        .currency(currency)
-        .stage(stage)
-        .createdAt(gameSaveEntity.getCreatedAt())
-        .updatedAt(gameSaveEntity.getUpdatedAt())
-        .build();
-  }
+  @Mapping(source = "characteristicsEntity", target = "characteristics")
+  @Mapping(source = "stageEntity", target = "stage")
+  @Mapping(source = "currencyEntity", target = "currency")
+  GameSave map(GameSaveEntity gameSaveEntity);
 }

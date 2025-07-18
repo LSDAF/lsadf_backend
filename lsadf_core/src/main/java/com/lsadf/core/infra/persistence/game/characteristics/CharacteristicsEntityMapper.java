@@ -18,33 +18,33 @@ package com.lsadf.core.infra.persistence.game.characteristics;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 /**
- * Maps a {@link CharacteristicsEntity} to a {@link Characteristics} model. This class implements
- * the {@link EntityModelMapper} interface to convert persistent entities used within the data layer
- * into domain models that are utilized in the business or application logic layer.
+ * Maps {@link CharacteristicsEntity} objects to {@link Characteristics} domain models.
  *
- * <p>The mapping process involves transferring specific attributes such as attack, critical chance,
- * critical damage, health, and resistance from the entity representation into the corresponding
- * fields within the model representation.
+ * <p>This interface serves as a concrete implementation of the {@link EntityModelMapper} interface,
+ * transforming persistence-layer entities into domain models used in the application layer.
  *
- * <p>This class is designed to be used in scenarios where characteristics information needs to be
- * transferred from the persistence layer to the application layer, ensuring data consistency and
- * proper encapsulation.
+ * <p>The mapping process includes the following transformation details: - Maps the {@code attack}
+ * attribute from {@link CharacteristicsEntity} to {@link Characteristics}. - Maps the {@code
+ * critChance} attribute from {@link CharacteristicsEntity} to {@link Characteristics}. - Maps the
+ * {@code critDamage} attribute from {@link CharacteristicsEntity} to {@link Characteristics}. -
+ * Maps the {@code health} attribute from {@link CharacteristicsEntity} to {@link Characteristics}.
+ * - Maps the {@code resistance} attribute from {@link CharacteristicsEntity} to {@link
+ * Characteristics}.
  *
- * <p>Thread Safety: This implementation is thread-safe as it performs no mutation of shared state.
+ * <p>Design notes: - Uses MapStruct for the mapper implementation. - Ensures type correctness and
+ * proper handling of null or invalid values during the mapping process. - Promotes reusability and
+ * decoupling between persistence and application layers.
  */
-public class CharacteristicsEntityMapper
-    implements EntityModelMapper<CharacteristicsEntity, Characteristics> {
+@Mapper
+public interface CharacteristicsEntityMapper
+    extends EntityModelMapper<CharacteristicsEntity, Characteristics> {
+  CharacteristicsEntityMapper INSTANCE = Mappers.getMapper(CharacteristicsEntityMapper.class);
 
   /** {@inheritDoc} */
   @Override
-  public Characteristics map(CharacteristicsEntity characteristicsEntity) {
-    return new Characteristics(
-        characteristicsEntity.getAttack(),
-        characteristicsEntity.getCritChance(),
-        characteristicsEntity.getCritDamage(),
-        characteristicsEntity.getHealth(),
-        characteristicsEntity.getResistance());
-  }
+  Characteristics map(CharacteristicsEntity characteristicsEntity);
 }

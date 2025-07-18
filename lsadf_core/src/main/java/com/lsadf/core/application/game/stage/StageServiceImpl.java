@@ -29,13 +29,11 @@ public class StageServiceImpl implements StageService {
 
   private final StageRepository stageRepository;
   private final Cache<Stage> stageCache;
-  private final StageEntityMapper mapper;
+  private static final StageEntityMapper mapper = StageEntityMapper.INSTANCE;
 
-  public StageServiceImpl(
-      StageRepository stageRepository, Cache<Stage> stageCache, StageEntityMapper mapper) {
+  public StageServiceImpl(StageRepository stageRepository, Cache<Stage> stageCache) {
     this.stageRepository = stageRepository;
     this.stageCache = stageCache;
-    this.mapper = mapper;
   }
 
   /** {@inheritDoc} */

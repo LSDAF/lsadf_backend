@@ -17,33 +17,39 @@
 package com.lsadf.core.infra.web.config.keycloak.mapper;
 
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.shared.mapper.Mapper;
-import java.util.Date;
-import java.util.UUID;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 /**
- * UserToUserRepresentationMapper maps a {@link User} object to a {@link UserRepresentation} object.
+ * UserToUserRepresentationMapper is a MapStruct-based mapper interface designed to handle the
+ * transformation of {@link User} domain objects into {@link UserRepresentation} objects.
  *
- * <p>This implementation of the {@link Mapper} interface processes specific properties of the
- * {@link User} instance, including attributes like username, first name, last name, email
- * verification status, account activation status, and assigned roles. Additionally, it generates a
- * unique identifier and a creation timestamp for the resulting {@link UserRepresentation}.
+ * <p>This interface extends the {@code Mapper} interface, providing type-safe and reusable mapping
+ * functionality for converting between the {@code User} and {@code UserRepresentation} models.
+ *
+ * <p>The implementation of this mapper is generated at runtime by MapStruct, eliminating the need
+ * for manual mapping code and ensuring consistency across the application. The generated instance
+ * of this mapper can be accessed as a singleton through the static {@link #INSTANCE} field.
+ *
+ * <p>Key features: - Ignores the mapping of the {@code id} and {@code createdTimestamp} fields in
+ * the generated output to prevent unintentional overwrites during the transformation process. -
+ * Facilitates seamless conversion between domain and representation models in service or controller
+ * layers.
+ *
+ * <p>Typical scenarios for using this mapper might include: - Preparing a {@code
+ * UserRepresentation} object to be sent as a response in API layers. - Converting domain entities
+ * to external representation formats in multi-service communication
  */
-public class UserToUserRepresentationMapper implements Mapper<User, UserRepresentation> {
-  /** {@inheritDoc} */
-  @Override
-  public UserRepresentation map(User user) {
-    UserRepresentation userRepresentation = new UserRepresentation();
-    userRepresentation.setCreatedTimestamp(new Date().getTime());
-    userRepresentation.setUsername(user.getUsername());
-    userRepresentation.setId(UUID.randomUUID().toString());
-    userRepresentation.setFirstName(user.getFirstName());
-    userRepresentation.setLastName(user.getLastName());
-    userRepresentation.setEmailVerified(user.getEmailVerified());
-    userRepresentation.setEnabled(user.getEnabled());
-    userRepresentation.setRealmRoles(user.getUserRoles());
+@Mapper
+public interface UserToUserRepresentationMapper
+    extends com.lsadf.core.shared.mapper.Mapper<User, UserRepresentation> {
+  UserToUserRepresentationMapper INSTANCE = Mappers.getMapper(UserToUserRepresentationMapper.class);
 
-    return userRepresentation;
-  }
+  /** {@inheritDoc} */
+  @Mapping(target = "createdTimestamp", ignore = true)
+  @Mapping(target = "id", ignore = true)
+  @Override
+  UserRepresentation map(User user);
 }

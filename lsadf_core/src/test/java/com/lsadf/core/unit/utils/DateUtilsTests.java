@@ -108,4 +108,18 @@ class DateUtilsTests {
     // Then
     assertThat(date).isNotNull().isEqualTo("2020-01-01 22:22:22.222");
   }
+
+  @Test
+  void test_dateFromTimestamp() {
+    // Given
+    Instant instant = Instant.parse(FIXED_DATE_TIME);
+    Date date = Date.from(instant);
+    long timestamp = date.getTime();
+
+    // When
+    Date computedDate = DateUtils.dateFromTimestamp(timestamp);
+
+    // Then
+    assertThat(computedDate).isNotNull().isEqualTo("2020-01-01 00:00:00.000");
+  }
 }

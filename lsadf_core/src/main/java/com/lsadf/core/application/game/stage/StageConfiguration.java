@@ -20,7 +20,6 @@ import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,14 +38,8 @@ public class StageConfiguration {
   public static final String STAGE_CACHE = "stageCache";
 
   @Bean
-  public StageService stageService(
-      StageRepository stageRepository, Cache<Stage> stageCache, StageEntityMapper mapper) {
-    return new StageServiceImpl(stageRepository, stageCache, mapper);
-  }
-
-  @Bean
-  public StageEntityMapper stageEntityModelMapper() {
-    return new StageEntityMapper();
+  public StageService stageService(StageRepository stageRepository, Cache<Stage> stageCache) {
+    return new StageServiceImpl(stageRepository, stageCache);
   }
 
   @Bean(name = STAGE_CACHE)
