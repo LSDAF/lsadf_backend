@@ -23,6 +23,7 @@ import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.application.controller.game.inventory.InventoryControllerImpl;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
@@ -68,7 +69,7 @@ class InventoryControllerTest {
               .isEquipped(false)
               .clientId("client_id")
               .additionalStats(Collections.emptyList())
-              .mainStat(new ItemStat())
+              .mainStat(new ItemStat(ItemStatistic.ATTACK_ADD, 500f))
               .build();
 
   @Test
@@ -131,14 +132,21 @@ class InventoryControllerTest {
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void createItemInInventory_should_return_400_when_invalid_object() {
     // when
-
-    ItemRequest itemRequest = new ItemRequest();
+    ItemRequest invalidItemRequest =
+        ItemRequest.builder()
+            .isEquipped(null)
+            .itemType(null)
+            .mainStat(null)
+            .blueprintId(null)
+            .additionalStats(null)
+            .level(-12)
+            .build();
 
     mockMvc
         .perform(
             post("/api/v1/inventory/{gameSaveId}/items", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(itemRequest)))
+                .content(objectMapper.writeValueAsString(invalidItemRequest)))
         .andExpect(status().isBadRequest());
   }
 
@@ -235,9 +243,15 @@ class InventoryControllerTest {
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void updateItemInInventory_should_return_400_when_invalid_object() {
-    ItemRequest invalidItemRequest = itemRequestSupplier.get();
-    invalidItemRequest.setItemType(null);
-
+    ItemRequest invalidItemRequest =
+        ItemRequest.builder()
+            .isEquipped(null)
+            .itemType(null)
+            .mainStat(null)
+            .blueprintId(null)
+            .additionalStats(null)
+            .level(-12)
+            .build();
     mockMvc
         .perform(
             put(

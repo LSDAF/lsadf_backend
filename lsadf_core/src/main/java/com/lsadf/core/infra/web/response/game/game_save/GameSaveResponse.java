@@ -16,12 +16,10 @@
 
 package com.lsadf.core.infra.web.response.game.game_save;
 
-import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.core.infra.web.JsonAttributes;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.response.Response;
 import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
@@ -34,24 +32,20 @@ import lombok.Builder;
 @Schema(name = "GameSaveResponse", description = "Game Save Object")
 @Builder
 public record GameSaveResponse(
-    @JsonView(JsonViews.Internal.class)
-        @JsonProperty(value = JsonAttributes.ID)
+    @JsonProperty(value = JsonAttributes.ID)
         @Schema(description = "Game Id", example = "7d9f92ce-3c8e-4695-9df7-ce10c0bbaaeb")
         String id,
-    @JsonView(JsonViews.Internal.class) @JsonProperty(value = USER_EMAIL) String userEmail,
-    @JsonView(JsonViews.Internal.class)
-        @JsonProperty(value = JsonAttributes.CREATED_AT)
+    @JsonProperty(value = USER_EMAIL) String userEmail,
+    @JsonProperty(value = JsonAttributes.CREATED_AT)
         @Schema(description = "Creation date", example = "2022-01-01 00:00:00.000")
         Date createdAt,
-    @JsonView(JsonViews.Internal.class)
-        @JsonProperty(value = JsonAttributes.UPDATED_AT)
+    @JsonProperty(value = JsonAttributes.UPDATED_AT)
         @Schema(description = "Update date", example = "2022-01-01 00:00:00.000")
         Date updatedAt,
-    @JsonView(JsonViews.External.class) @JsonProperty(value = NICKNAME) String nickname,
-    @JsonView(JsonViews.External.class) @JsonProperty(value = CHARACTERISTICS)
-        CharacteristicsResponse characteristics,
-    @JsonView(JsonViews.External.class) @JsonProperty(value = CURRENCY) CurrencyResponse currency,
-    @JsonView(JsonViews.External.class) @JsonProperty(value = STAGE) StageResponse stage)
+    @JsonProperty(value = NICKNAME) String nickname,
+    @JsonProperty(value = CHARACTERISTICS) CharacteristicsResponse characteristics,
+    @JsonProperty(value = CURRENCY) CurrencyResponse currency,
+    @JsonProperty(value = STAGE) StageResponse stage)
     implements Response {
 
   @Serial private static final long serialVersionUID = -2186008999020414794L;

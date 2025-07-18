@@ -15,24 +15,17 @@
  */
 package com.lsadf.core.infra.web.request.user.login;
 
-import static com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse.Attributes.REFRESH_TOKEN;
+import static com.lsadf.core.infra.web.JsonAttributes.REFRESH_TOKEN;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.request.Request;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serial;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserRefreshLoginRequest implements Request {
+@Builder
+public record UserRefreshLoginRequest(
+    @JsonProperty(value = REFRESH_TOKEN) @NotBlank String refreshToken) implements Request {
 
   @Serial private static final long serialVersionUID = -1758378448778560290L;
-
-  @JsonProperty(value = REFRESH_TOKEN)
-  @NotBlank
-  private String refreshToken;
 }

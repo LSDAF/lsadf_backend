@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.request.game.game_save.update;
 
-import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
+import static com.lsadf.core.infra.web.JsonAttributes.NICKNAME;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
@@ -24,21 +24,17 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.validation.Nickname;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class GameSaveNicknameUpdateRequest implements GameSaveUpdateRequest {
+@Builder
+public record GameSaveNicknameUpdateRequest(
+    @JsonProperty(value = NICKNAME)
+        @Nickname
+        @Schema(description = "Nickname of the user", example = "test")
+        String getNickname)
+    implements GameSaveUpdateRequest {
 
   @Serial private static final long serialVersionUID = -6478222007381338108L;
-
-  @JsonProperty(value = NICKNAME)
-  @Nickname
-  @Schema(description = "Nickname of the user", example = "test")
-  private String nickname;
 
   @Override
   public Characteristics getCharacteristics() {

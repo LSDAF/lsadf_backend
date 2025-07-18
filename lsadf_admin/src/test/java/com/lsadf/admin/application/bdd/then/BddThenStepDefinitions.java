@@ -24,13 +24,12 @@ import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.user.UserResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
@@ -66,13 +65,13 @@ public class BddThenStepDefinitions extends BddLoader {
 
   @Then("^the response should have the following Boolean (.*)$")
   public void then_the_response_should_have_the_following_boolean(boolean expected) {
-    boolean actual = (boolean) responseStack.peek().getData();
+    boolean actual = (boolean) responseStack.peek().data();
     assertThat(actual).isEqualTo(expected);
   }
 
   @Then("^the response status code should be (.*)$")
   public void then_the_response_status_code_should_be(int statusCode) {
-    int actual = responseStack.peek().getStatus();
+    int actual = responseStack.peek().status();
     assertThat(actual).isEqualTo(statusCode);
   }
 
@@ -80,27 +79,6 @@ public class BddThenStepDefinitions extends BddLoader {
   public void then_the_number_of_users_should_be(int expected) {
     long actual = userService.getUsers().count();
     assertThat(actual).isEqualTo(expected);
-  }
-
-  @Then("^the response should have the following UserInfo$")
-  public void then_the_response_should_have_the_following_user_info(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    UserInfo actual = (UserInfo) responseStack.peek().getData();
-    UserInfo expected = BddUtils.mapToUserInfo(row);
-
-    assertThat(actual)
-        .usingRecursiveComparison()
-        .ignoringFields("id", "createdAt", "updatedAt", "roles")
-        .isEqualTo(expected);
-
-    assertThat(actual.roles()).containsAll(expected.roles());
   }
 
   @Then("^I should have no game save entries in DB$")
@@ -203,7 +181,7 @@ public class BddThenStepDefinitions extends BddLoader {
     Map<String, String> row = rows.get(0);
 
     Stage expected = BddUtils.mapToStage(row);
-    Stage actual = (Stage) responseStack.peek().getData();
+    Stage actual = (Stage) responseStack.peek().data();
 
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
@@ -219,7 +197,7 @@ public class BddThenStepDefinitions extends BddLoader {
     Map<String, String> row = rows.get(0);
 
     Characteristics expected = BddUtils.mapToCharacteristics(row);
-    Characteristics actual = (Characteristics) responseStack.peek().getData();
+    Characteristics actual = (Characteristics) responseStack.peek().data();
 
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
@@ -235,7 +213,7 @@ public class BddThenStepDefinitions extends BddLoader {
     Map<String, String> row = rows.get(0);
 
     Currency expected = BddUtils.mapToCurrency(row);
-    Currency actual = (Currency) responseStack.peek().getData();
+    Currency actual = (Currency) responseStack.peek().data();
 
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
@@ -248,14 +226,14 @@ public class BddThenStepDefinitions extends BddLoader {
   @Then("^the token from the response should not be null$")
   public void then_the_token_from_the_response_should_not_be_null() {
     JwtAuthenticationResponse jwtAuthenticationResponse =
-        (JwtAuthenticationResponse) responseStack.peek().getData();
+        (JwtAuthenticationResponse) responseStack.peek().data();
     assertThat(jwtAuthenticationResponse.accessToken()).isNotNull();
   }
 
   @Then("^the refresh token from the response should not be null$")
   public void then_the_refresh_token_from_the_response_should_not_be_null() {
     JwtAuthenticationResponse jwtAuthenticationResponse =
-        (JwtAuthenticationResponse) responseStack.peek().getData();
+        (JwtAuthenticationResponse) responseStack.peek().data();
     assertThat(jwtAuthenticationResponse.refreshToken()).isNotNull();
   }
 
@@ -269,7 +247,7 @@ public class BddThenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
 
-    GameSaveResponse actual = (GameSaveResponse) responseStack.peek().getData();
+    GameSaveResponse actual = (GameSaveResponse) responseStack.peek().data();
     GameSaveResponse expected = BddUtils.mapToGameSaveResponse(row);
 
     assertThat(actual)
@@ -347,7 +325,7 @@ public class BddThenStepDefinitions extends BddLoader {
 
     Map<String, String> row = rows.get(0);
 
-    UserResponse actual = (UserResponse) responseStack.peek().getData();
+    UserResponse actual = (UserResponse) responseStack.peek().data();
     UserResponse expected = BddUtils.mapToUserResponse(row);
 
     assertThat(actual)

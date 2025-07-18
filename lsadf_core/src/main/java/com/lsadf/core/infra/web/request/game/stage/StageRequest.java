@@ -15,36 +15,27 @@
  */
 package com.lsadf.core.infra.web.request.game.stage;
 
-import static com.lsadf.core.infra.web.JsonAttributes.Stage.CURRENT_STAGE;
-import static com.lsadf.core.infra.web.JsonAttributes.Stage.MAX_STAGE;
+import static com.lsadf.core.infra.web.JsonAttributes.CURRENT_STAGE;
+import static com.lsadf.core.infra.web.JsonAttributes.MAX_STAGE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lsadf.core.domain.game.stage.validation.StageConsistency;
 import com.lsadf.core.infra.web.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
 import java.io.Serial;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @StageConsistency(currentStageField = "currentStage", maxStageField = "maxStage")
-@JsonPropertyOrder({CURRENT_STAGE, MAX_STAGE})
-public class StageRequest implements Request {
+public record StageRequest(
+    @Schema(description = "The Current game stage", example = "26")
+        @JsonProperty(value = CURRENT_STAGE)
+        @Positive
+        Long currentStage,
+    @Schema(description = "The Maximum game stage", example = "260")
+        @JsonProperty(value = MAX_STAGE)
+        @Positive
+        Long maxStage)
+    implements Request {
 
   @Serial private static final long serialVersionUID = -2154269413949156805L;
-
-  @Schema(description = "The Current game stage", example = "26")
-  @JsonProperty(value = CURRENT_STAGE)
-  @Positive
-  private Long currentStage;
-
-  @Schema(description = "The Maximum game stage", example = "260")
-  @JsonProperty(value = MAX_STAGE)
-  @Positive
-  private Long maxStage;
 }

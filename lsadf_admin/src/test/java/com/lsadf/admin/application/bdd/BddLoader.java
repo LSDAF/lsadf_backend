@@ -57,14 +57,13 @@ import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
 import com.lsadf.core.infra.persistence.game.stage.StageRepository;
-import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
-import com.lsadf.core.infra.web.controller.advice.DynamicJsonViewAdvice;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.user.UserResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
@@ -103,7 +102,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     classes = {
       GlobalExceptionHandler.class,
-      DynamicJsonViewAdvice.class,
       // Precise both the interface and the implementation to avoid ambiguity & errors for testing
       LsadfAdminConfiguration.class,
       LsadfAdminBddConfiguration.class,

@@ -16,22 +16,19 @@
 
 package com.lsadf.core.infra.web.response.info;
 
-import static com.lsadf.core.infra.web.JsonAttributes.GlobalInfo.*;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.response.Response;
 import java.io.Serial;
 import java.time.Instant;
 import lombok.Builder;
 
 @Builder
-@JsonView(JsonViews.Admin.class)
 public record GlobalInfoResponse(
-    @JsonView(JsonViews.Admin.class) @JsonProperty(value = NOW) Instant now,
-    @JsonView(JsonViews.Admin.class) @JsonProperty(value = GAME_SAVE_COUNTER) Long gameSaveCounter,
-    @JsonView(JsonViews.Admin.class) @JsonProperty(value = USER_COUNTER) Long userCounter)
+    @JsonProperty(value = NOW) Instant now,
+    @JsonProperty(value = GAME_SAVE_COUNTER) Long gameSaveCounter,
+    @JsonProperty(value = USER_COUNTER) Long userCounter)
     implements Response {
 
   @Serial private static final long serialVersionUID = -5539057784012769955L;

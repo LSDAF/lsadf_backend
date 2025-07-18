@@ -20,12 +20,12 @@ import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
-import com.lsadf.core.infra.web.client.keycloak.response.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -84,7 +84,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
   @Override
   public ResponseEntity<ApiResponse<JwtAuthenticationResponse>> login(
       @RequestBody @Valid UserLoginRequest userLoginRequest) {
-    log.info("User {} wants to login with grant_type=password", userLoginRequest.getUsername());
+    log.info("User {} wants to login with grant_type=password", userLoginRequest.username());
 
     String clientId = keycloakProperties.getClientId();
     String clientSecret = keycloakProperties.getClientSecret();
@@ -96,9 +96,9 @@ public class AuthControllerImpl extends BaseController implements AuthController
             + "&client_secret="
             + clientSecret
             + "&username="
-            + userLoginRequest.getUsername()
+            + userLoginRequest.username()
             + "&password="
-            + userLoginRequest.getPassword();
+            + userLoginRequest.password();
 
     JwtAuthenticationResponse jwt =
         keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
@@ -123,7 +123,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
             + "&client_secret="
             + clientSecret
             + "&refresh_token="
-            + userRefreshLoginRequest.getRefreshToken();
+            + userRefreshLoginRequest.refreshToken();
 
     JwtAuthenticationResponse response =
         keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);

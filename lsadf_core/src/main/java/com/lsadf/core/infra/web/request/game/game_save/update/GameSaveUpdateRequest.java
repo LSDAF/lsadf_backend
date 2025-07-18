@@ -24,7 +24,7 @@ import com.lsadf.core.infra.web.request.Request;
 /**
  * Represents a request for updating a game save. This interface provides methods to retrieve
  * details about the game's save state, including characteristics, currency, stage progress, and the
- * player's nickname. Implementing classes should provide the functionality to manage and update
+ * player's getNickname. Implementing classes should provide the functionality to manage and update
  * specific components of the game save.
  */
 public interface GameSaveUpdateRequest extends Request {
@@ -52,9 +52,9 @@ public interface GameSaveUpdateRequest extends Request {
   Stage getStage();
 
   /**
-   * Retrieves the nickname associated with the game save update request.
+   * Retrieves the getNickname associated with the game save update request.
    *
-   * @return the nickname of the user as a string
+   * @return the getNickname of the user as a string
    */
   String getNickname();
 }

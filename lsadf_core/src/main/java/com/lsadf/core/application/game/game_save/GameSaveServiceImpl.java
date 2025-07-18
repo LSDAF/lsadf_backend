@@ -144,56 +144,56 @@ public class GameSaveServiceImpl implements GameSaveService {
   public GameSave createGameSave(AdminGameSaveCreationRequest creationRequest)
       throws NotFoundException, AlreadyExistingGameSaveException {
 
-    User user = userService.getUserByUsername(creationRequest.getUserEmail());
+    User user = userService.getUserByUsername(creationRequest.userEmail());
 
     GameSaveEntity entity = GameSaveEntity.builder().userEmail(user.getUsername()).build();
 
-    if (creationRequest.getId() != null) {
-      if (gameSaveRepository.existsById(creationRequest.getId())) {
+    if (creationRequest.id() != null) {
+      if (gameSaveRepository.existsById(creationRequest.id())) {
         throw new AlreadyExistingGameSaveException(
-            "Game save with id " + creationRequest.getId() + " already exists");
+            "Game save with id " + creationRequest.id() + " already exists");
       }
-      entity.setId(creationRequest.getId());
+      entity.setId(creationRequest.id());
     }
 
     GameSaveEntity saved = gameSaveRepository.save(entity);
 
     String nickname =
-        creationRequest.getNickname() != null ? creationRequest.getNickname() : saved.getId();
+        creationRequest.nickname() != null ? creationRequest.nickname() : saved.getId();
 
     saved.setNickname(nickname);
 
-    CharacteristicsRequest characteristicsRequest = creationRequest.getCharacteristics();
+    CharacteristicsRequest characteristicsRequest = creationRequest.characteristics();
     CharacteristicsEntity characteristicsEntity =
         CharacteristicsEntity.builder()
             .gameSave(saved)
-            .attack(characteristicsRequest.getAttack())
-            .critChance(characteristicsRequest.getCritChance())
-            .critDamage(characteristicsRequest.getCritDamage())
-            .health(characteristicsRequest.getHealth())
-            .resistance(characteristicsRequest.getResistance())
+            .attack(characteristicsRequest.attack())
+            .critChance(characteristicsRequest.critChance())
+            .critDamage(characteristicsRequest.critDamage())
+            .health(characteristicsRequest.health())
+            .resistance(characteristicsRequest.resistance())
             .build();
 
     saved.setCharacteristicsEntity(characteristicsEntity);
 
-    CurrencyRequest currencyRequest = creationRequest.getCurrency();
+    CurrencyRequest currencyRequest = creationRequest.currency();
     CurrencyEntity currencyEntity =
         CurrencyEntity.builder()
             .userEmail(user.getUsername())
             .id(saved.getId())
-            .goldAmount(currencyRequest.getGold())
-            .diamondAmount(currencyRequest.getDiamond())
-            .emeraldAmount(currencyRequest.getEmerald())
-            .amethystAmount(currencyRequest.getAmethyst())
+            .goldAmount(currencyRequest.gold())
+            .diamondAmount(currencyRequest.diamond())
+            .emeraldAmount(currencyRequest.emerald())
+            .amethystAmount(currencyRequest.amethyst())
             .build();
 
     saved.setCurrencyEntity(currencyEntity);
 
-    StageRequest stageRequest = creationRequest.getStage();
+    StageRequest stageRequest = creationRequest.stage();
     StageEntity stageEntity =
         StageEntity.builder()
-            .currentStage(stageRequest.getCurrentStage())
-            .maxStage(stageRequest.getMaxStage())
+            .currentStage(stageRequest.currentStage())
+            .maxStage(stageRequest.maxStage())
             .userEmail(user.getUsername())
             .id(saved.getId())
             .build();

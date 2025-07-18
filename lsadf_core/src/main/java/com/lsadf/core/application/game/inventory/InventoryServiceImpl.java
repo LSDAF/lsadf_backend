@@ -71,31 +71,31 @@ public class InventoryServiceImpl implements InventoryService {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
 
-    if (itemRepository.findItemEntityByClientId(itemRequest.getClientId()).isPresent()) {
+    if (itemRepository.findItemEntityByClientId(itemRequest.clientId()).isPresent()) {
       throw new AlreadyExistingItemClientIdException(
-          "Game save with id " + itemRequest.getClientId() + " already exists");
+          "Game save with id " + itemRequest.clientId() + " already exists");
     }
 
     InventoryEntity inventoryEntity = optionalInventoryEntity.get();
 
     Set<ItemEntity> items = inventoryEntity.getItems();
 
-    if (items.stream().anyMatch(i -> i.getClientId().equals(itemRequest.getClientId()))) {
+    if (items.stream().anyMatch(i -> i.getClientId().equals(itemRequest.clientId()))) {
       throw new AlreadyExistingItemClientIdException(
-          "Game save with id " + itemRequest.getClientId() + " already exists");
+          "Game save with id " + itemRequest.clientId() + " already exists");
     }
 
     ItemEntity itemEntity =
         ItemEntity.builder()
             .inventoryEntity(inventoryEntity)
-            .clientId(itemRequest.getClientId())
-            .itemType(ItemType.fromString(itemRequest.getItemType()))
-            .blueprintId(itemRequest.getBlueprintId())
-            .itemRarity(ItemRarity.fromString(itemRequest.getItemRarity()))
-            .isEquipped(itemRequest.getIsEquipped())
-            .level(itemRequest.getLevel())
-            .mainStat(itemRequest.getMainStat())
-            .additionalStats(itemRequest.getAdditionalStats())
+            .clientId(itemRequest.clientId())
+            .itemType(ItemType.fromString(itemRequest.itemType()))
+            .blueprintId(itemRequest.blueprintId())
+            .itemRarity(ItemRarity.fromString(itemRequest.itemRarity()))
+            .isEquipped(itemRequest.isEquipped())
+            .level(itemRequest.level())
+            .mainStat(itemRequest.mainStat())
+            .additionalStats(itemRequest.additionalStats())
             .build();
 
     inventoryEntity.getItems().add(itemEntity);
@@ -103,12 +103,12 @@ public class InventoryServiceImpl implements InventoryService {
     var updated = inventoryRepository.save(inventoryEntity);
     var item =
         updated.getItems().stream()
-            .filter(i -> i.getClientId().equals(itemRequest.getClientId()))
+            .filter(i -> i.getClientId().equals(itemRequest.clientId()))
             .findFirst()
             .orElseThrow(
                 () ->
                     new NotFoundException(
-                        "Item not found for item client id " + itemRequest.getClientId()));
+                        "Item not found for item client id " + itemRequest.clientId()));
     return itemEntityMapper.map(item);
   }
 
@@ -178,13 +178,13 @@ public class InventoryServiceImpl implements InventoryService {
                             + " and item client id "
                             + itemClientId));
 
-    toUpdate.setLevel(itemRequest.getLevel());
-    toUpdate.setMainStat(itemRequest.getMainStat());
-    toUpdate.setAdditionalStats(itemRequest.getAdditionalStats());
-    toUpdate.setIsEquipped(itemRequest.getIsEquipped());
-    toUpdate.setItemType(ItemType.fromString(itemRequest.getItemType()));
-    toUpdate.setBlueprintId(itemRequest.getBlueprintId());
-    toUpdate.setItemRarity(ItemRarity.fromString(itemRequest.getItemRarity()));
+    toUpdate.setLevel(itemRequest.level());
+    toUpdate.setMainStat(itemRequest.mainStat());
+    toUpdate.setAdditionalStats(itemRequest.additionalStats());
+    toUpdate.setIsEquipped(itemRequest.isEquipped());
+    toUpdate.setItemType(ItemType.fromString(itemRequest.itemType()));
+    toUpdate.setBlueprintId(itemRequest.blueprintId());
+    toUpdate.setItemRarity(ItemRarity.fromString(itemRequest.itemRarity()));
 
     InventoryEntity updated = inventoryRepository.save(inventoryEntity);
     ItemEntity updatedItemEntity =

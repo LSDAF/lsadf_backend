@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.web.request.game.game_save.update;
 
-import static com.lsadf.core.infra.web.JsonAttributes.GameSave.*;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
@@ -24,37 +24,65 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.validation.Nickname;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
+/**
+ * Represents a request to update the game save in the admin context. This record implements the
+ * {@link GameSaveUpdateRequest} interface, containing all necessary fields for a game save update,
+ * such as user getNickname, characteristics, currency, and stage progress.
+ *
+ * <p>The class is designed to be immutable and is annotated using the builder pattern to provide a
+ * convenient way to construct instances.
+ *
+ * <p>The fields are annotated with Jackson's {@link JsonProperty} for JSON
+ * serialization/deserialization, Swagger {@link Schema} for API documentation, and custom
+ * annotations like {@link Nickname} for additional validation.
+ *
+ * <p>This class ensures all provided components of the game save (characteristics, currency, stage,
+ * and getNickname) can be managed and updated efficiently in the system.
+ */
 @Builder
-public class AdminGameSaveUpdateRequest implements GameSaveUpdateRequest {
+public record AdminGameSaveUpdateRequest(
+    @JsonProperty(value = NICKNAME)
+        @Nickname(nullable = true)
+        @Schema(description = "Nickname of the user", example = "test")
+        String nickname,
+    @JsonProperty(value = CHARACTERISTICS)
+        @Schema(
+            description = "Characteristics of the user",
+            example = "{\"strength\":10,\"agility\":10,\"intelligence\":10,\"luck\":10}")
+        Characteristics characteristics,
+    @JsonProperty(value = CURRENCY)
+        @Schema(
+            description = "Currency of the user",
+            example = "{\"gold\":1000,\"silver\":1000,\"copper\":1000}")
+        Currency currency,
+    @JsonProperty(value = STAGE)
+        @Schema(
+            description = "Stage of the user",
+            example = "{\"stageId\":1,\"stageName\":\"test\"}")
+        Stage stage)
+    implements GameSaveUpdateRequest {
 
   @Serial private static final long serialVersionUID = -1619677650296221394L;
 
-  @JsonProperty(value = NICKNAME)
-  @Nickname(nullable = true)
-  @Schema(description = "Nickname of the user", example = "test")
-  private String nickname;
+  @Override
+  public Characteristics getCharacteristics() {
+    return characteristics;
+  }
 
-  @JsonProperty(value = CHARACTERISTICS)
-  @Schema(
-      description = "Characteristics of the user",
-      example = "{\"strength\":10,\"agility\":10,\"intelligence\":10,\"luck\":10}")
-  private Characteristics characteristics;
+  @Override
+  public Currency getCurrency() {
+    return currency;
+  }
 
-  @JsonProperty(value = CURRENCY)
-  @Schema(
-      description = "Currency of the user",
-      example = "{\"gold\":1000,\"silver\":1000,\"copper\":1000}")
-  private Currency currency;
+  @Override
+  public Stage getStage() {
+    return stage;
+  }
 
-  @JsonProperty(value = STAGE)
-  @Schema(description = "Stage of the user", example = "{\"stageId\":1,\"stageName\":\"test\"}")
-  private Stage stage;
+  @Override
+  public String getNickname() {
+    return nickname;
+  }
 }

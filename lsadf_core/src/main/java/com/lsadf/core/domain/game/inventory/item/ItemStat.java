@@ -15,12 +15,10 @@
  */
 package com.lsadf.core.domain.game.inventory.item;
 
-import static com.lsadf.core.infra.web.JsonAttributes.ItemStat.BASE_VALUE;
-import static com.lsadf.core.infra.web.JsonAttributes.ItemStat.STATISTIC;
+import static com.lsadf.core.infra.web.JsonAttributes.BASE_VALUE;
+import static com.lsadf.core.infra.web.JsonAttributes.STATISTIC;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.shared.model.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Embeddable;
@@ -38,13 +36,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Valid
 public class ItemStat implements Model {
-  @JsonView(JsonViews.External.class)
   @JsonProperty(value = STATISTIC)
   @Schema(description = "Item stat statistic", example = "ATTACK_ADD")
   @Enumerated(EnumType.STRING)
   private ItemStatistic statistic;
 
-  @JsonView(JsonViews.External.class)
   @JsonProperty(value = BASE_VALUE)
   @Schema(description = "Item stat base value", example = "100.0")
   @Positive

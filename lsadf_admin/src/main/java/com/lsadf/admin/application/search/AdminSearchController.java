@@ -19,11 +19,9 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrat
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.controller.JsonViews;
 import com.lsadf.core.infra.web.request.search.SearchRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.ResponseMessages;
@@ -79,7 +77,6 @@ public interface AdminSearchController extends Controller {
       })
   @PostMapping(value = Constants.ApiPaths.SEARCH_USERS)
   @Operation(summary = "Searches for users in function of the give search criteria")
-  @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<List<UserResponse>>> searchUsers(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody(required = false) SearchRequest searchRequest,
@@ -113,7 +110,6 @@ public interface AdminSearchController extends Controller {
       })
   @PostMapping(value = Constants.ApiPaths.SEARCH_GAME_SAVES)
   @Operation(summary = "Searches for game saves in function of the give search criteria")
-  @JsonView(JsonViews.Admin.class)
   ResponseEntity<ApiResponse<List<GameSaveResponse>>> searchGameSaves(
       @AuthenticationPrincipal Jwt jwt,
       @Valid @RequestBody(required = false) SearchRequest searchRequest,

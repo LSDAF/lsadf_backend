@@ -96,10 +96,6 @@ keycloak:
 shutdown:
   flush-cache-at-shutdown: false
 
-json-view:
-  default-json-view: ADMIN
-  default-json-view-enabled: true
-
 cache:
   local:
     invalidated-refresh-token-cache-max-size: ${INVALIDATED_REFRESH_TOKEN_CACHE_MAX_SIZE}

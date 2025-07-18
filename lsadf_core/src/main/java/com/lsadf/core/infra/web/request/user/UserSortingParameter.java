@@ -24,43 +24,41 @@ import org.springframework.data.domain.Sort;
 public enum UserSortingParameter implements SortingParameter<User> {
   ID(JsonAttributes.ID, Sort.Direction.ASC, Comparator.comparing(User::getId)),
   ID_DESC(JsonAttributes.ID, Sort.Direction.DESC, Comparator.comparing(User::getId).reversed()),
-  USERNAME(
-      JsonAttributes.User.USERNAME, Sort.Direction.ASC, Comparator.comparing(User::getUsername)),
+  USERNAME(JsonAttributes.USERNAME, Sort.Direction.ASC, Comparator.comparing(User::getUsername)),
   USERNAME_DESC(
-      JsonAttributes.User.USERNAME,
+      JsonAttributes.USERNAME,
       Sort.Direction.DESC,
       Comparator.comparing(User::getUsername).reversed()),
   FIRST_NAME(
-      JsonAttributes.User.FIRST_NAME, Sort.Direction.ASC, Comparator.comparing(User::getFirstName)),
+      JsonAttributes.FIRST_NAME, Sort.Direction.ASC, Comparator.comparing(User::getFirstName)),
   FIRST_NAME_DESC(
-      JsonAttributes.User.FIRST_NAME,
+      JsonAttributes.FIRST_NAME,
       Sort.Direction.DESC,
       Comparator.comparing(User::getFirstName).reversed()),
-  LAST_NAME(
-      JsonAttributes.User.LAST_NAME, Sort.Direction.ASC, Comparator.comparing(User::getLastName)),
+  LAST_NAME(JsonAttributes.LAST_NAME, Sort.Direction.ASC, Comparator.comparing(User::getLastName)),
   LAST_NAME_DESC(
-      JsonAttributes.User.LAST_NAME,
+      JsonAttributes.LAST_NAME,
       Sort.Direction.DESC,
       Comparator.comparing(User::getLastName).reversed()),
   CREATED_TIMESTAMP(
-      JsonAttributes.User.CREATED_TIMESTAMP,
+      JsonAttributes.CREATED_TIMESTAMP,
       Sort.Direction.ASC,
       Comparator.comparing(User::getCreatedTimestamp)),
   CREATED_TIMESTAMP_DESC(
-      JsonAttributes.User.CREATED_TIMESTAMP,
+      JsonAttributes.CREATED_TIMESTAMP,
       Sort.Direction.DESC,
       Comparator.comparing(User::getCreatedTimestamp).reversed()),
   USER_ROLES(
-      JsonAttributes.User.USER_ROLES,
+      JsonAttributes.USER_ROLES,
       Sort.Direction.ASC,
       Comparator.comparing(o -> o.getUserRoles().toString())),
   USER_ROLES_DESC(
-      JsonAttributes.User.USER_ROLES,
+      JsonAttributes.USER_ROLES,
       Sort.Direction.DESC,
       (o1, o2) -> o2.getUserRoles().toString().compareTo(o1.getUserRoles().toString())),
-  ENABLED(JsonAttributes.User.ENABLED, Sort.Direction.ASC, Comparator.comparing(User::getEnabled)),
+  ENABLED(JsonAttributes.ENABLED, Sort.Direction.ASC, Comparator.comparing(User::getEnabled)),
   ENABLED_DESC(
-      JsonAttributes.User.ENABLED,
+      JsonAttributes.ENABLED,
       Sort.Direction.DESC,
       Comparator.comparing(User::getEnabled).reversed()),
   NONE(null, null, null);
