@@ -250,6 +250,9 @@ public class BddThenStepDefinitions extends BddLoader {
     GameSaveResponse actual = (GameSaveResponse) responseStack.peek().data();
     GameSaveResponse expected = BddUtils.mapToGameSaveResponse(row);
 
+    assertThat(actual.createdAt()).isNotNull();
+    assertThat(actual.updatedAt()).isNotNull();
+
     assertThat(actual)
         .usingRecursiveComparison()
         .ignoringFields("id", "createdAt", "updatedAt")
@@ -380,6 +383,10 @@ public class BddThenStepDefinitions extends BddLoader {
     for (int i = 0; i < actual.size(); i++) {
       GameSaveResponse actualGameSaveResponse = actual.get(i);
       GameSaveResponse expectedGameSaveResponse = expected.get(i);
+      
+      assertThat(actualGameSaveResponse.createdAt()).isNotNull();
+      assertThat(actualGameSaveResponse.updatedAt()).isNotNull();
+      
       assertThat(actualGameSaveResponse)
           .usingRecursiveComparison()
           .ignoringFields("id", "createdAt", "updatedAt")

@@ -127,7 +127,10 @@ public class GameSaveServiceImpl implements GameSaveService {
     saved.setStageEntity(stageEntity);
 
     var results = gameSaveRepository.save(saved);
-    return gameSaveEntityMapper.map(results);
+    
+    GameSaveEntity refreshed = gameSaveRepository.findById(results.getId())
+        .orElseThrow(() -> new NotFoundException("Game save not found after creation"));
+    return gameSaveEntityMapper.map(refreshed);
   }
 
   /** {@inheritDoc} */
@@ -200,8 +203,10 @@ public class GameSaveServiceImpl implements GameSaveService {
 
     saved.setStageEntity(stageEntity);
 
-    var result = gameSaveRepository.save(saved);
-    return gameSaveEntityMapper.map(result);
+    GameSaveEntity finalSaved = gameSaveRepository.save(saved);
+    GameSaveEntity refreshed = gameSaveRepository.findById(finalSaved.getId())
+        .orElseThrow(() -> new NotFoundException("Game save not found after creation"));
+    return gameSaveEntityMapper.map(refreshed);
   }
 
   /** {@inheritDoc} */
