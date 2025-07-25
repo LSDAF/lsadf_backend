@@ -24,12 +24,12 @@ import com.lsadf.core.infra.web.request.Request;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
-import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
+import java.util.UUID;
 import lombok.Builder;
 
 /**
@@ -52,12 +52,11 @@ import lombok.Builder;
  */
 @Builder
 public record AdminGameSaveCreationRequest(
-    @Uuid(nullable = true)
-        @JsonProperty(value = ID)
+    @JsonProperty(value = ID)
         @Schema(
             description = "Id of the game save",
             example = "7d9f92ce-3c8e-4695-9df7-ce10c0bbaaeb")
-        String id,
+        UUID id,
     @JsonProperty(value = USER_EMAIL)
         @Schema(description = "Email of the user", example = "test@test.com")
         @Email
@@ -68,7 +67,43 @@ public record AdminGameSaveCreationRequest(
     @Valid @NotNull CharacteristicsRequest characteristics,
     @Valid @NotNull CurrencyRequest currency,
     @Valid @NotNull StageRequest stage)
-    implements Request {
+    implements GameSaveCreationRequest {
 
   @Serial private static final long serialVersionUID = 2925109471468959138L;
+
+  /** {@inheritDoc} */
+  @Override
+  public UUID getId() {
+    return id;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public String getUserEmail() {
+    return userEmail;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public String getNickname() {
+    return nickname;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public CharacteristicsRequest getCharacteristicsRequest() {
+    return characteristics;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public CurrencyRequest getCurrencyRequest() {
+    return currency;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public StageRequest getStageRequest() {
+    return stage;
+  }
 }
