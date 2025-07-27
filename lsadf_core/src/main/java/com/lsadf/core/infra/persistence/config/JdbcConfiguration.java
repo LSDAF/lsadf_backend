@@ -16,15 +16,22 @@
 package com.lsadf.core.infra.persistence.config;
 
 import javax.sql.DataSource;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /** Configuration class for JDBC operations. */
 @Configuration
 @Import(DataSourceConfiguration.class)
+@ConditionalOnProperty(name = "jdbc.enabled", havingValue = "true")
+@EnableJdbcRepositories(
+    basePackages = {
+      "com.lsadf.core.infra.persistence",
+    })
 public class JdbcConfiguration {
 
   /**

@@ -15,13 +15,13 @@
  */
 package com.lsadf.core.infra.persistence.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Configuration
-@ConditionalOnProperty(name = "jpa.enabled", havingValue = "true")
-@EnableJpaRepositories(basePackages = "com.lsadf.core.infra.persistence")
-@EntityScan(basePackages = "com.lsadf.core.infra.persistence")
-public class JpaConfiguration {}
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class JdbcProperties {
+  private boolean enabled;
+}
