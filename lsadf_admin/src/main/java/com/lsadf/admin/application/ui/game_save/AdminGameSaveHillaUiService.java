@@ -17,7 +17,7 @@ package com.lsadf.admin.application.ui.game_save;
 
 import com.lsadf.admin.util.FilterUtils;
 import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.infra.util.StreamUtils;
 import com.lsadf.core.infra.web.request.game.game_save.GameSaveSortingParameter;
 import com.vaadin.hilla.BrowserCallable;
@@ -27,6 +27,7 @@ import com.vaadin.hilla.crud.ListService;
 import com.vaadin.hilla.crud.filter.Filter;
 import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.NonNull;
 import org.springframework.data.domain.Pageable;
@@ -46,27 +47,29 @@ public class AdminGameSaveHillaUiService implements ListService<GameSave> {
   @NonNull
   public List<@Nonnull GameSave> list(
       @NonNull Pageable pageable, @jakarta.annotation.Nullable @Nullable Filter filter) {
-    Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves();
+    try (Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves()) {
+      Stream<GameSave> newGameSaveStream;
+      // Filter the stream
+      if (filter != null) {
+        newGameSaveStream = FilterUtils.applyFilters(gameSaveStream, filter);
+      }
 
-    // Filter the stream
-    if (filter != null) {
-      gameSaveStream = FilterUtils.applyFilters(gameSaveStream, filter);
+      // Sort the stream
+
+      // map pageable to a list of GameSaveSortingParameter
+      List<GameSaveSortingParameter> sortingParameters =
+          pageable.getSort().stream().map(GameSaveSortingParameter::fromOrder).toList();
+
+      newGameSaveStream = StreamUtils.sortGameSaves(gameSaveStream, sortingParameters);
+
+      // Paginate the stream
+      return newGameSaveStream.skip(pageable.getOffset()).limit(pageable.getPageSize()).toList();
     }
-
-    // Sort the stream
-
-    // map pageable to a list of GameSaveSortingParameter
-    List<GameSaveSortingParameter> sortingParameters =
-        pageable.getSort().stream().map(GameSaveSortingParameter::fromOrder).toList();
-
-    gameSaveStream = StreamUtils.sortGameSaves(gameSaveStream, sortingParameters);
-
-    // Paginate the stream
-    return gameSaveStream.skip(pageable.getOffset()).limit(pageable.getPageSize()).toList();
   }
 
   @Nonnull
   public GameSave get(@Nonnull String id) {
-    return gameSaveService.getGameSave(id);
+    UUID uuid = UUID.fromString(id);
+    return gameSaveService.getGameSave(uuid);
   }
 }
