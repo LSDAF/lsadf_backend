@@ -30,6 +30,7 @@ import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.function.Supplier;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -59,6 +60,8 @@ class InventoryControllerTest {
 
   @Autowired private ObjectMapper objectMapper;
 
+  private static final String UUID = java.util.UUID.randomUUID().toString();
+
   private Supplier<ItemRequest> itemRequestSupplier =
       () ->
           ItemRequest.builder()
@@ -67,7 +70,7 @@ class InventoryControllerTest {
               .itemRarity(ItemRarity.EPIC.getRarity())
               .blueprintId("blueprint_id")
               .isEquipped(false)
-              .clientId("client_id")
+              .clientId(UUID)
               .additionalStats(Collections.emptyList())
               .mainStat(new ItemStat(ItemStatistic.ATTACK_ADD, 500f))
               .build();
