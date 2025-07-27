@@ -16,9 +16,9 @@
 package com.lsadf.core.application.game.game_save;
 
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.cache.Cache;
@@ -29,25 +29,30 @@ import com.lsadf.core.infra.exception.AlreadyTakenNicknameException;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.exception.http.UnauthorizedException;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntityMapper;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
-import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsRepository;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyRepository;
+import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity;
+import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveRepository;
+import com.lsadf.core.infra.persistence.table.game.stage.StageEntity;
+import com.lsadf.core.infra.persistence.table.game.stage.StageEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.view.GameSaveViewEntity;
+import com.lsadf.core.infra.persistence.view.GameSaveViewMapper;
+import com.lsadf.core.infra.persistence.view.GameSaveViewRepository;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.game_save.creation.GameSaveCreationRequest;
 import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveUpdateRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import java.util.*;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Implementation of GameSaveService */
@@ -55,10 +60,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class GameSaveServiceImpl implements GameSaveService {
   private final UserService userService;
 
-  private final GameSaveRepository gameSaveRepository;
+  // Repositories and services to access the database and the cache
+  private final GameSaveViewRepository gameSaveViewRepository;
+  private final GameSaveRepository gameSaveEntityRepository;
   private final CurrencyRepository currencyRepository;
   private final StageRepository stageRepository;
-  private final InventoryRepository inventoryRepository;
   private final CharacteristicsRepository characteristicsRepository;
 
   private final CacheService cacheService;
@@ -68,21 +74,24 @@ public class GameSaveServiceImpl implements GameSaveService {
   private final HistoCache<Characteristics> characteristicsCache;
 
   private static final GameSaveEntityMapper gameSaveEntityMapper = GameSaveEntityMapper.INSTANCE;
+  private static final GameSaveViewMapper gameSaveViewMapper = GameSaveViewMapper.INSTANCE;
 
+  @Autowired
   public GameSaveServiceImpl(
       UserService userService,
-      GameSaveRepository gameSaveRepository,
+      GameSaveRepository gameSaveEntityRepository,
+      GameSaveViewRepository gameSaveViewRepository,
       CharacteristicsRepository characteristicsRepository,
       CurrencyRepository currencyRepository,
       StageRepository stageRepository,
-      InventoryRepository inventoryRepository,
       CacheService cacheService,
       Cache<String> gameSaveOwnershipCache,
       HistoCache<Stage> stageCache,
       HistoCache<Currency> currencyCache,
       HistoCache<Characteristics> characteristicsCache) {
     this.userService = userService;
-    this.gameSaveRepository = gameSaveRepository;
+    this.gameSaveEntityRepository = gameSaveEntityRepository;
+    this.gameSaveViewRepository = gameSaveViewRepository;
     this.cacheService = cacheService;
     this.gameSaveOwnershipCache = gameSaveOwnershipCache;
     this.stageCache = stageCache;
@@ -91,122 +100,93 @@ public class GameSaveServiceImpl implements GameSaveService {
     this.characteristicsRepository = characteristicsRepository;
     this.currencyRepository = currencyRepository;
     this.stageRepository = stageRepository;
-    this.inventoryRepository = inventoryRepository;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  @Transactional
-  public GameSave createGameSave(String userEmail) throws NotFoundException {
-    log.info("Creating new save for user {}", userEmail);
-
-    User user = userService.getUserByUsername(userEmail);
-
-    GameSaveEntity entity = GameSaveEntity.builder().userEmail(userEmail).build();
-
-    GameSaveEntity saved = gameSaveRepository.save(entity);
-    saved.setNickname(saved.getId());
-
-    CharacteristicsEntity characteristicsEntity =
-        CharacteristicsEntity.builder().id(saved.getId()).build();
-
-    saved.setCharacteristicsEntity(characteristicsEntity);
-
-    CurrencyEntity currencyEntity =
-        CurrencyEntity.builder().userEmail(user.getUsername()).id(saved.getId()).build();
-
-    saved.setCurrencyEntity(currencyEntity);
-
-    InventoryEntity inventoryEntity = InventoryEntity.builder().items(new HashSet<>()).build();
-
-    saved.setInventoryEntity(inventoryEntity);
-
-    StageEntity stageEntity =
-        StageEntity.builder().userEmail(user.getUsername()).id(saved.getId()).build();
-
-    saved.setStageEntity(stageEntity);
-
-    var results = gameSaveRepository.save(saved);
-    return gameSaveEntityMapper.map(results);
+    this.itemRepository = itemRepository;
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
-  public GameSave getGameSave(String saveId) throws NotFoundException {
-    GameSaveEntity gameSaveEntity = getGameSaveEntity(saveId);
-    GameSave gameSave = gameSaveEntityMapper.map(gameSaveEntity);
+  public GameSave getGameSave(UUID saveId) throws NotFoundException {
+    GameSaveViewEntity gameSaveEntity = getGameSaveEntity(saveId);
+    GameSave gameSave = gameSaveViewMapper.map(gameSaveEntity);
     return enrichGameSaveWithCachedData(gameSave);
   }
 
-  /** {@inheritDoc} */
   @Override
-  public GameSave createGameSave(AdminGameSaveCreationRequest creationRequest)
+  @Transactional
+  public GameSave createGameSave(GameSaveCreationRequest creationRequest)
       throws NotFoundException, AlreadyExistingGameSaveException {
-
-    User user = userService.getUserByUsername(creationRequest.userEmail());
-
-    GameSaveEntity entity = GameSaveEntity.builder().userEmail(user.getUsername()).build();
-
-    if (creationRequest.id() != null) {
-      if (gameSaveRepository.existsById(creationRequest.id())) {
+    User user = userService.getUserByUsername(creationRequest.getUserEmail());
+    GameSaveEntity newGameSaveEntity;
+    if (creationRequest.getId() != null) {
+      if (gameSaveEntityRepository.existsById(creationRequest.getId())) {
         throw new AlreadyExistingGameSaveException(
-            "Game save with id " + creationRequest.id() + " already exists");
+            "Game save with id " + creationRequest.getId() + " already exists");
       }
-      entity.setId(creationRequest.id());
+      newGameSaveEntity =
+          gameSaveEntityRepository.createNewGameSaveEntity(
+              creationRequest.getId(), user.getUsername(), creationRequest.getNickname());
+    } else {
+      newGameSaveEntity =
+          gameSaveEntityRepository.createNewGameSaveEntity(
+              user.getUsername(), creationRequest.getNickname());
     }
 
-    GameSaveEntity saved = gameSaveRepository.save(entity);
+    GameSave newGameSave = gameSaveEntityMapper.map(newGameSaveEntity);
 
-    String nickname =
-        creationRequest.nickname() != null ? creationRequest.nickname() : saved.getId();
+    CharacteristicsEntity newCharacteristicsEntity;
+    CharacteristicsRequest characteristicsRequest = creationRequest.getCharacteristicsRequest();
+    if (characteristicsRequest != null) {
+      newCharacteristicsEntity =
+          characteristicsRepository.createNewCharacteristicsEntity(
+              newGameSave.getId(),
+              characteristicsRequest.attack(),
+              characteristicsRequest.critChance(),
+              characteristicsRequest.critDamage(),
+              characteristicsRequest.health(),
+              characteristicsRequest.resistance());
+    } else {
+      newCharacteristicsEntity =
+          characteristicsRepository.createNewCharacteristicsEntity(newGameSave.getId());
+    }
+    Characteristics newCharacteristics =
+        CharacteristicsEntityMapper.INSTANCE.map(newCharacteristicsEntity);
+    newGameSave.setCharacteristics(newCharacteristics);
 
-    saved.setNickname(nickname);
+    CurrencyEntity newCurrencyEntity;
+    CurrencyRequest currencyRequest = creationRequest.getCurrencyRequest();
+    if (currencyRequest != null) {
+      newCurrencyEntity =
+          currencyRepository.createNewCurrencyEntity(
+              newGameSave.getId(),
+              currencyRequest.gold(),
+              currencyRequest.diamond(),
+              currencyRequest.emerald(),
+              currencyRequest.amethyst());
+    } else {
+      newCurrencyEntity = currencyRepository.createNewCurrencyEntity(newGameSave.getId());
+    }
+    Currency newCurrency = CurrencyEntityMapper.INSTANCE.map(newCurrencyEntity);
+    newGameSave.setCurrency(newCurrency);
 
-    CharacteristicsRequest characteristicsRequest = creationRequest.characteristics();
-    CharacteristicsEntity characteristicsEntity =
-        CharacteristicsEntity.builder()
-            .gameSave(saved)
-            .attack(characteristicsRequest.attack())
-            .critChance(characteristicsRequest.critChance())
-            .critDamage(characteristicsRequest.critDamage())
-            .health(characteristicsRequest.health())
-            .resistance(characteristicsRequest.resistance())
-            .build();
+    StageRequest stageRequest = creationRequest.getStageRequest();
+    StageEntity newStageEntity;
+    if (stageRequest != null) {
+      newStageEntity =
+          stageRepository.createNewStageEntity(
+              newGameSave.getId(), stageRequest.currentStage(), stageRequest.maxStage());
+    } else {
+      newStageEntity = stageRepository.createNewStageEntity(newGameSave.getId());
+    }
+    Stage newStage = StageEntityMapper.INSTANCE.map(newStageEntity);
+    newGameSave.setStage(newStage);
 
-    saved.setCharacteristicsEntity(characteristicsEntity);
-
-    CurrencyRequest currencyRequest = creationRequest.currency();
-    CurrencyEntity currencyEntity =
-        CurrencyEntity.builder()
-            .userEmail(user.getUsername())
-            .id(saved.getId())
-            .goldAmount(currencyRequest.gold())
-            .diamondAmount(currencyRequest.diamond())
-            .emeraldAmount(currencyRequest.emerald())
-            .amethystAmount(currencyRequest.amethyst())
-            .build();
-
-    saved.setCurrencyEntity(currencyEntity);
-
-    StageRequest stageRequest = creationRequest.stage();
-    StageEntity stageEntity =
-        StageEntity.builder()
-            .currentStage(stageRequest.currentStage())
-            .maxStage(stageRequest.maxStage())
-            .userEmail(user.getUsername())
-            .id(saved.getId())
-            .build();
-
-    saved.setStageEntity(stageEntity);
-
-    var result = gameSaveRepository.save(saved);
-    return gameSaveEntityMapper.map(result);
+    return newGameSave;
   }
 
   /** {@inheritDoc} */
   @Override
-  public GameSave updateGameSave(String saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
+  public GameSave updateGameSave(UUID saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
       throws ForbiddenException,
           NotFoundException,
           UnauthorizedException,
@@ -215,87 +195,107 @@ public class GameSaveServiceImpl implements GameSaveService {
       throw new NotFoundException("Game save id is null");
     }
 
-    GameSaveEntity gameSaveEntity = getGameSaveEntity(saveId);
-
-    if (gameSaveRepository
-        .findGameSaveEntityByNickname(gameSaveUpdateRequest.getNickname())
-        .isPresent()) {
+    if (gameSaveEntityRepository.existsByNickname(gameSaveUpdateRequest.getNickname())) {
       throw new AlreadyTakenNicknameException(
           "Nickname " + gameSaveUpdateRequest.getNickname() + " is already taken");
     }
 
-    if (!Objects.equals(gameSaveEntity.getNickname(), gameSaveUpdateRequest.getNickname())) {
-      gameSaveEntity.setNickname(gameSaveUpdateRequest.getNickname());
-    }
-
     if (gameSaveUpdateRequest.getCharacteristics() != null) {
       Characteristics characteristicsUpdate = gameSaveUpdateRequest.getCharacteristics();
-      gameSaveEntity.setCharacteristicsEntity(characteristicsUpdate);
+      if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+        characteristicsCache.set(saveId.toString(), characteristicsUpdate);
+      } else {
+        characteristicsRepository.updateCharacteristics(
+            saveId,
+            characteristicsUpdate.getAttack(),
+            characteristicsUpdate.getCritChance(),
+            characteristicsUpdate.getCritDamage(),
+            characteristicsUpdate.getHealth(),
+            characteristicsUpdate.getResistance());
+      }
     }
     if (gameSaveUpdateRequest.getCurrency() != null) {
       Currency currencyUpdate = gameSaveUpdateRequest.getCurrency();
-      gameSaveEntity.setCurrencyEntity(currencyUpdate);
+      if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+        currencyCache.set(saveId.toString(), currencyUpdate);
+      } else {
+        currencyRepository.updateCurrency(
+            saveId,
+            currencyUpdate.getGold(),
+            currencyUpdate.getDiamond(),
+            currencyUpdate.getEmerald(),
+            currencyUpdate.getAmethyst());
+      }
     }
     if (gameSaveUpdateRequest.getStage() != null) {
       Stage stageUpdate = gameSaveUpdateRequest.getStage();
-      gameSaveEntity.setStageEntity(stageUpdate);
+      if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+        stageCache.set(saveId.toString(), stageUpdate);
+      } else {
+        stageRepository.updateStage(
+            saveId, stageUpdate.getCurrentStage(), stageUpdate.getMaxStage());
+      }
     }
 
-    GameSaveEntity updated = gameSaveRepository.save(gameSaveEntity);
+    gameSaveEntityRepository.updateGameSaveEntityNickname(
+        saveId, gameSaveUpdateRequest.getNickname());
 
-    return gameSaveEntityMapper.map(updated);
+    Optional<GameSaveViewEntity> gameSaveViewEntityOptional =
+        gameSaveViewRepository.findGameSaveEntityById(saveId);
+    if (gameSaveViewEntityOptional.isEmpty()) {
+      log.error("Game save with id {} not found", saveId);
+      throw new NotFoundException("Game save with id " + saveId + " not found");
+    }
+    GameSave gameSave = gameSaveViewMapper.map(gameSaveViewEntityOptional.get());
+    return enrichGameSaveWithCachedData(gameSave);
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
-  public boolean existsById(String gameSaveId) {
-    return gameSaveRepository.existsById(gameSaveId);
+  public boolean existsById(UUID gameSaveId) {
+    return gameSaveEntityRepository.existsById(gameSaveId);
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional
-  public void deleteGameSave(String saveId) {
+  public void deleteGameSave(UUID saveId) {
     if (saveId == null) {
       throw new NotFoundException("Game save id is null");
     }
-    if (!gameSaveRepository.existsById(saveId)) {
+    if (!gameSaveEntityRepository.existsById(saveId)) {
       log.error("Game save with id {} not found", saveId);
       throw new NotFoundException("Game save with id " + saveId + " not found");
     }
     // Delete entities from currency & stage before deleting the game save
-    characteristicsRepository.deleteById(saveId);
-    currencyRepository.deleteById(saveId);
-    stageRepository.deleteById(saveId);
-    inventoryRepository.deleteById(saveId);
-    gameSaveRepository.deleteById(saveId);
-    cacheService.clearGameSaveValues(saveId);
+    gameSaveEntityRepository.deleteGameSaveEntityById(saveId);
+    String saveIdString = saveId.toString();
+    cacheService.clearGameSaveValues(saveIdString);
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public Stream<GameSave> getGameSaves() {
-    try (var resultStream = gameSaveRepository.findAllGameSaves()) {
-      List<GameSave> results = resultStream.map(gameSaveEntityMapper::map).toList();
-      return results.stream().map(this::enrichGameSaveWithCachedData);
-    }
+    var resultStream = gameSaveViewRepository.findAllGameSaves();
+    List<GameSave> results = resultStream.map(gameSaveViewMapper::map).toList();
+    return results.stream().map(this::enrichGameSaveWithCachedData);
   }
 
   @Transactional(readOnly = true)
   @Override
   public Long countGameSaves() {
-    return gameSaveRepository.count();
+    return gameSaveEntityRepository.count();
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
-  public void checkGameSaveOwnership(String saveId, String userEmail)
+  public void checkGameSaveOwnership(UUID saveId, String userEmail)
       throws ForbiddenException, NotFoundException {
     if (!gameSaveOwnershipCache.isEnabled()) {
-      GameSaveEntity gameSaveEntity = getGameSaveEntity(saveId);
+      GameSaveViewEntity gameSaveEntity = getGameSaveEntity(saveId);
 
       if (!Objects.equals(gameSaveEntity.getUserEmail(), userEmail)) {
         throw new ForbiddenException("The given user email is not the owner of the game save");
@@ -303,11 +303,11 @@ public class GameSaveServiceImpl implements GameSaveService {
 
       return;
     }
-
-    Optional<String> optionalOwnership = gameSaveOwnershipCache.get(saveId);
+    String saveIdString = saveId.toString();
+    Optional<String> optionalOwnership = gameSaveOwnershipCache.get(saveIdString);
     if (optionalOwnership.isEmpty()) {
-      GameSaveEntity gameSaveEntity = getGameSaveEntity(saveId);
-      gameSaveOwnershipCache.set(saveId, userEmail);
+      GameSaveViewEntity gameSaveEntity = getGameSaveEntity(saveId);
+      gameSaveOwnershipCache.set(saveIdString, userEmail);
       if (!Objects.equals(gameSaveEntity.getUserEmail(), userEmail)) {
         throw new ForbiddenException("The given user username is not the owner of the game save");
       }
@@ -326,20 +326,25 @@ public class GameSaveServiceImpl implements GameSaveService {
     if (!userService.checkUsernameExists(username)) {
       throw new NotFoundException("User with username " + username + " not found");
     }
-    try (var resultStream = gameSaveRepository.findGameSaveEntitiesByUserEmail(username)) {
-      List<GameSave> results = resultStream.map(gameSaveEntityMapper::map).toList();
-      return results.stream().map(this::enrichGameSaveWithCachedData);
+    if (!gameSaveOwnershipCache.isEnabled()) {
+      return gameSaveViewRepository
+          .findGameSaveEntitiesByUserEmail(username)
+          .map(gameSaveViewMapper::map);
     }
+    return gameSaveViewRepository
+        .findGameSaveEntitiesByUserEmail(username)
+        .map(gameSaveViewMapper::map)
+        .map(this::enrichGameSaveWithCachedData);
   }
 
   private GameSave enrichGameSaveWithCachedData(GameSave gameSave) {
-    var cacheCharacteristics = characteristicsCache.get(gameSave.getId());
+    var cacheCharacteristics = characteristicsCache.get(gameSave.getId().toString());
     cacheCharacteristics.ifPresent(gameSave::setCharacteristics);
 
-    var cacheCurrency = currencyCache.get(gameSave.getId());
+    var cacheCurrency = currencyCache.get(gameSave.getId().toString());
     cacheCurrency.ifPresent(gameSave::setCurrency);
 
-    var cacheStage = stageCache.get(gameSave.getId());
+    var cacheStage = stageCache.get(gameSave.getId().toString());
     cacheStage.ifPresent(gameSave::setStage);
     return gameSave;
   }
@@ -350,9 +355,9 @@ public class GameSaveServiceImpl implements GameSaveService {
    * @param saveId the save id
    * @return the game save entity
    */
-  private GameSaveEntity getGameSaveEntity(String saveId) {
-    return gameSaveRepository
-        .findById(saveId)
+  private GameSaveViewEntity getGameSaveEntity(UUID saveId) {
+    return gameSaveViewRepository
+        .findGameSaveEntityById(saveId)
         .orElseThrow(() -> new NotFoundException("Game save with id " + saveId + " not found"));
   }
 }

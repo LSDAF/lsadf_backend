@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.game.game_save;
+package com.lsadf.core.infra.persistence.table.game.game_save;
 
-import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
-import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.stage.StageEntityMapper;
+import java.util.Date;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -43,15 +44,18 @@ import org.mapstruct.factory.Mappers;
  * promoting clean separation between persistence and domain layers. - Handles nested or composite
  * objects by delegating to their respective mappers.
  */
-@Mapper(
-    uses = {CharacteristicsEntityMapper.class, StageEntityMapper.class, CurrencyEntityMapper.class})
+@Mapper
 public interface GameSaveEntityMapper extends EntityModelMapper<GameSaveEntity, GameSave> {
   GameSaveEntityMapper INSTANCE = Mappers.getMapper(GameSaveEntityMapper.class);
 
   /** {@inheritDoc} */
   @Override
-  @Mapping(source = "characteristicsEntity", target = "characteristics")
-  @Mapping(source = "stageEntity", target = "stage")
-  @Mapping(source = "currencyEntity", target = "currency")
+  @Mapping(target = "characteristics", ignore = true)
+  @Mapping(target = "currency", ignore = true)
+  @Mapping(target = "stage", ignore = true)
   GameSave map(GameSaveEntity gameSaveEntity);
+
+  default Date map(Long value) {
+    return value == null ? null : new Date(value);
+  }
 }

@@ -27,11 +27,11 @@ import com.lsadf.core.infra.cache.ValkeyCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.cache.service.CacheService;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
-import com.lsadf.core.infra.persistence.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsRepository;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyRepository;
+import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveRepository;
+import com.lsadf.core.infra.persistence.table.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.view.GameSaveViewRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,10 +57,10 @@ public class GameSaveConfiguration {
   public GameSaveService gameSaveService(
       UserService userService,
       GameSaveRepository gameSaveRepository,
+      GameSaveViewRepository gameSaveViewRepository,
       CharacteristicsRepository characteristicsRepository,
       CurrencyRepository currencyRepository,
       StageRepository stageRepository,
-      InventoryRepository inventoryRepository,
       HistoCache<Stage> stageCache,
       HistoCache<Currency> currencyCache,
       HistoCache<Characteristics> characteristicsCache,
@@ -69,10 +69,10 @@ public class GameSaveConfiguration {
     return new GameSaveServiceImpl(
         userService,
         gameSaveRepository,
+        gameSaveViewRepository,
         characteristicsRepository,
         currencyRepository,
         stageRepository,
-        inventoryRepository,
         cacheService,
         gameSaveOwnershipCache,
         stageCache,

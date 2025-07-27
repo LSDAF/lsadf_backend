@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.web.response.game.game_save;
 
-import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
 import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponseMapper;
 import com.lsadf.core.infra.web.response.game.currency.CurrencyResponseMapper;

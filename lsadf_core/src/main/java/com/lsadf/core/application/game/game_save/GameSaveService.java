@@ -15,35 +15,32 @@
  */
 package com.lsadf.core.application.game.game_save;
 
-import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.infra.exception.AlreadyExistingGameSaveException;
 import com.lsadf.core.infra.exception.AlreadyTakenNicknameException;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.exception.http.UnauthorizedException;
-import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.game_save.creation.GameSaveCreationRequest;
 import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveUpdateRequest;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 /** Service for managing game saves */
 public interface GameSaveService {
-  /**
-   * Creates a new game save for the user
-   *
-   * @param userEmail the user email
-   * @return the created game save
-   * @throws NotFoundException the not found exception
-   */
-  GameSave createGameSave(String userEmail) throws NotFoundException;
 
   /**
-   * Creates a new game save
+   * Creates a new game save based on the provided creation request.
    *
-   * @param creationRequest the admin creation request
-   * @return the created game save
-   * @throws NotFoundException the not found exception
+   * @param creationRequest the request containing the details required to create a game save,
+   *     including the user's email, nickname, in-game characteristics, currency, and stage progress
+   * @return the created game save instance
+   * @throws NotFoundException if a necessary resource or user reference for creating the game save
+   *     cannot be found
+   * @throws AlreadyExistingGameSaveException if a game save with the specified parameters already
+   *     exists
    */
-  GameSave createGameSave(AdminGameSaveCreationRequest creationRequest)
+  GameSave createGameSave(GameSaveCreationRequest creationRequest)
       throws NotFoundException, AlreadyExistingGameSaveException;
 
   /**
@@ -54,7 +51,7 @@ public interface GameSaveService {
    * @throws ForbiddenException the forbidden exception
    * @throws NotFoundException the not found exception
    */
-  GameSave getGameSave(String saveId) throws NotFoundException;
+  GameSave getGameSave(UUID saveId) throws NotFoundException;
 
   /**
    * Updates an existing game save with the provided update request data.
@@ -68,7 +65,7 @@ public interface GameSaveService {
    * @throws UnauthorizedException if the user is not authenticated or authorized
    * @throws AlreadyTakenNicknameException if the updated nickname is already taken by another user
    */
-  GameSave updateGameSave(String saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
+  GameSave updateGameSave(UUID saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
       throws ForbiddenException,
           NotFoundException,
           UnauthorizedException,
@@ -80,7 +77,7 @@ public interface GameSaveService {
    * @param gameSaveId the game save id
    * @return true if the game save exists, false otherwise
    */
-  boolean existsById(String gameSaveId);
+  boolean existsById(UUID gameSaveId);
 
   /**
    * Deletes a game save
@@ -89,7 +86,7 @@ public interface GameSaveService {
    * @throws ForbiddenException the forbidden exception
    * @throws NotFoundException the not found exception
    */
-  void deleteGameSave(String saveId) throws NotFoundException;
+  void deleteGameSave(UUID saveId) throws NotFoundException;
 
   /**
    * Gets all game saves
@@ -121,6 +118,6 @@ public interface GameSaveService {
    * @throws ForbiddenException the forbidden exception
    * @throws NotFoundException the not found exception
    */
-  void checkGameSaveOwnership(String saveId, String userEmail)
+  void checkGameSaveOwnership(UUID saveId, String userEmail)
       throws ForbiddenException, NotFoundException;
 }
