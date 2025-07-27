@@ -28,6 +28,7 @@ import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequ
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponseMapper;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class CharacteristicsControllerImpl extends BaseController
   /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCharacteristics(
-      Jwt jwt, String gameSaveId, CharacteristicsRequest characteristicsRequest) {
+      Jwt jwt, UUID gameSaveId, CharacteristicsRequest characteristicsRequest) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -77,7 +78,7 @@ public class CharacteristicsControllerImpl extends BaseController
   /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<CharacteristicsResponse>> getCharacteristics(
-      Jwt jwt, String gameSaveId) {
+      Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
