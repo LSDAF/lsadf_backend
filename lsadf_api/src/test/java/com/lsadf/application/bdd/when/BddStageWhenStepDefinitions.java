@@ -30,6 +30,7 @@ import com.lsadf.core.infra.web.response.game.stage.StageResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -44,7 +45,8 @@ public class BddStageWhenStepDefinitions extends BddLoader {
   public void when_we_want_to_get_the_stages_for_the_game_save_with_id(String gameSaveId) {
     try {
       log.info("Getting currencies for game save with id: {}", gameSaveId);
-      Stage stage = this.stageService.getStage(gameSaveId);
+      UUID uuid = UUID.fromString(gameSaveId);
+      Stage stage = this.stageService.getStage(uuid);
       stageStack.push(stage);
     } catch (Exception e) {
       exceptionStack.push(e);
@@ -61,7 +63,8 @@ public class BddStageWhenStepDefinitions extends BddLoader {
 
     try {
       log.info("Setting {} for game save with id: {}", stage, gameSaveId);
-      this.stageService.saveStage(gameSaveId, stage, toCache);
+      UUID uuid = UUID.fromString(gameSaveId);
+      this.stageService.saveStage(uuid, stage, toCache);
     } catch (Exception e) {
       exceptionStack.push(e);
     }

@@ -15,9 +15,11 @@
  */
 package com.lsadf.application.bdd;
 
-import com.lsadf.core.domain.game.GameSave;
+import static com.lsadf.application.bdd.BddFieldConstants.Item.*;
+
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
@@ -27,12 +29,12 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
-import com.lsadf.core.infra.persistence.game.stage.StageEntity;
+import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity;
+import com.lsadf.core.infra.persistence.table.game.item.AdditionalItemStatEntity;
+import com.lsadf.core.infra.persistence.table.game.item.ItemEntity;
+import com.lsadf.core.infra.persistence.table.game.stage.StageEntity;
 import com.lsadf.core.infra.web.request.common.Filter;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
@@ -138,76 +140,80 @@ public class BddUtils {
    */
   public static GameSaveEntity mapToGameSaveEntity(Map<String, String> row) {
     String id = row.get(BddFieldConstants.GameSave.ID);
+    UUID uuid = UUID.fromString(id);
     String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
     String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
-    String gold = row.get(BddFieldConstants.Currency.GOLD);
-    String diamond = row.get(BddFieldConstants.Currency.DIAMOND);
-    String emerald = row.get(BddFieldConstants.Currency.EMERALD);
-    String amethyst = row.get(BddFieldConstants.Currency.AMETHYST);
+    return GameSaveEntity.builder().userEmail(userEmail).nickname(nickname).id(uuid).build();
+  }
+
+  /**
+   * Maps the provided data from a Map of String key-value pairs to a StageEntity object.
+   *
+   * @param row a Map containing key-value pairs where the keys correspond to Stage field constants
+   *     defined in BddFieldConstants.Stage, and the values represent the field values.
+   * @return a StageEntity object built using the data provided in the map. Returns null for numeric
+   *     fields if their corresponding map values are null.
+   */
+  public static StageEntity mapToStageEntity(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.Stage.ID);
+    UUID uuid = UUID.fromString(id);
+    String currentStage = row.get(BddFieldConstants.Stage.CURRENT_STAGE);
+    String maxStage = row.get(BddFieldConstants.Stage.MAX_STAGE);
+    return StageEntity.builder()
+        .id(uuid)
+        .currentStage(currentStage == null ? null : Long.parseLong(currentStage))
+        .maxStage(maxStage == null ? null : Long.parseLong(maxStage))
+        .build();
+  }
+
+  /**
+   * Maps a given row of data represented as a Map to a CharacteristicsEntity object.
+   *
+   * @param row a Map containing fields and values representing a CharacteristicsEntity. The map is
+   *     expected to have specific keys such as ID, ATTACK, CRIT_CHANCE, CRIT_DAMAGE, HEALTH, and
+   *     RESISTANCE.
+   * @return a CharacteristicsEntity object built using the data extracted from the input map.
+   */
+  public static CharacteristicsEntity mapToCharacteristicsEntity(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.Characteristics.ID);
+    UUID uuid = UUID.fromString(id);
     String attack = row.get(BddFieldConstants.Characteristics.ATTACK);
     String critChance = row.get(BddFieldConstants.Characteristics.CRIT_CHANCE);
     String critDamage = row.get(BddFieldConstants.Characteristics.CRIT_DAMAGE);
     String health = row.get(BddFieldConstants.Characteristics.HEALTH);
     String resistance = row.get(BddFieldConstants.Characteristics.RESISTANCE);
-    String currentStageString = row.get(BddFieldConstants.GameSave.CURRENT_STAGE);
-    String maxStageString = row.get(BddFieldConstants.GameSave.MAX_STAGE);
 
-    long goldLong = Long.parseLong(gold);
-    long diamondLong = Long.parseLong(diamond);
-    long emeraldLong = Long.parseLong(emerald);
-    long amethystLong = Long.parseLong(amethyst);
-    long attackLong = Long.parseLong(attack);
-    long critChanceLong = Long.parseLong(critChance);
-    long critDamageLong = Long.parseLong(critDamage);
-    long healthLong = Long.parseLong(health);
-    long resistanceLong = Long.parseLong(resistance);
-    long currentStage = Long.parseLong(currentStageString);
-    long maxStage = Long.parseLong(maxStageString);
+    return CharacteristicsEntity.builder()
+        .id(uuid)
+        .attack(attack == null ? null : Long.parseLong(attack))
+        .critChance(critChance == null ? null : Long.parseLong(critChance))
+        .critDamage(critDamage == null ? null : Long.parseLong(critDamage))
+        .health(health == null ? null : Long.parseLong(health))
+        .resistance(resistance == null ? null : Long.parseLong(resistance))
+        .build();
+  }
 
-    GameSaveEntity gameSaveEntity =
-        GameSaveEntity.builder().userEmail(userEmail).nickname(nickname).id(id).build();
-
-    CharacteristicsEntity characteristicsEntity =
-        CharacteristicsEntity.builder()
-            .gameSave(gameSaveEntity)
-            .attack(attackLong)
-            .critChance(critChanceLong)
-            .critDamage(critDamageLong)
-            .health(healthLong)
-            .resistance(resistanceLong)
-            .build();
-
-    gameSaveEntity.setCharacteristicsEntity(characteristicsEntity);
-
-    CurrencyEntity currencyEntity =
-        CurrencyEntity.builder()
-            .id(id)
-            .gameSave(gameSaveEntity)
-            .goldAmount(goldLong)
-            .diamondAmount(diamondLong)
-            .emeraldAmount(emeraldLong)
-            .amethystAmount(amethystLong)
-            .userEmail(userEmail)
-            .build();
-
-    gameSaveEntity.setCurrencyEntity(currencyEntity);
-
-    StageEntity stageEntity =
-        StageEntity.builder()
-            .id(id)
-            .currentStage(currentStage)
-            .maxStage(maxStage)
-            .gameSave(gameSaveEntity)
-            .build();
-
-    gameSaveEntity.setStageEntity(stageEntity);
-
-    InventoryEntity inventoryEntity =
-        InventoryEntity.builder().id(id).gameSave(gameSaveEntity).items(new HashSet<>()).build();
-
-    gameSaveEntity.setInventoryEntity(inventoryEntity);
-
-    return gameSaveEntity;
+  /**
+   * Maps a row of currency data represented as a map to a CurrencyEntity object.
+   *
+   * @param row a map containing currency data with keys representing field names and values
+   *     representing the corresponding data.
+   * @return a CurrencyEntity object created from the given map.
+   */
+  public static CurrencyEntity mapToCurrencyEntity(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.Currency.ID);
+    UUID uuid = UUID.fromString(id);
+    String gold = row.get(BddFieldConstants.Currency.GOLD);
+    String diamond = row.get(BddFieldConstants.Currency.DIAMOND);
+    String emerald = row.get(BddFieldConstants.Currency.EMERALD);
+    String amethyst = row.get(BddFieldConstants.Currency.AMETHYST);
+    return CurrencyEntity.builder()
+        .id(uuid)
+        .goldAmount(gold == null ? null : Long.parseLong(gold))
+        .emeraldAmount(emerald == null ? null : Long.parseLong(emerald))
+        .amethystAmount(amethyst == null ? null : Long.parseLong(amethyst))
+        .diamondAmount(diamond == null ? null : Long.parseLong(diamond))
+        .build();
   }
 
   /**
@@ -280,6 +286,7 @@ public class BddUtils {
     Long maxStage = Long.parseLong(maxStageString);
 
     String id = row.get(BddFieldConstants.GameSave.ID);
+    UUID uuid = UUID.fromString(id);
     String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
 
     StageRequest stageRequest = new StageRequest(currentStage, maxStage);
@@ -289,7 +296,7 @@ public class BddUtils {
 
     return AdminGameSaveCreationRequest.builder()
         .nickname(nickname)
-        .id(id)
+        .id(uuid)
         .stage(stageRequest)
         .characteristics(characteristicsRequest)
         .currency(currencyRequest)
@@ -334,6 +341,7 @@ public class BddUtils {
    */
   public static GameSave mapToGameSave(Map<String, String> row) {
     String id = row.get(BddFieldConstants.GameSave.ID);
+    UUID uuid = UUID.fromString(id);
     String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
     String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
 
@@ -344,7 +352,7 @@ public class BddUtils {
     return GameSave.builder()
         .userEmail(userEmail)
         .nickname(nickname)
-        .id(id)
+        .id(uuid)
         .characteristics(characteristics)
         .currency(currency)
         .stage(stage)
@@ -476,6 +484,7 @@ public class BddUtils {
    */
   public static Item mapToItem(Map<String, String> row) {
     String id = row.get(BddFieldConstants.Item.ID);
+    UUID uuid = UUID.fromString(id);
     String clientId = row.get(BddFieldConstants.Item.CLIENT_ID);
     ItemType itemType = ItemType.fromString(row.get(BddFieldConstants.Item.ITEM_TYPE));
     String blueprintId = row.get(BddFieldConstants.Item.BLUEPRINT_ID);
@@ -490,7 +499,7 @@ public class BddUtils {
     ItemStat additionalStat1 =
         BddUtils.mapToItemStat(
             row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_STATISTIC),
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_BASE_VALUE));
+            row.get(ADDITIONAL_STAT_1_BASE_VALUE));
     ItemStat additionalStat2 =
         BddUtils.mapToItemStat(
             row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_STATISTIC),
@@ -503,7 +512,7 @@ public class BddUtils {
     List<ItemStat> additionalStats = List.of(additionalStat1, additionalStat2, additionalStat3);
 
     return Item.builder()
-        .id(id)
+        .id(uuid)
         .clientId(clientId)
         .itemType(itemType)
         .blueprintId(blueprintId)
@@ -527,6 +536,68 @@ public class BddUtils {
   }
 
   /**
+   * Maps a given row of data in the form of a Map<String, String> to an instance of
+   * AdditionalItemStatEntity.
+   *
+   * @param row a map representing a row of data where keys are column names and values are the
+   *     corresponding data as strings. Expected keys include: -
+   *     BddFieldConstants.AdditionalItemStatEntity.STATISTIC -
+   *     BddFieldConstants.AdditionalItemStatEntity.ITEM_ID - ID -
+   *     BddFieldConstants.AdditionalItemStatEntity.BASE_VALUE
+   * @return an instance of AdditionalItemStatEntity, constructed using the data from the provided
+   *     map.
+   */
+  public static List<AdditionalItemStatEntity> mapToAdditionalItemStatEntity(
+      Map<String, String> row) {
+    List<AdditionalItemStatEntity> additionalItemStatEntities = new ArrayList<>();
+    String itemId = row.get(ID);
+    UUID itemUuid = UUID.fromString(itemId);
+    AdditionalItemStatEntity entity1 =
+        AdditionalItemStatEntity.builder()
+            .itemId(itemUuid)
+            .statistic(
+                row.get(ADDITIONAL_STAT_1_STATISTIC) == null
+                    ? null
+                    : ItemStatistic.fromString(row.get(ADDITIONAL_STAT_1_STATISTIC)))
+            .baseValue(
+                row.get(ADDITIONAL_STAT_1_BASE_VALUE) == null
+                    ? null
+                    : Float.parseFloat(row.get(ADDITIONAL_STAT_1_BASE_VALUE)))
+            .build();
+    additionalItemStatEntities.add(entity1);
+
+    AdditionalItemStatEntity entity2 =
+        AdditionalItemStatEntity.builder()
+            .itemId(itemUuid)
+            .statistic(
+                row.get(ADDITIONAL_STAT_2_STATISTIC) == null
+                    ? null
+                    : ItemStatistic.fromString(row.get(ADDITIONAL_STAT_2_STATISTIC)))
+            .baseValue(
+                row.get(ADDITIONAL_STAT_2_BASE_VALUE) == null
+                    ? null
+                    : Float.parseFloat(row.get(ADDITIONAL_STAT_2_BASE_VALUE)))
+            .build();
+    additionalItemStatEntities.add(entity2);
+
+    AdditionalItemStatEntity entity3 =
+        AdditionalItemStatEntity.builder()
+            .itemId(itemUuid)
+            .statistic(
+                row.get(ADDITIONAL_STAT_3_STATISTIC) == null
+                    ? null
+                    : ItemStatistic.fromString(row.get(ADDITIONAL_STAT_3_STATISTIC)))
+            .baseValue(
+                row.get(ADDITIONAL_STAT_3_BASE_VALUE) == null
+                    ? null
+                    : Float.parseFloat(row.get(ADDITIONAL_STAT_3_BASE_VALUE)))
+            .build();
+    additionalItemStatEntities.add(entity3);
+
+    return additionalItemStatEntities;
+  }
+
+  /**
    * Maps a row from a BDD table to an ItemEntity
    *
    * @param row row from BDD table
@@ -534,6 +605,7 @@ public class BddUtils {
    */
   public static ItemEntity mapToItemEntity(Map<String, String> row) {
     String id = row.get(BddFieldConstants.Item.ID);
+    UUID uuid = UUID.fromString(id);
     String clientId = row.get(BddFieldConstants.Item.CLIENT_ID);
     String blueprintId = row.get(BddFieldConstants.Item.BLUEPRINT_ID);
     String itemType = row.get(BddFieldConstants.Item.ITEM_TYPE);
@@ -545,31 +617,17 @@ public class BddUtils {
         BddUtils.mapToItemStat(
             row.get(BddFieldConstants.Item.MAIN_STAT_STATISTIC),
             row.get(BddFieldConstants.Item.MAIN_STAT_BASE_VALUE));
-    ItemStat additionalStat1 =
-        BddUtils.mapToItemStat(
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_STATISTIC),
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_BASE_VALUE));
-    ItemStat additionalStat2 =
-        BddUtils.mapToItemStat(
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_STATISTIC),
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_BASE_VALUE));
-    ItemStat additionalStat3 =
-        BddUtils.mapToItemStat(
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_STATISTIC),
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_BASE_VALUE));
-
-    List<ItemStat> additionalStats = List.of(additionalStat1, additionalStat2, additionalStat3);
 
     return ItemEntity.builder()
-        .id(id)
+        .id(uuid)
         .blueprintId(blueprintId)
         .clientId(clientId)
         .itemType(ItemType.fromString(itemType))
         .itemRarity(ItemRarity.fromString(itemRarity))
         .isEquipped(Boolean.parseBoolean(isEquipped))
         .level(Integer.parseInt(level))
-        .mainStat(mainStat)
-        .additionalStats(additionalStats)
+        .mainStatistic(mainStat.getStatistic())
+        .mainBaseValue(mainStat.getBaseValue())
         .build();
   }
 
@@ -594,7 +652,7 @@ public class BddUtils {
     ItemStat additionalStat1 =
         BddUtils.mapToItemStat(
             row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_STATISTIC),
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_BASE_VALUE));
+            row.get(ADDITIONAL_STAT_1_BASE_VALUE));
     ItemStat additionalStat2 =
         BddUtils.mapToItemStat(
             row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_STATISTIC),

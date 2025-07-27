@@ -51,6 +51,7 @@ public class BddFieldConstants {
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class Characteristics {
+    public static final String ID = "id";
     public static final String ATTACK = "attack";
     public static final String CRIT_CHANCE = "critChance";
     public static final String CRIT_DAMAGE = "critDamage";
@@ -60,6 +61,7 @@ public class BddFieldConstants {
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class Currency {
+    public static final String ID = "id";
     public static final String GOLD = "gold";
     public static final String DIAMOND = "diamond";
     public static final String EMERALD = "emerald";
@@ -92,6 +94,7 @@ public class BddFieldConstants {
   public static final class Item {
     public static final String ID = BddFieldConstants.ID;
     public static final String CLIENT_ID = "clientId";
+    public static final String GAME_SAVE_ID = "gameSaveId";
     public static final String BLUEPRINT_ID = "blueprintId";
     public static final String ITEM_TYPE = "itemType";
     public static final String ITEM_RARITY = "itemRarity";

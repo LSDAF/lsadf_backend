@@ -19,15 +19,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
 import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponseMapper;
 import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
@@ -76,33 +75,6 @@ public class BddThenStepDefinitions extends BddLoader {
     }
   }
 
-  @Then("^I should return the following game save entities$")
-  public void then_i_should_return_the_following_game_save_entities(DataTable dataTable)
-      throws NotFoundException {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    List<GameSaveEntity> actual = gameSaveEntityListStack.peek();
-
-    for (Map<String, String> row : rows) {
-      GameSaveEntity expected = BddUtils.mapToGameSaveEntity(row);
-      GameSaveEntity gameSave =
-          actual.stream()
-              .filter(
-                  g -> {
-                    if (expected.getId() == null) {
-                      return g.getUserEmail().equals(expected.getUserEmail());
-                    }
-                    return g.getId().equals(expected.getId());
-                  })
-              .findFirst()
-              .orElseThrow();
-
-      long gold = gameSave.getCurrencyEntity().getGoldAmount();
-      long expectedGold = expected.getCurrencyEntity().getGoldAmount();
-      assertThat(gold).isEqualTo(expectedGold);
-    }
-  }
-
   @Then("^I should return true$")
   public void then_i_should_return_true() {
     boolean actual = booleanStack.peek();
@@ -112,8 +84,10 @@ public class BddThenStepDefinitions extends BddLoader {
   @Then("^the number of game saves should be (.*)$")
   @Transactional(readOnly = true)
   public void then_the_number_of_game_saves_should_be(int expected) {
-    long actual = gameSaveService.getGameSaves().count();
-    assertThat(actual).isEqualTo(expected);
+    try (var stream = gameSaveService.getGameSaves()) {
+      long actual = stream.count();
+      assertThat(actual).isEqualTo(expected);
+    }
   }
 
   @Then("^I should return false$")

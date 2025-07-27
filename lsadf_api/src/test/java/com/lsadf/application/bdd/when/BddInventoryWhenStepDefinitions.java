@@ -25,8 +25,7 @@ import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
+import com.lsadf.core.infra.persistence.table.game.item.ItemEntity;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
@@ -35,10 +34,7 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -54,23 +50,39 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   public void given_the_following_items(String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    InventoryEntity inventoryEntity;
-
-    Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
-    if (optionalInventoryEntity.isEmpty()) {
-      throw new NotFoundException("Inventory with id: " + gameSaveId + " not found.");
-    } else {
-      inventoryEntity = optionalInventoryEntity.get();
+    UUID uuid = UUID.fromString(gameSaveId);
+    var exists = gameSaveRepository.existsById(uuid);
+    if (!exists) {
+      throw new NotFoundException("Game save with id: " + gameSaveId + " not found.");
     }
 
     log.info("Creating items...");
     rows.forEach(
         row -> {
           ItemEntity itemEntity = BddUtils.mapToItemEntity(row);
-          inventoryEntity.getItems().add(itemEntity);
+          itemEntity.setGameSaveId(uuid);
+          var newItemEntity =
+              itemRepository.createNewItemEntity(
+                  itemEntity.getId(),
+                  itemEntity.getGameSaveId(),
+                  itemEntity.getClientId(),
+                  itemEntity.getBlueprintId(),
+                  itemEntity.getItemType(),
+                  itemEntity.getItemRarity(),
+                  itemEntity.getIsEquipped(),
+                  itemEntity.getLevel(),
+                  itemEntity.getMainStatistic(),
+                  itemEntity.getMainBaseValue());
+          var additionalStats = BddUtils.mapToAdditionalItemStatEntity(row);
+          additionalStats.forEach(
+              additionalItemStatEntity -> {
+                additionalItemStatsRepository.createNewAdditionalItemStatEntity(
+                    additionalItemStatEntity.getItemId(),
+                    additionalItemStatEntity.getStatistic(),
+                    additionalItemStatEntity.getBaseValue());
+              });
+          log.info("Item created: {}", newItemEntity);
         });
-
-    inventoryRepository.save(inventoryEntity);
 
     log.info("Items created");
   }
@@ -195,7 +207,8 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   @Then("^the inventory of the game save with id (.*) should be empty$")
   public void when_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
     try {
-      Set<Item> inventory = inventoryService.getInventoryItems(gameSaveId);
+      UUID uuid = UUID.fromString(gameSaveId);
+      Set<Item> inventory = inventoryService.getInventoryItems(uuid);
 
       assertThat(inventory).isNotNull();
       assertThat(inventory).isEmpty();

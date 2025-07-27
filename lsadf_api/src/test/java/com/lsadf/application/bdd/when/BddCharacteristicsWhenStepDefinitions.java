@@ -30,6 +30,7 @@ import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsRes
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -44,7 +45,8 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
   public void when_we_want_to_get_the_characteristics_for_the_game_save_with_id(String gameSaveId) {
     try {
       log.info("Getting characteristics for game save with id: {}", gameSaveId);
-      Characteristics characteristics = this.characteristicsService.getCharacteristics(gameSaveId);
+      UUID uuid = UUID.fromString(gameSaveId);
+      Characteristics characteristics = this.characteristicsService.getCharacteristics(uuid);
       characteristicsStack.push(characteristics);
     } catch (Exception e) {
       exceptionStack.push(e);
@@ -62,7 +64,8 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
 
     try {
       log.info("Setting {} for game save with id: {}", characteristics, gameSaveId);
-      this.characteristicsService.saveCharacteristics(gameSaveId, characteristics, toCache);
+      UUID uuid = UUID.fromString(gameSaveId);
+      this.characteristicsService.saveCharacteristics(uuid, characteristics, toCache);
     } catch (Exception e) {
       exceptionStack.push(e);
     }
