@@ -28,6 +28,7 @@ import com.lsadf.core.infra.web.request.game.currency.CurrencyRequestMapper;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.response.game.currency.CurrencyResponseMapper;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
   /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCurrency(
-      Jwt jwt, String gameSaveId, CurrencyRequest currencyRequest) {
+      Jwt jwt, UUID gameSaveId, CurrencyRequest currencyRequest) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -73,7 +74,7 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<CurrencyResponse>> getCurrency(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<CurrencyResponse>> getCurrency(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
