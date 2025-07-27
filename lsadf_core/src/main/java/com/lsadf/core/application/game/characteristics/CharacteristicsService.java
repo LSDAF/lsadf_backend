@@ -17,6 +17,7 @@ package com.lsadf.core.application.game.characteristics;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.exception.http.NotFoundException;
+import java.util.UUID;
 
 public interface CharacteristicsService {
   /**
@@ -26,7 +27,7 @@ public interface CharacteristicsService {
    * @return the characteristics
    * @throws NotFoundException if the characteristics are not found
    */
-  Characteristics getCharacteristics(String gameSaveId) throws NotFoundException;
+  Characteristics getCharacteristics(UUID gameSaveId) throws NotFoundException;
 
   /**
    * Save the characteristics of a game save
@@ -36,6 +37,6 @@ public interface CharacteristicsService {
    * @param toCache true if the characteristics should be saved to cache, false otherwise
    * @throws NotFoundException if the characteristics are not found
    */
-  void saveCharacteristics(String gameSaveId, Characteristics characteristics, boolean toCache)
+  void saveCharacteristics(UUID gameSaveId, Characteristics characteristics, boolean toCache)
       throws NotFoundException;
 }

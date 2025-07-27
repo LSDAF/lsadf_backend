@@ -18,6 +18,7 @@ package com.lsadf.core.unit.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -26,9 +27,10 @@ import com.lsadf.core.application.game.characteristics.CharacteristicsServiceImp
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
+import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsRepository;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -44,6 +46,8 @@ class CharacteristicsServiceTests {
 
   @Mock private Cache<Characteristics> characteristicsCache;
 
+  private static final UUID UUID = java.util.UUID.randomUUID();
+
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
@@ -56,11 +60,12 @@ class CharacteristicsServiceTests {
   @Test
   void get_characteristics_on_non_existing_gamesave_id() {
     // Arrange
-    when(characteristicsRepository.findById(anyString())).thenReturn(Optional.empty());
+    when(characteristicsRepository.findCharacteristicsEntityById(any(UUID.class)))
+        .thenReturn(Optional.empty());
     when(characteristicsCache.isEnabled()).thenReturn(true);
 
     // Assert
-    assertThrows(NotFoundException.class, () -> characteristicsService.getCharacteristics("1"));
+    assertThrows(NotFoundException.class, () -> characteristicsService.getCharacteristics(UUID));
   }
 
   @Test
@@ -84,13 +89,13 @@ class CharacteristicsServiceTests {
             .resistance(5L)
             .build();
 
-    when(characteristicsRepository.findById(anyString()))
+    when(characteristicsRepository.findCharacteristicsEntityById(any(UUID.class)))
         .thenReturn(Optional.of(characteristicsEntity));
     when(characteristicsCache.isEnabled()).thenReturn(true);
     when(characteristicsCache.get(anyString())).thenReturn(Optional.of(characteristics));
 
     // Act
-    Characteristics result = characteristicsService.getCharacteristics("1");
+    Characteristics result = characteristicsService.getCharacteristics(UUID);
 
     // Assert
     assertThat(result).isEqualTo(characteristics);
@@ -117,13 +122,13 @@ class CharacteristicsServiceTests {
             .resistance(5L)
             .build();
 
-    when(characteristicsRepository.findById(anyString()))
+    when(characteristicsRepository.findCharacteristicsEntityById(any(UUID.class)))
         .thenReturn(Optional.of(characteristicsEntity));
     when(characteristicsCache.isEnabled()).thenReturn(false);
     when(characteristicsCache.get(anyString())).thenReturn(Optional.empty());
 
     // Act
-    Characteristics result = characteristicsService.getCharacteristics("1");
+    Characteristics result = characteristicsService.getCharacteristics(UUID);
 
     // Assert
     assertThat(result).isEqualTo(characteristics);
@@ -152,13 +157,13 @@ class CharacteristicsServiceTests {
             .resistance(5L)
             .build();
 
-    when(characteristicsRepository.findById(anyString()))
+    when(characteristicsRepository.findCharacteristicsEntityById(any(UUID.class)))
         .thenReturn(Optional.of(characteristicsEntity));
     when(characteristicsCache.isEnabled()).thenReturn(true);
     when(characteristicsCache.get(anyString())).thenReturn(Optional.of(characteristicsCached));
 
     // Act
-    Characteristics result = characteristicsService.getCharacteristics("1");
+    Characteristics result = characteristicsService.getCharacteristics(UUID);
 
     // Assert
     assertThat(result).isEqualTo(characteristics);
@@ -198,7 +203,7 @@ class CharacteristicsServiceTests {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics("1", null, false));
+        () -> characteristicsService.saveCharacteristics(UUID, null, false));
   }
 
   @Test
@@ -206,7 +211,7 @@ class CharacteristicsServiceTests {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics("1", null, true));
+        () -> characteristicsService.saveCharacteristics(UUID, null, true));
   }
 
   @Test
@@ -217,7 +222,7 @@ class CharacteristicsServiceTests {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics("1", characteristics, true));
+        () -> characteristicsService.saveCharacteristics(UUID, characteristics, true));
   }
 
   @Test
@@ -228,7 +233,7 @@ class CharacteristicsServiceTests {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics("1", characteristics, false));
+        () -> characteristicsService.saveCharacteristics(UUID, characteristics, false));
   }
 
   @Test
@@ -238,6 +243,6 @@ class CharacteristicsServiceTests {
 
     // Act + Assert
     assertDoesNotThrow(
-        () -> characteristicsService.saveCharacteristics("1", characteristics, true));
+        () -> characteristicsService.saveCharacteristics(UUID, characteristics, true));
   }
 }

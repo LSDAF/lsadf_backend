@@ -13,28 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.game.characteristics;
+package com.lsadf.core.infra.persistence.table.game.characteristics;
 
-import static com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
+import static com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
 
-import com.lsadf.core.infra.persistence.config.EntityAttributes;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import jakarta.validation.constraints.Positive;
+import com.lsadf.core.infra.persistence.Identifiable;
 import java.io.Serial;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity(name = CHARACTERISTICS_ENTITY)
-@Table(name = CHARACTERISTICS_ENTITY)
-@SuperBuilder
+@Builder
 @AllArgsConstructor
-@ToString(callSuper = true)
 @Getter
 @Setter
-public class CharacteristicsEntity implements com.lsadf.core.infra.persistence.Entity {
+@Table(CHARACTERISTICS_ENTITY)
+public class CharacteristicsEntity implements Identifiable {
 
   @Serial private static final long serialVersionUID = 2100417080983225675L;
 
@@ -43,43 +41,27 @@ public class CharacteristicsEntity implements com.lsadf.core.infra.persistence.E
   }
 
   @Id
-  @Column(name = EntityAttributes.ID)
-  private String id;
+  @Column(ID)
+  private UUID id;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @MapsId
-  @ToString.Exclude
-  @EqualsAndHashCode.Exclude
-  private GameSaveEntity gameSave;
+  @Column(CHARACTERISTICS_ATTACK)
+  private Long attack;
 
-  @Column(name = CHARACTERISTICS_ATTACK)
-  @Positive
-  @Builder.Default
-  private Long attack = 1L;
+  @Column(CHARACTERISTICS_CRIT_CHANCE)
+  private Long critChance;
 
-  @Column(name = CHARACTERISTICS_CRIT_CHANCE)
-  @Positive
-  @Builder.Default
-  private Long critChance = 1L;
+  @Column(CHARACTERISTICS_CRIT_DAMAGE)
+  private Long critDamage;
 
-  @Column(name = CHARACTERISTICS_CRIT_DAMAGE)
-  @Positive
-  @Builder.Default
-  private Long critDamage = 1L;
+  @Column(CHARACTERISTICS_HEALTH)
+  private Long health;
 
-  @Column(name = CHARACTERISTICS_HEALTH)
-  @Positive
-  @Builder.Default
-  private Long health = 1L;
-
-  @Column(name = CHARACTERISTICS_RESISTANCE)
-  @Positive
-  @Builder.Default
-  private Long resistance = 1L;
+  @Column(CHARACTERISTICS_RESISTANCE)
+  private Long resistance;
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class CharacteristicsEntityAttributes {
-    public static final String CHARACTERISTICS_ENTITY = "t_characteristics";
+    public static final String CHARACTERISTICS_ENTITY = "t_characteristics_tgch";
     public static final String CHARACTERISTICS_ATTACK = "attack";
     public static final String CHARACTERISTICS_CRIT_CHANCE = "crit_chance";
     public static final String CHARACTERISTICS_CRIT_DAMAGE = "crit_damage";
@@ -92,7 +74,6 @@ public class CharacteristicsEntity implements com.lsadf.core.infra.persistence.E
     if (o == null || getClass() != o.getClass()) return false;
     CharacteristicsEntity that = (CharacteristicsEntity) o;
     return Objects.equals(id, that.id)
-        && Objects.equals(gameSave, that.gameSave)
         && Objects.equals(attack, that.attack)
         && Objects.equals(critChance, that.critChance)
         && Objects.equals(critDamage, that.critDamage)

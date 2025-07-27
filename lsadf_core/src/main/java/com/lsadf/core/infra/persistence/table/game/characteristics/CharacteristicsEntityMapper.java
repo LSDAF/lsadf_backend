@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.game.characteristics;
+package com.lsadf.core.infra.persistence.table.game.characteristics;
 
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
