@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.util.StreamUtils;
 import com.lsadf.core.infra.web.request.common.Filter;
@@ -27,6 +27,7 @@ import com.lsadf.core.infra.web.request.game.game_save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.request.search.SearchRequest;
 import com.lsadf.core.infra.web.request.user.UserSortingParameter;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +55,9 @@ public class SearchServiceImpl implements SearchService {
             userStream = userStream.filter(user -> user.getLastName().equals(filter.value()));
         case USERNAME, USER_EMAIL ->
             userStream = userStream.filter(user -> user.getUsername().equals(filter.value()));
-        case ID -> userStream = userStream.filter(user -> user.getId().equals(filter.value()));
+        case ID ->
+            userStream =
+                userStream.filter(user -> user.getId().equals(UUID.fromString(filter.value())));
         case USER_ROLES ->
             userStream =
                 userStream.filter(
@@ -78,7 +81,8 @@ public class SearchServiceImpl implements SearchService {
       switch (filter.type()) {
         case ID ->
             gameSaveStream =
-                gameSaveStream.filter(gameSave -> gameSave.getId().equals(filter.value()));
+                gameSaveStream.filter(
+                    gameSave -> gameSave.getId().equals(UUID.fromString(filter.value())));
         case USER_EMAIL ->
             gameSaveStream =
                 gameSaveStream.filter(gameSave -> gameSave.getUserEmail().equals(filter.value()));

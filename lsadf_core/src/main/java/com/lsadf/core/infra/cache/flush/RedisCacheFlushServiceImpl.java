@@ -25,6 +25,7 @@ import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import java.util.Map;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,7 +70,8 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
       String gameSaveId = entry.getKey();
       Characteristics characteristics = entry.getValue();
       try {
-        characteristicsService.saveCharacteristics(gameSaveId, characteristics, false);
+        UUID gameSaveUuid = UUID.fromString(gameSaveId);
+        characteristicsService.saveCharacteristics(gameSaveUuid, characteristics, false);
       } catch (NotFoundException e) {
         log.error(
             "Error while flushing characteristics cache entry: CharacteristicsEntity with id {} not found",
@@ -91,9 +93,10 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
     Map<String, Currency> currencyEntries = currencyCache.getAll();
     for (Map.Entry<String, Currency> entry : currencyEntries.entrySet()) {
       String gameSaveId = entry.getKey();
+      UUID gameSaveUuid = UUID.fromString(gameSaveId);
       Currency currency = entry.getValue();
       try {
-        currencyService.saveCurrency(gameSaveId, currency, false);
+        currencyService.saveCurrency(gameSaveUuid, currency, false);
       } catch (NotFoundException e) {
         log.error(
             "Error while flushing currency cache entry: CurrencyEntity with id {} not found",
@@ -116,8 +119,9 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
     for (Map.Entry<String, Stage> entry : stageEntries.entrySet()) {
       String gameSaveId = entry.getKey();
       Stage stage = entry.getValue();
+      UUID gameSaveUuid = UUID.fromString(gameSaveId);
       try {
-        stageService.saveStage(gameSaveId, stage, false);
+        stageService.saveStage(gameSaveUuid, stage, false);
       } catch (NotFoundException e) {
         log.error(
             "Error while flushing stage cache entry: Stage with id {} not found", gameSaveId, e);
