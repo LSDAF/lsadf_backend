@@ -23,12 +23,12 @@ import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.stage.StageResponse;
-import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -81,7 +81,7 @@ public interface StageController {
       })
   ResponseEntity<ApiResponse<Void>> saveStage(
       @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
+      @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
       @Valid @RequestBody StageRequest stageRequest);
 
   /**
@@ -114,8 +114,7 @@ public interface StageController {
             description = "Internal Server Error")
       })
   ResponseEntity<ApiResponse<StageResponse>> getStage(
-      @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
+      @AuthenticationPrincipal Jwt jwt, @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId);
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   class Constants {

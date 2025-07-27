@@ -28,6 +28,7 @@ import com.lsadf.core.infra.web.request.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.stage.StageResponse;
 import com.lsadf.core.infra.web.response.game.stage.StageResponseMapper;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class StageControllerImpl extends BaseController implements StageControll
   /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> saveStage(
-      Jwt jwt, String gameSaveId, StageRequest stageRequest) {
+      Jwt jwt, UUID gameSaveId, StageRequest stageRequest) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
@@ -71,7 +72,7 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<StageResponse>> getStage(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<StageResponse>> getStage(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
