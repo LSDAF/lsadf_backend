@@ -25,6 +25,7 @@ import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
+import java.util.UUID;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ class AdminInventoryControllerTests {
   @Autowired private ObjectMapper objectMapper;
 
   private static final String GAME_SAVE_ID = "550e8400-e29b-41d4-a716-446655440000";
-  private static final String ITEM_CLIENT_ID = "client-item-123";
+  private static final String ITEM_CLIENT_ID = UUID.randomUUID() + "__" + UUID.randomUUID();
 
   private ItemRequest createTestItemRequest() {
     ItemStat mainStat = new ItemStat(ItemStatistic.ATTACK_ADD, 100.0f);
