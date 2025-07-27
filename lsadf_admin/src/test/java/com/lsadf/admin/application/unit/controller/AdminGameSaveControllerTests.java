@@ -16,6 +16,7 @@
 package com.lsadf.admin.application.unit.controller;
 
 import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
+import static org.mockito.ArgumentMatchers.any;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.game.AdminGameSaveController;
@@ -30,6 +31,7 @@ import com.lsadf.core.infra.web.request.game.game_save.update.AdminGameSaveUpdat
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,7 +72,8 @@ class AdminGameSaveControllerTests {
 
   @BeforeEach
   void setUp() {
-    Mockito.when(gameSaveService.existsById(Mockito.anyString())).thenReturn(true);
+
+    Mockito.when(gameSaveService.existsById(any(UUID.class))).thenReturn(true);
   }
 
   @Test
@@ -154,7 +157,7 @@ class AdminGameSaveControllerTests {
             .currency(currencyRequest)
             .stage(stageRequest)
             .nickname("test")
-            .id("3ab69f45-de06-4fce-bded-21d989fdad73")
+            .id(UUID.fromString("3ab69f45-de06-4fce-bded-21d989fdad73"))
             .build();
 
     // when
@@ -181,7 +184,7 @@ class AdminGameSaveControllerTests {
             .currency(currencyRequest)
             .stage(stageRequest)
             .nickname("test")
-            .id("3ab69f45-de06-4fce-bded-21d989fdad73")
+            .id(UUID.fromString("3ab69f45-de06-4fce-bded-21d989fdad73"))
             .build();
     // when
     mockMvc
@@ -207,13 +210,6 @@ class AdminGameSaveControllerTests {
     StageRequest invalidStageRequest = new StageRequest(10L, 1L); // invalid stageRequest
 
     return Stream.of(
-        Arguments.of(
-            "testtesttest",
-            null,
-            "test",
-            characteristicsRequest,
-            currencyRequest,
-            stageRequest), // invalid id
         Arguments.of(
             "3ab69f45-de06-4fce-bded-21d989fdad73",
             null,
@@ -288,9 +284,10 @@ class AdminGameSaveControllerTests {
       CurrencyRequest currency,
       StageRequest stage) {
     // given
+
     AdminGameSaveCreationRequest request =
         AdminGameSaveCreationRequest.builder()
-            .id(id)
+            .id(id != null ? UUID.fromString(id) : null)
             .userEmail(userEmail)
             .nickname(nickname)
             .characteristics(characteristics)
@@ -366,9 +363,13 @@ class AdminGameSaveControllerTests {
       CurrencyRequest currency,
       StageRequest stage) {
     // given
+    UUID uuid = null;
+    if (id != null) {
+      uuid = UUID.fromString(id);
+    }
     AdminGameSaveCreationRequest request =
         AdminGameSaveCreationRequest.builder()
-            .id(id)
+            .id(uuid)
             .userEmail(userEmail)
             .nickname(nickname)
             .characteristics(characteristics)

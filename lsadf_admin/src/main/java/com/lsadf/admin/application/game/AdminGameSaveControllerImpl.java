@@ -18,7 +18,7 @@ package com.lsadf.admin.application.game;
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.infra.util.StreamUtils;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.game_save.GameSaveSortingParameter;
@@ -29,6 +29,7 @@ import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponseMapper;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -108,7 +109,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    * @return
    */
   @Override
-  public ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     GameSave gameSave = gameSaveService.getGameSave(gameSaveId);
     GameSaveResponse response = gameSaveResponseMapper.map(gameSave);
@@ -122,7 +123,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
    */
   @Override
   public ResponseEntity<ApiResponse<GameSaveResponse>> updateGameSave(
-      Jwt jwt, String gameSaveId, AdminGameSaveUpdateRequest adminGameSaveUpdateRequest) {
+      Jwt jwt, UUID gameSaveId, AdminGameSaveUpdateRequest adminGameSaveUpdateRequest) {
 
     validateUser(jwt);
     GameSave gameSave = gameSaveService.updateGameSave(gameSaveId, adminGameSaveUpdateRequest);
@@ -147,7 +148,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<Void>> deleteGameSave(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<Void>> deleteGameSave(Jwt jwt, UUID gameSaveId) {
 
     validateUser(jwt);
 
