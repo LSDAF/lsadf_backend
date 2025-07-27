@@ -25,13 +25,13 @@ import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUp
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.ResponseMessages;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
-import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -101,7 +101,7 @@ public interface GameSaveController {
       })
   ResponseEntity<ApiResponse<Void>> updateNickname(
       @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String id,
+      @PathVariable(value = GAME_SAVE_ID) UUID id,
       @Valid @RequestBody GameSaveNicknameUpdateRequest gameSaveNicknameUpdateRequest);
 
   /** Gets the user game saves */
