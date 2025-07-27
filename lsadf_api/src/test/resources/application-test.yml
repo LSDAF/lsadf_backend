@@ -8,7 +8,7 @@ keycloak:
   client-id: clientid
   client-secret: secret
 
-jpa:
+jdbc:
   enabled: false
 
 db:
