@@ -17,6 +17,7 @@ package com.lsadf.core.application.game.currency;
 
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.exception.http.NotFoundException;
+import java.util.UUID;
 
 public interface CurrencyService {
 
@@ -27,7 +28,7 @@ public interface CurrencyService {
    * @return the currency POJO
    * @throws NotFoundException if the currency entity is not found
    */
-  Currency getCurrency(String gameSaveId) throws NotFoundException;
+  Currency getCurrency(UUID gameSaveId) throws NotFoundException;
 
   /**
    * Save the currencies of a game save
@@ -37,5 +38,5 @@ public interface CurrencyService {
    * @param toCache true if the currency should be saved to cache, false otherwise
    * @throws NotFoundException
    */
-  void saveCurrency(String gameSaveId, Currency currency, boolean toCache) throws NotFoundException;
+  void saveCurrency(UUID gameSaveId, Currency currency, boolean toCache) throws NotFoundException;
 }

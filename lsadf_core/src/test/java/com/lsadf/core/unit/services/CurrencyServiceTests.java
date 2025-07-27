@@ -18,6 +18,7 @@ package com.lsadf.core.unit.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -26,9 +27,10 @@ import com.lsadf.core.application.game.currency.CurrencyServiceImpl;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyRepository;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -44,6 +46,8 @@ class CurrencyServiceTests {
 
   @Mock private Cache<Currency> currencyCache;
 
+  private static final UUID UUID = java.util.UUID.randomUUID();
+
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
@@ -55,11 +59,11 @@ class CurrencyServiceTests {
   @Test
   void get_currency_on_non_existing_gamesave_id() {
     // Arrange
-    when(currencyRepository.findById(anyString())).thenReturn(Optional.empty());
+    when(currencyRepository.findCurrencyEntityById(any(UUID.class))).thenReturn(Optional.empty());
     when(currencyCache.isEnabled()).thenReturn(true);
 
     // Assert
-    assertThrows(NotFoundException.class, () -> currencyService.getCurrency("1"));
+    assertThrows(NotFoundException.class, () -> currencyService.getCurrency(UUID));
   }
 
   @Test
@@ -67,8 +71,8 @@ class CurrencyServiceTests {
     // Arrange
     CurrencyEntity currencyEntity =
         CurrencyEntity.builder()
-            .userEmail("test@test.com")
             .goldAmount(1L)
+            .id(UUID)
             .diamondAmount(2L)
             .emeraldAmount(3L)
             .amethystAmount(4L)
@@ -76,12 +80,13 @@ class CurrencyServiceTests {
 
     Currency currency = Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
 
-    when(currencyRepository.findById(anyString())).thenReturn(Optional.of(currencyEntity));
+    when(currencyRepository.findCurrencyEntityById(any(UUID.class)))
+        .thenReturn(Optional.of(currencyEntity));
     when(currencyCache.isEnabled()).thenReturn(true);
     when(currencyCache.get(anyString())).thenReturn(Optional.of(currency));
 
     // Act
-    Currency result = currencyService.getCurrency("1");
+    Currency result = currencyService.getCurrency(UUID);
 
     // Assert
     assertThat(result).isEqualTo(currency);
@@ -92,7 +97,6 @@ class CurrencyServiceTests {
     // Arrange
     CurrencyEntity currencyEntity =
         CurrencyEntity.builder()
-            .userEmail("test@test.com")
             .goldAmount(1L)
             .diamondAmount(2L)
             .emeraldAmount(3L)
@@ -101,12 +105,13 @@ class CurrencyServiceTests {
 
     Currency currency = Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
 
-    when(currencyRepository.findById(anyString())).thenReturn(Optional.of(currencyEntity));
+    when(currencyRepository.findCurrencyEntityById(any(UUID.class)))
+        .thenReturn(Optional.of(currencyEntity));
     when(currencyCache.isEnabled()).thenReturn(false);
     when(currencyCache.get(anyString())).thenReturn(Optional.empty());
 
     // Act
-    Currency result = currencyService.getCurrency("1");
+    Currency result = currencyService.getCurrency(UUID);
 
     // Assert
     assertThat(result).isEqualTo(currency);
@@ -117,7 +122,6 @@ class CurrencyServiceTests {
     // Arrange
     CurrencyEntity currencyEntity =
         CurrencyEntity.builder()
-            .userEmail("test@test.com")
             .goldAmount(1L)
             .diamondAmount(2L)
             .emeraldAmount(3L)
@@ -128,12 +132,13 @@ class CurrencyServiceTests {
 
     Currency currency = Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
 
-    when(currencyRepository.findById(anyString())).thenReturn(Optional.of(currencyEntity));
+    when(currencyRepository.findCurrencyEntityById(any(UUID.class)))
+        .thenReturn(Optional.of(currencyEntity));
     when(currencyCache.isEnabled()).thenReturn(true);
     when(currencyCache.get(anyString())).thenReturn(Optional.of(currencyCached));
 
     // Act
-    Currency result = currencyService.getCurrency("1");
+    Currency result = currencyService.getCurrency(UUID);
 
     // Assert
     assertThat(result).isEqualTo(currency);
@@ -169,14 +174,14 @@ class CurrencyServiceTests {
   void save_currency_on_null_currency_with_to_cache_to_false() {
     // Act & Assert
     assertThrows(
-        IllegalArgumentException.class, () -> currencyService.saveCurrency("1", null, false));
+        IllegalArgumentException.class, () -> currencyService.saveCurrency(UUID, null, false));
   }
 
   @Test
   void save_currency_on_null_currency_with_to_cache_to_true() {
     // Act & Assert
     assertThrows(
-        IllegalArgumentException.class, () -> currencyService.saveCurrency("1", null, true));
+        IllegalArgumentException.class, () -> currencyService.saveCurrency(UUID, null, true));
   }
 
   @Test
@@ -186,7 +191,7 @@ class CurrencyServiceTests {
 
     // Act & Assert
     assertThrows(
-        IllegalArgumentException.class, () -> currencyService.saveCurrency("1", currency, true));
+        IllegalArgumentException.class, () -> currencyService.saveCurrency(UUID, currency, true));
   }
 
   @Test
@@ -196,7 +201,7 @@ class CurrencyServiceTests {
 
     // Act & Assert
     assertThrows(
-        IllegalArgumentException.class, () -> currencyService.saveCurrency("1", currency, false));
+        IllegalArgumentException.class, () -> currencyService.saveCurrency(UUID, currency, false));
   }
 
   @Test
@@ -205,6 +210,6 @@ class CurrencyServiceTests {
     Currency currency = new Currency(1L, 2L, 3L, 4L);
 
     // Act + Assert
-    assertDoesNotThrow(() -> currencyService.saveCurrency("1", currency, true));
+    assertDoesNotThrow(() -> currencyService.saveCurrency(UUID, currency, true));
   }
 }

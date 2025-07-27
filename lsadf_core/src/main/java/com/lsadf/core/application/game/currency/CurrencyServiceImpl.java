@@ -18,10 +18,11 @@ package com.lsadf.core.application.game.currency;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyRepository;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
 public class CurrencyServiceImpl implements CurrencyService {
@@ -37,12 +38,13 @@ public class CurrencyServiceImpl implements CurrencyService {
 
   @Override
   @Transactional(readOnly = true)
-  public Currency getCurrency(String gameSaveId) throws NotFoundException {
+  public Currency getCurrency(UUID gameSaveId) throws NotFoundException {
     if (gameSaveId == null) {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
+    String gameSaveIdString = gameSaveId.toString();
     if (currencyCache.isEnabled()) {
-      Optional<Currency> optionalCachedCurrency = currencyCache.get(gameSaveId);
+      Optional<Currency> optionalCachedCurrency = currencyCache.get(gameSaveIdString);
       if (optionalCachedCurrency.isPresent()) {
         Currency currency = optionalCachedCurrency.get();
         if (currency.getAmethyst() == null
@@ -86,7 +88,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 
   @Override
   @Transactional
-  public void saveCurrency(String gameSaveId, Currency currency, boolean toCache)
+  public void saveCurrency(UUID gameSaveId, Currency currency, boolean toCache)
       throws NotFoundException {
     if (gameSaveId == null) {
       throw new IllegalArgumentException("Game save id cannot be null");
@@ -94,8 +96,9 @@ public class CurrencyServiceImpl implements CurrencyService {
     if (currency == null || isCurrencyNull(currency)) {
       throw new IllegalArgumentException("Currency cannot be null");
     }
+    String gameSaveIdString = gameSaveId.toString();
     if (toCache) {
-      currencyCache.set(gameSaveId, currency);
+      currencyCache.set(gameSaveIdString, currency);
     } else {
       saveCurrencyToDatabase(gameSaveId, currency);
     }
@@ -108,9 +111,9 @@ public class CurrencyServiceImpl implements CurrencyService {
    * @return the currency entity
    * @throws NotFoundException if the currency entity is not found
    */
-  private CurrencyEntity getCurrencyEntity(String gameSaveId) throws NotFoundException {
+  private CurrencyEntity getCurrencyEntity(UUID gameSaveId) throws NotFoundException {
     return currencyRepository
-        .findById(gameSaveId)
+        .findCurrencyEntityById(gameSaveId)
         .orElseThrow(
             () ->
                 new NotFoundException("Currency entity not found for game save id " + gameSaveId));
@@ -123,32 +126,13 @@ public class CurrencyServiceImpl implements CurrencyService {
    * @param currency the currency POJO
    * @throws NotFoundException if the currency entity is not found
    */
-  private void saveCurrencyToDatabase(String gameSaveId, Currency currency)
-      throws NotFoundException {
-    CurrencyEntity currencyEntity = getCurrencyEntity(gameSaveId);
-
-    boolean hasUpdates = false;
-
-    if (currency.getGold() != null) {
-      currencyEntity.setGoldAmount(currency.getGold());
-      hasUpdates = true;
-    }
-    if (currency.getDiamond() != null) {
-      currencyEntity.setDiamondAmount(currency.getDiamond());
-      hasUpdates = true;
-    }
-    if (currency.getEmerald() != null) {
-      currencyEntity.setEmeraldAmount(currency.getEmerald());
-      hasUpdates = true;
-    }
-    if (currency.getAmethyst() != null) {
-      currencyEntity.setAmethystAmount(currency.getAmethyst());
-      hasUpdates = true;
-    }
-
-    if (hasUpdates) {
-      currencyRepository.save(currencyEntity);
-    }
+  private void saveCurrencyToDatabase(UUID gameSaveId, Currency currency) throws NotFoundException {
+    currencyRepository.updateCurrency(
+        gameSaveId,
+        currency.getAmethyst(),
+        currency.getDiamond(),
+        currency.getEmerald(),
+        currency.getGold());
   }
 
   /**

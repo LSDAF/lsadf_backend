@@ -21,7 +21,7 @@ import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.NoOpHistoCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
