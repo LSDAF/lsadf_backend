@@ -38,6 +38,7 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -183,7 +184,9 @@ public class BddWhenStepDefinitions extends BddLoader {
   @When("^we want to delete the game save with id (.*)$")
   public void when_the_user_with_email_deletes_a_game_save(String saveId) {
     try {
-      gameSaveService.deleteGameSave(saveId);
+      UUID uuid = UUID.fromString(saveId);
+
+      gameSaveService.deleteGameSave(uuid);
     } catch (Exception e) {
       exceptionStack.push(e);
     }
@@ -193,7 +196,9 @@ public class BddWhenStepDefinitions extends BddLoader {
   public void when_we_check_the_game_save_ownership_with_id_for_the_user_with_email(
       String saveId, String userEmail) {
     try {
-      gameSaveService.checkGameSaveOwnership(saveId, userEmail);
+      UUID uuid = UUID.fromString(saveId);
+
+      gameSaveService.checkGameSaveOwnership(uuid, userEmail);
     } catch (Exception e) {
       exceptionStack.push(e);
     }

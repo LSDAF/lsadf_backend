@@ -23,6 +23,7 @@ import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.core.domain.game.currency.Currency;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 
 /** Step definitions for the when steps in the BDD scenarios */
@@ -32,7 +33,8 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
   public void when_we_want_to_get_the_currencies_for_the_game_save_with_id(String gameSaveId) {
     try {
       log.info("Getting currencies for game save with id: {}", gameSaveId);
-      Currency currency = this.currencyService.getCurrency(gameSaveId);
+      UUID uuid = UUID.fromString(gameSaveId);
+      Currency currency = this.currencyService.getCurrency(uuid);
       currencyStack.push(currency);
     } catch (Exception e) {
       exceptionStack.push(e);
@@ -50,7 +52,8 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
 
     try {
       log.info("Setting {} for game save with id: {}", currency, gameSaveId);
-      this.currencyService.saveCurrency(gameSaveId, currency, toCache);
+      UUID uuid = UUID.fromString(gameSaveId);
+      this.currencyService.saveCurrency(uuid, currency, toCache);
     } catch (Exception e) {
       exceptionStack.push(e);
     }

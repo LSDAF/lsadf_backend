@@ -20,9 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
@@ -53,8 +53,10 @@ public class BddThenStepDefinitions extends BddLoader {
   @Then("^the number of game saves should be (.*)$")
   @Transactional(readOnly = true)
   public void then_the_number_of_game_saves_should_be(int expected) {
-    long actual = gameSaveService.getGameSaves().count();
-    assertThat(actual).isEqualTo(expected);
+    try (var gameSaveStream = gameSaveService.getGameSaves()) {
+      var actual = gameSaveStream.count();
+      assertThat(actual).isEqualTo(expected);
+    }
   }
 
   @Then("^I should return false$")
@@ -159,8 +161,11 @@ public class BddThenStepDefinitions extends BddLoader {
 
       assertThat(actual)
           .usingRecursiveComparison()
-          .ignoringFields("id", "createdAt", "updatedAt")
+          .ignoringFields("id", "additionalStats")
           .isEqualTo(expected);
+
+      assertThat(actual.additionalStats())
+          .contains(expected.additionalStats().toArray(new ItemStat[0]));
     }
   }
 
@@ -281,7 +286,7 @@ public class BddThenStepDefinitions extends BddLoader {
       var list = gameSaveResponseListStack.peek();
       var actual =
           list.stream().filter(g -> g.id().equals(row.get("id"))).findFirst().orElseThrow();
-      GameSave expected = BddUtils.mapToGameSave(row);
+      GameSaveResponse expected = BddUtils.mapToGameSaveResponse(row);
 
       assertThat(actual)
           .usingRecursiveComparison()
@@ -389,7 +394,8 @@ public class BddThenStepDefinitions extends BddLoader {
 
   @Then("^the inventory of the game save with id (.*) should be empty$")
   public void then_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
-    var results = inventoryService.getInventoryItems(gameSaveId);
+    UUID uuid = UUID.fromString(gameSaveId);
+    var results = inventoryService.getInventoryItems(uuid);
     assertThat(results).isEmpty();
   }
 }

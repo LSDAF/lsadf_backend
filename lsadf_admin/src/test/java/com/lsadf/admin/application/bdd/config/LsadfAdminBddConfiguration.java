@@ -15,12 +15,11 @@
  */
 package com.lsadf.admin.application.bdd.config;
 
-import com.lsadf.core.domain.game.GameSave;
 import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
@@ -89,13 +88,6 @@ public class LsadfAdminBddConfiguration {
   @Bean
   public Stack<Inventory> inventoryStack(BddStackCleaner stackCleaner) {
     Stack<Inventory> stack = new Stack<>();
-    stackCleaner.addStack(stack);
-    return stack;
-  }
-
-  @Bean
-  public Stack<InventoryEntity> inventoryEntityStack(BddStackCleaner stackCleaner) {
-    Stack<InventoryEntity> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }

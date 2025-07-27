@@ -25,18 +25,17 @@ import com.lsadf.core.domain.game.characteristics.Characteristics;
 import com.lsadf.core.domain.game.currency.Currency;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
+import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity;
+import com.lsadf.core.infra.persistence.table.game.item.ItemEntity;
+import com.lsadf.core.infra.persistence.table.game.stage.StageEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,28 +49,39 @@ public class BddGivenStepDefinitions extends BddLoader {
   public void given_the_following_items(String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    InventoryEntity inventoryEntity;
-
-    Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
-    if (optionalInventoryEntity.isEmpty()) {
-      throw new RuntimeException("Inventory not found");
-    } else {
-      inventoryEntity = optionalInventoryEntity.get();
-    }
-
-    if (inventoryEntity.getItems() == null) {
-      inventoryEntity.setItems(new HashSet<>());
+    UUID uuid = UUID.fromString(gameSaveId);
+    var exists = gameSaveRepository.existsById(uuid);
+    if (!exists) {
+      throw new NotFoundException("Game save with id: " + gameSaveId + " not found.");
     }
 
     log.info("Creating items...");
     rows.forEach(
         row -> {
           ItemEntity itemEntity = BddUtils.mapToItemEntity(row);
-          itemEntity.setInventoryEntity(inventoryEntity);
-          inventoryEntity.getItems().add(itemEntity);
+          itemEntity.setGameSaveId(uuid);
+          var newItemEntity =
+              itemRepository.createNewItemEntity(
+                  itemEntity.getId(),
+                  itemEntity.getGameSaveId(),
+                  itemEntity.getClientId(),
+                  itemEntity.getBlueprintId(),
+                  itemEntity.getItemType(),
+                  itemEntity.getItemRarity(),
+                  itemEntity.getIsEquipped(),
+                  itemEntity.getLevel(),
+                  itemEntity.getMainStatistic(),
+                  itemEntity.getMainBaseValue());
+          var additionalStats = BddUtils.mapToAdditionalItemStatEntity(row);
+          additionalStats.forEach(
+              additionalItemStatEntity -> {
+                additionalItemStatsRepository.createNewAdditionalItemStatEntity(
+                    additionalItemStatEntity.getItemId(),
+                    additionalItemStatEntity.getStatistic(),
+                    additionalItemStatEntity.getBaseValue());
+              });
+          log.info("Item created: {}", newItemEntity);
         });
-
-    inventoryRepository.save(inventoryEntity);
 
     log.info("Items created");
   }
@@ -132,16 +142,13 @@ public class BddGivenStepDefinitions extends BddLoader {
   public void given_i_have_a_clean_database() throws NotFoundException {
     log.info("Cleaning database repositories...");
 
-    this.characteristicsRepository.deleteAll();
-    this.currencyRepository.deleteAll();
-    this.stageRepository.deleteAll();
-    this.inventoryRepository.deleteAll();
-    this.gameSaveRepository.deleteAll();
+    this.gameSaveRepository.deleteAllGameSaveEntities();
 
     assertThat(characteristicsRepository.count()).isZero();
     assertThat(currencyRepository.count()).isZero();
     assertThat(stageRepository.count()).isZero();
-    assertThat(inventoryRepository.count()).isZero();
+    assertThat(itemRepository.count()).isZero();
+    assertThat(additionalItemStatsRepository.count()).isZero();
     assertThat(gameSaveRepository.count()).isZero();
 
     // Clear caches
@@ -168,8 +175,31 @@ public class BddGivenStepDefinitions extends BddLoader {
     rows.forEach(
         row -> {
           GameSaveEntity gameSaveEntity = BddUtils.mapToGameSaveEntity(row);
-          GameSaveEntity newEntity = gameSaveRepository.save(gameSaveEntity);
-          log.info("Game save created: {}", newEntity);
+          CurrencyEntity currencyEntity = BddUtils.mapToCurrencyEntity(row);
+          CharacteristicsEntity characteristicsEntity = BddUtils.mapToCharacteristicsEntity(row);
+          StageEntity stageEntity = BddUtils.mapToStageEntity(row);
+
+          GameSaveEntity newGameSaveEntity =
+              gameSaveRepository.createNewGameSaveEntity(
+                  gameSaveEntity.getId(),
+                  gameSaveEntity.getUserEmail(),
+                  gameSaveEntity.getNickname());
+          currencyRepository.createNewCurrencyEntity(
+              newGameSaveEntity.getId(),
+              currencyEntity.getGoldAmount(),
+              currencyEntity.getDiamondAmount(),
+              currencyEntity.getEmeraldAmount(),
+              currencyEntity.getAmethystAmount());
+          stageRepository.createNewStageEntity(
+              newGameSaveEntity.getId(), stageEntity.getCurrentStage(), stageEntity.getMaxStage());
+          characteristicsRepository.createNewCharacteristicsEntity(
+              newGameSaveEntity.getId(),
+              characteristicsEntity.getAttack(),
+              characteristicsEntity.getCritChance(),
+              characteristicsEntity.getCritDamage(),
+              characteristicsEntity.getHealth(),
+              characteristicsEntity.getResistance());
+          log.info("Game save created: {}", newGameSaveEntity);
         });
 
     log.info("Game saves created");

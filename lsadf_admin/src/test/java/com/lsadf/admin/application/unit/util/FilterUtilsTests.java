@@ -26,6 +26,7 @@ import com.vaadin.hilla.crud.filter.OrFilter;
 import com.vaadin.hilla.crud.filter.PropertyStringFilter;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,11 +36,16 @@ class FilterUtilsTests {
   private static final String ZONE = "Europe/Paris";
   private static final ZoneId ZONE_ID = ZoneId.of(ZONE);
 
+  private static final UUID UUID_1 = UUID.fromString("cc5a0889-9f5c-4869-bfe0-d8c7c1aca520");
+  private static final UUID UUID_2 = UUID.fromString("ceda21e6-6399-47d7-9548-ec3c7d23ba22");
+  private static final UUID UUID_3 = UUID.fromString("854291f2-ab1b-45c6-9b65-6ef4f1dd4063");
+  private static final UUID UUID_4 = UUID.fromString("4a6a9ea1-4b90-4319-ad0e-e4f9a1a43b28");
+
   private Stream<User> userStream;
 
   private final User user1 =
       User.builder()
-          .id("cc5a0889-9f5c-4869-bfe0-d8c7c1aca520")
+          .id(UUID_1)
           .firstName("John")
           .lastName("Doe")
           .username("john.doe@test.com")
@@ -49,7 +55,7 @@ class FilterUtilsTests {
 
   private final User user2 =
       User.builder()
-          .id("ceda21e6-6399-47d7-9548-ec3c7d23ba22")
+          .id(UUID_2)
           .firstName("Jane")
           .lastName("Doe")
           .username("jane.doe@test.com")
@@ -59,7 +65,7 @@ class FilterUtilsTests {
 
   private final User user3 =
       User.builder()
-          .id("854291f2-ab1b-45c6-9b65-6ef4f1dd4063")
+          .id(UUID_3)
           .firstName("John")
           .lastName("Smith")
           .username("john.smith@test.com")
@@ -69,7 +75,7 @@ class FilterUtilsTests {
 
   private final User user4 =
       User.builder()
-          .id("4a6a9ea1-4b90-4319-ad0e-e4f9a1a43b28")
+          .id(UUID_4)
           .firstName("Jane")
           .lastName("Smith")
           .username("jane.smith@test.com")
