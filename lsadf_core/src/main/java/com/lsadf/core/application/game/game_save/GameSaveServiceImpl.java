@@ -100,7 +100,6 @@ public class GameSaveServiceImpl implements GameSaveService {
     this.characteristicsRepository = characteristicsRepository;
     this.currencyRepository = currencyRepository;
     this.stageRepository = stageRepository;
-    this.itemRepository = itemRepository;
   }
 
   /** {@inheritDoc} */
