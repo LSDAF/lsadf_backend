@@ -31,6 +31,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 @Slf4j
@@ -174,6 +175,16 @@ public class GlobalExceptionHandler {
     log.error("InternalServerErrorException: ", e);
     return generateResponse(
         HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error: " + e.getMessage(), null);
+  }
+
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  public ResponseEntity<ApiResponse<Void>> handleMethodArgumentTypeMismatchException(
+      MethodArgumentTypeMismatchException e) {
+    log.error("MethodArgumentTypeMismatchException: " + e);
+    return generateResponse(
+        HttpStatus.BAD_REQUEST,
+        "Method argument type mismatch: " + e.getName() + " " + e.getValue(),
+        null);
   }
 
   /**
