@@ -17,6 +17,7 @@ package com.lsadf.core.application.game.stage;
 
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
+import java.util.UUID;
 
 /** Service for managing stages. */
 public interface StageService {
@@ -28,7 +29,7 @@ public interface StageService {
    * @return the stage
    * @throws NotFoundException if the stage is not found
    */
-  Stage getStage(String gameSaveId) throws NotFoundException;
+  Stage getStage(UUID gameSaveId) throws NotFoundException;
 
   /**
    * Save the stage for the given game save id.
@@ -38,5 +39,5 @@ public interface StageService {
    * @param toCache whether to save to cache
    * @throws NotFoundException if the stage is not found
    */
-  void saveStage(String gameSaveId, Stage stage, boolean toCache) throws NotFoundException;
+  void saveStage(UUID gameSaveId, Stage stage, boolean toCache) throws NotFoundException;
 }

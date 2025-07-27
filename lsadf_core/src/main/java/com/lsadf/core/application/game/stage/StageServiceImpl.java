@@ -18,10 +18,11 @@ package com.lsadf.core.application.game.stage;
 import com.lsadf.core.domain.game.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
-import com.lsadf.core.infra.persistence.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.table.game.stage.StageEntity;
+import com.lsadf.core.infra.persistence.table.game.stage.StageEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.stage.StageRepository;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Implementation of the stage service. */
@@ -39,12 +40,13 @@ public class StageServiceImpl implements StageService {
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
-  public Stage getStage(String gameSaveId) throws NotFoundException {
+  public Stage getStage(UUID gameSaveId) throws NotFoundException {
     if (gameSaveId == null) {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
     if (stageCache.isEnabled()) {
-      Optional<Stage> optionalCachedStage = stageCache.get(gameSaveId);
+      String gameSaveIdString = gameSaveId.toString();
+      Optional<Stage> optionalCachedStage = stageCache.get(gameSaveIdString);
       if (optionalCachedStage.isPresent()) {
         Stage stage = optionalCachedStage.get();
         if (stage.getMaxStage() == null || stage.getCurrentStage() == null) {
@@ -58,16 +60,16 @@ public class StageServiceImpl implements StageService {
     return mapper.map(stageEntity);
   }
 
-  private StageEntity getStageEntity(String gameSaveId) {
+  private StageEntity getStageEntity(UUID gameSaveId) {
     return stageRepository
-        .findById(gameSaveId)
+        .findStageEntityById(gameSaveId)
         .orElseThrow(() -> new NotFoundException("Stage not found"));
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional
-  public void saveStage(String gameSaveId, Stage stage, boolean toCache) throws NotFoundException {
+  public void saveStage(UUID gameSaveId, Stage stage, boolean toCache) throws NotFoundException {
     if (gameSaveId == null) {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
@@ -75,7 +77,8 @@ public class StageServiceImpl implements StageService {
       throw new IllegalArgumentException("Stage cannot be null");
     }
     if (toCache) {
-      stageCache.set(gameSaveId, stage);
+      String gameSaveIdString = gameSaveId.toString();
+      stageCache.set(gameSaveIdString, stage);
     } else {
       saveStageToDatabase(gameSaveId, stage);
     }
@@ -87,24 +90,8 @@ public class StageServiceImpl implements StageService {
    * @param gameSaveId the game save id
    * @param stage the stage to save
    */
-  private void saveStageToDatabase(String gameSaveId, Stage stage) {
-    StageEntity stageEntity = getStageEntity(gameSaveId);
-
-    boolean hasUpdates = false;
-
-    if (stage.getCurrentStage() != null
-        && !stage.getCurrentStage().equals(stageEntity.getCurrentStage())) {
-      stageEntity.setCurrentStage(stage.getCurrentStage());
-      hasUpdates = true;
-    }
-    if (stage.getMaxStage() != null && !stage.getMaxStage().equals(stageEntity.getMaxStage())) {
-      stageEntity.setMaxStage(stage.getMaxStage());
-      hasUpdates = true;
-    }
-
-    if (hasUpdates) {
-      stageRepository.save(stageEntity);
-    }
+  private void saveStageToDatabase(UUID gameSaveId, Stage stage) {
+    stageRepository.updateStage(gameSaveId, stage.getCurrentStage(), stage.getMaxStage());
   }
 
   /**
