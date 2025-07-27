@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.game.inventory.item;
+package com.lsadf.core.infra.persistence.table.game.item;
 
 import com.lsadf.core.domain.game.inventory.item.Item;
+import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -48,5 +51,16 @@ public interface ItemEntityMapper extends EntityModelMapper<ItemEntity, Item> {
    * @return an {@link Item} object constructed based on the provided {@link ItemEntity}
    */
   @Override
+  @Mapping(
+      target = "mainStat",
+      expression =
+          "java(new com.lsadf.core.domain.game.inventory.item.ItemStat(itemEntity.getMainStatistic(), itemEntity.getMainBaseValue()))")
+  @Mapping(target = "additionalStats", expression = "java(new java.util.ArrayList())")
   Item map(ItemEntity itemEntity);
+
+  @Named("mapItemStatFromAdditionalItemStatEntity")
+  default ItemStat map(AdditionalItemStatEntity additionalItemStatEntity) {
+    return new ItemStat(
+        additionalItemStatEntity.getStatistic(), additionalItemStatEntity.getBaseValue());
+  }
 }

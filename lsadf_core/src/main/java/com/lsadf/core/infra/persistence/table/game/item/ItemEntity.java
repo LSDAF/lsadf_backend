@@ -13,82 +13,84 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.game.inventory.item;
+package com.lsadf.core.infra.persistence.table.game.item;
 
-import static com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity.ItemAttributes.*;
+import static com.lsadf.core.infra.persistence.config.EntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.item.ItemEntity.ItemAttributes.*;
 
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
-import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
-import com.lsadf.core.infra.persistence.AEntity;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import jakarta.validation.constraints.Positive;
+import com.lsadf.core.infra.persistence.Dateable;
+import com.lsadf.core.infra.persistence.Identifiable;
 import java.io.Serial;
-import java.util.List;
+import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity(name = ITEM_ENTITY)
-@Table(name = ITEM_ENTITY)
-@SuperBuilder
 @AllArgsConstructor
+@Builder
 @ToString
 @Getter
 @Setter
-public class ItemEntity extends AEntity {
+@Table(ITEM_ENTITY)
+public class ItemEntity implements Identifiable, Dateable {
 
   @Serial private static final long serialVersionUID = 7924047722096464427L;
 
-  protected ItemEntity() {
-    super();
-  }
+  @Id
+  @Column(ID)
+  private UUID id;
 
-  @ManyToOne @ToString.Exclude @EqualsAndHashCode.Exclude private InventoryEntity inventoryEntity;
+  @Column(ITEM_GAME_SAVE_ID)
+  private UUID gameSaveId;
 
-  @Column(name = ItemAttributes.ITEM_CLIENT_ID, unique = true)
+  @Column(CREATED_AT)
+  private Date createdAt;
+
+  @Column(UPDATED_AT)
+  private Date updatedAt;
+
+  @Column(ITEM_CLIENT_ID)
   private String clientId;
 
-  @Column(name = ItemAttributes.ITEM_BLUEPRINT_ID)
+  @Column(ITEM_BLUEPRINT_ID)
   private String blueprintId;
 
-  @Column(name = ItemAttributes.ITEM_TYPE)
-  @Enumerated(EnumType.STRING)
+  @Column(ITEM_TYPE)
   private ItemType itemType;
 
-  @Column(name = ItemAttributes.ITEM_RARITY)
-  @Enumerated(EnumType.STRING)
+  @Column(ITEM_RARITY)
   private ItemRarity itemRarity;
 
-  @Column(name = ItemAttributes.ITEM_IS_EQUIPPED)
+  @Column(ITEM_IS_EQUIPPED)
   private Boolean isEquipped;
 
-  @Column(name = ItemAttributes.ITEM_LEVEL)
-  @Positive
+  @Column(ITEM_LEVEL)
   private Integer level;
 
-  @Column(name = ItemAttributes.ITEM_MAIN_STAT)
-  private ItemStat mainStat;
+  @Column(ITEM_MAIN_STATISTIC)
+  private ItemStatistic mainStatistic;
 
-  @ElementCollection
-  @CollectionTable(
-      name = ItemAttributes.ITEM_ADDITIONAL_STATS,
-      joinColumns = @JoinColumn(name = "item_entity_id"))
-  private List<ItemStat> additionalStats;
+  @Column(ITEM_MAIN_BASE_VALUE)
+  private Float mainBaseValue;
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class ItemAttributes {
-    public static final String ITEM_ENTITY = "t_item";
-    public static final String ITEM_ADDITIONAL_STATS = "t_additional_stats";
+    public static final String ITEM_ENTITY = "t_item_tgit";
     public static final String ITEM_CLIENT_ID = "client_id";
+    public static final String ITEM_GAME_SAVE_ID = "tgsa_id";
     public static final String ITEM_BLUEPRINT_ID = "blueprint_id";
     public static final String ITEM_TYPE = "type";
     public static final String ITEM_RARITY = "rarity";
+    public static final String ITEM_MAIN_STATISTIC = "main_statistic";
+    public static final String ITEM_MAIN_BASE_VALUE = "main_base_value";
     public static final String ITEM_IS_EQUIPPED = "is_equipped";
     public static final String ITEM_LEVEL = "level";
-    public static final String ITEM_MAIN_STAT = "main_stat";
   }
 
   @Override
@@ -96,15 +98,17 @@ public class ItemEntity extends AEntity {
     if (o == null || getClass() != o.getClass()) return false;
     if (!super.equals(o)) return false;
     ItemEntity that = (ItemEntity) o;
-    return Objects.equals(inventoryEntity, that.inventoryEntity)
+    return Objects.equals(id, that.id)
         && Objects.equals(clientId, that.clientId)
+        && Objects.equals(createdAt, that.createdAt)
+        && Objects.equals(updatedAt, that.updatedAt)
         && Objects.equals(blueprintId, that.blueprintId)
         && itemType == that.itemType
         && itemRarity == that.itemRarity
         && Objects.equals(isEquipped, that.isEquipped)
         && Objects.equals(level, that.level)
-        && Objects.equals(mainStat, that.mainStat)
-        && Objects.equals(additionalStats, that.additionalStats);
+        && Objects.equals(mainStatistic, that.mainStatistic)
+        && Objects.equals(mainBaseValue, that.mainBaseValue);
   }
 
   @Override
@@ -116,8 +120,8 @@ public class ItemEntity extends AEntity {
         itemRarity,
         isEquipped,
         level,
-        mainStat,
-        additionalStats,
+        mainStatistic,
+        mainBaseValue,
         id,
         createdAt,
         updatedAt);
