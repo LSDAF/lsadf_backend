@@ -20,6 +20,7 @@ import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.util.DateUtils;
 import com.lsadf.core.shared.model.ModelMapper;
 import java.util.Date;
+import java.util.UUID;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -58,10 +59,16 @@ public interface UserRepresentationMapper extends ModelMapper<UserRepresentation
       target = "createdTimestamp",
       qualifiedByName = "mapTimestampToDate")
   @Mapping(source = "realmRoles", target = "userRoles")
+  @Mapping(source = "id", target = "id", qualifiedByName = "stringToUUID")
   User map(UserRepresentation userRepresentation);
 
   @Named("mapTimestampToDate")
   default Date map(Long timestamp) {
     return DateUtils.dateFromTimestamp(timestamp);
+  }
+
+  @Named("stringToUUID")
+  default UUID map(String id) {
+    return UUID.fromString(id);
   }
 }

@@ -19,6 +19,7 @@ package com.lsadf.core.infra.web.request.user.creation;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.request.RequestModelMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * A MapStruct mapper interface dedicated to transforming {@link UserCreationRequest} objects into
@@ -36,5 +37,7 @@ public interface UserCreationRequestMapper extends RequestModelMapper<UserCreati
 
   /** {@inheritDoc} */
   @Override
+  @Mapping(target = "createdTimestamp", ignore = true)
+  @Mapping(target = "id", ignore = true)
   User map(UserCreationRequest userCreationRequestImpl);
 }

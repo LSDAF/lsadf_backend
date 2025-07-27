@@ -19,6 +19,7 @@ import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.request.user.creation.UserCreationRequest;
 import com.lsadf.core.infra.web.request.user.update.UserUpdateRequest;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 /** Service for managing users */
@@ -57,7 +58,7 @@ public interface UserService {
    * @param id user id
    * @return user
    */
-  User getUserById(String id);
+  User getUserById(UUID id);
 
   /**
    * Get user by email
@@ -72,21 +73,21 @@ public interface UserService {
    *
    * @param user user to update
    */
-  User updateUser(String id, UserUpdateRequest user);
+  User updateUser(UUID id, UserUpdateRequest user);
 
   /**
    * Reset user password
    *
    * @param id user id
    */
-  void resetUserPassword(String id);
+  void resetUserPassword(UUID id);
 
   /**
    * Delete user by id
    *
    * @param id user id
    */
-  void deleteUser(String id);
+  void deleteUser(UUID id);
 
   /**
    * Creates a new user based on the provided user creation request.
@@ -110,5 +111,5 @@ public interface UserService {
    * @param id user id
    * @return true if user exists
    */
-  boolean checkIdExists(String id);
+  boolean checkIdExists(UUID id);
 }

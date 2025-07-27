@@ -28,6 +28,7 @@ import com.lsadf.core.infra.web.request.user.creation.UserCreationRequestMapper;
 import com.lsadf.core.infra.web.request.user.update.UserUpdateRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
@@ -107,7 +108,7 @@ public class UserServiceImpl implements UserService {
 
   /** {@inheritDoc} */
   @Override
-  public User getUserById(String id) {
+  public User getUserById(UUID id) {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
@@ -149,7 +150,7 @@ public class UserServiceImpl implements UserService {
 
   /** {@inheritDoc} */
   @Override
-  public User updateUser(String id, UserUpdateRequest adminUpdateRequest) {
+  public User updateUser(UUID id, UserUpdateRequest adminUpdateRequest) {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
@@ -164,8 +165,9 @@ public class UserServiceImpl implements UserService {
       List<String> userRoles = adminUpdateRequest.getUserRoles();
       if (userRoles != null && !userRoles.isEmpty()) {
         List<RoleRepresentation> roles = userRoles.stream().map(this::getRoleByName).toList();
-        getUsersResource().get(id).roles().realmLevel().remove(roles);
-        getUsersResource().get(id).roles().realmLevel().add(roles);
+        String idString = id.toString();
+        getUsersResource().get(idString).roles().realmLevel().remove(roles);
+        getUsersResource().get(idString).roles().realmLevel().add(roles);
       }
     } catch (NotFoundException e) {
       throw new IllegalArgumentException("Role not found", e);
@@ -193,7 +195,8 @@ public class UserServiceImpl implements UserService {
     }
 
     if (hasUpdates) {
-      getUsersResource().get(id).update(existingUser);
+      String idString = id.toString();
+      getUsersResource().get(idString).update(existingUser);
     }
 
     return getUserById(id);
@@ -201,27 +204,29 @@ public class UserServiceImpl implements UserService {
 
   /** {@inheritDoc} */
   @Override
-  public void resetUserPassword(String id) {
+  public void resetUserPassword(UUID id) {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
     String updatePasswordAction = "UPDATE_PASSWORD";
     List<String> actions = List.of(updatePasswordAction);
+    String idString = id.toString();
     // keycloakAdminClient.sendActionsEmail(realm, id, actions);
-    getUsersResource().get(id).executeActionsEmail(actions);
+    getUsersResource().get(idString).executeActionsEmail(actions);
   }
 
   /** {@inheritDoc} */
   @Override
-  public void deleteUser(String id) {
+  public void deleteUser(UUID id) {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
     if (!checkIdExists(id)) {
       throw new NotFoundException("User with id " + id + " not found");
     }
+    String idString = id.toString();
     // keycloakAdminClient.deleteUser(realm, id);
-    getUsersResource().get(id).remove();
+    getUsersResource().get(idString).remove();
   }
 
   /** {@inheritDoc} */
@@ -257,13 +262,14 @@ public class UserServiceImpl implements UserService {
       String responsePath = response.getLocation().getPath();
       int beginIndex = responsePath.lastIndexOf('/') + 1;
       String userId = responsePath.substring(beginIndex);
+      UUID uuid = UUID.fromString(userId);
 
       // Add roles to user
       if (!roles.isEmpty()) {
         getUsersResource().get(userId).roles().realmLevel().add(roles);
       }
 
-      return getUserById(userId);
+      return getUserById(uuid);
     } catch (NotFoundException e) {
       throw e;
     } catch (Exception e) {
@@ -288,7 +294,7 @@ public class UserServiceImpl implements UserService {
 
   /** {@inheritDoc} */
   @Override
-  public boolean checkIdExists(String id) {
+  public boolean checkIdExists(UUID id) {
     // We assert that the null check is done in the calling method to avoid multiple checks
     // id can be null, then we return false
     if (id == null) {
@@ -308,8 +314,9 @@ public class UserServiceImpl implements UserService {
    * @param id user id
    * @return UserRepresentation
    */
-  private UserRepresentation getUserRepresentation(String id) {
-    return getUsersResource().get(id).toRepresentation();
+  private UserRepresentation getUserRepresentation(UUID id) {
+    String userId = id.toString();
+    return getUsersResource().get(userId).toRepresentation();
   }
 
   /**
