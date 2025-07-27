@@ -24,7 +24,7 @@ import com.lsadf.core.infra.config.ApplicationListenerConfiguration;
 import com.lsadf.core.infra.config.PropertiesConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
-import com.lsadf.core.infra.persistence.config.JpaConfiguration;
+import com.lsadf.core.infra.persistence.config.JdbcConfiguration;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakConfiguration;
 import com.lsadf.core.infra.web.config.security.CorsConfiguration;
 import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
@@ -58,7 +58,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   NoValkeyCacheConfiguration.class,
   ClockConfiguration.class,
   KeycloakConfiguration.class,
-  JpaConfiguration.class,
+  JdbcConfiguration.class,
   LsadfSecurityConfiguration.class,
 })
 public class LsadfConfiguration {}
