@@ -15,13 +15,13 @@
  */
 package com.lsadf.admin.application.bdd;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.user.UserResponse;
@@ -134,7 +134,7 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of List of GameSaveEntity
+   * Builds a ParameterizedTypeReference for a ApiResponse of List of GameMetadataEntity
    *
    * @return ParameterizedTypeReference
    */

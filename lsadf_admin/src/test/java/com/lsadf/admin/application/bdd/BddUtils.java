@@ -17,28 +17,30 @@ package com.lsadf.admin.application.bdd;
 
 import static com.lsadf.admin.application.bdd.BddFieldConstants.Item.*;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.GameSave;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.metadata.GameMetadata;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.table.game.item.AdditionalItemStatEntity;
-import com.lsadf.core.infra.persistence.table.game.item.ItemEntity;
-import com.lsadf.core.infra.persistence.table.game.stage.StageEntity;
+import com.lsadf.core.infra.persistence.table.game.inventory.AdditionalItemStatEntity;
+import com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity;
 import com.lsadf.core.infra.web.request.common.Filter;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.game_save.update.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
+import com.lsadf.core.infra.web.request.game.save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.save.update.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.request.game.save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.request.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.creation.SimpleUserCreationRequest;
@@ -46,11 +48,12 @@ import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.request.user.update.SimpleUserUpdateRequest;
-import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
-import com.lsadf.core.infra.web.response.game.stage.StageResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.response.game.save.metadata.GameMetadataResponse;
+import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.response.user.UserResponse;
 import java.io.IOException;
@@ -147,26 +150,21 @@ public class BddUtils {
   }
 
   /**
-   * Maps a row from a BDD table to a GameSaveResponse object. Extracts fields such as ID, user
-   * email, nickname, characteristics, currency, and stage from the provided map and constructs a
-   * GameSaveResponse instance.
+   * Maps a map of strings to a GameSaveResponse object by processing metadata, stage, currency, and
+   * characteristics data from the input map.
    *
-   * @param row a map representing a row from the BDD table, where keys correspond to field names
-   *     and values represent the field values
-   * @return a GameSaveResponse object constructed using the values extracted from the provided map
+   * @param row a map where keys are string identifiers and values are corresponding string data
+   *     used to construct the GameSaveResponse components.
+   * @return a GameSaveResponse object constructed using the mapped metadata, stage, currency, and
+   *     characteristics data.
    */
   public static GameSaveResponse mapToGameSaveResponse(Map<String, String> row) {
-    String id = row.get(BddFieldConstants.GameSave.ID);
-    String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
-    String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
-
+    GameMetadataResponse metadataResponse = mapToGameMetadataResponse(row);
     StageResponse stageResponse = mapToStageResponse(row);
     CurrencyResponse currencyResponse = mapToCurrencyResponse(row);
     CharacteristicsResponse characteristicsResponse = mapToCharacteristicsResponse(row);
     return GameSaveResponse.builder()
-        .userEmail(userEmail)
-        .nickname(nickname)
-        .id(id)
+        .metadata(metadataResponse)
         .characteristics(characteristicsResponse)
         .currency(currencyResponse)
         .stage(stageResponse)
@@ -251,17 +249,17 @@ public class BddUtils {
   }
 
   /**
-   * Maps a row from a BDD table to a GameSaveEntity
+   * Maps a row from a BDD table to a GameMetadataEntity
    *
    * @param row row from BDD table
-   * @return GameSaveEntity
+   * @return GameMetadataEntity
    */
-  public static GameSaveEntity mapToGameSaveEntity(Map<String, String> row) {
+  public static GameMetadataEntity mapToGameSaveEntity(Map<String, String> row) {
     String id = row.get(BddFieldConstants.GameSave.ID);
     UUID uuid = UUID.fromString(id);
     String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
     String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
-    return GameSaveEntity.builder().userEmail(userEmail).nickname(nickname).id(uuid).build();
+    return GameMetadataEntity.builder().userEmail(userEmail).nickname(nickname).id(uuid).build();
   }
 
   /**
@@ -371,18 +369,17 @@ public class BddUtils {
     UUID uuid = UUID.fromString(id);
     String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
 
+    GameMetadataRequest metadataRequest = new GameMetadataRequest(uuid, userEmail, nickname);
     StageRequest stageRequest = new StageRequest(currentStage, maxStage);
     CharacteristicsRequest characteristicsRequest =
         new CharacteristicsRequest(attack, critChance, critDamage, health, resistance);
     CurrencyRequest currencyRequest = new CurrencyRequest(gold, diamond, emerald, amethyst);
 
     return AdminGameSaveCreationRequest.builder()
-        .nickname(nickname)
-        .id(uuid)
+        .metadata(metadataRequest)
         .stage(stageRequest)
         .characteristics(characteristicsRequest)
         .currency(currencyRequest)
-        .userEmail(userEmail)
         .build();
   }
 
@@ -446,6 +443,22 @@ public class BddUtils {
   }
 
   /**
+   * Maps a given row of game metadata represented as a Map to a GameMetadataResponse object.
+   *
+   * @param row a Map containing game metadata where keys are strings representing field names and
+   *     values are the corresponding data values.
+   * @return a GameMetadataResponse object constructed from the provided metadata Map.
+   */
+  public static GameMetadataResponse mapToGameMetadataResponse(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.GameSave.ID);
+    UUID uuid = (id != null) ? UUID.fromString(id) : null;
+    String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
+    String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
+
+    return new GameMetadataResponse(uuid, null, null, userEmail, nickname);
+  }
+
+  /**
    * Maps a row from a BDD table to a GameSave
    *
    * @param row row from BDD table
@@ -457,14 +470,13 @@ public class BddUtils {
     String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
     String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
 
+    GameMetadata gameMetadata = mapToGameMetadata(row);
     Characteristics characteristics = mapToCharacteristics(row);
     Currency currency = mapToCurrency(row);
     Stage stage = mapToStage(row);
 
     return GameSave.builder()
-        .userEmail(userEmail)
-        .nickname(nickname)
-        .id(uuid)
+        .metadata(gameMetadata)
         .characteristics(characteristics)
         .currency(currency)
         .stage(stage)
@@ -531,6 +543,21 @@ public class BddUtils {
     additionalItemStatEntities.add(entity3);
 
     return additionalItemStatEntities;
+  }
+
+  /**
+   * Maps a row of data represented as a Map to a GameMetadata object.
+   *
+   * @param row a Map containing key-value pairs representing the game's metadata. Expected keys
+   *     include ID, USER_EMAIL, and NICKNAME.
+   * @return a populated GameMetadata object built using the data from the provided row map.
+   */
+  public static GameMetadata mapToGameMetadata(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.GameSave.ID);
+    UUID uuid = UUID.fromString(id);
+    String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
+    String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
+    return GameMetadata.builder().id(uuid).userEmail(userEmail).nickname(nickname).build();
   }
 
   /**
@@ -740,9 +767,7 @@ public class BddUtils {
             .diamond(diamond != null ? Long.parseLong(diamond) : null)
             .emerald(emerald != null ? Long.parseLong(emerald) : null)
             .build();
-    if (currency.getGold() == null
-        && currency.getAmethyst() == null
-        && currency.getDiamond() == null) {
+    if (currency.gold() == null && currency.amethyst() == null && currency.diamond() == null) {
       currency = null;
     }
 
@@ -755,7 +780,7 @@ public class BddUtils {
             .maxStage(maxStage != null ? Long.parseLong(maxStage) : null)
             .build();
 
-    if (stage.getCurrentStage() == null && stage.getMaxStage() == null) {
+    if (stage.currentStage() == null && stage.maxStage() == null) {
       stage = null;
     }
 
@@ -774,11 +799,11 @@ public class BddUtils {
             .resistance(resistance != null ? Long.parseLong(resistance) : null)
             .build();
 
-    if (characteristics.getAttack() == null
-        || characteristics.getHealth() == null
-        || characteristics.getCritChance() == null
-        || characteristics.getCritDamage() == null
-        || characteristics.getResistance() == null) {
+    if (characteristics.attack() == null
+        || characteristics.health() == null
+        || characteristics.critChance() == null
+        || characteristics.critDamage() == null
+        || characteristics.resistance() == null) {
       characteristics = null;
     }
 

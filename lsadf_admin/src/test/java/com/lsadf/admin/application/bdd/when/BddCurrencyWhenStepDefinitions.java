@@ -15,12 +15,11 @@
  */
 package com.lsadf.admin.application.bdd.when;
 
-import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.save.currency.Currency;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.UUID;
