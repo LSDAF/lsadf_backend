@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.table.game.item;
+package com.lsadf.core.infra.persistence.table.game.inventory;
 
 import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
-import static com.lsadf.core.infra.persistence.table.game.item.ItemEntity.ItemAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity.ItemAttributes.*;
 
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
@@ -32,19 +32,19 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ItemRepository extends CrudRepository<ItemEntity, UUID> {
-  @Query("select * from t_item_tgit where tgsa_id =:gameSaveId")
+  @Query("select * from t_item_tgit where tgme_id =:gameSaveId")
   Set<ItemEntity> findAllItemsByGameSaveId(UUID gameSaveId);
 
   @Query("select * from t_item_tgit where client_id =:clientId")
   Optional<ItemEntity> findItemByClientId(String clientId);
 
   @Modifying
-  @Query("delete from t_item_tgit where tgsa_id=:gameSaveId")
+  @Query("delete from t_item_tgit where tgme_id=:gameSaveId")
   void deleteAllItemsByGameSaveId(UUID gameSaveId);
 
   @SuppressWarnings("java:S107")
   @Query(
-      "insert into t_item_tgit (id, tgsa_id, client_id, blueprint_id, type, rarity, is_equipped, level, main_statistic, main_base_value) values (:id, :tgsa_id, :client_id, :blueprint_id, :type, :rarity, :is_equipped, :level, :main_statistic, :main_base_value) returning *")
+      "insert into t_item_tgit (id, tgme_id, client_id, blueprint_id, type, rarity, is_equipped, level, main_statistic, main_base_value) values (:id, :tgme_id, :client_id, :blueprint_id, :type, :rarity, :is_equipped, :level, :main_statistic, :main_base_value) returning *")
   ItemEntity createNewItemEntity(
       @Param(ID) UUID id,
       @Param(ITEM_GAME_SAVE_ID) UUID gameSaveId,
@@ -59,7 +59,7 @@ public interface ItemRepository extends CrudRepository<ItemEntity, UUID> {
 
   @SuppressWarnings("java:S107")
   @Query(
-      "insert into t_item_tgit (tgsa_id, client_id, blueprint_id, type, rarity, is_equipped, level, main_statistic, main_base_value) values (:tgsa_id, :client_id, :blueprint_id, :type, :rarity, :is_equipped, :level, :main_statistic, :main_base_value) returning *")
+      "insert into t_item_tgit (tgme_id, client_id, blueprint_id, type, rarity, is_equipped, level, main_statistic, main_base_value) values (:tgme_id, :client_id, :blueprint_id, :type, :rarity, :is_equipped, :level, :main_statistic, :main_base_value) returning *")
   ItemEntity createNewItemEntity(
       @Param(ITEM_GAME_SAVE_ID) UUID gameSaveId,
       @Param(ITEM_CLIENT_ID) String clientId,

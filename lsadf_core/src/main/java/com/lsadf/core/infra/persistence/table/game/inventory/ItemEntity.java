@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.table.game.item;
+package com.lsadf.core.infra.persistence.table.game.inventory;
 
 import static com.lsadf.core.infra.persistence.config.EntityAttributes.*;
-import static com.lsadf.core.infra.persistence.table.game.item.ItemEntity.ItemAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity.ItemAttributes.*;
 
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
@@ -83,7 +83,7 @@ public class ItemEntity implements Identifiable, Dateable {
   public static class ItemAttributes {
     public static final String ITEM_ENTITY = "t_item_tgit";
     public static final String ITEM_CLIENT_ID = "client_id";
-    public static final String ITEM_GAME_SAVE_ID = "tgsa_id";
+    public static final String ITEM_GAME_SAVE_ID = "tgme_id";
     public static final String ITEM_BLUEPRINT_ID = "blueprint_id";
     public static final String ITEM_TYPE = "type";
     public static final String ITEM_RARITY = "rarity";

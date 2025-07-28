@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.table.game.item;
+package com.lsadf.core.infra.persistence.table.game.inventory;
 
 import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
-import static com.lsadf.core.infra.persistence.table.game.item.AdditionalItemStatEntity.AdditionalStatsEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.inventory.AdditionalItemStatEntity.AdditionalStatsEntityAttributes.*;
 
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import java.util.List;
