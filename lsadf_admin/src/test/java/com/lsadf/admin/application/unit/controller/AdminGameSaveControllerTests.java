@@ -21,13 +21,14 @@ import static org.mockito.ArgumentMatchers.any;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.admin.application.game.AdminGameSaveControllerImpl;
-import com.lsadf.core.application.game.game_save.GameSaveService;
+import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.request.game.game_save.GameSaveSortingParameter;
-import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.game_save.update.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
+import com.lsadf.core.infra.web.request.game.save.GameSaveSortingParameter;
+import com.lsadf.core.infra.web.request.game.save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.save.update.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
@@ -151,13 +152,15 @@ class AdminGameSaveControllerTests {
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 100L, 100L, 100L);
     StageRequest stageRequest = new StageRequest(1L, 10L);
+    GameMetadataRequest metadataRequest =
+        new GameMetadataRequest(
+            UUID.fromString("3ab69f45-de06-4fce-bded-21d989fdad73"), "test@test.com", "test");
     AdminGameSaveCreationRequest request =
         AdminGameSaveCreationRequest.builder()
             .characteristics(characteristicsRequest)
             .currency(currencyRequest)
             .stage(stageRequest)
-            .nickname("test")
-            .id(UUID.fromString("3ab69f45-de06-4fce-bded-21d989fdad73"))
+            .metadata(metadataRequest)
             .build();
 
     // when
@@ -178,13 +181,14 @@ class AdminGameSaveControllerTests {
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 100L, 100L, 100L);
     StageRequest stageRequest = new StageRequest(1L, 10L);
+    GameMetadataRequest metadataRequest =
+        new GameMetadataRequest(UUID.randomUUID(), "test@test.com", "test");
     AdminGameSaveCreationRequest request =
         AdminGameSaveCreationRequest.builder()
             .characteristics(characteristicsRequest)
             .currency(currencyRequest)
             .stage(stageRequest)
-            .nickname("test")
-            .id(UUID.fromString("3ab69f45-de06-4fce-bded-21d989fdad73"))
+            .metadata(metadataRequest)
             .build();
     // when
     mockMvc
@@ -285,11 +289,12 @@ class AdminGameSaveControllerTests {
       StageRequest stage) {
     // given
 
+    GameMetadataRequest metadataRequest =
+        new GameMetadataRequest(UUID.fromString(id), userEmail, nickname);
+
     AdminGameSaveCreationRequest request =
         AdminGameSaveCreationRequest.builder()
-            .id(id != null ? UUID.fromString(id) : null)
-            .userEmail(userEmail)
-            .nickname(nickname)
+            .metadata(metadataRequest)
             .characteristics(characteristics)
             .currency(currency)
             .stage(stage)
@@ -367,11 +372,11 @@ class AdminGameSaveControllerTests {
     if (id != null) {
       uuid = UUID.fromString(id);
     }
+
+    GameMetadataRequest metadataRequest = new GameMetadataRequest(uuid, userEmail, nickname);
     AdminGameSaveCreationRequest request =
         AdminGameSaveCreationRequest.builder()
-            .id(uuid)
-            .userEmail(userEmail)
-            .nickname(nickname)
+            .metadata(metadataRequest)
             .characteristics(characteristics)
             .currency(currency)
             .stage(stage)

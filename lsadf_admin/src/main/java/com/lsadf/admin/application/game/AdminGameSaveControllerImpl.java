@@ -17,16 +17,16 @@ package com.lsadf.admin.application.game;
 
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
-import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.domain.game.game_save.GameSave;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.infra.util.StreamUtils;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.request.game.game_save.GameSaveSortingParameter;
-import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.game_save.update.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.request.game.save.GameSaveSortingParameter;
+import com.lsadf.core.infra.web.request.game.save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.save.update.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponseMapper;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponseMapper;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;

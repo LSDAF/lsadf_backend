@@ -130,7 +130,7 @@ Feature: Admin GameSave Controller BDD tests
       | paul.ochon@test.com | toto1234 |
     And the user requests the admin endpoint to create a new game save with the following AdminGameSaveCreationRequest
       | id                                   | userEmail                 | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.kalkbrenner@test.com | 1    | 2       | 3       | 4        | 7            | 8        | newgame  | 100    | 200        | 300        | 400    | 500        |
+      | f0347e5c-6add-4b5c-a73a-74c4cff2e72a | paul.kalkbrenner@test.com | 1    | 2       | 3       | 4        | 7            | 8        | newgame  | 100    | 200        | 300        | 400    | 500        |
 
     Then the response status code should be 404
 

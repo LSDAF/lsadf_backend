@@ -16,10 +16,10 @@
 package com.lsadf.admin.application.ui.game_save;
 
 import com.lsadf.admin.util.FilterUtils;
-import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.domain.game.game_save.GameSave;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.infra.util.StreamUtils;
-import com.lsadf.core.infra.web.request.game.game_save.GameSaveSortingParameter;
+import com.lsadf.core.infra.web.request.game.save.GameSaveSortingParameter;
 import com.vaadin.hilla.BrowserCallable;
 import com.vaadin.hilla.Nonnull;
 import com.vaadin.hilla.Nullable;
