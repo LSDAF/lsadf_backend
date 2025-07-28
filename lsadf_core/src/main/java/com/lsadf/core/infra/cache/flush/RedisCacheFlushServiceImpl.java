@@ -15,13 +15,13 @@
  */
 package com.lsadf.core.infra.cache.flush;
 
-import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.application.game.stage.StageService;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import java.util.Map;
