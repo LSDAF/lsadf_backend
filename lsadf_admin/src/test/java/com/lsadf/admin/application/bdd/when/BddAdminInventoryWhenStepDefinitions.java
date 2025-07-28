@@ -15,11 +15,11 @@
  */
 package com.lsadf.admin.application.bdd.when;
 
-import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
-import com.lsadf.admin.application.bdd.BddUtils;
+import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.inventory.AdminInventoryController;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;

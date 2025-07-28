@@ -15,11 +15,11 @@
  */
 package com.lsadf.admin.application.bdd.then;
 
-import static com.lsadf.admin.application.bdd.BddFieldConstants.Item.CLIENT_ID;
+import static com.lsadf.core.bdd.BddFieldConstants.Item.CLIENT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
-import com.lsadf.admin.application.bdd.BddUtils;
+import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;

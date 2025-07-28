@@ -13,33 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.bdd;
+package com.lsadf.core.bdd;
 
-import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.response.user.UserInfoResponse;
 import com.lsadf.core.infra.web.response.user.UserResponse;
 import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.ParameterizedTypeReference;
 
-/** Utility class for building ParameterizedTypeReferences */
+/**
+ * Consolidated utility class for building ParameterizedTypeReferences Contains methods used across
+ * all modules for BDD testing
+ */
 @UtilityClass
 public class ParameterizedTypeReferenceUtils {
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of UserInfo
+   * Builds a ParameterizedTypeReference for a ApiResponse of UserInfoResponse
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<UserInfo>>
+  public static ParameterizedTypeReference<ApiResponse<UserInfoResponse>>
       buildParameterizedUserInfoResponse() {
     return new ParameterizedTypeReference<>() {};
   }
@@ -65,21 +68,21 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of Characteristics
+   * Builds a ParameterizedTypeReference for a ApiResponse of CharacteristicsResponse
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<Characteristics>>
+  public static ParameterizedTypeReference<ApiResponse<CharacteristicsResponse>>
       buildParameterizedCharacteristicsResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of Currency
+   * Builds a ParameterizedTypeReference for a ApiResponse of CurrencyResponse
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<Currency>>
+  public static ParameterizedTypeReference<ApiResponse<CurrencyResponse>>
       buildParameterizedCurrencyResponse() {
     return new ParameterizedTypeReference<>() {};
   }
@@ -87,8 +90,8 @@ public class ParameterizedTypeReferenceUtils {
   /**
    * Builds a ParameterizedTypeReference for a ApiResponse containing a Set of ItemResponse objects.
    *
-   * @return a ParameterizedTypeReference representing a ApiResponse with a Set of Item objects as
-   *     its data type
+   * @return ParameterizedTypeReference representing a response with a Set of ItemResponse objects
+   *     wrapped in a ApiResponse.
    */
   public static ParameterizedTypeReference<ApiResponse<Set<ItemResponse>>>
       buildParameterizedItemSetResponse() {
@@ -106,11 +109,12 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of Stage
+   * Builds a ParameterizedTypeReference for a ApiResponse of StageResponse
    *
    * @return ParameterizedTypeReference
    */
-  public static ParameterizedTypeReference<ApiResponse<Stage>> buildParameterizedStageResponse() {
+  public static ParameterizedTypeReference<ApiResponse<StageResponse>>
+      buildParameterizedStageResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
@@ -124,7 +128,7 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of List of GameSave
+   * Builds a ParameterizedTypeReference for a ApiResponse of List of GameSaveResponse
    *
    * @return ParameterizedTypeReference
    */
@@ -134,7 +138,7 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of List of GameMetadataEntity
+   * Builds a ParameterizedTypeReference for a ApiResponse of Boolean
    *
    * @return ParameterizedTypeReference
    */
@@ -144,17 +148,17 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of GlobalInfo
+   * Builds a ParameterizedTypeReference for a ApiResponse of GlobalInfoResponse
    *
    * @return ParameterizedTypeReference
    */
   public static ParameterizedTypeReference<ApiResponse<GlobalInfoResponse>>
-      buildParameterizedGlobalInfoResponse() {
+      buildParameterizedGlobalInfoDtoResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 
   /**
-   * Builds a ParameterizedTypeReference for an ApiResponse containing a list of UserResponse
+   * Builds a ParameterizedTypeReference for a ApiResponse containing a list of UserResponse
    * objects.
    *
    * @return a ParameterizedTypeReference representing an ApiResponse with a List of UserResponse
@@ -166,12 +170,12 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of User
+   * Builds a ParameterizedTypeReference for a ApiResponse of UserResponse
    *
    * @return ParameterizedTypeReference
    */
   public static ParameterizedTypeReference<ApiResponse<UserResponse>>
-      buildParamaterizedUserResponse() {
+      buildParamaterizedUserDtoResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 }

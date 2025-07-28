@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.bdd;
+package com.lsadf.core.bdd;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-/** Constants for the fields in the BDD scenarios */
+/**
+ * Constants for the fields in the BDD scenarios
+ * Consolidated from lsadf-api and lsadf-admin modules
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BddFieldConstants {
 
@@ -51,7 +54,7 @@ public class BddFieldConstants {
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class Characteristics {
-    public static final String ID = BddFieldConstants.ID;
+    public static final String ID = "id";
     public static final String ATTACK = "attack";
     public static final String CRIT_CHANCE = "critChance";
     public static final String CRIT_DAMAGE = "critDamage";
@@ -61,7 +64,7 @@ public class BddFieldConstants {
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class Currency {
-    public static final String ID = BddFieldConstants.ID;
+    public static final String ID = "id";
     public static final String GOLD = "gold";
     public static final String DIAMOND = "diamond";
     public static final String EMERALD = "emerald";
@@ -94,6 +97,7 @@ public class BddFieldConstants {
   public static final class Item {
     public static final String ID = BddFieldConstants.ID;
     public static final String CLIENT_ID = "clientId";
+    public static final String GAME_SAVE_ID = "gameSaveId";
     public static final String BLUEPRINT_ID = "blueprintId";
     public static final String ITEM_TYPE = "itemType";
     public static final String ITEM_RARITY = "itemRarity";
@@ -124,7 +128,16 @@ public class BddFieldConstants {
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
     public static final String PASSWORD = "password";
+    public static final String EMAIL = "email";
     public static final String USERNAME = "username";
+  }
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class UserInfo {
+    public static final String NAME = "name";
+    public static final String EMAIL = "email";
+    public static final String ROLES = "roles";
+    public static final String VERIFIED = "verified";
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)

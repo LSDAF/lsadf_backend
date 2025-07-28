@@ -17,9 +17,9 @@ package com.lsadf.application.bdd.given;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.lsadf.application.bdd.BddFieldConstants;
+import com.lsadf.core.bdd.BddFieldConstants;
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.application.bdd.CacheEntryType;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;

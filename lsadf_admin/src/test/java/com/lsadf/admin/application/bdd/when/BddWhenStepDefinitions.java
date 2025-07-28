@@ -16,19 +16,16 @@
 package com.lsadf.admin.application.bdd.when;
 
 import static com.lsadf.admin.application.auth.AdminAuthController.Constants.ApiPaths.*;
-import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.*;
-import static com.lsadf.admin.application.user.AdminUserController.Constants.ApiPaths.ME;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 import com.lsadf.admin.application.bdd.BddLoader;
-import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.admin.application.bdd.CacheEntryType;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.AdminGameSaveController;
-import com.lsadf.core.domain.user.UserInfo;
+import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.infra.web.request.game.save.update.GameSaveNicknameUpdateRequest;
-import com.lsadf.core.infra.web.request.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -143,39 +140,6 @@ public class BddWhenStepDefinitions extends BddLoader {
         jwtAuthenticationResponseStack.push(jwtAuthentication);
       }
       log.info("Response: {}", result);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When(
-      "^the user requests the endpoint to register a user with the following SimpleUserCreationRequest$")
-  public void
-      when_the_user_request_the_endpoint_to_register_a_user_with_the_following_UserCreationRequest(
-          DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    // it should have only one line
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-    SimpleUserCreationRequest simpleUserCreationRequest = BddUtils.mapToUserCreationRequest(row);
-    String fullPath = AdminApiPathConstants.AUTH + REGISTER;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    HttpEntity<SimpleUserCreationRequest> request =
-        BddUtils.buildHttpEntity(simpleUserCreationRequest);
-    try {
-
-      ResponseEntity<ApiResponse<UserInfo>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.POST, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfo> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
     } catch (Exception e) {
       exceptionStack.push(e);
     }
@@ -298,49 +262,6 @@ public class BddWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedVoidResponse());
       ApiResponse<Void> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^the user requests the endpoint to get his UserInfo with no token$")
-  public void when_the_user_requests_the_endpoint_to_get_his_user_info_with_no_token() {
-    String fullPath = AdminApiPathConstants.ADMIN_USER + ME;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-      HttpEntity<Void> request = new HttpEntity<>(new HttpHeaders());
-      ResponseEntity<ApiResponse<UserInfo>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfo> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^the user requests the endpoint to get his UserInfo$")
-  public void when_the_user_requests_the_endpoint_to_get_his_user_info() {
-    String fullPath = AdminApiPathConstants.ADMIN_USER + ME;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-
-      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
-      String token = jwtAuthenticationResponse.accessToken();
-      HttpHeaders headers = new HttpHeaders();
-      headers.setBearerAuth(token);
-      HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<UserInfo>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfo> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 

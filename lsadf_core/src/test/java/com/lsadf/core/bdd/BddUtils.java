@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.bdd;
+package com.lsadf.core.bdd;
 
-import static com.lsadf.application.bdd.BddFieldConstants.Item.*;
+import static com.lsadf.core.bdd.BddFieldConstants.Item.*;
 
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
@@ -51,11 +51,14 @@ import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.request.user.update.SimpleUserUpdateRequest;
+import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.response.game.save.metadata.GameMetadataResponse;
 import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
+import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.response.user.UserResponse;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
@@ -70,7 +73,10 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-/** Utility class for BDD tests */
+/**
+ * Consolidated utility class for BDD tests
+ * Contains common mapping methods used across all modules
+ */
 @UtilityClass
 public class BddUtils {
 
@@ -336,6 +342,36 @@ public class BddUtils {
   }
 
   /**
+   * Maps a row of user data represented as a map to a UserResponse object.
+   *
+   * @param row a map containing user data with keys corresponding to user attributes such as
+   *     username, first name, last name, enabled status, email verification status, and roles.
+   * @return a UserResponse object constructed using the provided user data from the map.
+   */
+  public static UserResponse mapToUserResponse(Map<String, String> row) {
+    String email = row.get(BddFieldConstants.User.USERNAME);
+    String firstName = row.get(BddFieldConstants.User.FIRST_NAME);
+    String lastName = row.get(BddFieldConstants.User.LAST_NAME);
+    String enabled = row.get(BddFieldConstants.User.ENABLED);
+    String verified = row.get(BddFieldConstants.User.EMAIL_VERIFIED);
+    String userRoles = row.get(BddFieldConstants.User.ROLES);
+
+    List<String> roles = Arrays.stream(userRoles.split(COMMA)).toList();
+
+    boolean enabledBoolean = Boolean.parseBoolean(enabled);
+    boolean verifiedBoolean = Boolean.parseBoolean(verified);
+
+    return UserResponse.builder()
+        .username(email)
+        .firstName(firstName)
+        .lastName(lastName)
+        .enabled(enabledBoolean)
+        .emailVerified(verifiedBoolean)
+        .userRoles(roles)
+        .build();
+  }
+
+  /**
    * Maps a row from a BDD table to a GameSave
    *
    * @param row row from BDD table
@@ -393,6 +429,22 @@ public class BddUtils {
   }
 
   /**
+   * Maps a given row of game metadata represented as a Map to a GameMetadataResponse object.
+   *
+   * @param row a Map containing game metadata where keys are strings representing field names and
+   *     values are the corresponding data values.
+   * @return a GameMetadataResponse object constructed from the provided metadata Map.
+   */
+  public static GameMetadataResponse mapToGameMetadataResponse(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.GameSave.ID);
+    UUID uuid = (id != null) ? UUID.fromString(id) : null;
+    String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
+    String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
+
+    return new GameMetadataResponse(uuid, null, null, userEmail, nickname);
+  }
+
+  /**
    * Maps a row from a BDD table to a Characteristics POJO
    *
    * @param row row from BDD table
@@ -412,6 +464,31 @@ public class BddUtils {
     long resistanceLong = resistance == null ? 1 : Long.parseLong(resistance);
 
     return new Characteristics(
+        attackLong, critChanceLong, critDamageLong, healthLong, resistanceLong);
+  }
+
+  /**
+   * Maps a row of characteristics data to a {@code CharacteristicsResponse} object.
+   *
+   * @param row a map where keys represent characteristics fields and values represent the
+   *     corresponding data as strings
+   * @return a {@code CharacteristicsResponse} object containing parsed and mapped characteristics
+   *     data, or null for fields that are absent or cannot be parsed
+   */
+  public static CharacteristicsResponse mapToCharacteristicsResponse(Map<String, String> row) {
+    String attack = row.get(BddFieldConstants.Characteristics.ATTACK);
+    String critChance = row.get(BddFieldConstants.Characteristics.CRIT_CHANCE);
+    String critDamage = row.get(BddFieldConstants.Characteristics.CRIT_DAMAGE);
+    String health = row.get(BddFieldConstants.Characteristics.HEALTH);
+    String resistance = row.get(BddFieldConstants.Characteristics.RESISTANCE);
+
+    Long attackLong = attack == null ? null : Long.parseLong(attack);
+    Long critChanceLong = critChance == null ? null : Long.parseLong(critChance);
+    Long critDamageLong = critDamage == null ? null : Long.parseLong(critDamage);
+    Long healthLong = health == null ? null : Long.parseLong(health);
+    Long resistanceLong = resistance == null ? null : Long.parseLong(resistance);
+
+    return new CharacteristicsResponse(
         attackLong, critChanceLong, critDamageLong, healthLong, resistanceLong);
   }
 
@@ -458,31 +535,6 @@ public class BddUtils {
   }
 
   /**
-   * Maps a row of characteristics data to a {@code CharacteristicsResponse} object.
-   *
-   * @param row a map where keys represent characteristics fields and values represent the
-   *     corresponding data as strings
-   * @return a {@code CharacteristicsResponse} object containing parsed and mapped characteristics
-   *     data, or null for fields that are absent or cannot be parsed
-   */
-  public static CharacteristicsResponse mapToCharacteristicsResponse(Map<String, String> row) {
-    String attack = row.get(BddFieldConstants.Characteristics.ATTACK);
-    String critChance = row.get(BddFieldConstants.Characteristics.CRIT_CHANCE);
-    String critDamage = row.get(BddFieldConstants.Characteristics.CRIT_DAMAGE);
-    String health = row.get(BddFieldConstants.Characteristics.HEALTH);
-    String resistance = row.get(BddFieldConstants.Characteristics.RESISTANCE);
-
-    Long attackLong = attack == null ? null : Long.parseLong(attack);
-    Long critChanceLong = critChance == null ? null : Long.parseLong(critChance);
-    Long critDamageLong = critDamage == null ? null : Long.parseLong(critDamage);
-    Long healthLong = health == null ? null : Long.parseLong(health);
-    Long resistanceLong = resistance == null ? null : Long.parseLong(resistance);
-
-    return new CharacteristicsResponse(
-        attackLong, critChanceLong, critDamageLong, healthLong, resistanceLong);
-  }
-
-  /**
    * Maps a row from a BDD table to an Item
    *
    * @param row row from BDD table
@@ -519,6 +571,53 @@ public class BddUtils {
 
     return Item.builder()
         .id(uuid)
+        .clientId(clientId)
+        .itemType(itemType)
+        .blueprintId(blueprintId)
+        .itemRarity(itemRarity)
+        .isEquipped(isEquipped)
+        .level(level)
+        .mainStat(mainStat)
+        .additionalStats(additionalStats)
+        .build();
+  }
+
+  /**
+   * Maps a row from a BDD table to an ItemResponse
+   *
+   * @param row row from BDD table
+   * @return ItemResponse
+   */
+  public static ItemResponse mapToItemResponse(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.Item.ID);
+    String clientId = row.get(BddFieldConstants.Item.CLIENT_ID);
+    ItemType itemType = ItemType.fromString(row.get(BddFieldConstants.Item.ITEM_TYPE));
+    String blueprintId = row.get(BddFieldConstants.Item.BLUEPRINT_ID);
+    ItemRarity itemRarity = ItemRarity.fromString(row.get(BddFieldConstants.Item.ITEM_RARITY));
+    Boolean isEquipped = Boolean.parseBoolean(row.get(BddFieldConstants.Item.IS_EQUIPPED));
+    Integer level = Integer.parseInt(row.get(BddFieldConstants.Item.LEVEL));
+
+    ItemStat mainStat =
+        BddUtils.mapToItemStat(
+            row.get(BddFieldConstants.Item.MAIN_STAT_STATISTIC),
+            row.get(BddFieldConstants.Item.MAIN_STAT_BASE_VALUE));
+    ItemStat additionalStat1 =
+        BddUtils.mapToItemStat(
+            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_STATISTIC),
+            row.get(ADDITIONAL_STAT_1_BASE_VALUE));
+    ItemStat additionalStat2 =
+        BddUtils.mapToItemStat(
+            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_STATISTIC),
+            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_BASE_VALUE));
+    ItemStat additionalStat3 =
+        BddUtils.mapToItemStat(
+            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_STATISTIC),
+            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_BASE_VALUE));
+
+    List<ItemStat> additionalStats = List.of(additionalStat1, additionalStat2, additionalStat3);
+
+    return ItemResponse.builder()
+        .id(id)
         .clientId(clientId)
         .itemType(itemType)
         .blueprintId(blueprintId)
@@ -691,22 +790,6 @@ public class BddUtils {
   }
 
   /**
-   * Maps a given row of game metadata represented as a Map to a GameMetadataResponse object.
-   *
-   * @param row a Map containing game metadata where keys are strings representing field names and
-   *     values are the corresponding data values.
-   * @return a GameMetadataResponse object constructed from the provided metadata Map.
-   */
-  public static GameMetadataResponse mapToGameMetadataResponse(Map<String, String> row) {
-    String id = row.get(BddFieldConstants.GameSave.ID);
-    UUID uuid = (id != null) ? UUID.fromString(id) : null;
-    String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
-    String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
-
-    return new GameMetadataResponse(uuid, null, null, userEmail, nickname);
-  }
-
-  /**
    * Maps a row from a BDD table to a StageResponse object. Extracts "CURRENT_STAGE" and "MAX_STAGE"
    * values from the provided map, converts them to long, and builds a StageResponse instance.
    *
@@ -740,7 +823,64 @@ public class BddUtils {
       Map<String, String> row) {
     String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
 
-    return AdminGameSaveUpdateRequest.builder().nickname(nickname).build();
+    // Currency (nullable)
+    String gold = row.get(BddFieldConstants.Currency.GOLD);
+    String diamond = row.get(BddFieldConstants.Currency.DIAMOND);
+    String emerald = row.get(BddFieldConstants.Currency.EMERALD);
+    String amethyst = row.get(BddFieldConstants.Currency.AMETHYST);
+    Currency currency =
+        Currency.builder()
+            .gold(gold != null ? Long.parseLong(gold) : null)
+            .amethyst(amethyst != null ? Long.parseLong(amethyst) : null)
+            .diamond(diamond != null ? Long.parseLong(diamond) : null)
+            .emerald(emerald != null ? Long.parseLong(emerald) : null)
+            .build();
+    if (currency.gold() == null && currency.amethyst() == null && currency.diamond() == null) {
+      currency = null;
+    }
+
+    // Stage
+    String currentStage = row.get(BddFieldConstants.Stage.CURRENT_STAGE);
+    String maxStage = row.get(BddFieldConstants.Stage.MAX_STAGE);
+    Stage stage =
+        Stage.builder()
+            .currentStage(currentStage != null ? Long.parseLong(currentStage) : null)
+            .maxStage(maxStage != null ? Long.parseLong(maxStage) : null)
+            .build();
+
+    if (stage.currentStage() == null && stage.maxStage() == null) {
+      stage = null;
+    }
+
+    // Characteristics
+    String attack = row.get(BddFieldConstants.Characteristics.ATTACK);
+    String critChance = row.get(BddFieldConstants.Characteristics.CRIT_CHANCE);
+    String critDamage = row.get(BddFieldConstants.Characteristics.CRIT_DAMAGE);
+    String health = row.get(BddFieldConstants.Characteristics.HEALTH);
+    String resistance = row.get(BddFieldConstants.Characteristics.RESISTANCE);
+    Characteristics characteristics =
+        Characteristics.builder()
+            .attack(attack != null ? Long.parseLong(attack) : null)
+            .critChance(critChance != null ? Long.parseLong(critChance) : null)
+            .critDamage(critDamage != null ? Long.parseLong(critDamage) : null)
+            .health(health != null ? Long.parseLong(health) : null)
+            .resistance(resistance != null ? Long.parseLong(resistance) : null)
+            .build();
+
+    if (characteristics.attack() == null
+        || characteristics.health() == null
+        || characteristics.critChance() == null
+        || characteristics.critDamage() == null
+        || characteristics.resistance() == null) {
+      characteristics = null;
+    }
+
+    return AdminGameSaveUpdateRequest.builder()
+        .nickname(nickname)
+        .characteristics(characteristics)
+        .currency(currency)
+        .stage(stage)
+        .build();
   }
 
   /**
@@ -900,6 +1040,25 @@ public class BddUtils {
     Instant nowInstant = Instant.parse(now);
 
     return new GlobalInfo(nowInstant, nbGameSavesLong, nbUsersLong);
+  }
+
+  /**
+   * Maps a row from a BDD table to a GlobalInfoResponse
+   *
+   * @param row row from BDD table
+   * @return GlobalInfoResponse
+   */
+  public static GlobalInfoResponse mapToGlobalInfoResponse(Map<String, String> row) {
+    String nbGameSaves = row.get(BddFieldConstants.GlobalInfo.GAME_SAVE_COUNTER);
+    String nbUsers = row.get(BddFieldConstants.GlobalInfo.USER_COUNTER);
+    String now = row.get(BddFieldConstants.GlobalInfo.NOW);
+
+    Long nbGameSavesLong = Long.parseLong(nbGameSaves);
+    Long nbUsersLong = Long.parseLong(nbUsers);
+
+    Instant nowInstant = Instant.parse(now);
+
+    return new GlobalInfoResponse(nowInstant, nbGameSavesLong, nbUsersLong);
   }
 
   /**

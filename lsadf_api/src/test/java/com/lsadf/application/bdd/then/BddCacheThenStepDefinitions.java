@@ -15,12 +15,12 @@
  */
 package com.lsadf.application.bdd.then;
 
-import static com.lsadf.application.bdd.BddFieldConstants.CurrencyCacheEntry.*;
-import static com.lsadf.application.bdd.BddFieldConstants.GameSaveOwnershipCacheEntry.USER_EMAIL;
+import static com.lsadf.core.bdd.BddFieldConstants.CurrencyCacheEntry.*;
+import static com.lsadf.core.bdd.BddFieldConstants.GameSaveOwnershipCacheEntry.USER_EMAIL;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.application.bdd.CacheEntryType;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;

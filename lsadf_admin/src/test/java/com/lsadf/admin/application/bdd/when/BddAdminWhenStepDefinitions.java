@@ -15,7 +15,7 @@
  */
 package com.lsadf.admin.application.bdd.when;
 
-import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static com.lsadf.admin.application.cache.AdminCacheController.Constants.ApiPaths.*;
 import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_GAME_SAVES;
 import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_USERS;
@@ -23,7 +23,7 @@ import static com.lsadf.admin.application.user.AdminUserController.Constants.Api
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
-import com.lsadf.admin.application.bdd.BddUtils;
+import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.admin.application.user.AdminUserController;
@@ -67,7 +67,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpEntity<Void> request = new HttpEntity<>(headers);
       ResponseEntity<ApiResponse<GlobalInfoResponse>> result =
           testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedGlobalInfoResponse());
+              url, HttpMethod.GET, request, buildParameterizedGlobalInfoDtoResponse());
       ApiResponse<GlobalInfoResponse> body = result.getBody();
       globalInfoResponseStack.push(body.data());
       log.info("Response: {}", result);
@@ -186,7 +186,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
       ResponseEntity<ApiResponse<UserResponse>> result =
-          testRestTemplate.exchange(url, HttpMethod.GET, request, buildParamaterizedUserResponse());
+          testRestTemplate.exchange(url, HttpMethod.GET, request, buildParamaterizedUserDtoResponse());
       ApiResponse<UserResponse> body = result.getBody();
       userResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);
@@ -240,7 +240,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
       ResponseEntity<ApiResponse<UserResponse>> result =
-          testRestTemplate.exchange(url, HttpMethod.GET, request, buildParamaterizedUserResponse());
+          testRestTemplate.exchange(url, HttpMethod.GET, request, buildParamaterizedUserDtoResponse());
       ApiResponse<UserResponse> body = result.getBody();
       userResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);
@@ -340,7 +340,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
           new HttpEntity<>(adminUserUpdateRequest, headers);
       ResponseEntity<ApiResponse<UserResponse>> result =
           testRestTemplate.exchange(
-              url, HttpMethod.POST, request, buildParamaterizedUserResponse());
+              url, HttpMethod.POST, request, buildParamaterizedUserDtoResponse());
       ApiResponse<UserResponse> body = result.getBody();
       userResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);
@@ -376,7 +376,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       HttpEntity<AdminUserCreationRequest> request = new HttpEntity<>(adminRequest, headers);
       ResponseEntity<ApiResponse<UserResponse>> result =
           testRestTemplate.exchange(
-              url, HttpMethod.POST, request, buildParamaterizedUserResponse());
+              url, HttpMethod.POST, request, buildParamaterizedUserDtoResponse());
       ApiResponse<UserResponse> body = result.getBody();
       userResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);

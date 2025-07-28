@@ -15,12 +15,12 @@
  */
 package com.lsadf.application.bdd.when;
 
-import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.buildParameterizedCharacteristicsResponse;
-import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedCharacteristicsResponse;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.characteristics.CharacteristicsController;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;

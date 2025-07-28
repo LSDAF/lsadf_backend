@@ -15,13 +15,13 @@
  */
 package com.lsadf.application.bdd.when;
 
-import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static com.lsadf.application.controller.auth.AuthController.Constants.ApiPaths.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.awaitility.Awaitility.await;
 
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.application.bdd.BddUtils;
+import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.application.bdd.CacheEntryType;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.game_save.GameSaveController;
