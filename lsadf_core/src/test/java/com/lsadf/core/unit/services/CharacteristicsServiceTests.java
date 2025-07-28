@@ -27,8 +27,8 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsServi
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsRepository;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;

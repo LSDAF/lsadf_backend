@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.table.game.characteristics;
+package com.lsadf.core.infra.persistence.table.game.save.characteristics;
 
 import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
-import static com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
 
 import com.lsadf.core.infra.persistence.Identifiable;
 import java.io.Serial;

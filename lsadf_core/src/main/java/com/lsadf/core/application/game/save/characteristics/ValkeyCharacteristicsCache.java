@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.characteristics;
+package com.lsadf.core.application.game.save.characteristics;
 
 import static com.lsadf.core.infra.cache.CacheUtils.clearCache;
 import static com.lsadf.core.infra.cache.CacheUtils.getAllEntries;
 import static com.lsadf.core.infra.cache.RedisConstants.CHARACTERISTICS;
 import static com.lsadf.core.infra.cache.RedisConstants.CHARACTERISTICS_HISTO;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.ValkeyCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
@@ -82,23 +82,25 @@ public class ValkeyCharacteristicsCache extends ValkeyCache<Characteristics>
 
   private static Characteristics mergeCharacteristics(
       Characteristics toUpdate, Characteristics newCharacteristics) {
-    if (newCharacteristics.getAttack() != null) {
-      toUpdate.setAttack(newCharacteristics.getAttack());
-    }
-    if (newCharacteristics.getCritChance() != null) {
-      toUpdate.setCritChance(newCharacteristics.getCritChance());
-    }
-    if (newCharacteristics.getCritDamage() != null) {
-      toUpdate.setCritDamage(newCharacteristics.getCritDamage());
-    }
-    if (newCharacteristics.getHealth() != null) {
-      toUpdate.setHealth(newCharacteristics.getHealth());
-    }
-    if (newCharacteristics.getResistance() != null) {
-      toUpdate.setResistance(newCharacteristics.getResistance());
-    }
+    var builder = Characteristics.builder();
+    builder.attack(
+        newCharacteristics.attack() != null ? newCharacteristics.attack() : toUpdate.attack());
+    builder.critChance(
+        newCharacteristics.critChance() != null
+            ? newCharacteristics.critChance()
+            : toUpdate.critChance());
+    builder.critDamage(
+        newCharacteristics.critDamage() != null
+            ? newCharacteristics.critDamage()
+            : toUpdate.critDamage());
+    builder.health(
+        newCharacteristics.health() != null ? newCharacteristics.health() : toUpdate.health());
+    builder.resistance(
+        newCharacteristics.resistance() != null
+            ? newCharacteristics.resistance()
+            : toUpdate.resistance());
 
-    return toUpdate;
+    return builder.build();
   }
 
   /** {@inheritDoc} */
