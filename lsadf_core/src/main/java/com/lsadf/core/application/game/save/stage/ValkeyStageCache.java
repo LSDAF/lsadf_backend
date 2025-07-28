@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.stage;
+package com.lsadf.core.application.game.save.stage;
 
 import static com.lsadf.core.infra.cache.CacheUtils.clearCache;
 import static com.lsadf.core.infra.cache.CacheUtils.getAllEntries;
 import static com.lsadf.core.infra.cache.RedisConstants.STAGE;
 import static com.lsadf.core.infra.cache.RedisConstants.STAGE_HISTO;
 
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.ValkeyCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
@@ -75,13 +75,11 @@ public class ValkeyStageCache extends ValkeyCache<Stage> implements HistoCache<S
   }
 
   private static Stage mergeStages(Stage toUpdate, Stage newCurrency) {
-    if (newCurrency.getCurrentStage() != null) {
-      toUpdate.setCurrentStage(newCurrency.getCurrentStage());
-    }
-    if (newCurrency.getMaxStage() != null) {
-      toUpdate.setMaxStage(newCurrency.getMaxStage());
-    }
-    return toUpdate;
+    var builder = Stage.builder();
+    builder.currentStage(
+        newCurrency.currentStage() != null ? newCurrency.currentStage() : toUpdate.currentStage());
+    builder.maxStage(newCurrency.maxStage() != null ? newCurrency.maxStage() : toUpdate.maxStage());
+    return builder.build();
   }
 
   @Override

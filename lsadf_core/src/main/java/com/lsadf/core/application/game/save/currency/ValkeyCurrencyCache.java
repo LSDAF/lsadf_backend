@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.currency;
+package com.lsadf.core.application.game.save.currency;
 
 import static com.lsadf.core.infra.cache.CacheUtils.clearCache;
 import static com.lsadf.core.infra.cache.CacheUtils.getAllEntries;
 import static com.lsadf.core.infra.cache.RedisConstants.CURRENCY;
 import static com.lsadf.core.infra.cache.RedisConstants.CURRENCY_HISTO;
 
-import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.ValkeyCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
@@ -79,19 +79,12 @@ public class ValkeyCurrencyCache extends ValkeyCache<Currency> implements HistoC
   }
 
   private static Currency mergeCurrencies(Currency toUpdate, Currency newCurrency) {
-    if (newCurrency.getGold() != null) {
-      toUpdate.setGold(newCurrency.getGold());
-    }
-    if (newCurrency.getDiamond() != null) {
-      toUpdate.setDiamond(newCurrency.getDiamond());
-    }
-    if (newCurrency.getEmerald() != null) {
-      toUpdate.setEmerald(newCurrency.getEmerald());
-    }
-    if (newCurrency.getAmethyst() != null) {
-      toUpdate.setAmethyst(newCurrency.getAmethyst());
-    }
-    return toUpdate;
+    var builder = Currency.builder();
+    builder.gold(newCurrency.gold() != null ? newCurrency.gold() : toUpdate.gold());
+    builder.diamond(newCurrency.diamond() != null ? newCurrency.diamond() : toUpdate.diamond());
+    builder.emerald(newCurrency.emerald() != null ? newCurrency.emerald() : toUpdate.emerald());
+    builder.amethyst(newCurrency.amethyst() != null ? newCurrency.amethyst() : toUpdate.amethyst());
+    return builder.build();
   }
 
   /** {@inheritDoc} */

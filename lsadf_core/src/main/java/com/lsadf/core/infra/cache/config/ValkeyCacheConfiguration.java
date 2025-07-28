@@ -15,14 +15,14 @@
  */
 package com.lsadf.core.infra.cache.config;
 
-import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.currency.CurrencyService;
 import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.application.game.stage.StageService;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.inventory.Inventory;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.flush.CacheFlushService;
@@ -155,7 +155,6 @@ public class ValkeyCacheConfiguration {
   public ValkeyKeyExpirationListener redisKeyExpirationListener(
       CharacteristicsService characteristicsService,
       CurrencyService currencyService,
-      InventoryService inventoryService,
       StageService stageService,
       RedisTemplate<String, Characteristics> characteristicsRedisTemplate,
       RedisTemplate<String, Currency> currencyRedisTemplate,
@@ -163,7 +162,6 @@ public class ValkeyCacheConfiguration {
     return new ValkeyKeyExpirationListener(
         characteristicsService,
         currencyService,
-        inventoryService,
         stageService,
         characteristicsRedisTemplate,
         currencyRedisTemplate,

@@ -17,13 +17,12 @@ package com.lsadf.core.infra.cache.listener;
 
 import static com.lsadf.core.infra.cache.RedisConstants.*;
 
-import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.currency.CurrencyService;
-import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.application.game.stage.StageService;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +46,6 @@ public class ValkeyKeyExpirationListener implements MessageListener {
   public ValkeyKeyExpirationListener(
       CharacteristicsService characteristicsService,
       CurrencyService currencyService,
-      InventoryService inventoryService,
       StageService stageService,
       RedisTemplate<String, Characteristics> characteristicsRedisTemplate,
       RedisTemplate<String, Currency> currencyRedisTemplate,
