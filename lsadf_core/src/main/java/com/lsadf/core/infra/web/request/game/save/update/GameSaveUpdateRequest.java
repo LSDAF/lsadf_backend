@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.request.game.game_save.update;
+package com.lsadf.core.infra.web.request.game.save.update;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.web.request.Request;
 
 /**

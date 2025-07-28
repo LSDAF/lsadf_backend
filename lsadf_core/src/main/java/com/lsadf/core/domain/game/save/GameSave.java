@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.game.game_save;
+package com.lsadf.core.domain.game.save;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.metadata.GameMetadata;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
-import java.util.Date;
-import java.util.UUID;
 import lombok.*;
 
 /** Game Save DTO */
@@ -33,15 +32,7 @@ public class GameSave implements Model {
 
   @Serial private static final long serialVersionUID = -2686370647354845265L;
 
-  private final UUID id;
-
-  private final String userEmail;
-
-  private final Date createdAt;
-
-  private final Date updatedAt;
-
-  private final String nickname;
+  private GameMetadata metadata;
 
   private Characteristics characteristics;
 

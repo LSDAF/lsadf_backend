@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.request.game.game_save;
+package com.lsadf.core.infra.web.request.game.save;
 
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
-import com.lsadf.core.domain.game.game_save.GameSave;
+import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.infra.web.JsonAttributes;
 import com.lsadf.core.infra.web.request.common.SortingParameter;
 import java.util.Comparator;
@@ -27,123 +27,128 @@ import org.springframework.data.domain.Sort;
 public enum GameSaveSortingParameter implements SortingParameter<GameSave> {
 
   // Game Save
-  ID(JsonAttributes.ID, ASC, Comparator.comparing(GameSave::getId)),
-  ID_DESC(JsonAttributes.ID, DESC, Comparator.comparing(GameSave::getId).reversed()),
-  USER_EMAIL(JsonAttributes.USER_EMAIL, ASC, Comparator.comparing(GameSave::getUserEmail)),
+  ID(JsonAttributes.ID, ASC, Comparator.comparing(gs -> gs.getMetadata().id())),
+  ID_DESC(
+      JsonAttributes.ID,
+      DESC,
+      ((gs1, gs2) -> gs2.getMetadata().id().compareTo(gs1.getMetadata().id()))),
+  USER_EMAIL(
+      JsonAttributes.USER_EMAIL, ASC, Comparator.comparing(gs -> gs.getMetadata().userEmail())),
   USER_EMAIL_DESC(
-      JsonAttributes.USER_EMAIL, DESC, Comparator.comparing(GameSave::getUserEmail).reversed()),
-  CREATED_AT(JsonAttributes.CREATED_AT, ASC, Comparator.comparing(GameSave::getCreatedAt)),
+      JsonAttributes.USER_EMAIL,
+      DESC,
+      ((gs1, gs2) -> gs2.getMetadata().userEmail().compareTo(gs1.getMetadata().userEmail()))),
+  CREATED_AT(
+      JsonAttributes.CREATED_AT, ASC, Comparator.comparing(gs -> gs.getMetadata().createdAt())),
   CREATED_AT_DESC(
-      JsonAttributes.CREATED_AT, DESC, Comparator.comparing(GameSave::getCreatedAt).reversed()),
-  UPDATED_AT(JsonAttributes.UPDATED_AT, ASC, Comparator.comparing(GameSave::getUpdatedAt)),
+      JsonAttributes.CREATED_AT,
+      DESC,
+      (gs1, gs2) -> gs2.getMetadata().createdAt().compareTo(gs1.getMetadata().createdAt())),
+  UPDATED_AT(
+      JsonAttributes.UPDATED_AT, ASC, Comparator.comparing(gs -> gs.getMetadata().updatedAt())),
   UPDATED_AT_DESC(
-      JsonAttributes.UPDATED_AT, DESC, Comparator.comparing(GameSave::getUpdatedAt).reversed()),
-  NICKNAME(JsonAttributes.NICKNAME, ASC, Comparator.comparing(GameSave::getNickname)),
+      JsonAttributes.UPDATED_AT,
+      DESC,
+      (gs1, gs2) -> gs2.getMetadata().updatedAt().compareTo(gs1.getMetadata().updatedAt())),
+  NICKNAME(JsonAttributes.NICKNAME, ASC, Comparator.comparing(gs -> gs.getMetadata().nickname())),
   NICKNAME_DESC(
-      JsonAttributes.NICKNAME, DESC, Comparator.comparing(GameSave::getNickname).reversed()),
+      JsonAttributes.NICKNAME,
+      DESC,
+      (gs1, gs2) -> gs2.getMetadata().nickname().compareTo(gs1.getMetadata().nickname())),
 
   // Currency
-  GOLD(
-      JsonAttributes.GOLD, ASC, Comparator.comparing(gameSave -> gameSave.getCurrency().getGold())),
+  GOLD(JsonAttributes.GOLD, ASC, Comparator.comparing(gameSave -> gameSave.getCurrency().gold())),
   GOLD_DESC(
       JsonAttributes.GOLD,
       DESC,
-      (o1, o2) -> o2.getCurrency().getGold().compareTo(o1.getCurrency().getGold())),
+      (o1, o2) -> o2.getCurrency().gold().compareTo(o1.getCurrency().gold())),
   DIAMOND(
       JsonAttributes.DIAMOND,
       ASC,
-      Comparator.comparing(gameSave -> gameSave.getCurrency().getDiamond())),
+      Comparator.comparing(gameSave -> gameSave.getCurrency().diamond())),
   DIAMOND_DESC(
       JsonAttributes.DIAMOND,
       DESC,
-      (o1, o2) -> o2.getCurrency().getDiamond().compareTo(o1.getCurrency().getDiamond())),
+      (o1, o2) -> o2.getCurrency().diamond().compareTo(o1.getCurrency().diamond())),
   EMERALD(
       JsonAttributes.EMERALD,
       ASC,
-      Comparator.comparing(gameSave -> gameSave.getCurrency().getEmerald())),
+      Comparator.comparing(gameSave -> gameSave.getCurrency().emerald())),
   EMERALD_DESC(
       JsonAttributes.EMERALD,
       DESC,
-      (o1, o2) -> o2.getCurrency().getEmerald().compareTo(o1.getCurrency().getEmerald())),
+      (o1, o2) -> o2.getCurrency().emerald().compareTo(o1.getCurrency().emerald())),
   AMETHYST(
       JsonAttributes.AMETHYST,
       ASC,
-      Comparator.comparing(gameSave -> gameSave.getCurrency().getAmethyst())),
+      Comparator.comparing(gameSave -> gameSave.getCurrency().amethyst())),
   AMETHYST_DESC(
       JsonAttributes.AMETHYST,
       DESC,
-      (o1, o2) -> o2.getCurrency().getAmethyst().compareTo(o1.getCurrency().getAmethyst())),
+      (o1, o2) -> o2.getCurrency().amethyst().compareTo(o1.getCurrency().amethyst())),
 
   // Stage
   CURRENT_STAGE(
       JsonAttributes.CURRENT_STAGE,
       ASC,
-      Comparator.comparing(gameSave -> gameSave.getStage().getCurrentStage())),
+      Comparator.comparing(gameSave -> gameSave.getStage().currentStage())),
   CURRENT_STAGE_DESC(
       JsonAttributes.CURRENT_STAGE,
       DESC,
-      (o1, o2) -> o2.getStage().getCurrentStage().compareTo(o1.getStage().getCurrentStage())),
+      (o1, o2) -> o2.getStage().currentStage().compareTo(o1.getStage().currentStage())),
   MAX_STAGE(
       JsonAttributes.MAX_STAGE,
       ASC,
-      Comparator.comparing(gameSave -> gameSave.getStage().getMaxStage())),
+      Comparator.comparing(gameSave -> gameSave.getStage().maxStage())),
   MAX_STAGE_DESC(
       JsonAttributes.MAX_STAGE,
       DESC,
-      (o1, o2) -> o2.getStage().getMaxStage().compareTo(o1.getStage().getMaxStage())),
+      (o1, o2) -> o2.getStage().maxStage().compareTo(o1.getStage().maxStage())),
 
   // Characteristics
   ATTACK(
       JsonAttributes.ATTACK,
       ASC,
-      Comparator.comparing(gameSave -> gameSave.getCharacteristics().getAttack())),
+      Comparator.comparing(gameSave -> gameSave.getCharacteristics().attack())),
   ATTACK_DESC(
       JsonAttributes.ATTACK,
       DESC,
-      (o1, o2) ->
-          o2.getCharacteristics().getAttack().compareTo(o1.getCharacteristics().getAttack())),
+      (o1, o2) -> o2.getCharacteristics().attack().compareTo(o1.getCharacteristics().attack())),
   CRIT_CHANCE(
       JsonAttributes.CRIT_CHANCE,
       ASC,
-      Comparator.comparing(gameSave -> gameSave.getCharacteristics().getCritChance())),
+      Comparator.comparing(gameSave -> gameSave.getCharacteristics().critChance())),
   CRIT_CHANCE_DESC(
       JsonAttributes.CRIT_CHANCE,
       DESC,
       (o1, o2) ->
-          o2.getCharacteristics()
-              .getCritChance()
-              .compareTo(o1.getCharacteristics().getCritChance())),
+          o2.getCharacteristics().critChance().compareTo(o1.getCharacteristics().critChance())),
   CRIT_DAMAGE(
       JsonAttributes.CRIT_DAMAGE,
       ASC,
-      Comparator.comparing(gameSave -> gameSave.getCharacteristics().getCritDamage())),
+      Comparator.comparing(gameSave -> gameSave.getCharacteristics().critDamage())),
   CRIT_DAMAGE_DESC(
       JsonAttributes.CRIT_DAMAGE,
       DESC,
       (o1, o2) ->
-          o2.getCharacteristics()
-              .getCritDamage()
-              .compareTo(o1.getCharacteristics().getCritDamage())),
+          o2.getCharacteristics().critDamage().compareTo(o1.getCharacteristics().critDamage())),
   HEALTH(
       JsonAttributes.HEALTH,
       ASC,
-      Comparator.comparing(gameSave -> gameSave.getCharacteristics().getHealth())),
+      Comparator.comparing(gameSave -> gameSave.getCharacteristics().health())),
   HEALTH_DESC(
       JsonAttributes.HEALTH,
       DESC,
-      (o1, o2) ->
-          o2.getCharacteristics().getHealth().compareTo(o1.getCharacteristics().getHealth())),
+      (o1, o2) -> o2.getCharacteristics().health().compareTo(o1.getCharacteristics().health())),
   RESISTANCE(
       JsonAttributes.RESISTANCE,
       ASC,
-      Comparator.comparing(gameSave -> gameSave.getCharacteristics().getResistance())),
+      Comparator.comparing(gameSave -> gameSave.getCharacteristics().resistance())),
   RESISTANCE_DESC(
       JsonAttributes.RESISTANCE,
       DESC,
       (o1, o2) ->
-          o2.getCharacteristics()
-              .getResistance()
-              .compareTo(o1.getCharacteristics().getResistance())),
+          o2.getCharacteristics().resistance().compareTo(o1.getCharacteristics().resistance())),
 
   // Misc
   NONE(null, null, null);

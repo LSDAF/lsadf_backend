@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.game_save;
+package com.lsadf.core.application.game.save;
 
-import com.lsadf.core.domain.game.game_save.GameSave;
+import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.infra.exception.AlreadyExistingGameSaveException;
 import com.lsadf.core.infra.exception.AlreadyTakenNicknameException;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.exception.http.UnauthorizedException;
-import com.lsadf.core.infra.web.request.game.game_save.creation.GameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveUpdateRequest;
+import com.lsadf.core.infra.web.request.game.save.creation.GameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.save.update.GameSaveUpdateRequest;
 import java.util.UUID;
 import java.util.stream.Stream;
 

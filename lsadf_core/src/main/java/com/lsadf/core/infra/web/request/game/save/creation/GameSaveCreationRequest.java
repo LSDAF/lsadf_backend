@@ -14,51 +14,38 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.request.game.game_save.creation;
+package com.lsadf.core.infra.web.request.game.save.creation;
 
 import com.lsadf.core.infra.web.request.Request;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
-import java.util.UUID;
 
 /**
- * Represents a request for creating a new game save. This interface defines the contract for
- * handling game save creation requests, including obtaining necessary details such as the user's
- * identifier, email, nickname, in-game characteristics, currency, and stage progress.
+ * Represents a game save creation request that encapsulates multiple components of a game save,
+ * including metadata, user characteristics, in-game currencies, and stage progress.
  *
- * <p>It extends the {@link Request} interface, ensuring compatibility with request handling
- * mechanisms.
+ * <p>This interface extends the {@link Request} interface to ensure compatibility with request
+ * handling mechanisms. Implementations of this interface provide the necessary details for creating
+ * or managing game save records, with methods to retrieve specific parts of the game save data.
  *
- * <p>Responsibilities of this interface include: - Obtaining the unique identifier of the game save
- * request. - Retrieving the user's email address associated with the game save. - Accessing the
- * nickname of the user relevant to the game save request. - Providing the user's in-game
- * characteristics like attack power, critical chance, critical damage, health, and resistance. -
- * Fetching the currency details related to the user in the game save, including various types of
- * in-game currencies. - Returning the user's progress details in terms of stage, such as current
- * and maximum stage completion levels.
+ * <p>Methods: - {@code getMetadataRequest}: Obtains the metadata details such as user information
+ * and identifiers. - {@code getCharacteristicsRequest}: Retrieves the user's in-game
+ * characteristics, including attributes like attack, health, and resistance. - {@code
+ * getCurrencyRequest}: Provides information about the user's in-game currencies, such as gold and
+ * diamonds. - {@code getStageRequest}: Supplies data about the user's progress in terms of current
+ * and maximum stage levels.
  */
 public interface GameSaveCreationRequest extends Request {
   /**
-   * Retrieves the unique identifier of the game save request.
+   * Retrieves the metadata request associated with the game save. This provides details about the
+   * game save's metadata including identifiers and user information such as username and nickname.
    *
-   * @return a {@code UUID} representing the unique identifier of the game save.
+   * @return a {@code GameMetadataRequest} object containing metadata details related to the game
+   *     save.
    */
-  UUID getId();
-
-  /**
-   * Retrieves the email address of the user associated with a game save.
-   *
-   * @return the email address of the user as a {@code String}.
-   */
-  String getUserEmail();
-
-  /**
-   * Retrieves the nickname of the user associated with a game save.
-   *
-   * @return the nickname of the user as a {@code String}.
-   */
-  String getNickname();
+  GameMetadataRequest getMetadataRequest();
 
   /**
    * Retrieves the characteristics request associated with the game save. This request contains

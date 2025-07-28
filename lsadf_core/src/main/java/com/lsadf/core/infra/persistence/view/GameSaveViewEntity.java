@@ -17,19 +17,19 @@
 package com.lsadf.core.infra.persistence.view;
 
 import static com.lsadf.core.infra.persistence.config.EntityAttributes.*;
-import static com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
-import static com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.CHARACTERISTICS_HEALTH;
-import static com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.CHARACTERISTICS_RESISTANCE;
-import static com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity.CurrencyEntityAttributes.*;
-import static com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity.GameSaveAttributes.*;
-import static com.lsadf.core.infra.persistence.table.game.stage.StageEntity.StageEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.CHARACTERISTICS_HEALTH;
+import static com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.CHARACTERISTICS_RESISTANCE;
+import static com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity.CurrencyEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity.StageEntityAttributes.*;
 import static com.lsadf.core.infra.persistence.view.GameSaveViewEntity.GameSaveViewAttributes.GAME_SAVE_VIEW_ENTITY;
 
 import com.lsadf.core.infra.persistence.Dateable;
 import com.lsadf.core.infra.persistence.Identifiable;
-import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.table.game.stage.StageEntity;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity;
 import java.util.Date;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -54,10 +54,10 @@ public class GameSaveViewEntity implements Identifiable, Dateable {
   @Column(UPDATED_AT)
   private Date updatedAt;
 
-  @Column(GAME_SAVE_USER_EMAIL)
+  @Column(GAME_METADATA_USER_EMAIL)
   private String userEmail;
 
-  @Column(GAME_SAVE_NICKNAME)
+  @Column(GAME_METADATA_NICKNAME)
   private String nickname;
 
   // Stage

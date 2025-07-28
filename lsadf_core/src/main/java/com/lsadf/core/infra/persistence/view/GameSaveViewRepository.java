@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.persistence.view;
 
-import static com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity.GameSaveAttributes.GAME_SAVE_USER_EMAIL;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_USER_EMAIL;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -35,7 +35,7 @@ public interface GameSaveViewRepository
   @Query("select * from v_game_save_vgsa where id=:id")
   Optional<GameSaveViewEntity> findGameSaveEntityById(UUID id);
 
-  @Query("select * from v_game_save_vgsa tgsa where user_email = :user_email")
+  @Query("select * from v_game_save_vgsa tgme where user_email = :user_email")
   Stream<GameSaveViewEntity> findGameSaveEntitiesByUserEmail(
-      @Param(GAME_SAVE_USER_EMAIL) String userId);
+      @Param(GAME_METADATA_USER_EMAIL) String userEmail);
 }

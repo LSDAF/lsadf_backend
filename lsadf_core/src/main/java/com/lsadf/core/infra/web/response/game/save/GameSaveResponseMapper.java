@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.response.game.game_save;
+package com.lsadf.core.infra.web.response.game.save;
 
-import com.lsadf.core.domain.game.game_save.GameSave;
+import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
-import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponseMapper;
-import com.lsadf.core.infra.web.response.game.currency.CurrencyResponseMapper;
-import com.lsadf.core.infra.web.response.game.stage.StageResponseMapper;
+import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponseMapper;
+import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponseMapper;
+import com.lsadf.core.infra.web.response.game.save.stage.StageResponseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

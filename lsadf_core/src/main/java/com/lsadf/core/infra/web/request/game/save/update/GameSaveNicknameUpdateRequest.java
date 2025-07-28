@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.request.game.game_save.update;
+package com.lsadf.core.infra.web.request.game.save.update;
 
 import static com.lsadf.core.infra.web.JsonAttributes.NICKNAME;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.domain.user.validation.Nickname;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;

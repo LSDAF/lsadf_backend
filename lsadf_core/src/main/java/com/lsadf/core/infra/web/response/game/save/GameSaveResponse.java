@@ -14,35 +14,24 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.response.game.game_save;
+package com.lsadf.core.infra.web.response.game.save;
 
 import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.infra.web.JsonAttributes;
 import com.lsadf.core.infra.web.response.Response;
-import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
-import com.lsadf.core.infra.web.response.game.stage.StageResponse;
+import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.response.game.save.metadata.GameMetadataResponse;
+import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
-import java.util.Date;
 import lombok.Builder;
 
 @Schema(name = "GameSaveResponse", description = "Game Save Object")
 @Builder
 public record GameSaveResponse(
-    @JsonProperty(value = JsonAttributes.ID)
-        @Schema(description = "Game Id", example = "7d9f92ce-3c8e-4695-9df7-ce10c0bbaaeb")
-        String id,
-    @JsonProperty(value = USER_EMAIL) String userEmail,
-    @JsonProperty(value = JsonAttributes.CREATED_AT)
-        @Schema(description = "Creation date", example = "2022-01-01 00:00:00.000")
-        Date createdAt,
-    @JsonProperty(value = JsonAttributes.UPDATED_AT)
-        @Schema(description = "Update date", example = "2022-01-01 00:00:00.000")
-        Date updatedAt,
-    @JsonProperty(value = NICKNAME) String nickname,
+    @JsonProperty(value = METADATA) GameMetadataResponse metadata,
     @JsonProperty(value = CHARACTERISTICS) CharacteristicsResponse characteristics,
     @JsonProperty(value = CURRENCY) CurrencyResponse currency,
     @JsonProperty(value = STAGE) StageResponse stage)
