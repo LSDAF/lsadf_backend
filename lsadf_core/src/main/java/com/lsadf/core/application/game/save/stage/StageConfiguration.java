@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.stage;
+package com.lsadf.core.application.game.save.stage;
 
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.persistence.table.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;

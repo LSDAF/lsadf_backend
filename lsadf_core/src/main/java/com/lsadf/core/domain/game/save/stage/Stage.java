@@ -13,37 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.game.stage;
+package com.lsadf.core.domain.game.save.stage;
 
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
-import java.util.Objects;
 import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-@Getter
-@Setter
-@ToString
-public class Stage implements Model {
-
+public record Stage(Long currentStage, Long maxStage) implements Model {
   @Serial private static final long serialVersionUID = -7126306428235414817L;
-
-  private Long currentStage;
-
-  private Long maxStage;
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) return false;
-    Stage stage = (Stage) o;
-    return Objects.equals(currentStage, stage.currentStage)
-        && Objects.equals(maxStage, stage.maxStage);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(currentStage, maxStage);
-  }
 }

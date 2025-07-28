@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.table.game.stage;
+package com.lsadf.core.infra.persistence.table.game.save.stage;
 
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

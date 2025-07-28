@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.stage;
+package com.lsadf.core.application.game.save.stage;
 
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import java.util.UUID;
 
@@ -40,4 +40,23 @@ public interface StageService {
    * @throws NotFoundException if the stage is not found
    */
   void saveStage(UUID gameSaveId, Stage stage, boolean toCache) throws NotFoundException;
+
+  /**
+   * Creates a new instance of {@code Stage} for the given game save ID.
+   *
+   * @param gameSaveId the unique identifier for the game save
+   * @return a new instance of {@code Stage}
+   * @throws IllegalArgumentException if {@code gameSaveId} is null
+   */
+  Stage createNewStage(UUID gameSaveId);
+
+  /**
+   * Creates a new stage based on the given game save ID and stage parameters.
+   *
+   * @param gameSaveId the unique identifier for the game save
+   * @param currentStage the current stage to initialize
+   * @param maxStage the maximum stage limit to initialize
+   * @return a new instance of {@code Stage} with the specified parameters
+   */
+  Stage createNewStage(UUID gameSaveId, Long currentStage, Long maxStage);
 }

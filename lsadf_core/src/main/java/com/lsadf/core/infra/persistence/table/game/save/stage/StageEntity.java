@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.table.game.stage;
+package com.lsadf.core.infra.persistence.table.game.save.stage;
 
 import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
-import static com.lsadf.core.infra.persistence.table.game.stage.StageEntity.StageEntityAttributes.*;
-import static com.lsadf.core.infra.persistence.table.game.stage.StageEntity.StageEntityAttributes.STAGE_ENTITY;
+import static com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity.StageEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity.StageEntityAttributes.STAGE_ENTITY;
 
 import java.io.Serial;
 import java.util.UUID;

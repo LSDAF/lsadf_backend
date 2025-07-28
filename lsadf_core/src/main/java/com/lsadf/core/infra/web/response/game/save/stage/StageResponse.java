@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.response.game.stage;
+package com.lsadf.core.infra.web.response.game.save.stage;
 
 import static com.lsadf.core.infra.web.JsonAttributes.CURRENT_STAGE;
 import static com.lsadf.core.infra.web.JsonAttributes.MAX_STAGE;

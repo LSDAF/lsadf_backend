@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.stage;
+package com.lsadf.core.application.game.save.stage;
 
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.table.game.stage.StageEntityMapper;
-import com.lsadf.core.infra.persistence.table.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +39,20 @@ public class StageServiceImpl implements StageService {
 
   /** {@inheritDoc} */
   @Override
+  public Stage createNewStage(UUID gameSaveId) {
+    var newEntity = stageRepository.createNewStageEntity(gameSaveId);
+    return mapper.map(newEntity);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public Stage createNewStage(UUID gameSaveId, Long currentStage, Long maxStage) {
+    var newEntity = stageRepository.createNewStageEntity(gameSaveId, currentStage, maxStage);
+    return mapper.map(newEntity);
+  }
+
+  /** {@inheritDoc} */
+  @Override
   @Transactional(readOnly = true)
   public Stage getStage(UUID gameSaveId) throws NotFoundException {
     if (gameSaveId == null) {
@@ -49,7 +63,7 @@ public class StageServiceImpl implements StageService {
       Optional<Stage> optionalCachedStage = stageCache.get(gameSaveIdString);
       if (optionalCachedStage.isPresent()) {
         Stage stage = optionalCachedStage.get();
-        if (stage.getMaxStage() == null || stage.getCurrentStage() == null) {
+        if (stage.maxStage() == null || stage.currentStage() == null) {
           StageEntity stageEntity = getStageEntity(gameSaveId);
           return mergeStages(stage, stageEntity);
         }
@@ -91,7 +105,7 @@ public class StageServiceImpl implements StageService {
    * @param stage the stage to save
    */
   private void saveStageToDatabase(UUID gameSaveId, Stage stage) {
-    stageRepository.updateStage(gameSaveId, stage.getCurrentStage(), stage.getMaxStage());
+    stageRepository.updateStage(gameSaveId, stage.currentStage(), stage.maxStage());
   }
 
   /**
@@ -102,13 +116,11 @@ public class StageServiceImpl implements StageService {
    * @return the merged stage POJO
    */
   private static Stage mergeStages(Stage stage, StageEntity stageEntity) {
-    if (stage.getCurrentStage() == null) {
-      stage.setCurrentStage(stageEntity.getCurrentStage());
-    }
-    if (stage.getMaxStage() == null) {
-      stage.setMaxStage(stageEntity.getMaxStage());
-    }
-    return stage;
+    var builder = Stage.builder();
+    builder.currentStage(
+        stage.currentStage() != null ? stage.currentStage() : stageEntity.getCurrentStage());
+    builder.maxStage(stage.maxStage() != null ? stage.maxStage() : stageEntity.getMaxStage());
+    return builder.build();
   }
 
   /**
@@ -118,6 +130,6 @@ public class StageServiceImpl implements StageService {
    * @return true if all the stage fields are null, false otherwise
    */
   private static boolean isStageNull(Stage stage) {
-    return stage.getCurrentStage() == null && stage.getMaxStage() == null;
+    return stage.currentStage() == null && stage.maxStage() == null;
   }
 }

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.response.game.stage;
+package com.lsadf.core.infra.web.response.game.save.stage;
 
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
