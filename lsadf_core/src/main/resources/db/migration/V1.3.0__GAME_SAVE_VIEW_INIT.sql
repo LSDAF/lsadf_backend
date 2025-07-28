@@ -15,11 +15,11 @@
  */
 
 CREATE VIEW v_game_save_vgsa AS
-SELECT tgsa.id,
-       tgsa.created_at,
-       tgsa.updated_at,
-       tgsa.user_email,
-       tgsa.nickname,
+SELECT tgme.id,
+       tgme.created_at,
+       tgme.updated_at,
+       tgme.user_email,
+       tgme.nickname,
 
        -- Characteristics
        tgch.attack,
@@ -38,7 +38,7 @@ SELECT tgsa.id,
        tgst.current_stage,
        tgst.max_stage
 
-FROM t_game_save_tgsa tgsa
-         LEFT JOIN t_characteristics_tgch tgch ON tgsa.id = tgch.id
-         LEFT JOIN t_currency_tgcu tgcu ON tgsa.id = tgcu.id
-         LEFT JOIN t_stage_tgst tgst ON tgsa.id = tgst.id;
+FROM t_game_metadata_tgme tgme
+         LEFT JOIN t_characteristics_tgch tgch ON tgme.id = tgch.id
+         LEFT JOIN t_currency_tgcu tgcu ON tgme.id = tgcu.id
+         LEFT JOIN t_stage_tgst tgst ON tgme.id = tgst.id;

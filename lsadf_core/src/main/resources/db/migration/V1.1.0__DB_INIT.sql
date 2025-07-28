@@ -15,18 +15,18 @@
  */
 
 
-CREATE TABLE t_game_save_tgsa
+CREATE TABLE t_game_metadata_tgme
 (
     id         UUID PRIMARY KEY                     DEFAULT gen_random_uuid(),
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE          DEFAULT CURRENT_TIMESTAMP,
     user_email VARCHAR(255)                NOT NULL
-        CONSTRAINT chk_tgsa_user_email_format CHECK (user_email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+        CONSTRAINT chk_tgme_user_email_format CHECK (user_email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
     nickname   VARCHAR(100)                         DEFAULT gen_random_uuid()::text
 );
 
 -- Create an index on user_email for better query performance
-CREATE INDEX idx_tgsa_user_email ON t_game_save_tgsa (user_email);
+CREATE INDEX idx_tgme_user_email ON t_game_metadata_tgme (user_email);
 
 CREATE TABLE t_characteristics_tgch
 (
@@ -44,7 +44,7 @@ CREATE TABLE t_characteristics_tgch
 );
 
 ALTER TABLE t_characteristics_tgch
-    ADD CONSTRAINT fk_t_characteristics_on_tgsa FOREIGN KEY (id) REFERENCES t_game_save_tgsa (id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_t_characteristics_on_tgme FOREIGN KEY (id) REFERENCES t_game_metadata_tgme (id) ON DELETE CASCADE;
 
 CREATE TABLE t_currency_tgcu
 (
@@ -60,7 +60,7 @@ CREATE TABLE t_currency_tgcu
 );
 
 ALTER TABLE t_currency_tgcu
-    ADD CONSTRAINT fk_t_currency_on_gsa FOREIGN KEY (id) REFERENCES t_game_save_tgsa (id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_t_currency_on_gsa FOREIGN KEY (id) REFERENCES t_game_metadata_tgme (id) ON DELETE CASCADE;
 
 CREATE TABLE t_stage_tgst
 (
@@ -73,12 +73,12 @@ CREATE TABLE t_stage_tgst
 );
 
 ALTER TABLE t_stage_tgst
-    ADD CONSTRAINT fk_t_stage_on_gsa FOREIGN KEY (id) REFERENCES t_game_save_tgsa (id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_t_stage_on_gsa FOREIGN KEY (id) REFERENCES t_game_metadata_tgme (id) ON DELETE CASCADE;
 
 CREATE TABLE t_item_tgit
 (
     id              UUID PRIMARY KEY                     DEFAULT gen_random_uuid(),
-    tgsa_id         UUID                        NOT NULL,
+    tgme_id UUID NOT NULL,
     created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP WITHOUT TIME ZONE          DEFAULT CURRENT_TIMESTAMP,
     client_id       VARCHAR(100) UNIQUE         NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE t_item_tgit
 );
 
 ALTER TABLE t_item_tgit
-    ADD CONSTRAINT fk_t_item_on_gsa FOREIGN KEY (tgsa_id) REFERENCES t_game_save_tgsa (id) ON DELETE CASCADE;
+    ADD CONSTRAINT fk_t_item_on_gsa FOREIGN KEY (tgme_id) REFERENCES t_game_metadata_tgme (id) ON DELETE CASCADE;
 
 ALTER TABLE t_item_tgit
     ADD CONSTRAINT uc_t_item_client UNIQUE (client_id);
