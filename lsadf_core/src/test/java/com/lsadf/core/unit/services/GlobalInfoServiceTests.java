@@ -19,7 +19,7 @@ package com.lsadf.core.unit.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.application.game.game_save.GameSaveService;
+import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.info.GlobalInfoServiceImpl;
 import com.lsadf.core.application.user.UserService;
