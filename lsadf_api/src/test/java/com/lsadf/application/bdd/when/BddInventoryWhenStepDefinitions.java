@@ -25,7 +25,7 @@ import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.item.ItemEntity;
+import com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
@@ -51,7 +51,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     UUID uuid = UUID.fromString(gameSaveId);
-    var exists = gameSaveRepository.existsById(uuid);
+    var exists = gameMetadataRepository.existsById(uuid);
     if (!exists) {
       throw new NotFoundException("Game save with id: " + gameSaveId + " not found.");
     }

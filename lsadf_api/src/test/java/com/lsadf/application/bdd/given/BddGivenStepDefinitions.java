@@ -21,14 +21,14 @@ import com.lsadf.application.bdd.BddFieldConstants;
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.bdd.CacheEntryType;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.table.game.stage.StageEntity;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import java.time.Clock;
@@ -100,14 +100,14 @@ public class BddGivenStepDefinitions extends BddLoader {
   public void given_i_have_a_clean_database() throws NotFoundException {
     log.info("Cleaning database repositories...");
 
-    this.gameSaveRepository.deleteAllGameSaveEntities();
+    this.gameMetadataRepository.deleteAllGameSaveEntities();
 
     assertThat(characteristicsRepository.count()).isZero();
     assertThat(currencyRepository.count()).isZero();
     assertThat(stageRepository.count()).isZero();
     assertThat(itemRepository.count()).isZero();
     assertThat(additionalItemStatsRepository.count()).isZero();
-    assertThat(gameSaveRepository.count()).isZero();
+    assertThat(gameMetadataRepository.count()).isZero();
 
     // Clear caches
     redisCacheService.clearCaches();
@@ -133,15 +133,15 @@ public class BddGivenStepDefinitions extends BddLoader {
 
     rows.forEach(
         row -> {
-          GameSaveEntity gameSaveEntity = BddUtils.mapToGameSaveEntity(row);
-          GameSaveEntity newEntity =
-              gameSaveEntity.getId() != null
-                  ? gameSaveRepository.createNewGameSaveEntity(
-                      gameSaveEntity.getId(),
-                      gameSaveEntity.getUserEmail(),
-                      gameSaveEntity.getNickname())
-                  : gameSaveRepository.createNewGameSaveEntity(
-                      gameSaveEntity.getUserEmail(), gameSaveEntity.getNickname());
+          GameMetadataEntity gameMetadataEntity = BddUtils.mapToGameSaveEntity(row);
+          GameMetadataEntity newEntity =
+              gameMetadataEntity.getId() != null
+                  ? gameMetadataRepository.createNewGameSaveEntity(
+                      gameMetadataEntity.getId(),
+                      gameMetadataEntity.getUserEmail(),
+                      gameMetadataEntity.getNickname())
+                  : gameMetadataRepository.createNewGameSaveEntity(
+                      gameMetadataEntity.getUserEmail(), gameMetadataEntity.getNickname());
           CurrencyEntity currencyEntity = BddUtils.mapToCurrencyEntity(row);
           currencyRepository.createNewCurrencyEntity(
               newEntity.getId(),

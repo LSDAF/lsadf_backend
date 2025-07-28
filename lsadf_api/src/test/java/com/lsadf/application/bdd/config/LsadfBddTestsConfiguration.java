@@ -15,17 +15,17 @@
  */
 package com.lsadf.application.bdd.config;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.game_save.GameSave;
 import com.lsadf.core.domain.game.inventory.Inventory;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.GameSave;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import java.util.List;
@@ -142,8 +142,8 @@ public class LsadfBddTestsConfiguration {
   }
 
   @Bean
-  public Stack<List<GameSaveEntity>> gameSaveEntityListStack(BddStackCleaner stackCleaner) {
-    var stack = new Stack<List<GameSaveEntity>>();
+  public Stack<List<GameMetadataEntity>> gameSaveEntityListStack(BddStackCleaner stackCleaner) {
+    var stack = new Stack<List<GameMetadataEntity>>();
     stackCleaner.addStack(stack);
     return stack;
   }

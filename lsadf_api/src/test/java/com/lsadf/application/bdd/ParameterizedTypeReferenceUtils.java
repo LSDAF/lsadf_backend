@@ -19,11 +19,11 @@ import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
-import com.lsadf.core.infra.web.response.game.stage.StageResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.user.UserInfoResponse;
 import java.util.List;
@@ -136,7 +136,7 @@ public class ParameterizedTypeReferenceUtils {
   }
 
   /**
-   * Builds a ParameterizedTypeReference for a ApiResponse of List of GameSaveEntity
+   * Builds a ParameterizedTypeReference for a ApiResponse of List of GameMetadataEntity
    *
    * @return ParameterizedTypeReference
    */

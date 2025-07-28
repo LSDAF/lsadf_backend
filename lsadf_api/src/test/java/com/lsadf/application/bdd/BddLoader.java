@@ -15,7 +15,7 @@
  */
 package com.lsadf.application.bdd;
 
-import static com.lsadf.core.application.game.game_save.GameSaveConfiguration.GAME_SAVE_OWNERSHIP_CACHE;
+import static com.lsadf.core.application.game.save.GameSaveConfiguration.GAME_SAVE_OWNERSHIP_CACHE;
 
 import com.lsadf.application.bdd.config.LsadfBddTestsConfiguration;
 import com.lsadf.application.controller.auth.AuthController;
@@ -35,16 +35,16 @@ import com.lsadf.application.controller.game.stage.StageControllerImpl;
 import com.lsadf.application.controller.user.UserController;
 import com.lsadf.application.controller.user.UserControllerImpl;
 import com.lsadf.config.LsadfConfiguration;
-import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.currency.CurrencyService;
-import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.application.game.stage.StageService;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.game_save.GameSave;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.GameSave;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.cache.Cache;
@@ -53,18 +53,18 @@ import com.lsadf.core.infra.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.cache.service.CacheService;
 import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.persistence.table.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveRepository;
-import com.lsadf.core.infra.persistence.table.game.item.AdditionalItemStatsRepository;
-import com.lsadf.core.infra.persistence.table.game.item.ItemRepository;
-import com.lsadf.core.infra.persistence.table.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.table.game.inventory.AdditionalItemStatsRepository;
+import com.lsadf.core.infra.persistence.table.game.inventory.ItemRepository;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsRepository;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyRepository;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataRepository;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageRepository;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
@@ -159,7 +159,7 @@ public class BddLoader {
 
   @Autowired protected AdditionalItemStatsRepository additionalItemStatsRepository;
 
-  @Autowired protected GameSaveRepository gameSaveRepository;
+  @Autowired protected GameMetadataRepository gameMetadataRepository;
 
   @Autowired protected PasswordEncoder passwordEncoder;
 
@@ -193,7 +193,7 @@ public class BddLoader {
 
   @Autowired protected Stack<List<GameSaveResponse>> gameSaveResponseListStack;
 
-  @Autowired protected Stack<List<GameSaveEntity>> gameSaveEntityListStack;
+  @Autowired protected Stack<List<GameMetadataEntity>> gameSaveEntityListStack;
 
   @Autowired protected Stack<List<User>> userListStack;
 
