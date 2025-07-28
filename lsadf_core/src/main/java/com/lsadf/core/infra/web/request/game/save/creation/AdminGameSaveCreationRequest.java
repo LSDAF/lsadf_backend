@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.web.request.game.game_save.creation;
+package com.lsadf.core.infra.web.request.game.save.creation;
 
-import static com.lsadf.core.infra.web.JsonAttributes.ID;
-import static com.lsadf.core.infra.web.JsonAttributes.USER_EMAIL;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.domain.user.validation.Nickname;
 import com.lsadf.core.infra.web.request.Request;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
-import java.util.UUID;
 import lombok.Builder;
 
 /**
@@ -52,18 +45,7 @@ import lombok.Builder;
  */
 @Builder
 public record AdminGameSaveCreationRequest(
-    @JsonProperty(value = ID)
-        @Schema(
-            description = "Id of the game save",
-            example = "7d9f92ce-3c8e-4695-9df7-ce10c0bbaaeb")
-        UUID id,
-    @JsonProperty(value = USER_EMAIL)
-        @Schema(description = "Email of the user", example = "test@test.com")
-        @Email
-        @NotNull
-        String userEmail,
-    @Nickname @Schema(description = "Nickname of the user in the game save", example = "Toto")
-        String nickname,
+    @Valid @NotNull GameMetadataRequest metadata,
     @Valid @NotNull CharacteristicsRequest characteristics,
     @Valid @NotNull CurrencyRequest currency,
     @Valid @NotNull StageRequest stage)
@@ -73,20 +55,8 @@ public record AdminGameSaveCreationRequest(
 
   /** {@inheritDoc} */
   @Override
-  public UUID getId() {
-    return id;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public String getUserEmail() {
-    return userEmail;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public String getNickname() {
-    return nickname;
+  public GameMetadataRequest getMetadataRequest() {
+    return metadata;
   }
 
   /** {@inheritDoc} */
