@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.table.game.game_save;
+package com.lsadf.core.infra.persistence.table.game.save.metadata;
 
 import static com.lsadf.core.infra.persistence.config.EntityAttributes.*;
-import static com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity.GameSaveAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.*;
 
 import com.lsadf.core.infra.persistence.Dateable;
 import com.lsadf.core.infra.persistence.Identifiable;
@@ -34,9 +34,8 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true)
-@Table(GAME_SAVE_ENTITY)
-public class GameSaveEntity implements Dateable, Identifiable {
+@Table(GAME_METADATA_ENTITY)
+public class GameMetadataEntity implements Dateable, Identifiable {
 
   @Serial private static final long serialVersionUID = 7786624859103259009L;
 
@@ -50,29 +49,32 @@ public class GameSaveEntity implements Dateable, Identifiable {
   @Column(UPDATED_AT)
   private Date updatedAt;
 
-  @Column(GAME_SAVE_USER_EMAIL)
+  @Column(GAME_METADATA_USER_EMAIL)
   private String userEmail;
 
-  @Column(GAME_SAVE_NICKNAME)
+  @Column(GAME_METADATA_NICKNAME)
   private String nickname;
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class GameSaveAttributes {
-    public static final String GAME_SAVE_ENTITY = "t_game_save_tgsa";
-    public static final String GAME_SAVE_USER_EMAIL = "user_email";
-    public static final String GAME_SAVE_NICKNAME = "nickname";
+  public static class GameSaveMetadataAttributes {
+    public static final String GAME_METADATA_ENTITY = "t_game_metadata_tgme";
+    public static final String GAME_METADATA_USER_EMAIL = "user_email";
+    public static final String GAME_METADATA_NICKNAME = "nickname";
   }
 
   @Override
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass()) return false;
-    if (!super.equals(o)) return false;
-    GameSaveEntity that = (GameSaveEntity) o;
-    return Objects.equals(userEmail, that.userEmail) && Objects.equals(nickname, that.nickname);
+    GameMetadataEntity that = (GameMetadataEntity) o;
+    return Objects.equals(id, that.id)
+        && Objects.equals(createdAt, that.createdAt)
+        && Objects.equals(updatedAt, that.updatedAt)
+        && Objects.equals(userEmail, that.userEmail)
+        && Objects.equals(nickname, that.nickname);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userEmail, nickname, createdAt, updatedAt);
+    return Objects.hash(id, createdAt, updatedAt, userEmail, nickname);
   }
 }

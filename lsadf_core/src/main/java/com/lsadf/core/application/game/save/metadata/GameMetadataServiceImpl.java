@@ -17,9 +17,9 @@
 package com.lsadf.core.application.game.save.metadata;
 
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
-import com.lsadf.core.infra.persistence.table.game.game_save.GameMetadataEntity;
-import com.lsadf.core.infra.persistence.table.game.game_save.GameMetadataEntityMapper;
-import com.lsadf.core.infra.persistence.table.game.game_save.GameMetadataRepository;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataRepository;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 

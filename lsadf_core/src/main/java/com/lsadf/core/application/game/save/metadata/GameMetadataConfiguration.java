@@ -16,7 +16,7 @@
 
 package com.lsadf.core.application.game.save.metadata;
 
-import com.lsadf.core.infra.persistence.table.game.game_save.GameMetadataRepository;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
