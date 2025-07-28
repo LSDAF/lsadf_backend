@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.application.search;
 
-import com.lsadf.core.application.game.game_save.GameSaveService;
+import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

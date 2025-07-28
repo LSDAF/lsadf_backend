@@ -20,14 +20,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.application.game.game_save.GameSaveService;
+import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.search.SearchServiceImpl;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.domain.game.game_save.GameSave;
+import com.lsadf.core.domain.game.save.GameSave;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.metadata.GameMetadata;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.table.game.game_save.GameSaveEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntityMapper;
 import com.lsadf.core.infra.web.request.common.Filter;
 import com.lsadf.core.infra.web.request.search.SearchRequest;
 import com.lsadf.core.infra.web.request.user.UserSortingParameter;
@@ -47,15 +50,30 @@ class SearchServiceTests {
 
   @Mock GameSaveService gameSaveService;
 
-  static GameSaveEntityMapper mapper = Mappers.getMapper(GameSaveEntityMapper.class);
+  static GameMetadataEntityMapper mapper = Mappers.getMapper(GameMetadataEntityMapper.class);
 
   SearchService searchService;
 
   // private elements
 
-  private static final UUID UUID_1 = UUID.randomUUID();
-  private static final UUID UUID_2 = UUID.randomUUID();
-  private static final UUID UUID_3 = UUID.randomUUID();
+  private static final UUID UUID_1 = UUID.fromString("66793912-152b-4877-a89c-d14be79a1176");
+  private static final UUID UUID_2 = UUID.fromString("75793912-152b-4877-a89c-d14be79a1176");
+  private static final UUID UUID_3 = UUID.fromString("84793912-152b-4877-a89c-d14be79a1176");
+
+  private static final Currency CURRENCY =
+      Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
+
+  private static final Stage STAGE = Stage.builder().currentStage(1L).maxStage(2L).build();
+
+  private static final Characteristics CHARACTERISTICS =
+      Characteristics.builder()
+          .attack(1L)
+          .critDamage(2L)
+          .critChance(3L)
+          .health(4L)
+          .resistance(5L)
+          .build();
+
   private static final User USER1 =
       new User(
           UUID_1,
@@ -72,38 +90,37 @@ class SearchServiceTests {
       new User(
           UUID_3, "Toto", "Tutu", "tototutu@tutu.com", true, true, List.of("USER"), new Date());
 
-  private static final GameSaveEntity GAME_SAVE_ENTITY_1 =
-      GameSaveEntity.builder()
-          .id(UUID_1)
-          .userEmail(USER1.getUsername())
-          .nickname("x")
-          .createdAt(new Date())
-          .updatedAt(new Date())
+  private static final GameMetadata GAME_METADATA1 =
+      GameMetadata.builder().id(UUID_1).userEmail(USER1.getUsername()).build();
+  private static final GameMetadata GAME_METADATA2 =
+      GameMetadata.builder().id(UUID_2).nickname("x").userEmail(USER2.getUsername()).build();
+  private static final GameMetadata GAME_METADATA3 =
+      GameMetadata.builder().id(UUID_3).nickname("y").userEmail(USER3.getUsername()).build();
+
+  private static final GameSave GAME_SAVE_1 =
+      GameSave.builder()
+          .metadata(GAME_METADATA1)
+          .currency(CURRENCY)
+          .stage(STAGE)
+          .characteristics(CHARACTERISTICS)
+          .metadata(GAME_METADATA1)
           .build();
 
-  private static final GameSave GAME_SAVE_1 = mapper.map(GAME_SAVE_ENTITY_1);
-
-  private static final GameSaveEntity GAME_SAVE_ENTITY_2 =
-      GameSaveEntity.builder()
-          .id(UUID_2)
-          .userEmail(USER2.getUsername())
-          .nickname("y")
-          .createdAt(new Date())
-          .updatedAt(new Date())
+  private static final GameSave GAME_SAVE_2 =
+      GameSave.builder()
+          .metadata(GAME_METADATA2)
+          .currency(CURRENCY)
+          .stage(STAGE)
+          .characteristics(CHARACTERISTICS)
           .build();
 
-  private static final GameSave GAME_SAVE_2 = mapper.map(GAME_SAVE_ENTITY_2);
-
-  private static final GameSaveEntity GAME_SAVE_ENTITY_3 =
-      GameSaveEntity.builder()
-          .id(UUID_3)
-          .userEmail(USER3.getUsername())
-          .nickname("z")
-          .createdAt(new Date())
-          .updatedAt(new Date())
+  private static final GameSave GAME_SAVE_3 =
+      GameSave.builder()
+          .metadata(GAME_METADATA3)
+          .currency(CURRENCY)
+          .stage(STAGE)
+          .characteristics(CHARACTERISTICS)
           .build();
-
-  private static final GameSave GAME_SAVE_3 = mapper.map(GAME_SAVE_ENTITY_3);
 
   @BeforeEach
   void init() {
@@ -254,7 +271,6 @@ class SearchServiceTests {
     }
   }
 
-  @Test
   void order_by_user_id_desc() {
     SearchRequest request = new SearchRequest(new ArrayList<>());
 
