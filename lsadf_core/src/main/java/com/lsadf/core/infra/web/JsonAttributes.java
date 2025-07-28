@@ -41,6 +41,8 @@ public final class JsonAttributes {
 
   public static final String USER_EMAIL = "user_email";
 
+  public static final String METADATA = "metadata";
+
   public static final String NICKNAME = "nickname";
 
   public static final String CHARACTERISTICS = "characteristics";
