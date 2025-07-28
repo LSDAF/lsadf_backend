@@ -23,7 +23,7 @@ import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
