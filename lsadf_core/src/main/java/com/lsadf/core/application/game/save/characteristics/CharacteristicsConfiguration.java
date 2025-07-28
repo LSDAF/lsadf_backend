@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.characteristics;
+package com.lsadf.core.application.game.save.characteristics;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.NoOpHistoCache;

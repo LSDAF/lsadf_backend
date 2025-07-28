@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.response.game.characteristics;
+package com.lsadf.core.infra.web.response.game.save.characteristics;
 
 import static com.lsadf.core.infra.web.JsonAttributes.*;
 

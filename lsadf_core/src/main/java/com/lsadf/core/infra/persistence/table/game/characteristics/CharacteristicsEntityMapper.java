@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.persistence.table.game.characteristics;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.characteristics;
+package com.lsadf.core.application.game.save.characteristics;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.table.game.characteristics.CharacteristicsEntity;
@@ -39,6 +39,29 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     this.characteristicsCache = characteristicsCache;
   }
 
+  /** {@inheritDoc} */
+  @Override
+  public Characteristics createNewCharacteristics(
+      UUID gameSaveId,
+      Long attack,
+      Long critChance,
+      Long critDamage,
+      Long health,
+      Long resistance) {
+    var newEntity =
+        characteristicsRepository.createNewCharacteristicsEntity(
+            gameSaveId, attack, critChance, critDamage, health, resistance);
+    return characteristicsEntityModelMapper.map(newEntity);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public Characteristics createNewCharacteristics(UUID gameSaveId) {
+    var newEntity = characteristicsRepository.createNewCharacteristicsEntity(gameSaveId);
+    return characteristicsEntityModelMapper.map(newEntity);
+  }
+
+  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public Characteristics getCharacteristics(UUID gameSaveId) throws NotFoundException {
@@ -51,11 +74,11 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
           characteristicsCache.get(gameSaveIdString);
       if (optionalCachedCharacteristics.isPresent()) {
         Characteristics characteristics = optionalCachedCharacteristics.get();
-        if (characteristics.getAttack() == null
-            || characteristics.getCritChance() == null
-            || characteristics.getCritDamage() == null
-            || characteristics.getHealth() == null
-            || characteristics.getResistance() == null) {
+        if (characteristics.attack() == null
+            || characteristics.critChance() == null
+            || characteristics.critDamage() == null
+            || characteristics.health() == null
+            || characteristics.resistance() == null) {
           CharacteristicsEntity characteristicsEntity = getCharacteristicsEntity(gameSaveId);
           return mergeCharacteristics(characteristics, characteristicsEntity);
         }
@@ -76,29 +99,36 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
    */
   private static Characteristics mergeCharacteristics(
       Characteristics characteristics, CharacteristicsEntity characteristicsEntity) {
-    if (characteristics.getAttack() == null) {
-      characteristics.setAttack(characteristicsEntity.getAttack());
-    }
+    var builder = Characteristics.builder();
+    builder.attack(
+        characteristics.attack() == null
+            ? characteristicsEntity.getAttack()
+            : characteristics.attack());
 
-    if (characteristics.getCritChance() == null) {
-      characteristics.setCritChance(characteristicsEntity.getCritChance());
-    }
+    builder.critChance(
+        characteristics.critChance() == null
+            ? characteristicsEntity.getCritChance()
+            : characteristics.critChance());
 
-    if (characteristics.getCritDamage() == null) {
-      characteristics.setCritDamage(characteristicsEntity.getCritDamage());
-    }
+    builder.critDamage(
+        characteristics.critDamage() == null
+            ? characteristicsEntity.getCritDamage()
+            : characteristics.critDamage());
 
-    if (characteristics.getHealth() == null) {
-      characteristics.setHealth(characteristicsEntity.getHealth());
-    }
+    builder.health(
+        characteristics.health() == null
+            ? characteristicsEntity.getHealth()
+            : characteristics.health());
 
-    if (characteristics.getResistance() == null) {
-      characteristics.setResistance(characteristicsEntity.getResistance());
-    }
+    builder.resistance(
+        characteristics.resistance() == null
+            ? characteristicsEntity.getResistance()
+            : characteristics.resistance());
 
-    return characteristics;
+    return builder.build();
   }
 
+  /** {@inheritDoc} */
   @Override
   @Transactional
   public void saveCharacteristics(UUID gameSaveId, Characteristics characteristics, boolean toCache)
@@ -144,11 +174,11 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
       throws NotFoundException {
     characteristicsRepository.updateCharacteristics(
         gameSaveId,
-        characteristics.getAttack(),
-        characteristics.getCritChance(),
-        characteristics.getCritDamage(),
-        characteristics.getHealth(),
-        characteristics.getHealth());
+        characteristics.attack(),
+        characteristics.critChance(),
+        characteristics.critDamage(),
+        characteristics.health(),
+        characteristics.health());
   }
 
   /**
@@ -158,10 +188,10 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
    * @return true if all fields are null, false otherwise
    */
   private static boolean isCharacteristicsNull(Characteristics characteristics) {
-    return characteristics.getAttack() == null
-        && characteristics.getCritChance() == null
-        && characteristics.getCritDamage() == null
-        && characteristics.getHealth() == null
-        && characteristics.getResistance() == null;
+    return characteristics.attack() == null
+        && characteristics.critChance() == null
+        && characteristics.critDamage() == null
+        && characteristics.health() == null
+        && characteristics.resistance() == null;
   }
 }

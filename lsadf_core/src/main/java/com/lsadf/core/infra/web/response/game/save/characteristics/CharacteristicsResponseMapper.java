@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.response.game.characteristics;
+package com.lsadf.core.infra.web.response.game.save.characteristics;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
