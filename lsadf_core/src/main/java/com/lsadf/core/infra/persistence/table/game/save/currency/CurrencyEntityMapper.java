@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.table.game.currency;
+package com.lsadf.core.infra.persistence.table.game.save.currency;
 
-import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.table.game.currency;
+package com.lsadf.core.infra.persistence.table.game.save.currency;
 
 import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
-import static com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity.CurrencyEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity.CurrencyEntityAttributes.*;
 
 import com.lsadf.core.infra.persistence.Identifiable;
 import java.io.Serial;

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.response.game.currency;
+package com.lsadf.core.infra.web.response.game.save.currency;
 
-import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

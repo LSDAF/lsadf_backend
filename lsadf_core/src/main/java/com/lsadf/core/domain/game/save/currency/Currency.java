@@ -13,43 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.game.currency;
+package com.lsadf.core.domain.game.save.currency;
 
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
-import java.util.Objects;
 import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-@Getter
-@Setter
-@ToString
-public class Currency implements Model {
-
+public record Currency(Long gold, Long diamond, Long emerald, Long amethyst) implements Model {
   @Serial private static final long serialVersionUID = 3614717300669193588L;
-
-  private Long gold;
-
-  private Long diamond;
-
-  private Long emerald;
-
-  private Long amethyst;
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) return false;
-    Currency currency = (Currency) o;
-    return Objects.equals(gold, currency.gold)
-        && Objects.equals(diamond, currency.diamond)
-        && Objects.equals(emerald, currency.emerald)
-        && Objects.equals(amethyst, currency.amethyst);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(gold, diamond, emerald, amethyst);
-  }
 }

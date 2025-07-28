@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.currency;
+package com.lsadf.core.application.game.save.currency;
 
-import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.table.game.currency.CurrencyEntityMapper;
-import com.lsadf.core.infra.persistence.table.game.currency.CurrencyRepository;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +36,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     this.currencyCache = currencyCache;
   }
 
+  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public Currency getCurrency(UUID gameSaveId) throws NotFoundException {
@@ -47,10 +48,10 @@ public class CurrencyServiceImpl implements CurrencyService {
       Optional<Currency> optionalCachedCurrency = currencyCache.get(gameSaveIdString);
       if (optionalCachedCurrency.isPresent()) {
         Currency currency = optionalCachedCurrency.get();
-        if (currency.getAmethyst() == null
-            || currency.getDiamond() == null
-            || currency.getEmerald() == null
-            || currency.getGold() == null) {
+        if (currency.amethyst() == null
+            || currency.diamond() == null
+            || currency.emerald() == null
+            || currency.gold() == null) {
           CurrencyEntity currencyEntity = getCurrencyEntity(gameSaveId);
           return mergeCurrencies(currency, currencyEntity);
         }
@@ -62,6 +63,22 @@ public class CurrencyServiceImpl implements CurrencyService {
     return mapper.map(currencyEntity);
   }
 
+  /** {@inheritDoc} */
+  @Override
+  public Currency createNewCurrency(UUID gameSaveId) {
+    var newEntity = currencyRepository.createNewCurrencyEntity(gameSaveId);
+    return mapper.map(newEntity);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public Currency createNewCurrency(
+      UUID gameSaveId, Long gold, Long diamond, Long emerald, Long amethyst) {
+    var newEntity =
+        currencyRepository.createNewCurrencyEntity(gameSaveId, gold, diamond, emerald, amethyst);
+    return mapper.map(newEntity);
+  }
+
   /**
    * Merge the currency POJO with the currency entity from the database
    *
@@ -70,22 +87,18 @@ public class CurrencyServiceImpl implements CurrencyService {
    * @return the merged currency POJO
    */
   private static Currency mergeCurrencies(Currency currency, CurrencyEntity currencyEntity) {
-    if (currency.getAmethyst() == null) {
-      currency.setAmethyst(currencyEntity.getAmethystAmount());
-    }
-    if (currency.getDiamond() == null) {
-      currency.setDiamond(currencyEntity.getDiamondAmount());
-    }
-    if (currency.getEmerald() == null) {
-      currency.setEmerald(currencyEntity.getEmeraldAmount());
-    }
-    if (currency.getGold() == null) {
-      currency.setGold(currencyEntity.getGoldAmount());
-    }
-
-    return currency;
+    var builder = Currency.builder();
+    builder.gold(currency.gold() != null ? currency.gold() : currencyEntity.getGoldAmount());
+    builder.diamond(
+        currency.diamond() != null ? currency.diamond() : currencyEntity.getDiamondAmount());
+    builder.emerald(
+        currency.emerald() != null ? currency.emerald() : currencyEntity.getEmeraldAmount());
+    builder.amethyst(
+        currency.amethyst() != null ? currency.amethyst() : currencyEntity.getAmethystAmount());
+    return builder.build();
   }
 
+  /** {@inheritDoc} */
   @Override
   @Transactional
   public void saveCurrency(UUID gameSaveId, Currency currency, boolean toCache)
@@ -128,11 +141,7 @@ public class CurrencyServiceImpl implements CurrencyService {
    */
   private void saveCurrencyToDatabase(UUID gameSaveId, Currency currency) throws NotFoundException {
     currencyRepository.updateCurrency(
-        gameSaveId,
-        currency.getAmethyst(),
-        currency.getDiamond(),
-        currency.getEmerald(),
-        currency.getGold());
+        gameSaveId, currency.amethyst(), currency.diamond(), currency.emerald(), currency.gold());
   }
 
   /**
@@ -142,9 +151,9 @@ public class CurrencyServiceImpl implements CurrencyService {
    * @return true if all fields are null, false otherwise
    */
   private static boolean isCurrencyNull(Currency currency) {
-    return currency.getAmethyst() == null
-        && currency.getDiamond() == null
-        && currency.getEmerald() == null
-        && currency.getGold() == null;
+    return currency.amethyst() == null
+        && currency.diamond() == null
+        && currency.emerald() == null
+        && currency.gold() == null;
   }
 }

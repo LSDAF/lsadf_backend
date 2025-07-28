@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.response.game.currency;
+package com.lsadf.core.infra.web.response.game.save.currency;
 
 import static com.lsadf.core.infra.web.JsonAttributes.AMETHYST;
 import static com.lsadf.core.infra.web.JsonAttributes.DIAMOND;
