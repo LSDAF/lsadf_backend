@@ -22,13 +22,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsServiceImpl;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +41,7 @@ import org.mockito.MockitoAnnotations;
 class CharacteristicsServiceTests {
   private CharacteristicsService characteristicsService;
 
-  @Mock private CharacteristicsRepository characteristicsRepository;
+  @Mock private CharacteristicsRepositoryPort characteristicsRepositoryPort;
 
   @Mock private Cache<Characteristics> characteristicsCache;
 
@@ -54,14 +53,13 @@ class CharacteristicsServiceTests {
     MockitoAnnotations.openMocks(this);
 
     characteristicsService =
-        new CharacteristicsServiceImpl(characteristicsRepository, characteristicsCache);
+        new CharacteristicsServiceImpl(characteristicsRepositoryPort, characteristicsCache);
   }
 
   @Test
   void get_characteristics_on_non_existing_gamesave_id() {
     // Arrange
-    when(characteristicsRepository.findCharacteristicsEntityById(any(UUID.class)))
-        .thenReturn(Optional.empty());
+    when(characteristicsRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.empty());
     when(characteristicsCache.isEnabled()).thenReturn(true);
 
     // Assert
@@ -71,13 +69,14 @@ class CharacteristicsServiceTests {
   @Test
   void get_characteristics_on_existing_gamesave_id_when_cached() {
     // Arrange
-    CharacteristicsEntity characteristicsEntity =
-        CharacteristicsEntity.builder()
-            .attack(1L)
-            .critChance(2L)
-            .critDamage(3L)
-            .health(4L)
-            .resistance(5L)
+
+    Characteristics cachedCharacteristics =
+        Characteristics.builder()
+            .attack(2L)
+            .critChance(3L)
+            .critDamage(4L)
+            .health(5L)
+            .resistance(6L)
             .build();
 
     Characteristics characteristics =
@@ -89,30 +88,21 @@ class CharacteristicsServiceTests {
             .resistance(5L)
             .build();
 
-    when(characteristicsRepository.findCharacteristicsEntityById(any(UUID.class)))
-        .thenReturn(Optional.of(characteristicsEntity));
+    when(characteristicsRepositoryPort.findById(any(UUID.class)))
+        .thenReturn(Optional.of(characteristics));
     when(characteristicsCache.isEnabled()).thenReturn(true);
-    when(characteristicsCache.get(anyString())).thenReturn(Optional.of(characteristics));
+    when(characteristicsCache.get(anyString())).thenReturn(Optional.of(cachedCharacteristics));
 
     // Act
     Characteristics result = characteristicsService.getCharacteristics(UUID);
 
     // Assert
-    assertThat(result).isEqualTo(characteristics);
+    assertThat(result).isEqualTo(cachedCharacteristics);
   }
 
   @Test
   void get_characteristics_on_existing_gamesave_id_when_not_cached() {
     // Arrange
-    CharacteristicsEntity characteristicsEntity =
-        CharacteristicsEntity.builder()
-            .attack(1L)
-            .critChance(2L)
-            .critDamage(3L)
-            .health(4L)
-            .resistance(5L)
-            .build();
-
     Characteristics characteristics =
         Characteristics.builder()
             .attack(1L)
@@ -122,45 +112,10 @@ class CharacteristicsServiceTests {
             .resistance(5L)
             .build();
 
-    when(characteristicsRepository.findCharacteristicsEntityById(any(UUID.class)))
-        .thenReturn(Optional.of(characteristicsEntity));
+    when(characteristicsRepositoryPort.findById(any(UUID.class)))
+        .thenReturn(Optional.of(characteristics));
     when(characteristicsCache.isEnabled()).thenReturn(false);
     when(characteristicsCache.get(anyString())).thenReturn(Optional.empty());
-
-    // Act
-    Characteristics result = characteristicsService.getCharacteristics(UUID);
-
-    // Assert
-    assertThat(result).isEqualTo(characteristics);
-  }
-
-  @Test
-  void get_characteristics_on_existing_gamesave_id_when_partially_cached() {
-    // Arrange
-    CharacteristicsEntity characteristicsEntity =
-        CharacteristicsEntity.builder()
-            .attack(1L)
-            .critChance(2L)
-            .critDamage(3L)
-            .health(4L)
-            .resistance(5L)
-            .build();
-
-    Characteristics characteristicsCached = Characteristics.builder().attack(1L).build();
-
-    Characteristics characteristics =
-        Characteristics.builder()
-            .attack(1L)
-            .critChance(2L)
-            .critDamage(3L)
-            .health(4L)
-            .resistance(5L)
-            .build();
-
-    when(characteristicsRepository.findCharacteristicsEntityById(any(UUID.class)))
-        .thenReturn(Optional.of(characteristicsEntity));
-    when(characteristicsCache.isEnabled()).thenReturn(true);
-    when(characteristicsCache.get(anyString())).thenReturn(Optional.of(characteristicsCached));
 
     // Act
     Characteristics result = characteristicsService.getCharacteristics(UUID);

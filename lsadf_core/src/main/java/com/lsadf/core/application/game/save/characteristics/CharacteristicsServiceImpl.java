@@ -18,24 +18,19 @@ package com.lsadf.core.application.game.save.characteristics;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntityMapper;
-import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
 public class CharacteristicsServiceImpl implements CharacteristicsService {
 
-  private final CharacteristicsRepository characteristicsRepository;
+  private final CharacteristicsRepositoryPort characteristicsRepositoryPort;
   private final Cache<Characteristics> characteristicsCache;
-  private static final CharacteristicsEntityMapper characteristicsEntityModelMapper =
-      CharacteristicsEntityMapper.INSTANCE;
 
   public CharacteristicsServiceImpl(
-      CharacteristicsRepository characteristicsRepository,
+      CharacteristicsRepositoryPort characteristicsRepositoryPort,
       Cache<Characteristics> characteristicsCache) {
-    this.characteristicsRepository = characteristicsRepository;
+    this.characteristicsRepositoryPort = characteristicsRepositoryPort;
     this.characteristicsCache = characteristicsCache;
   }
 
@@ -48,17 +43,14 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
       Long critDamage,
       Long health,
       Long resistance) {
-    var newEntity =
-        characteristicsRepository.createNewCharacteristicsEntity(
-            gameSaveId, attack, critChance, critDamage, health, resistance);
-    return characteristicsEntityModelMapper.map(newEntity);
+    return characteristicsRepositoryPort.create(
+        gameSaveId, attack, critChance, critDamage, health, resistance);
   }
 
   /** {@inheritDoc} */
   @Override
   public Characteristics createNewCharacteristics(UUID gameSaveId) {
-    var newEntity = characteristicsRepository.createNewCharacteristicsEntity(gameSaveId);
-    return characteristicsEntityModelMapper.map(newEntity);
+    return characteristicsRepositoryPort.create(gameSaveId);
   }
 
   /** {@inheritDoc} */
@@ -79,50 +71,44 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
             || characteristics.critDamage() == null
             || characteristics.health() == null
             || characteristics.resistance() == null) {
-          CharacteristicsEntity characteristicsEntity = getCharacteristicsEntity(gameSaveId);
-          return mergeCharacteristics(characteristics, characteristicsEntity);
+          Characteristics dbCharacteristics = getCharacteristicsFromDatabase(gameSaveId);
+          return mergeCharacteristics(characteristics, dbCharacteristics);
         }
         return characteristics;
       }
     }
-    CharacteristicsEntity characteristicsEntity = getCharacteristicsEntity(gameSaveId);
-
-    return characteristicsEntityModelMapper.map(characteristicsEntity);
+    return getCharacteristicsFromDatabase(gameSaveId);
   }
 
   /**
-   * Merge the characteristics POJO with the characteristics entity from the database
+   * Merge the characteristics POJO with the characteristics from the database
    *
    * @param characteristics the characteristics POJO
-   * @param characteristicsEntity the characteristics entity from the database
+   * @param dbCharacteristics the characteristics from the database
    * @return the merged characteristics POJO
    */
   private static Characteristics mergeCharacteristics(
-      Characteristics characteristics, CharacteristicsEntity characteristicsEntity) {
+      Characteristics characteristics, Characteristics dbCharacteristics) {
     var builder = Characteristics.builder();
     builder.attack(
-        characteristics.attack() == null
-            ? characteristicsEntity.getAttack()
-            : characteristics.attack());
+        characteristics.attack() == null ? dbCharacteristics.attack() : characteristics.attack());
 
     builder.critChance(
         characteristics.critChance() == null
-            ? characteristicsEntity.getCritChance()
+            ? dbCharacteristics.critChance()
             : characteristics.critChance());
 
     builder.critDamage(
         characteristics.critDamage() == null
-            ? characteristicsEntity.getCritDamage()
+            ? dbCharacteristics.critDamage()
             : characteristics.critDamage());
 
     builder.health(
-        characteristics.health() == null
-            ? characteristicsEntity.getHealth()
-            : characteristics.health());
+        characteristics.health() == null ? dbCharacteristics.health() : characteristics.health());
 
     builder.resistance(
         characteristics.resistance() == null
-            ? characteristicsEntity.getResistance()
+            ? dbCharacteristics.resistance()
             : characteristics.resistance());
 
     return builder.build();
@@ -148,23 +134,22 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
   }
 
   /**
-   * Get the characteristics entity from the database
+   * Get the characteristics from the database
    *
    * @param gameSaveId the id of the game save
-   * @return the characteristics entity
-   * @throws NotFoundException if the characteristics entity is not found
+   * @return the characteristics
+   * @throws NotFoundException if the characteristics is not found
    */
-  private CharacteristicsEntity getCharacteristicsEntity(UUID gameSaveId) throws NotFoundException {
-    return characteristicsRepository
-        .findCharacteristicsEntityById(gameSaveId)
+  private Characteristics getCharacteristicsFromDatabase(UUID gameSaveId) throws NotFoundException {
+    return characteristicsRepositoryPort
+        .findById(gameSaveId)
         .orElseThrow(
             () ->
-                new NotFoundException(
-                    "Characteristics entity not found for game save id " + gameSaveId));
+                new NotFoundException("Characteristics not found for game save id " + gameSaveId));
   }
 
   /**
-   * Save the gold amount to the database
+   * Save the characteristics to the database
    *
    * @param gameSaveId the id of the game save
    * @param characteristics the characteristics POJO
@@ -172,13 +157,15 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
    */
   private void saveCharacteristicsToDatabase(UUID gameSaveId, Characteristics characteristics)
       throws NotFoundException {
-    characteristicsRepository.updateCharacteristics(
-        gameSaveId,
-        characteristics.attack(),
-        characteristics.critChance(),
-        characteristics.critDamage(),
-        characteristics.health(),
-        characteristics.health());
+    Characteristics updatedCharacteristics =
+        Characteristics.builder()
+            .attack(characteristics.attack())
+            .critChance(characteristics.critChance())
+            .critDamage(characteristics.critDamage())
+            .health(characteristics.health())
+            .resistance(characteristics.resistance())
+            .build();
+    characteristicsRepositoryPort.update(gameSaveId, updatedCharacteristics);
   }
 
   /**

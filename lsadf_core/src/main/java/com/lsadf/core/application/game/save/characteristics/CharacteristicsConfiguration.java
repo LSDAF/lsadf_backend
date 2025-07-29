@@ -21,7 +21,6 @@ import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.NoOpHistoCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -31,8 +30,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 /**
  * Configuration class for setting up the CharacteristicsService bean. This class defines and
  * provides a bean for the CharacteristicsService implementation. It integrates necessary
- * dependencies such as CharacteristicsRepository, Cache for Characteristics, and a ModelMapper for
- * handling object transformations.
+ * dependencies such as CharacteristicsRepositoryPort, Cache for Characteristics, and a ModelMapper
+ * for handling object transformations.
  */
 @Configuration
 public class CharacteristicsConfiguration {
@@ -41,9 +40,9 @@ public class CharacteristicsConfiguration {
 
   @Bean
   public CharacteristicsService characteristicsService(
-      CharacteristicsRepository characteristicsRepository,
+      CharacteristicsRepositoryPort characteristicsRepositoryPort,
       Cache<Characteristics> characteristicsCache) {
-    return new CharacteristicsServiceImpl(characteristicsRepository, characteristicsCache);
+    return new CharacteristicsServiceImpl(characteristicsRepositoryPort, characteristicsCache);
   }
 
   @Bean(name = CHARACTERISTICS_CACHE)
