@@ -45,7 +45,7 @@ public interface GameMetadataRepository
       """
               insert into t_game_metadata_tgme (user_email) values (:user_email) returning *
               """)
-  GameMetadataEntity createNewGameSaveEntity(@Param(GAME_METADATA_USER_EMAIL) String userId);
+  GameMetadataEntity createNewGameSaveEntity(@Param(GAME_METADATA_USER_EMAIL) String userEmail);
 
   @Query(
       """

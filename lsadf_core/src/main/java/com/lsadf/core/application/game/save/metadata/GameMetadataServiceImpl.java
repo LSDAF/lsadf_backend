@@ -17,72 +17,64 @@
 package com.lsadf.core.application.game.save.metadata;
 
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
-import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
-import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntityMapper;
-import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataRepository;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
 public class GameMetadataServiceImpl implements GameMetadataService {
 
-  private final GameMetadataRepository gameMetadataRepository;
+  private final GameMetadataRepositoryPort gameMetadataRepositoryPort;
 
-  private static final GameMetadataEntityMapper gameMetadataEntityMapper =
-      GameMetadataEntityMapper.INSTANCE;
-
-  public GameMetadataServiceImpl(GameMetadataRepository gameMetadataRepository) {
-    this.gameMetadataRepository = gameMetadataRepository;
+  public GameMetadataServiceImpl(GameMetadataRepositoryPort gameMetadataRepositoryPort) {
+    this.gameMetadataRepositoryPort = gameMetadataRepositoryPort;
   }
 
   @Override
   @Transactional
   public void deleteById(UUID gameSaveId) {
-    gameMetadataRepository.deleteGameSaveEntityById(gameSaveId);
+    gameMetadataRepositoryPort.deleteById(gameSaveId);
   }
 
   @Override
   @Transactional(readOnly = true)
   public boolean existsById(UUID gameSaveId) {
-    return gameMetadataRepository.existsById(gameSaveId);
+    return gameMetadataRepositoryPort.existsById(gameSaveId);
   }
 
   @Override
   @Transactional(readOnly = true)
   public boolean existsByNickname(String nickname) {
-    return gameMetadataRepository.existsByNickname(nickname);
+    return gameMetadataRepositoryPort.existsByNickname(nickname);
   }
 
   @Override
   @Transactional(readOnly = true)
   public GameMetadata getGameMetadata(UUID gameSaveId) {
-    var gameMetadataEntity = gameMetadataRepository.findGameSaveEntityById(gameSaveId);
-    return gameMetadataEntityMapper.map(gameMetadataEntity);
+    return gameMetadataRepositoryPort
+        .findById(gameSaveId)
+        .orElseThrow(() -> new RuntimeException("Game metadata not found for id: " + gameSaveId));
   }
 
   @Override
   @Transactional(readOnly = true)
   public Long count() {
-    return gameMetadataRepository.count();
+    return gameMetadataRepositoryPort.count();
   }
 
   @Override
   @Transactional
   public GameMetadata updateNickname(UUID gameSaveId, String nickname) {
-    var entity = gameMetadataRepository.updateGameSaveEntityNickname(gameSaveId, nickname);
-    return gameMetadataEntityMapper.map(entity);
+    return gameMetadataRepositoryPort.updateNickname(gameSaveId, nickname);
   }
 
   @Override
   @Transactional
   public GameMetadata createNewGameMetadata(UUID gameSaveId, String username, String nickname) {
-    GameMetadataEntity newEntity;
     if (gameSaveId != null && nickname != null) {
-      newEntity = gameMetadataRepository.createNewGameSaveEntity(gameSaveId, username, nickname);
+      return gameMetadataRepositoryPort.create(gameSaveId, username, nickname);
     } else if (nickname != null) {
-      newEntity = gameMetadataRepository.createNewGameSaveEntity(username, nickname);
+      return gameMetadataRepositoryPort.create(null, username, nickname);
     } else {
-      newEntity = gameMetadataRepository.createNewGameSaveEntity(username);
+      return gameMetadataRepositoryPort.create(null, username, null);
     }
-    return gameMetadataEntityMapper.map(newEntity);
   }
 }

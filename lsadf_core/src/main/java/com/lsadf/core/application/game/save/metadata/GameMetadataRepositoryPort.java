@@ -13,17 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.application.game.save.metadata;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.lsadf.core.domain.game.save.metadata.GameMetadata;
+import java.util.Optional;
+import java.util.UUID;
 
-@Configuration
-public class GameMetadataConfiguration {
-  @Bean
-  public GameMetadataService gameMetadataService(
-      GameMetadataRepositoryPort gameMetadataRepositoryPort) {
-    return new GameMetadataServiceImpl(gameMetadataRepositoryPort);
-  }
+public interface GameMetadataRepositoryPort {
+
+  Optional<GameMetadata> findById(UUID id);
+
+  GameMetadata create(UUID id, String userEmail, String nickname);
+
+  GameMetadata updateNickname(UUID id, String nickname);
+
+  void deleteById(UUID id);
+
+  boolean existsById(UUID id);
+
+  boolean existsByNickname(String nickname);
+
+  Long count();
 }

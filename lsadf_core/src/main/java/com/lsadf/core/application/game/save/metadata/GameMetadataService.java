@@ -85,12 +85,4 @@ public interface GameMetadataService {
    * @return the newly created {@link GameMetadata} object containing game and user metadata
    */
   GameMetadata createNewGameMetadata(UUID gameSaveId, String username, String nickname);
-
-  default GameMetadata createNewGameMetadata(String username, String nickname) {
-    return createNewGameMetadata(null, username, nickname);
-  }
-
-  default GameMetadata createNewGameMetadata(String username) {
-    return createNewGameMetadata(null, username, null);
-  }
 }
