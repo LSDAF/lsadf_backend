@@ -125,7 +125,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @EnableConfigurationProperties
 @CucumberContextConfiguration
 @EnableJdbcRepositories(basePackages = "com.lsadf.core.infra.persistence")
-// @EntityScan(basePackages = "com.lsadf.core.infra.persistence")
 @EnableAutoConfiguration(
     exclude = {
       SecurityAutoConfiguration.class,
