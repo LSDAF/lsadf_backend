@@ -22,13 +22,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.currency.CurrencyServiceImpl;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +41,7 @@ import org.mockito.MockitoAnnotations;
 class CurrencyServiceTests {
   private CurrencyService currencyService;
 
-  @Mock private CurrencyRepository currencyRepository;
+  @Mock private CurrencyRepositoryPort currencyRepositoryPort;
 
   @Mock private Cache<Currency> currencyCache;
 
@@ -53,13 +52,13 @@ class CurrencyServiceTests {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    currencyService = new CurrencyServiceImpl(currencyRepository, currencyCache);
+    currencyService = new CurrencyServiceImpl(currencyRepositoryPort, currencyCache);
   }
 
   @Test
   void get_currency_on_non_existing_gamesave_id() {
     // Arrange
-    when(currencyRepository.findCurrencyEntityById(any(UUID.class))).thenReturn(Optional.empty());
+    when(currencyRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.empty());
     when(currencyCache.isEnabled()).thenReturn(true);
 
     // Assert
@@ -69,19 +68,9 @@ class CurrencyServiceTests {
   @Test
   void get_currency_on_existing_gamesave_id_when_cached() {
     // Arrange
-    CurrencyEntity currencyEntity =
-        CurrencyEntity.builder()
-            .goldAmount(1L)
-            .id(UUID)
-            .diamondAmount(2L)
-            .emeraldAmount(3L)
-            .amethystAmount(4L)
-            .build();
-
     Currency currency = Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
 
-    when(currencyRepository.findCurrencyEntityById(any(UUID.class)))
-        .thenReturn(Optional.of(currencyEntity));
+    when(currencyRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(currency));
     when(currencyCache.isEnabled()).thenReturn(true);
     when(currencyCache.get(anyString())).thenReturn(Optional.of(currency));
 
@@ -95,18 +84,9 @@ class CurrencyServiceTests {
   @Test
   void get_currency_on_existing_gamesave_id_when_not_cached() {
     // Arrange
-    CurrencyEntity currencyEntity =
-        CurrencyEntity.builder()
-            .goldAmount(1L)
-            .diamondAmount(2L)
-            .emeraldAmount(3L)
-            .amethystAmount(4L)
-            .build();
-
     Currency currency = Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
 
-    when(currencyRepository.findCurrencyEntityById(any(UUID.class)))
-        .thenReturn(Optional.of(currencyEntity));
+    when(currencyRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(currency));
     when(currencyCache.isEnabled()).thenReturn(false);
     when(currencyCache.get(anyString())).thenReturn(Optional.empty());
 
@@ -120,20 +100,12 @@ class CurrencyServiceTests {
   @Test
   void get_currency_on_existing_gamesave_id_when_partially_cached() {
     // Arrange
-    CurrencyEntity currencyEntity =
-        CurrencyEntity.builder()
-            .goldAmount(1L)
-            .diamondAmount(2L)
-            .emeraldAmount(3L)
-            .amethystAmount(4L)
-            .build();
 
     Currency currencyCached = Currency.builder().gold(1L).build();
 
     Currency currency = Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
 
-    when(currencyRepository.findCurrencyEntityById(any(UUID.class)))
-        .thenReturn(Optional.of(currencyEntity));
+    when(currencyRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(currency));
     when(currencyCache.isEnabled()).thenReturn(true);
     when(currencyCache.get(anyString())).thenReturn(Optional.of(currencyCached));
 
