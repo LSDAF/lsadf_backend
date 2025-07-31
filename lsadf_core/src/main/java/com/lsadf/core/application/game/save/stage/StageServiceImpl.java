@@ -18,9 +18,6 @@ package com.lsadf.core.application.game.save.stage;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity;
-import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntityMapper;
-import com.lsadf.core.infra.persistence.table.game.save.stage.StageRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,27 +25,24 @@ import org.springframework.transaction.annotation.Transactional;
 /** Implementation of the stage service. */
 public class StageServiceImpl implements StageService {
 
-  private final StageRepository stageRepository;
+  private final StageRepositoryPort stageRepositoryPort;
   private final Cache<Stage> stageCache;
-  private static final StageEntityMapper mapper = StageEntityMapper.INSTANCE;
 
-  public StageServiceImpl(StageRepository stageRepository, Cache<Stage> stageCache) {
-    this.stageRepository = stageRepository;
+  public StageServiceImpl(StageRepositoryPort stageRepositoryPort, Cache<Stage> stageCache) {
+    this.stageRepositoryPort = stageRepositoryPort;
     this.stageCache = stageCache;
   }
 
   /** {@inheritDoc} */
   @Override
   public Stage createNewStage(UUID gameSaveId) {
-    var newEntity = stageRepository.createNewStageEntity(gameSaveId);
-    return mapper.map(newEntity);
+    return stageRepositoryPort.create(gameSaveId);
   }
 
   /** {@inheritDoc} */
   @Override
   public Stage createNewStage(UUID gameSaveId, Long currentStage, Long maxStage) {
-    var newEntity = stageRepository.createNewStageEntity(gameSaveId, currentStage, maxStage);
-    return mapper.map(newEntity);
+    return stageRepositoryPort.create(gameSaveId, currentStage, maxStage);
   }
 
   /** {@inheritDoc} */
@@ -64,20 +58,19 @@ public class StageServiceImpl implements StageService {
       if (optionalCachedStage.isPresent()) {
         Stage stage = optionalCachedStage.get();
         if (stage.maxStage() == null || stage.currentStage() == null) {
-          StageEntity stageEntity = getStageEntity(gameSaveId);
-          return mergeStages(stage, stageEntity);
+          Stage dbStage = getStageFromDatabase(gameSaveId);
+          return mergeStages(stage, dbStage);
         }
         return stage;
       }
     }
-    StageEntity stageEntity = getStageEntity(gameSaveId);
-    return mapper.map(stageEntity);
+    return getStageFromDatabase(gameSaveId);
   }
 
-  private StageEntity getStageEntity(UUID gameSaveId) {
-    return stageRepository
-        .findStageEntityById(gameSaveId)
-        .orElseThrow(() -> new NotFoundException("Stage not found"));
+  private Stage getStageFromDatabase(UUID gameSaveId) {
+    return stageRepositoryPort
+        .findById(gameSaveId)
+        .orElseThrow(() -> new NotFoundException("Stage not found for game save id " + gameSaveId));
   }
 
   /** {@inheritDoc} */
@@ -105,21 +98,23 @@ public class StageServiceImpl implements StageService {
    * @param stage the stage to save
    */
   private void saveStageToDatabase(UUID gameSaveId, Stage stage) {
-    stageRepository.updateStage(gameSaveId, stage.currentStage(), stage.maxStage());
+    Stage updatedStage =
+        Stage.builder().currentStage(stage.currentStage()).maxStage(stage.maxStage()).build();
+    stageRepositoryPort.update(gameSaveId, updatedStage);
   }
 
   /**
-   * Merge the stage POJO with the stage entity from the database
+   * Merge the stage POJO with the stage from the database
    *
    * @param stage the stage POJO
-   * @param stageEntity the stage entity from the database
+   * @param dbStage the stage from the database
    * @return the merged stage POJO
    */
-  private static Stage mergeStages(Stage stage, StageEntity stageEntity) {
+  private static Stage mergeStages(Stage stage, Stage dbStage) {
     var builder = Stage.builder();
     builder.currentStage(
-        stage.currentStage() != null ? stage.currentStage() : stageEntity.getCurrentStage());
-    builder.maxStage(stage.maxStage() != null ? stage.maxStage() : stageEntity.getMaxStage());
+        stage.currentStage() != null ? stage.currentStage() : dbStage.currentStage());
+    builder.maxStage(stage.maxStage() != null ? stage.maxStage() : dbStage.maxStage());
     return builder.build();
   }
 

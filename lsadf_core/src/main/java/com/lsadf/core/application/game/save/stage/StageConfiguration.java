@@ -20,7 +20,6 @@ import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.cache.HistoCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.persistence.table.game.save.stage.StageRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -38,8 +37,9 @@ public class StageConfiguration {
   public static final String STAGE_CACHE = "stageCache";
 
   @Bean
-  public StageService stageService(StageRepository stageRepository, Cache<Stage> stageCache) {
-    return new StageServiceImpl(stageRepository, stageCache);
+  public StageService stageService(
+      StageRepositoryPort stageRepositoryPort, Cache<Stage> stageCache) {
+    return new StageServiceImpl(stageRepositoryPort, stageCache);
   }
 
   @Bean(name = STAGE_CACHE)
