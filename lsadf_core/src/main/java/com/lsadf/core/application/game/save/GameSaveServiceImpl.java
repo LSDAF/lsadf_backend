@@ -33,9 +33,6 @@ import com.lsadf.core.infra.exception.AlreadyTakenNicknameException;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.exception.http.UnauthorizedException;
-import com.lsadf.core.infra.persistence.view.GameSaveViewEntity;
-import com.lsadf.core.infra.persistence.view.GameSaveViewMapper;
-import com.lsadf.core.infra.persistence.view.GameSaveViewRepository;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
@@ -57,16 +54,14 @@ public class GameSaveServiceImpl implements GameSaveService {
   private final StageService stageService;
   private final CurrencyService currencyService;
 
-  // Repositories and services to access the database and the cache
-  private final GameSaveViewRepository gameSaveViewRepository;
+  // Repository port to access game save data
+  private final GameSaveRepositoryPort gameSaveRepositoryPort;
 
   private final CacheService cacheService;
   private final Cache<String> gameSaveOwnershipCache;
   private final HistoCache<Stage> stageCache;
   private final HistoCache<Currency> currencyCache;
   private final HistoCache<Characteristics> characteristicsCache;
-
-  private static final GameSaveViewMapper gameSaveViewMapper = GameSaveViewMapper.INSTANCE;
 
   @Autowired
   public GameSaveServiceImpl(
@@ -75,7 +70,7 @@ public class GameSaveServiceImpl implements GameSaveService {
       StageService stageService,
       CurrencyService currencyService,
       UserService userService,
-      GameSaveViewRepository gameSaveViewRepository,
+      GameSaveRepositoryPort gameSaveRepositoryPort,
       CacheService cacheService,
       Cache<String> gameSaveOwnershipCache,
       HistoCache<Stage> stageCache,
@@ -86,7 +81,7 @@ public class GameSaveServiceImpl implements GameSaveService {
     this.stageService = stageService;
     this.currencyService = currencyService;
     this.gameMetadataService = gameMetadataService;
-    this.gameSaveViewRepository = gameSaveViewRepository;
+    this.gameSaveRepositoryPort = gameSaveRepositoryPort;
     this.cacheService = cacheService;
     this.gameSaveOwnershipCache = gameSaveOwnershipCache;
     this.stageCache = stageCache;
@@ -98,8 +93,13 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Override
   @Transactional(readOnly = true)
   public GameSave getGameSave(UUID saveId) throws NotFoundException {
-    GameSaveViewEntity gameSaveEntity = getGameSaveEntity(saveId);
-    GameSave gameSave = gameSaveViewMapper.map(gameSaveEntity);
+    if (saveId == null) {
+      throw new IllegalArgumentException("Game Save ID cannot be null");
+    }
+    GameSave gameSave =
+        gameSaveRepositoryPort
+            .findById(saveId)
+            .orElseThrow(() -> new NotFoundException("Game save with id " + saveId + " not found"));
     return enrichGameSaveWithCachedData(gameSave);
   }
 
@@ -174,7 +174,7 @@ public class GameSaveServiceImpl implements GameSaveService {
           UnauthorizedException,
           AlreadyTakenNicknameException {
     if (saveId == null) {
-      throw new NotFoundException("Game save id is null");
+      throw new IllegalArgumentException("Game save id is null");
     }
 
     if (gameMetadataService.existsByNickname(gameSaveUpdateRequest.getNickname())) {
@@ -198,9 +198,10 @@ public class GameSaveServiceImpl implements GameSaveService {
 
     gameMetadataService.updateNickname(saveId, gameSaveUpdateRequest.getNickname());
 
-    GameSaveViewEntity updatedView = getGameSaveEntity(saveId);
-
-    GameSave gameSave = gameSaveViewMapper.map(updatedView);
+    GameSave gameSave =
+        gameSaveRepositoryPort
+            .findById(saveId)
+            .orElseThrow(() -> new NotFoundException("Game save with id " + saveId + " not found"));
     return enrichGameSaveWithCachedData(gameSave);
   }
 
@@ -232,9 +233,10 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Override
   @Transactional(readOnly = true)
   public Stream<GameSave> getGameSaves() {
-    var resultStream = gameSaveViewRepository.findAllGameSaves();
-    List<GameSave> results = resultStream.map(gameSaveViewMapper::map).toList();
-    return results.stream().map(this::enrichGameSaveWithCachedData);
+    if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+      return gameSaveRepositoryPort.findAll().map(this::enrichGameSaveWithCachedData);
+    }
+    return gameSaveRepositoryPort.findAll();
   }
 
   @Transactional(readOnly = true)
@@ -249,20 +251,18 @@ public class GameSaveServiceImpl implements GameSaveService {
   public void checkGameSaveOwnership(UUID saveId, String userEmail)
       throws ForbiddenException, NotFoundException {
     if (!gameSaveOwnershipCache.isEnabled()) {
-      GameSaveViewEntity gameSaveEntity = getGameSaveEntity(saveId);
-
-      if (!Objects.equals(gameSaveEntity.getUserEmail(), userEmail)) {
+      String ownerEmail = gameMetadataService.findOwnerEmailById(saveId);
+      if (!Objects.equals(ownerEmail, userEmail)) {
         throw new ForbiddenException("The given user email is not the owner of the game save");
       }
-
       return;
     }
     String saveIdString = saveId.toString();
     Optional<String> optionalOwnership = gameSaveOwnershipCache.get(saveIdString);
     if (optionalOwnership.isEmpty()) {
-      GameSaveViewEntity gameSaveEntity = getGameSaveEntity(saveId);
-      gameSaveOwnershipCache.set(saveIdString, userEmail);
-      if (!Objects.equals(gameSaveEntity.getUserEmail(), userEmail)) {
+      String ownerEmail = gameMetadataService.findOwnerEmailById(saveId);
+      gameSaveOwnershipCache.set(saveIdString, ownerEmail);
+      if (!Objects.equals(ownerEmail, userEmail)) {
         throw new ForbiddenException("The given user username is not the owner of the game save");
       }
       return;
@@ -281,14 +281,9 @@ public class GameSaveServiceImpl implements GameSaveService {
       throw new NotFoundException("User with username " + username + " not found");
     }
     if (!gameSaveOwnershipCache.isEnabled()) {
-      return gameSaveViewRepository
-          .findGameSaveEntitiesByUserEmail(username)
-          .map(gameSaveViewMapper::map);
+      return gameSaveRepositoryPort.findByUserEmail(username);
     }
-    return gameSaveViewRepository
-        .findGameSaveEntitiesByUserEmail(username)
-        .map(gameSaveViewMapper::map)
-        .map(this::enrichGameSaveWithCachedData);
+    return gameSaveRepositoryPort.findByUserEmail(username).map(this::enrichGameSaveWithCachedData);
   }
 
   private GameSave enrichGameSaveWithCachedData(GameSave gameSave) {
@@ -302,17 +297,5 @@ public class GameSaveServiceImpl implements GameSaveService {
     var cacheStage = stageCache.get(metadata.id().toString());
     cacheStage.ifPresent(gameSave::setStage);
     return gameSave;
-  }
-
-  /**
-   * Get the game save entity in the database or throw an exception if not found
-   *
-   * @param saveId the save id
-   * @return the game save entity
-   */
-  private GameSaveViewEntity getGameSaveEntity(UUID saveId) {
-    return gameSaveViewRepository
-        .findGameSaveEntityById(saveId)
-        .orElseThrow(() -> new NotFoundException("Game save with id " + saveId + " not found"));
   }
 }

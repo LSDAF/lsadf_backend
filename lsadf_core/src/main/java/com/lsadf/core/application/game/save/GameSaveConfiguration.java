@@ -35,7 +35,6 @@ import com.lsadf.core.infra.cache.ValkeyCache;
 import com.lsadf.core.infra.cache.config.ValkeyProperties;
 import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.cache.service.CacheService;
-import com.lsadf.core.infra.persistence.view.GameSaveViewRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,8 +67,7 @@ public class GameSaveConfiguration {
   public GameSaveService gameSaveService(
       UserService userService,
       GameMetadataService gameMetadataService,
-      GameSaveViewRepository gameSaveViewRepository,
-      GameMetadataService metadataService,
+      GameSaveRepositoryPort gameSaveRepositoryPort,
       CharacteristicsService characteristicsService,
       StageService stageService,
       CurrencyService currencyService,
@@ -84,7 +82,7 @@ public class GameSaveConfiguration {
         stageService,
         currencyService,
         userService,
-        gameSaveViewRepository,
+        gameSaveRepositoryPort,
         cacheService,
         gameSaveOwnershipCache,
         stageCache,
