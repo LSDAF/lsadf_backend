@@ -39,7 +39,7 @@ public class PropertiesConfiguration {
 
   @Bean
   @ConfigurationProperties(prefix = "jdbc")
-  public JdbcProperties jpaProperties() {
+  public JdbcProperties jdbcProperties() {
     return new JdbcProperties();
   }
 
