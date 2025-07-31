@@ -13,27 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.save.metadata;
+package com.lsadf.core.application.game.save;
 
-import com.lsadf.core.domain.game.save.metadata.GameMetadata;
+import com.lsadf.core.domain.game.save.GameSave;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
-public interface GameMetadataRepositoryPort {
+public interface GameSaveRepositoryPort {
 
-  Optional<GameMetadata> findById(UUID id);
+  Optional<GameSave> findById(UUID gameSaveId);
 
-  GameMetadata create(UUID id, String userEmail, String nickname);
+  Stream<GameSave> findAll();
 
-  GameMetadata updateNickname(UUID id, String nickname);
-
-  void deleteById(UUID id);
-
-  boolean existsById(UUID id);
-
-  boolean existsByNickname(String nickname);
-
-  Long count();
-
-  Optional<String> findOwnerEmailById(UUID gameSaveId);
+  Stream<GameSave> findByUserEmail(String userEmail);
 }

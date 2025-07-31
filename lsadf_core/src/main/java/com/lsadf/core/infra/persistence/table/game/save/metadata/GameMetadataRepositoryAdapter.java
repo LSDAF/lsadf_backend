@@ -76,4 +76,9 @@ public class GameMetadataRepositoryAdapter implements GameMetadataRepositoryPort
   public Long count() {
     return gameMetadataRepository.count();
   }
+
+  @Override
+  public Optional<String> findOwnerEmailById(UUID gameSaveId) {
+    return gameMetadataRepository.findUserEmailById(gameSaveId);
+  }
 }

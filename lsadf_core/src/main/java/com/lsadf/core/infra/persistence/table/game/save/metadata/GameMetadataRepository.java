@@ -18,6 +18,7 @@ package com.lsadf.core.infra.persistence.table.game.save.metadata;
 import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_NICKNAME;
 import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_USER_EMAIL;
 
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -75,4 +76,7 @@ public interface GameMetadataRepository
 
   @Query("select * from t_game_metadata_tgme where id=:id")
   GameMetadataEntity findGameSaveEntityById(@Param("id") UUID id);
+
+  @Query("select user_email from t_game_metadata_tgme where id=:id")
+  Optional<String> findUserEmailById(@Param("id") UUID id);
 }

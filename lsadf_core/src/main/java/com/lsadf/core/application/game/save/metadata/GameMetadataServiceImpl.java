@@ -17,6 +17,7 @@
 package com.lsadf.core.application.game.save.metadata;
 
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
+import com.lsadf.core.infra.exception.http.NotFoundException;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,5 +77,12 @@ public class GameMetadataServiceImpl implements GameMetadataService {
     } else {
       return gameMetadataRepositoryPort.create(null, username, null);
     }
+  }
+
+  @Override
+  public String findOwnerEmailById(UUID gameSaveId) {
+    return gameMetadataRepositoryPort
+        .findOwnerEmailById(gameSaveId)
+        .orElseThrow(() -> new NotFoundException("Game save with id " + gameSaveId + " not found"));
   }
 }
