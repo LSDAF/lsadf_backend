@@ -15,18 +15,18 @@
  */
 package com.lsadf.admin.application.bdd.when;
 
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static com.lsadf.admin.application.cache.AdminCacheController.Constants.ApiPaths.*;
 import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_GAME_SAVES;
 import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_USERS;
 import static com.lsadf.admin.application.user.AdminUserController.Constants.ApiPaths.USER_ID;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
-import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.admin.application.user.AdminUserController;
+import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.infra.web.request.common.Filter;
 import com.lsadf.core.infra.web.request.game.save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.request.game.save.update.AdminGameSaveUpdateRequest;
@@ -186,7 +186,8 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
       ResponseEntity<ApiResponse<UserResponse>> result =
-          testRestTemplate.exchange(url, HttpMethod.GET, request, buildParamaterizedUserDtoResponse());
+          testRestTemplate.exchange(
+              url, HttpMethod.GET, request, buildParamaterizedUserDtoResponse());
       ApiResponse<UserResponse> body = result.getBody();
       userResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);
@@ -240,7 +241,8 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
       headers.setBearerAuth(token);
       HttpEntity<Void> request = new HttpEntity<>(headers);
       ResponseEntity<ApiResponse<UserResponse>> result =
-          testRestTemplate.exchange(url, HttpMethod.GET, request, buildParamaterizedUserDtoResponse());
+          testRestTemplate.exchange(
+              url, HttpMethod.GET, request, buildParamaterizedUserDtoResponse());
       ApiResponse<UserResponse> body = result.getBody();
       userResponseListStack.push(Collections.singletonList(body.data()));
       responseStack.push(body);

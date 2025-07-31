@@ -74,8 +74,7 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Consolidated utility class for BDD tests
- * Contains common mapping methods used across all modules
+ * Consolidated utility class for BDD tests Contains common mapping methods used across all modules
  */
 @UtilityClass
 public class BddUtils {

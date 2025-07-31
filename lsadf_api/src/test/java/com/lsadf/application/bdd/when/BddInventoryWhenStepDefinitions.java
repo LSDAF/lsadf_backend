@@ -15,14 +15,14 @@
  */
 package com.lsadf.application.bdd.when;
 
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static com.lsadf.application.controller.game.inventory.InventoryController.Constants.ApiPaths.CLIENT_ID;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.inventory.InventoryController;
+import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity;

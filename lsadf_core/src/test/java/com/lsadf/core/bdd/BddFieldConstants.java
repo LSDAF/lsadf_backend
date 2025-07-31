@@ -19,8 +19,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * Constants for the fields in the BDD scenarios
- * Consolidated from lsadf-api and lsadf-admin modules
+ * Constants for the fields in the BDD scenarios Consolidated from lsadf-api and lsadf-admin modules
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BddFieldConstants {
