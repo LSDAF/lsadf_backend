@@ -20,6 +20,7 @@ import com.lsadf.core.domain.game.save.GameSave;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
+import org.springframework.transaction.annotation.Transactional;
 
 public class GameSaveViewRepositoryAdapter implements GameSaveRepositoryPort {
 
@@ -31,16 +32,19 @@ public class GameSaveViewRepositoryAdapter implements GameSaveRepositoryPort {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<GameSave> findById(UUID gameSaveId) {
     return gameSaveViewRepository.findGameSaveEntityById(gameSaveId).map(gameSaveViewMapper::map);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Stream<GameSave> findAll() {
     return gameSaveViewRepository.findAllGameSaves().map(gameSaveViewMapper::map);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Stream<GameSave> findByUserEmail(String userEmail) {
     return gameSaveViewRepository
         .findGameSaveEntitiesByUserEmail(userEmail)
