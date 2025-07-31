@@ -15,9 +15,7 @@
  */
 package com.lsadf.core.application.game.inventory;
 
-import com.lsadf.core.infra.persistence.table.game.inventory.AdditionalItemStatsRepository;
-import com.lsadf.core.infra.persistence.table.game.inventory.ItemRepository;
-import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataRepository;
+import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,10 +23,8 @@ import org.springframework.context.annotation.Configuration;
 public class InventoryConfiguration {
   @Bean
   public InventoryService inventoryService(
-      ItemRepository itemRepository,
-      GameMetadataRepository gameMetadataRepository,
-      AdditionalItemStatsRepository additionalItemStatsRepository) {
-    return new InventoryServiceImpl(
-        itemRepository, gameMetadataRepository, additionalItemStatsRepository);
+      InventoryRepositoryPort inventoryRepositoryPort,
+      GameMetadataRepositoryPort gameMetadataRepositoryPort) {
+    return new InventoryServiceImpl(inventoryRepositoryPort, gameMetadataRepositoryPort);
   }
 }
