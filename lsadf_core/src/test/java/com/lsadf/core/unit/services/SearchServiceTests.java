@@ -135,7 +135,7 @@ class SearchServiceTests {
   }
 
   @Test
-  void filter_on_user_id() {
+  void test_searchUsers_filtersCorrectly_when_filterOnUserId() {
     Filter filter = new Filter(ID, UUID_1.toString());
     SearchRequest request = new SearchRequest(List.of(filter));
 
@@ -152,7 +152,7 @@ class SearchServiceTests {
   }
 
   @Test
-  void filter_on_user_first_name() {
+  void test_searchUsers_filtersCorrectly_when_filterOnUserFirstName() {
     Filter filter = new Filter(FIRST_NAME, "Toto");
     SearchRequest request = new SearchRequest(List.of(filter));
 
@@ -174,7 +174,7 @@ class SearchServiceTests {
   }
 
   @Test
-  void filter_on_user_last_name() {
+  void test_searchUsers_filtersCorrectly_when_filterOnUserLastName() {
     Filter filter = new Filter(LAST_NAME, "Tata");
     SearchRequest request = new SearchRequest(List.of(filter));
 
@@ -189,7 +189,7 @@ class SearchServiceTests {
   }
 
   @Test
-  void filter_on_user_username() {
+  void test_searchUsers_filtersCorrectly_when_filterOnUserUsername() {
     Filter filter = new Filter(USERNAME, "toto@toto.com");
     SearchRequest request = new SearchRequest(List.of(filter));
 
@@ -204,7 +204,7 @@ class SearchServiceTests {
   }
 
   @Test
-  void filter_on_user_roles() {
+  void test_searchUsers_filtersCorrectly_when_filterOnUserRoles() {
 
     Filter filter = new Filter(USER_ROLES, "ADMIN");
     SearchRequest request = new SearchRequest(List.of(filter));
@@ -214,7 +214,7 @@ class SearchServiceTests {
   }
 
   @Test
-  void filter_on_invalid_user_filter_type() {
+  void test_searchUsers_throwsException_when_filterOnInvalidUserFilterType() {
     Filter filter = new Filter("INVALID", UUID_1.toString());
     SearchRequest request = new SearchRequest(List.of(filter));
 
@@ -224,7 +224,7 @@ class SearchServiceTests {
   }
 
   @Test
-  void filter_on_game_save_id() {
+  void test_searchGameSaves_filtersCorrectly_when_filterOnGameSaveId() {
     Filter filter = new Filter(ID, UUID_1.toString());
     SearchRequest request = new SearchRequest(List.of(filter));
 
@@ -239,7 +239,7 @@ class SearchServiceTests {
   }
 
   @Test
-  void filter_on_invalid_game_save_filter_type() {
+  void test_searchGameSaves_throwsException_when_filterOnInvalidGameSaveFilterType() {
     Filter filter = new Filter("INVALID", UUID_1.toString());
     SearchRequest request = new SearchRequest(List.of(filter));
 
@@ -249,7 +249,7 @@ class SearchServiceTests {
   }
 
   @Test
-  void order_by_user_id() {
+  void test_searchUsers_ordersCorrectly_when_orderByUserId() {
     SearchRequest request = new SearchRequest(new ArrayList<>());
 
     try (Stream<User> stream = searchService.searchUsers(request)) {

@@ -57,7 +57,7 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void get_characteristics_on_non_existing_gamesave_id() {
+  void test_getCharacteristics_throwsNotFoundException_when_nonExistingGameSaveId() {
     // Arrange
     when(characteristicsRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.empty());
     when(characteristicsCache.isEnabled()).thenReturn(true);
@@ -67,7 +67,7 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void get_characteristics_on_existing_gamesave_id_when_cached() {
+  void test_getCharacteristics_returnsCharacteristics_when_existingGameSaveIdAndCached() {
     // Arrange
 
     Characteristics cachedCharacteristics =
@@ -101,7 +101,7 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void get_characteristics_on_existing_gamesave_id_when_not_cached() {
+  void test_getCharacteristics_returnsCharacteristics_when_existingGameSaveIdAndNotCached() {
     // Arrange
     Characteristics characteristics =
         Characteristics.builder()
@@ -125,14 +125,14 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void get_characteristics_on_null_gamesave_id() {
+  void test_getCharacteristics_throwsIllegalArgumentException_when_nullGameSaveId() {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class, () -> characteristicsService.getCharacteristics(null));
   }
 
   @Test
-  void save_characteristics_on_null_game_save_id_with_to_cache_to_true() {
+  void test_saveCharacteristics_throwsIllegalArgumentException_when_nullGameSaveIdAndToCacheTrue() {
     // Arrange
     Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
 
@@ -143,7 +143,8 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void save_characteristics_on_null_game_save_id_with_to_cache_to_false() {
+  void
+      test_saveCharacteristics_throwsIllegalArgumentException_when_nullGameSaveIdAndToCacheFalse() {
     // Arrange
     Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
 
@@ -154,7 +155,8 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void save_characteristics_on_null_characteristics_with_to_cache_to_false() {
+  void
+      test_saveCharacteristics_throwsIllegalArgumentException_when_nullCharacteristicsAndToCacheFalse() {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
@@ -162,7 +164,8 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void save_characteristics_on_null_characteristics_with_to_cache_to_true() {
+  void
+      test_saveCharacteristics_throwsIllegalArgumentException_when_nullCharacteristicsAndToCacheTrue() {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
@@ -170,7 +173,8 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void save_characteristics_where_all_properties_are_null_with_cache_to_true() {
+  void
+      test_saveCharacteristics_throwsIllegalArgumentException_when_allPropertiesNullAndCacheTrue() {
     // Arrange
     Characteristics characteristics = new Characteristics(null, null, null, null, null);
 
@@ -181,7 +185,8 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void save_characteristics_where_all_properties_are_null_with_cache_to_false() {
+  void
+      test_saveCharacteristics_throwsIllegalArgumentException_when_allPropertiesNullAndCacheFalse() {
     // Arrange
     Characteristics characteristics = new Characteristics(null, null, null, null, null);
 
@@ -192,7 +197,7 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void save_characteristics_on_existing_gamesave_with_all_valid_characteristics_value() {
+  void test_saveCharacteristics_savesSuccessfully_when_existingGameSaveAndValidCharacteristics() {
     // Arrange
     Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
 

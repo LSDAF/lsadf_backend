@@ -73,7 +73,7 @@ class ValkeyCacheFlushServiceTests {
   }
 
   @Test
-  void should_flush_characteristics() {
+  void test_flushCache_flushesCorrectly_when_characteristicsCache() {
     Map<String, Characteristics> characteristicsEntries =
         Map.of(
             UUID_1.toString(), new Characteristics(1L, null, null, null, null),
@@ -88,7 +88,7 @@ class ValkeyCacheFlushServiceTests {
   }
 
   @Test
-  void should_flush_currencies() {
+  void test_flushCache_flushesCorrectly_when_currenciesCache() {
     Map<String, Currency> currencyEntries =
         Map.of(
             UUID_1.toString(), new Currency(1L, 2L, null, 3L),
@@ -101,7 +101,7 @@ class ValkeyCacheFlushServiceTests {
   }
 
   @Test
-  void should_flush_stages() {
+  void test_flushCache_flushesCorrectly_when_stagesCache() {
     Map<String, Stage> stageEntries =
         Map.of(
             UUID_1.toString(), new Stage(10L, 20L),
@@ -114,7 +114,7 @@ class ValkeyCacheFlushServiceTests {
   }
 
   @Test
-  void do_nothing_when_flushing_empty_characteristics_cache() {
+  void test_flushCache_doesNothing_when_flushingEmptyCharacteristicsCache() {
     Map<String, Characteristics> characteristicsEntries = Collections.emptyMap();
     when(characteristicsCache.getAll()).thenReturn(characteristicsEntries);
 
@@ -123,7 +123,7 @@ class ValkeyCacheFlushServiceTests {
   }
 
   @Test
-  void do_nothing_when_flushing_empty_currency_cache() {
+  void test_flushCache_doesNothing_when_flushingEmptyCurrencyCache() {
     Map<String, Currency> currencyEntries = Collections.emptyMap();
     when(currencyCache.getAll()).thenReturn(currencyEntries);
 
@@ -132,7 +132,7 @@ class ValkeyCacheFlushServiceTests {
   }
 
   @Test
-  void do_nothing_when_flushing_empty_stage_cache() {
+  void test_flushCache_doesNothing_when_flushingEmptyStageCache() {
     Map<String, Stage> stageEntries = Collections.emptyMap();
     when(stageCache.getAll()).thenReturn(stageEntries);
 

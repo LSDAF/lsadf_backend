@@ -49,7 +49,7 @@ class ModelMapperTests {
   private final String userEmail = "toto@toto.com";
 
   @Test
-  void should_map_stage_request_to_stage() {
+  void test_map_mapsCorrectly_when_stageRequestToStage() {
     // given
     StageRequest stageRequest = new StageRequest(25L, 500L);
     StageRequestMapper mapper = StageRequestMapper.INSTANCE;
@@ -62,7 +62,7 @@ class ModelMapperTests {
   }
 
   @Test
-  void should_map_stage_entity_to_stage() {
+  void test_map_mapsCorrectly_when_stageEntityToStage() {
     // given
     StageEntityMapper stageEntityMapper = StageEntityMapper.INSTANCE;
     StageEntity stageEntity =
@@ -77,7 +77,7 @@ class ModelMapperTests {
   }
 
   @Test
-  void should_map_characteristics_entity_to_characteristics() {
+  void test_map_mapsCorrectly_when_characteristicsEntityToCharacteristics() {
     // given
     CharacteristicsEntityMapper characteristicsEntityModelMapper =
         CharacteristicsEntityMapper.INSTANCE;
@@ -103,7 +103,7 @@ class ModelMapperTests {
   }
 
   @Test
-  void should_map_characteristics_request_to_characteristics() {
+  void test_map_mapsCorrectly_when_characteristicsRequestToCharacteristics() {
     // given
     CharacteristicsRequestMapper mapper = CharacteristicsRequestMapper.INSTANCE;
     CharacteristicsRequest characteristicsRequest =
@@ -121,7 +121,7 @@ class ModelMapperTests {
   }
 
   @Test
-  void should_map_currency_request_to_currency() {
+  void test_map_mapsCorrectly_when_currencyRequestToCurrency() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 200L, 300L, 400L);
     CurrencyRequestMapper mapper = CurrencyRequestMapper.INSTANCE;
@@ -136,7 +136,7 @@ class ModelMapperTests {
   }
 
   @Test
-  void should_map_currency_entity_to_currency() {
+  void test_map_mapsCorrectly_when_currencyEntityToCurrency() {
     // given
     CurrencyEntityMapper mapper = CurrencyEntityMapper.INSTANCE;
     CurrencyEntity currencyEntity =
@@ -159,7 +159,7 @@ class ModelMapperTests {
   }
 
   @Test
-  void should_map_game_save_entity_to_game_save() {
+  void test_map_mapsCorrectly_when_gameSaveEntityToGameSave() {
     // given
     GameMetadataEntityMapper mapper = GameMetadataEntityMapper.INSTANCE;
     var id = UUID.randomUUID();
@@ -183,7 +183,7 @@ class ModelMapperTests {
   }
 
   @Test
-  void should_map_userRepresentationToUser() {
+  void test_map_mapsCorrectly_when_userRepresentationToUser() {
     // given
     UserRepresentation userRepresentation = new UserRepresentation();
 
@@ -213,7 +213,7 @@ class ModelMapperTests {
   }
 
   @Test
-  void should_map_user_creation_request_to_user_representation() {
+  void test_map_mapsCorrectly_when_userCreationRequestToUserRepresentation() {
     // given
     UserCreationRequestMapper mapper = UserCreationRequestMapper.INSTANCE;
     SimpleUserCreationRequest simpleUserCreationRequest =

@@ -51,7 +51,7 @@ class AdminGlobalInfoControllerTests {
 
   @Test
   @SneakyThrows
-  void getGlobalInfo_should_return_401_when_user_not_authenticated() {
+  void test_getGlobalInfo_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -65,7 +65,7 @@ class AdminGlobalInfoControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getGlobalInfo_should_return_403_when_user_not_admin() {
+  void test_getGlobalInfo_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -82,7 +82,7 @@ class AdminGlobalInfoControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getGlobalInfo_should_return_200_when_authenticated_user_is_admin() {
+  void test_getGlobalInfo_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(

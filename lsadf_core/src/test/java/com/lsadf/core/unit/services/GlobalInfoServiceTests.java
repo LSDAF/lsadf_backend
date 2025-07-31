@@ -54,7 +54,7 @@ class GlobalInfoServiceTests {
   }
 
   @Test
-  void should_return_valid_global_info() {
+  void test_getGlobalInfo_returnsValidGlobalInfo_when_called() {
     GlobalInfo expected =
         GlobalInfo.builder()
             .now(new Date().toInstant())

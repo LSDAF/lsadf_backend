@@ -46,7 +46,7 @@ class UserControllerTests {
 
   @Test
   @SneakyThrows
-  void getUserInfo_should_return_200_when_user_not_authenticated() {
+  void test_getUserInfo_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(get("/api/v1/user/me"))
@@ -57,7 +57,7 @@ class UserControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getUserInfo_should_return_200_when_user_authenticated() {
+  void test_getUserInfo_returns200_when_userAuthenticated() {
     // when
     mockMvc
         .perform(get("/api/v1/user/me"))

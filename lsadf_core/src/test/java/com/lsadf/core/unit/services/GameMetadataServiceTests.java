@@ -52,7 +52,7 @@ class GameMetadataServiceTests {
   }
 
   @Test
-  void test01_deleteById() {
+  void test_deleteById_deletesSuccessfully_when_validId() {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
 
@@ -64,7 +64,7 @@ class GameMetadataServiceTests {
   }
 
   @Test
-  void test02_existsById() {
+  void test_existsById_returnsTrue_when_gameMetadataExists() {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     when(gameMetadataRepositoryPort.existsById(gameSaveId)).thenReturn(true);
@@ -78,7 +78,7 @@ class GameMetadataServiceTests {
   }
 
   @Test
-  void test03_existsByNickname() {
+  void test_existsByNickname_returnsTrue_when_nicknameExists() {
     // Arrange
     String nickname = "TestNickname";
     when(gameMetadataRepositoryPort.existsByNickname(nickname)).thenReturn(true);
@@ -92,7 +92,7 @@ class GameMetadataServiceTests {
   }
 
   @Test
-  void test04_getGameMetadata() {
+  void test_getGameMetadata_returnsMetadata_when_validId() {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     GameMetadata expectedMetadata =
@@ -115,7 +115,7 @@ class GameMetadataServiceTests {
   }
 
   @Test
-  void test05_getGameMetadata_throwsException() {
+  void test_getGameMetadata_throwsException_when_metadataNotFound() {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     when(gameMetadataRepositoryPort.findById(gameSaveId)).thenReturn(Optional.empty());
@@ -133,7 +133,7 @@ class GameMetadataServiceTests {
   }
 
   @Test
-  void test06_count() {
+  void test_count_returnsCount_when_called() {
     // Arrange
     Long expectedCount = 10L;
     when(gameMetadataRepositoryPort.count()).thenReturn(expectedCount);
@@ -147,7 +147,7 @@ class GameMetadataServiceTests {
   }
 
   @Test
-  void test07_updateNickname() {
+  void test_updateNickname_updatesSuccessfully_when_validData() {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     String nickname = "UpdatedNickname";
@@ -173,7 +173,7 @@ class GameMetadataServiceTests {
   }
 
   @Test
-  void test08_createNewGameMetadata_withAllParameters() {
+  void test_createNewGameMetadata_createsSuccessfully_when_allParameters() {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     String username = "test@example.com";
@@ -200,7 +200,7 @@ class GameMetadataServiceTests {
   }
 
   @Test
-  void test09_createNewGameMetadata_withUsernameAndNickname() {
+  void test_createNewGameMetadata_createsSuccessfully_when_usernameAndNickname() {
     // Arrange
     String username = "test@example.com";
     String nickname = "TestNickname";
@@ -225,7 +225,7 @@ class GameMetadataServiceTests {
   }
 
   @Test
-  void test10_createNewGameMetadata_withUsernameOnly() {
+  void test_createNewGameMetadata_createsSuccessfully_when_usernameOnly() {
     // Arrange
     String username = "test@example.com";
 

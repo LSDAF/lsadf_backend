@@ -30,7 +30,6 @@ import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
-import java.util.UUID;
 import java.util.function.Supplier;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -54,7 +53,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @Import(UnitTestConfiguration.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @ActiveProfiles("test")
-class InventoryControllerTest {
+class InventoryControllerTests {
 
   @Autowired private MockMvc mockMvc;
 
@@ -77,7 +76,7 @@ class InventoryControllerTest {
 
   @Test
   @SneakyThrows
-  void getInventory_Items_should_return_401_when_user_not_authenticated() {
+  void test_getInventoryItems_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(get("/api/v1/inventory/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
@@ -88,7 +87,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getInventory_Items_should_return_400_when_non_uuid_gameSaveId() {
+  void test_getInventoryItems_returns400_when_nonUuidGameSaveId() {
     // when
     mockMvc
         .perform(get("/api/v1/inventory/{gameSaveId}", "testtesttest"))
@@ -99,7 +98,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getInventory_Items_should_return_200_when_authenticated_user_and_valid_uuid() {
+  void test_getInventoryItems_returns200_when_authenticatedUserAndValidUuid() {
     // when
     mockMvc
         .perform(get("/api/v1/inventory/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
@@ -109,7 +108,7 @@ class InventoryControllerTest {
 
   @Test
   @SneakyThrows
-  void createItemInInventory_should_return_401_when_user_not_authenticated() {
+  void test_createItemInInventory_returns401_when_userNotAuthenticated() {
     // when
     ItemRequest itemRequest = itemRequestSupplier.get();
     mockMvc
@@ -123,7 +122,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void createItemInInventory_should_return_400_when_gameSaveId_is_non_uuid() {
+  void test_createItemInInventory_returns400_when_gameSaveIdIsNonUuid() {
     // when
     mockMvc
         .perform(post("/api/v1/inventory/{gameSaveId}/items", "toto"))
@@ -133,7 +132,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void createItemInInventory_should_return_400_when_invalid_object() {
+  void test_createItemInInventory_returns400_when_invalidObject() {
     // when
     ItemRequest invalidItemRequest =
         ItemRequest.builder()
@@ -156,7 +155,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void createItemInInventory_should_return_200_when_valid_object() {
+  void test_createItemInInventory_returns200_when_validObject() {
     // when
 
     ItemRequest itemRequest = itemRequestSupplier.get();
@@ -171,7 +170,7 @@ class InventoryControllerTest {
 
   @Test
   @SneakyThrows
-  void deleteItemFromInventory_should_return_401_when_unauthenticated() {
+  void test_deleteItemFromInventory_returns401_when_unauthenticated() {
     mockMvc
         .perform(
             delete(
@@ -184,7 +183,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void deleteItemFromInventory_should_return_400_when_invalid_uuid() {
+  void test_deleteItemFromInventory_returns400_when_invalidUuid() {
     mockMvc
         .perform(
             delete(
@@ -197,7 +196,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void deleteItemFromInventory_should_return_200_when_valid_uuid_and_item_id() {
+  void test_deleteItemFromInventory_returns200_when_validUuidAndItemId() {
     mockMvc
         .perform(
             delete(
@@ -209,7 +208,7 @@ class InventoryControllerTest {
 
   @Test
   @SneakyThrows
-  void updateItemInInventory_should_return_401_when_user_not_authenticated() {
+  void test_updateItemInInventory_returns401_when_userNotAuthenticated() {
     ItemRequest itemRequest = itemRequestSupplier.get();
 
     mockMvc
@@ -227,7 +226,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void updateItemInInventory_should_return_400_when_invalid_uuid() {
+  void test_updateItemInInventory_returns400_when_invalidUuid() {
     ItemRequest itemRequest = itemRequestSupplier.get();
 
     mockMvc
@@ -245,7 +244,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void updateItemInInventory_should_return_400_when_invalid_object() {
+  void test_updateItemInInventory_returns400_when_invalidObject() {
     ItemRequest invalidItemRequest =
         ItemRequest.builder()
             .isEquipped(null)
@@ -270,7 +269,7 @@ class InventoryControllerTest {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void updateItemInInventory_should_return_200_when_valid_uuid_and_item_id() {
+  void test_updateItemInInventory_returns200_when_validUuidAndItemId() {
     ItemRequest itemRequest = itemRequestSupplier.get();
 
     mockMvc

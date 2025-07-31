@@ -79,7 +79,7 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  void deleteGameSave_should_return_401_when_user_not_authenticated() {
+  void test_deleteGameSave_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -95,7 +95,7 @@ class AdminGameSaveControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void deleteGameSave_should_return_403_when_user_not_admin() {
+  void test_deleteGameSave_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -114,7 +114,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void deleteGameSave_should_return_400_when_game_save_id_is_not_uuid() {
+  void test_deleteGameSave_returns400_when_gameSaveIdIsNotUuid() {
     // when
     mockMvc
         .perform(
@@ -132,7 +132,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void deleteGameSave_should_return_200_when_authenticated_user_is_admin() {
+  void test_deleteGameSave_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -147,7 +147,7 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  void generateNewGameSave_should_return_401_when_user_not_authenticated() {
+  void test_generateNewGameSave_returns401_when_userNotAuthenticated() {
     // given
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 100L, 100L, 100L);
@@ -176,7 +176,7 @@ class AdminGameSaveControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void generateNewGameSave_should_return_403_when_user_not_admin() {
+  void test_generateNewGameSave_returns403_when_userNotAdmin() {
     // given
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 100L, 100L, 100L);
@@ -280,7 +280,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void generateNewGameSave_should_return_400_when_invalid_request(
+  void test_generateNewGameSave_returns400_when_invalidRequest(
       String id,
       String userEmail,
       String nickname,
@@ -315,7 +315,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void generateNewGameSave_should_return_400_when_request_body_is_null() {
+  void test_generateNewGameSave_returns400_when_requestBodyIsNull() {
     // given
     AdminGameSaveCreationRequest request = null;
     // when
@@ -360,7 +360,7 @@ class AdminGameSaveControllerTests {
       roles = {"ADMIN"})
   @SneakyThrows
   @MethodSource("provideGenerateGameSaveValidArguments")
-  void generateNewGameSave_should_return_200_when_authenticated_user_is_admin_and_valid_inputs(
+  void test_generateNewGameSave_returns200_when_authenticatedUserIsAdminAndValidInputs(
       String id,
       String userEmail,
       String nickname,
@@ -393,7 +393,7 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  void getGameSave_should_return_401_when_user_not_authenticated() {
+  void test_getGameSave_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -409,7 +409,7 @@ class AdminGameSaveControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getGameSave_should_return_403_when_user_not_admin() {
+  void test_getGameSave_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -428,7 +428,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getGameSave_should_return_400_when_game_save_id_is_not_uuid() {
+  void test_getGameSave_returns400_when_gameSaveIdIsNotUuid() {
     // when
     mockMvc
         .perform(
@@ -445,7 +445,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getGameSave_should_return_200_when_authenticated_user_is_admin() {
+  void test_getGameSave_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -460,7 +460,7 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  void getGameSaves_should_return_401_when_user_not_authenticated() {
+  void test_getGameSaves_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -474,7 +474,7 @@ class AdminGameSaveControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getGameSaves_should_return_403_when_user_not_admin() {
+  void test_getGameSaves_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -491,7 +491,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getGameSaves_should_return_400_when_orderBy_is_invalid() {
+  void test_getGameSaves_returns400_when_orderByIsInvalid() {
     // when
     mockMvc
         .perform(
@@ -509,7 +509,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getGameSaves_should_return_200_when_authenticated_user_is_admin() {
+  void test_getGameSaves_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -526,7 +526,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getGameSaves_should_return_200_when_authenticated_user_is_admin_and_valid_orderBy() {
+  void test_getGameSaves_returns200_when_authenticatedUserIsAdminAndValidOrderBy() {
     // when
     mockMvc
         .perform(
@@ -540,7 +540,7 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  void getUserGameSaves_should_return_401_when_user_not_authenticated() {
+  void test_getUserGameSaves_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -555,7 +555,7 @@ class AdminGameSaveControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getUserGameSaves_should_return_403_when_user_not_admin() {
+  void test_getUserGameSaves_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -573,7 +573,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getUserGameSaves_should_return_200_when_authenticated_user_is_admin() {
+  void test_getUserGameSaves_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -591,7 +591,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getUserGameSaves_should_return_200_when_username_is_not_email() {
+  void test_getUserGameSaves_returns200_when_usernameIsNotEmail() {
     // when
     mockMvc
         .perform(
@@ -604,7 +604,7 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  void updateGameSave_should_return_401_when_user_not_authenticated() {
+  void test_updateGameSave_returns401_when_userNotAuthenticated() {
     // given
     AdminGameSaveUpdateRequest request =
         AdminGameSaveUpdateRequest.builder().nickname("test").build();
@@ -624,7 +624,7 @@ class AdminGameSaveControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void updateGameSave_should_return_403_when_user_not_admin() {
+  void test_updateGameSave_returns403_when_userNotAdmin() {
     // given
     AdminGameSaveUpdateRequest request =
         AdminGameSaveUpdateRequest.builder().nickname("test").build();
@@ -646,7 +646,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void updateGameSave_should_return_400_when_gameSaveId_is_not_uuid() {
+  void test_updateGameSave_returns400_when_gameSaveIdIsNotUuid() {
     // given
     AdminGameSaveUpdateRequest request =
         AdminGameSaveUpdateRequest.builder().nickname("test").build();
@@ -673,7 +673,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void updateGameSave_should_return_400_when_invalid_request(String nickname) {
+  void test_updateGameSave_returns400_when_invalidRequest(String nickname) {
     // given
     AdminGameSaveUpdateRequest request =
         AdminGameSaveUpdateRequest.builder().nickname(nickname).build();
@@ -695,7 +695,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void updateGameSave_should_return_400_when_GameSaveUpdateRequest_is_null() {
+  void test_updateGameSave_returns400_when_gameSaveUpdateRequestIsNull() {
     // given
     AdminGameSaveUpdateRequest request = null;
     // when
@@ -716,7 +716,7 @@ class AdminGameSaveControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void updateGameSave_should_return_200_when_authenticated_user_is_admin() {
+  void test_updateGameSave_returns200_when_authenticatedUserIsAdmin() {
     // given
     AdminGameSaveUpdateRequest request =
         AdminGameSaveUpdateRequest.builder().nickname("test").build();

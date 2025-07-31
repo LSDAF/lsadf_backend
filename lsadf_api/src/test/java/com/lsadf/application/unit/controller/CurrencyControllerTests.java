@@ -52,7 +52,7 @@ class CurrencyControllerTests {
 
   @Test
   @SneakyThrows
-  void getCurrency_should_return_401_when_user_not_authenticated() {
+  void test_getCurrency_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(get("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
@@ -62,7 +62,7 @@ class CurrencyControllerTests {
 
   @Test
   @SneakyThrows
-  void saveCurrency_should_return_401_when_user_not_authenticated() {
+  void test_saveCurrency_returns401_when_userNotAuthenticated() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 1L, 1L, 1L);
     // when
@@ -78,7 +78,7 @@ class CurrencyControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getCurrency_should_return_400_when_non_uuid_gameSaveId() {
+  void test_getCurrency_returns400_when_nonUuidGameSaveId() {
     // when
     mockMvc
         .perform(get("/api/v1/currency/{gameSaveId}", "testtesttest"))
@@ -89,7 +89,7 @@ class CurrencyControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getCurrency_should_return_200_when_authenticated_user_and_valid_uuid() {
+  void test_getCurrency_returns200_when_authenticatedUserAndValidUuid() {
     // when
     mockMvc
         .perform(get("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
@@ -100,7 +100,7 @@ class CurrencyControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCurrency_should_return_400_when_no_body() {
+  void test_saveCurrency_returns400_when_noBody() {
     // when
     mockMvc
         .perform(
@@ -113,7 +113,7 @@ class CurrencyControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCurrency_should_return_400_when_body_is_null() {
+  void test_saveCurrency_returns400_when_bodyIsNull() {
     // when
     mockMvc
         .perform(
@@ -127,7 +127,7 @@ class CurrencyControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCurrency_should_return_400_when_gameSaveId_is_non_uuid() {
+  void test_saveCurrency_returns400_when_gameSaveIdIsNonUuid() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 1L, 1L, 1L);
     // when
@@ -143,7 +143,7 @@ class CurrencyControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCurrency_should_return_400_when_one_CurrencyRequest_field_is_negative() {
+  void test_saveCurrency_returns400_when_oneCurrencyRequestFieldIsNegative() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(-1L, 1L, 1L, 1L);
     // when
@@ -159,7 +159,7 @@ class CurrencyControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCurrency_should_return_200_if_one_CurrencyRequest_field_is_null() {
+  void test_saveCurrency_returns200_when_oneCurrencyRequestFieldIsNull() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(null, 1L, 1L, 1L);
     // when
@@ -175,7 +175,7 @@ class CurrencyControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCurrency_should_return_200_when_authenticated_user_valid_body_and_vlaid_gameSaveId() {
+  void test_saveCurrency_returns200_when_authenticatedUserValidBodyAndValidGameSaveId() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 1L, 1L, 1L);
     // when

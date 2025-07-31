@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 class StringUtilsTests {
 
   @Test
-  void should_capitalize_string() {
+  void test_capitalize_returnsCapitalizedString_when_inputIsValid() {
     // given
     String str = "test";
 
@@ -35,7 +35,7 @@ class StringUtilsTests {
   }
 
   @Test
-  void should_return_empty_string_when_input_is_empty() {
+  void test_capitalize_returnsEmptyString_when_inputIsEmpty() {
     // given
     String str = "";
 
@@ -47,7 +47,7 @@ class StringUtilsTests {
   }
 
   @Test
-  void should_return_null_if_input_is_null() {
+  void test_capitalize_returnsNull_when_inputIsNull() {
     // given
     String str = null;
 
@@ -59,7 +59,7 @@ class StringUtilsTests {
   }
 
   @Test
-  void should_return_capitalized_string_if_already_capitalized() {
+  void test_capitalize_returnsSameString_when_alreadyCapitalized() {
     // given
     String str = "Test";
 

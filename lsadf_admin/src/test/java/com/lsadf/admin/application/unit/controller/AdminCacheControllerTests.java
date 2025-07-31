@@ -54,7 +54,7 @@ class AdminCacheControllerTests {
 
   @Test
   @SneakyThrows
-  void flushAndClearCache_should_return_401_when_user_not_authenticated() {
+  void test_flushAndClearCache_returns_401_when_user_not_authenticated() {
     // when
     mockMvc
         .perform(
@@ -67,7 +67,7 @@ class AdminCacheControllerTests {
 
   @Test
   @SneakyThrows
-  void isCacheEnabled_should_return_401_when_user_not_authenticated() {
+  void test_isCacheEnabled_returns_401_when_user_not_authenticated() {
     // when
     mockMvc
         .perform(
@@ -80,7 +80,7 @@ class AdminCacheControllerTests {
 
   @Test
   @SneakyThrows
-  void toggleRedisCacheEnabling_should_return_401_when_user_not_authenticated() {
+  void test_toggleRedisCacheEnabling_returns_401_when_user_not_authenticated() {
     // when
     mockMvc
         .perform(
@@ -94,7 +94,7 @@ class AdminCacheControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void flushAndClearCache_should_return_403_when_user_not_admin() {
+  void test_flushAndClearCache_returns_403_when_user_not_admin() {
     // when
     mockMvc
         .perform(
@@ -108,7 +108,7 @@ class AdminCacheControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void isCacheEnabled_should_return_403_when_user_not_admin() {
+  void test_isCacheEnabled_returns_403_when_user_not_admin() {
     // when
     mockMvc
         .perform(
@@ -122,7 +122,7 @@ class AdminCacheControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void toggleRedisCacheEnabling_should_return_403_when_user_not_admin() {
+  void test_toggleRedisCacheEnabling_returns_403_when_user_not_admin() {
     // when
     mockMvc
         .perform(
@@ -139,7 +139,7 @@ class AdminCacheControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void flushAndClearCache_should_return_200_when_authenticated_user_is_admin() {
+  void test_flushAndClearCache_returns_200_when_authenticated_user_is_admin() {
     // when
     mockMvc
         .perform(
@@ -156,7 +156,7 @@ class AdminCacheControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void isCacheEnabled_should_return_200_when_authenticated_user_is_admin() {
+  void test_isCacheEnabled_returns_200_when_authenticated_user_is_admin() {
     // when
     mockMvc
         .perform(
@@ -173,7 +173,7 @@ class AdminCacheControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void toggleRedisCacheEnabling_should_return_200_when_authenticated_user_is_admin() {
+  void test_toggleRedisCacheEnabling_returns_200_when_authenticated_user_is_admin() {
     // when
     mockMvc
         .perform(

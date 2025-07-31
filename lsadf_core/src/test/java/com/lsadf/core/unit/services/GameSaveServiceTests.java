@@ -156,13 +156,13 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test01_getGameSave_on_non_existing_gameSaveId() {
+  void test_getGameSave_throwsNotFoundException_when_nonExistingGameSaveId() {
     when(gameSaveRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.empty());
     assertThrows(NotFoundException.class, () -> gameSaveService.getGameSave(UUID));
   }
 
   @Test
-  void test02_getGameSave_on_existing_gameSaveId_when_cached() {
+  void test_getGameSave_returnsGameSave_when_existingGameSaveIdAndCached() {
     when(gameSaveRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(gameSave));
     when(characteristicsCache.get(UUID.toString())).thenReturn(Optional.of(CACHED_CHARACERISTICS));
     when(stageCache.get(UUID.toString())).thenReturn(Optional.of(CACHED_STAGE));
@@ -172,7 +172,7 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test03_getGameSave_on_existing_gameSaveId_when_not_cached() {
+  void test_getGameSave_returnsGameSave_when_existingGameSaveIdAndNotCached() {
     when(characteristicsCache.get(UUID.toString())).thenReturn(Optional.empty());
     when(stageCache.get(UUID.toString())).thenReturn(Optional.empty());
     when(currencyCache.get(UUID.toString())).thenReturn(Optional.empty());
@@ -182,12 +182,12 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test04_getGameSave_on_null_gameSaveId() {
+  void test_getGameSave_throwsIllegalArgumentException_when_nullGameSaveId() {
     assertThrows(IllegalArgumentException.class, () -> gameSaveService.getGameSave(null));
   }
 
   @Test
-  void test05_createGameSave_on_already_existing_id() {
+  void test_createGameSave_throwsAlreadyExistingGameSaveException_when_existingId() {
     GameMetadataRequest metadataRequest = new GameMetadataRequest(UUID, USER_EMAIL, NICKNAME);
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 2L, 3L, 4L, 5L);
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 2L, 3L, 4L);
@@ -201,7 +201,7 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test06_createGameSave_on_invalid_request_nickname() {
+  void test_createGameSave_throwsIllegalArgumentException_when_invalidRequestNickname() {
     GameMetadataRequest metadataRequest = new GameMetadataRequest(UUID, USER_EMAIL, NICKNAME);
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 2L, 3L, 4L, 5L);
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 2L, 3L, 4L);
@@ -216,7 +216,7 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test07_createGameSave_on_invalid_request_userEmail() {
+  void test_createGameSave_throwsIllegalArgumentException_when_invalidRequestUserEmail() {
     GameMetadataRequest metadataRequest = new GameMetadataRequest(UUID, USER_EMAIL, NICKNAME);
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 2L, 3L, 4L, 5L);
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 2L, 3L, 4L);
@@ -231,14 +231,14 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test07_createGameSave_on_invalid_simple_request_userEmail() {
+  void test_createGameSave_throwsIllegalArgumentException_when_invalidSimpleRequestUserEmail() {
     GameSaveCreationRequest request = new SimpleGameSaveCreationRequest(USER_EMAIL);
     when(userService.checkUsernameExists(USER_EMAIL)).thenReturn(false);
     assertThrows(NotFoundException.class, () -> gameSaveService.createGameSave(request));
   }
 
   @Test
-  void test08_createGameSave_with_valid_simple_request() {
+  void test_createGameSave_createsSuccessfully_when_validSimpleRequest() {
     when(userService.checkUsernameExists(USER_EMAIL)).thenReturn(true);
     when(gameMetadataService.createNewGameMetadata(
             nullable(UUID.class), any(String.class), nullable(String.class)))
@@ -253,7 +253,7 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test09_createGameSave_with_valid_admin_request() {
+  void test_createGameSave_createsSuccessfully_when_validAdminRequest() {
     when(userService.checkUsernameExists(USER_EMAIL)).thenReturn(true);
     when(gameMetadataService.createNewGameMetadata(
             any(UUID.class), any(String.class), any(String.class)))
@@ -295,37 +295,37 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test09_updateGameSave_on_invalid_request_id() {
+  void test_updateGameSave_throwsIllegalArgumentException_when_invalidRequestId() {
     when(gameMetadataService.existsByNickname(DB_METADATA.nickname())).thenReturn(true);
     assertThrows(IllegalArgumentException.class, () -> gameSaveService.updateGameSave(null, null));
   }
 
   @Test
-  void test10_existsById_on_valid_id() {
+  void test_existsById_returnsTrue_when_validId() {
     when(gameMetadataService.existsById(any(UUID.class))).thenReturn(true);
     assertThat(gameSaveService.existsById(UUID)).isTrue();
   }
 
   @Test
-  void test11_existsById_on_non_existing_id() {
+  void test_existsById_returnsFalse_when_nonExistingId() {
     when(gameMetadataService.existsById(any(UUID.class))).thenReturn(false);
     assertThat(gameSaveService.existsById(UUID)).isFalse();
   }
 
   @Test
-  void test12_deleteById_on_valid_id() {
+  void test_deleteById_deletesSuccessfully_when_validId() {
     when(gameMetadataService.existsById(any(UUID.class))).thenReturn(true);
     gameSaveService.deleteGameSave(UUID);
   }
 
   @Test
-  void test13_deleteById_on_non_existing_id() {
+  void test_deleteById_throwsNotFoundException_when_nonExistingId() {
     when(gameMetadataService.existsById(any(UUID.class))).thenReturn(false);
     assertThrows(NotFoundException.class, () -> gameSaveService.deleteGameSave(UUID));
   }
 
   @Test
-  void test14_countGameSaves() {
+  void test_countGameSaves_returnsCount_when_called() {
     when(gameMetadataService.count()).thenReturn(1L);
 
     var count = gameSaveService.countGameSaves();
@@ -334,21 +334,21 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test15_checkGameSaveOwnership_on_valid_id_and_user_email() {
+  void test_checkGameSaveOwnership_succeeds_when_validIdAndUserEmail() {
     when(gameSaveOwnershipCache.isEnabled()).thenReturn(false);
     when(gameMetadataService.findOwnerEmailById(UUID)).thenReturn(USER_EMAIL);
     gameSaveService.checkGameSaveOwnership(UUID, USER_EMAIL);
   }
 
   @Test
-  void test15_checkGameSaveOwnership_on_valid_id_and_user_email_with_cache() {
+  void test_checkGameSaveOwnership_succeeds_when_validIdAndUserEmailWithCache() {
     when(gameSaveOwnershipCache.isEnabled()).thenReturn(true);
     when(gameSaveOwnershipCache.get(UUID.toString())).thenReturn(Optional.of(USER_EMAIL));
     gameSaveService.checkGameSaveOwnership(UUID, USER_EMAIL);
   }
 
   @Test
-  void test15_checkGameSaveOwnership_on_valid_id_and_user_email_with_empty_cache() {
+  void test_checkGameSaveOwnership_succeeds_when_validIdAndUserEmailWithEmptyCache() {
     when(gameSaveOwnershipCache.isEnabled()).thenReturn(true);
     when(gameSaveOwnershipCache.get(UUID.toString())).thenReturn(Optional.empty());
     when(gameMetadataService.findOwnerEmailById(UUID)).thenReturn(USER_EMAIL);
@@ -356,7 +356,7 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test16_checkGameSaveOwnership_on_non_existing_id() {
+  void test_checkGameSaveOwnership_throwsNotFoundException_when_nonExistingId() {
     when(gameSaveOwnershipCache.isEnabled()).thenReturn(false);
     when(gameMetadataService.findOwnerEmailById(UUID)).thenThrow(NotFoundException.class);
     assertThrows(
@@ -364,7 +364,7 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test17_checkGameSaveOwnership_on_invalid_user_email() {
+  void test_checkGameSaveOwnership_throwsForbiddenException_when_invalidUserEmail() {
     when(gameSaveOwnershipCache.isEnabled()).thenReturn(false);
     when(gameMetadataService.findOwnerEmailById(UUID)).thenReturn(USER_EMAIL);
     assertThrows(
@@ -373,7 +373,7 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test18_getGameSavesByUsername_with_no_cache() {
+  void test_getGameSavesByUsername_returnsGameSaves_when_noCache() {
     Stream<GameSave> gameSaves = Stream.of(gameSave);
     when(userService.checkUsernameExists(USER_EMAIL)).thenReturn(true);
     when(gameSaveOwnershipCache.isEnabled()).thenReturn(false);
@@ -383,7 +383,7 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test19_getGameSavesByUsername_with_cache() {
+  void test_getGameSavesByUsername_returnsGameSaves_when_cached() {
     Stream<GameSave> gameSaves = Stream.of(gameSave);
     when(gameSaveOwnershipCache.isEnabled()).thenReturn(true);
     when(userService.checkUsernameExists(USER_EMAIL)).thenReturn(true);
@@ -398,7 +398,7 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test20_getGameSaves_with_no_cache() {
+  void test_getGameSaves_returnsGameSaves_when_noCache() {
     Stream<GameSave> gameSaves = Stream.of(gameSave);
     when(cacheService.isEnabled()).thenReturn(false);
     when(gameSaveRepositoryPort.findAll()).thenReturn(gameSaves);
@@ -407,7 +407,7 @@ class GameSaveServiceTests {
   }
 
   @Test
-  void test21_getGameSaves_with_cache() {
+  void test_getGameSaves_returnsGameSaves_when_cached() {
     Stream<GameSave> gameSaves = Stream.of(gameSave);
     when(cacheService.isEnabled()).thenReturn(true);
     when(gameSaveRepositoryPort.findAll()).thenReturn(gameSaves);

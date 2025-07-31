@@ -91,7 +91,7 @@ class FilterUtilsTests {
   // test propertyStringFilter
 
   @Test
-  void test_equals_propertyStringFilter() {
+  void test_applyFilters_filtersCorrectly_when_equalsPropertyStringFilter() {
     // Given
     Filter filter =
         generatePropertyStringFilter("firstName", "John", PropertyStringFilter.Matcher.EQUALS);
@@ -104,7 +104,7 @@ class FilterUtilsTests {
   }
 
   @Test
-  void test_contains_propertyStringFilter() {
+  void test_applyFilters_filtersCorrectly_when_containsPropertyStringFilter() {
     // Given
     Filter filter =
         generatePropertyStringFilter("username", "smith", PropertyStringFilter.Matcher.CONTAINS);
@@ -117,7 +117,7 @@ class FilterUtilsTests {
   }
 
   @Test
-  void test_date_greater_than_propertyStringFilter() {
+  void test_applyFilters_filtersCorrectly_when_dateGreaterThanPropertyStringFilter() {
     // Given
     Filter filter =
         generatePropertyStringFilter(
@@ -133,7 +133,7 @@ class FilterUtilsTests {
   }
 
   @Test
-  void test_date_less_than_propertyStringFilter() {
+  void test_applyFilters_filtersCorrectly_when_dateLessThanPropertyStringFilter() {
     // Given
     Filter filter =
         generatePropertyStringFilter(
@@ -147,7 +147,7 @@ class FilterUtilsTests {
   }
 
   @Test
-  void test_andFilter() {
+  void test_applyFilters_filtersCorrectly_when_andFilter() {
     // Given
     Filter filter1 =
         generatePropertyStringFilter("firstName", "John", PropertyStringFilter.Matcher.EQUALS);
@@ -163,7 +163,7 @@ class FilterUtilsTests {
   }
 
   @Test
-  void test_orFilter() {
+  void test_applyFilters_filtersCorrectly_when_orFilter() {
     // Given
     Filter filter1 =
         generatePropertyStringFilter("firstName", "John", PropertyStringFilter.Matcher.EQUALS);
