@@ -60,20 +60,6 @@ public class GlobalExceptionHandler {
   }
 
   /**
-   * Exception handler for DynamicJsonViewException
-   *
-   * @param e DynamicJsonViewException
-   * @return ResponseEntity containing the error
-   */
-  @ExceptionHandler(DynamicJsonViewException.class)
-  public ResponseEntity<ApiResponse<Void>> handleDynamicJsonViewException(
-      DynamicJsonViewException e) {
-    log.error("Cannot render dynamically json view of the object: ", e);
-    return generateResponse(
-        HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error: " + e.getMessage(), null);
-  }
-
-  /**
    * Exception handler for IllegalArgumentException
    *
    * @param e IllegalArgumentException
