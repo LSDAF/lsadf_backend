@@ -75,7 +75,7 @@ public class SearchServiceImpl implements SearchService {
   @Transactional(readOnly = true)
   public Stream<GameSave> searchGameSaves(
       SearchRequest searchRequest, List<GameSaveSortingParameter> orderBy) {
-    Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves();
+    Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves().stream();
     List<Filter> filters = searchRequest.filters();
     for (Filter filter : filters) {
       switch (filter.type()) {

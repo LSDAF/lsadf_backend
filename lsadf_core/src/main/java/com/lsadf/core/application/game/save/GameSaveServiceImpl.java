@@ -40,7 +40,6 @@ import com.lsadf.core.infra.web.request.game.save.creation.GameSaveCreationReque
 import com.lsadf.core.infra.web.request.game.save.update.GameSaveUpdateRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import java.util.*;
-import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -232,11 +231,11 @@ public class GameSaveServiceImpl implements GameSaveService {
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
-  public Stream<GameSave> getGameSaves() {
+  public List<GameSave> getGameSaves() {
     if (Boolean.TRUE.equals(cacheService.isEnabled())) {
-      return gameSaveRepositoryPort.findAll().map(this::enrichGameSaveWithCachedData);
+      return gameSaveRepositoryPort.findAll().map(this::enrichGameSaveWithCachedData).toList();
     }
-    return gameSaveRepositoryPort.findAll();
+    return gameSaveRepositoryPort.findAll().toList();
   }
 
   @Transactional(readOnly = true)
@@ -276,14 +275,17 @@ public class GameSaveServiceImpl implements GameSaveService {
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
-  public Stream<GameSave> getGameSavesByUsername(String username) {
+  public List<GameSave> getGameSavesByUsername(String username) {
     if (!userService.checkUsernameExists(username)) {
       throw new NotFoundException("User with username " + username + " not found");
     }
     if (!gameSaveOwnershipCache.isEnabled()) {
-      return gameSaveRepositoryPort.findByUserEmail(username);
+      return gameSaveRepositoryPort.findByUserEmail(username).toList();
     }
-    return gameSaveRepositoryPort.findByUserEmail(username).map(this::enrichGameSaveWithCachedData);
+    return gameSaveRepositoryPort
+        .findByUserEmail(username)
+        .map(this::enrichGameSaveWithCachedData)
+        .toList();
   }
 
   private GameSave enrichGameSaveWithCachedData(GameSave gameSave) {

@@ -29,7 +29,6 @@ import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.save.GameSaveResponseMapper;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -92,11 +91,9 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
 
-    try (Stream<GameSave> gameSaveStream = gameSaveService.getGameSavesByUsername(username)) {
-      var gameSaveList = gameSaveStream.toList();
-      var mapped = gameSaveList.stream().map(gameSaveResponseMapper::map).toList();
-      log.info("Successfully retrieved game saves for user with email {}", username);
-      return generateResponse(HttpStatus.OK, mapped);
-    }
+    List<GameSave> gameSaveList = gameSaveService.getGameSavesByUsername(username);
+    var mapped = gameSaveList.stream().map(gameSaveResponseMapper::map).toList();
+    log.info("Successfully retrieved game saves for user with email {}", username);
+    return generateResponse(HttpStatus.OK, mapped);
   }
 }

@@ -47,7 +47,7 @@ public class AdminGameSaveHillaUiService implements ListService<GameSave> {
   @NonNull
   public List<@Nonnull GameSave> list(
       @NonNull Pageable pageable, @jakarta.annotation.Nullable @Nullable Filter filter) {
-    try (Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves()) {
+    try (Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves().stream()) {
       Stream<GameSave> newGameSaveStream;
       // Filter the stream
       if (filter != null) {

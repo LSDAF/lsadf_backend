@@ -131,7 +131,7 @@ class SearchServiceTests {
     when(userService.getUsers()).thenReturn(users);
 
     Stream<GameSave> gameSaves = Stream.of(GAME_SAVE_1, GAME_SAVE_2, GAME_SAVE_3);
-    when(gameSaveService.getGameSaves()).thenReturn(gameSaves);
+    when(gameSaveService.getGameSaves()).thenReturn(gameSaves.toList());
   }
 
   @Test

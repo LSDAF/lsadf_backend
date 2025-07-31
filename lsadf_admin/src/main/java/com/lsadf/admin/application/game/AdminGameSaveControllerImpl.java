@@ -83,7 +83,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       gameSaveOrderBy = orderBy.stream().map(GameSaveSortingParameter::fromString).toList();
     }
     validateUser(jwt);
-    try (Stream<GameSave> stream = gameSaveService.getGameSaves()) {
+    try (Stream<GameSave> stream = gameSaveService.getGameSaves().stream()) {
       Stream<GameSave> orderedStream = StreamUtils.sortGameSaves(stream, gameSaveOrderBy);
       List<GameSave> gameSaves = orderedStream.toList();
       List<GameSaveResponse> responses =
@@ -97,7 +97,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
   public ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(
       Jwt jwt, String username) {
     validateUser(jwt);
-    try (Stream<GameSave> stream = gameSaveService.getGameSavesByUsername(username)) {
+    try (Stream<GameSave> stream = gameSaveService.getGameSavesByUsername(username).stream()) {
       List<GameSaveResponse> gameSaves = stream.map(gameSaveResponseMapper::map).toList();
       return generateResponse(HttpStatus.OK, gameSaves);
     }

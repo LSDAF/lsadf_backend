@@ -23,8 +23,8 @@ import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.exception.http.UnauthorizedException;
 import com.lsadf.core.infra.web.request.game.save.creation.GameSaveCreationRequest;
 import com.lsadf.core.infra.web.request.game.save.update.GameSaveUpdateRequest;
+import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 /** Service for managing game saves */
 public interface GameSaveService {
@@ -93,7 +93,7 @@ public interface GameSaveService {
    *
    * @return the stream of game saves
    */
-  Stream<GameSave> getGameSaves();
+  List<GameSave> getGameSaves();
 
   /**
    * Counts the total number of game saves available in the system.
@@ -108,7 +108,7 @@ public interface GameSaveService {
    * @param userEmail the user email
    * @return the stream of game saves
    */
-  Stream<GameSave> getGameSavesByUsername(String userEmail);
+  List<GameSave> getGameSavesByUsername(String userEmail);
 
   /**
    * Checks if the user owns the game save

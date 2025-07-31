@@ -49,6 +49,7 @@ import com.lsadf.core.infra.web.request.game.save.creation.GameSaveCreationReque
 import com.lsadf.core.infra.web.request.game.save.creation.SimpleGameSaveCreationRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -374,10 +375,10 @@ class GameSaveServiceTests {
 
   @Test
   void test_getGameSavesByUsername_returnsGameSaves_when_noCache() {
-    Stream<GameSave> gameSaves = Stream.of(gameSave);
+    List<GameSave> gameSaves = List.of(gameSave);
     when(userService.checkUsernameExists(USER_EMAIL)).thenReturn(true);
     when(gameSaveOwnershipCache.isEnabled()).thenReturn(false);
-    when(gameSaveRepositoryPort.findByUserEmail(USER_EMAIL)).thenReturn(gameSaves);
+    when(gameSaveRepositoryPort.findByUserEmail(USER_EMAIL)).thenReturn(gameSaves.stream());
     var actual = gameSaveService.getGameSavesByUsername(USER_EMAIL);
     assertThat(actual).isEqualTo(gameSaves);
   }
@@ -392,16 +393,15 @@ class GameSaveServiceTests {
     when(currencyCache.get(UUID.toString())).thenReturn(Optional.of(CACHED_CURRENCY));
     when(gameSaveRepositoryPort.findByUserEmail(USER_EMAIL)).thenReturn(gameSaves);
     var actual = gameSaveService.getGameSavesByUsername(USER_EMAIL);
-    var list = actual.toList();
-    assertThat(list).hasSize(1);
-    assertThat(list.get(0)).isEqualTo(cachedGameSave);
+    assertThat(actual).hasSize(1);
+    assertThat(actual.get(0)).isEqualTo(cachedGameSave);
   }
 
   @Test
   void test_getGameSaves_returnsGameSaves_when_noCache() {
-    Stream<GameSave> gameSaves = Stream.of(gameSave);
+    List<GameSave> gameSaves = List.of(gameSave);
     when(cacheService.isEnabled()).thenReturn(false);
-    when(gameSaveRepositoryPort.findAll()).thenReturn(gameSaves);
+    when(gameSaveRepositoryPort.findAll()).thenReturn(gameSaves.stream());
     var actual = gameSaveService.getGameSaves();
     assertThat(actual).isEqualTo(gameSaves);
   }
@@ -415,9 +415,8 @@ class GameSaveServiceTests {
     when(stageCache.get(UUID.toString())).thenReturn(Optional.of(CACHED_STAGE));
     when(currencyCache.get(UUID.toString())).thenReturn(Optional.of(CACHED_CURRENCY));
     var actual = gameSaveService.getGameSaves();
-    var list = actual.toList();
-    assertThat(list).hasSize(1);
-    var actualCachedGameSave = list.get(0);
+    assertThat(actual).hasSize(1);
+    var actualCachedGameSave = actual.get(0);
     assertThat(actualCachedGameSave).isEqualTo(cachedGameSave);
   }
 }
