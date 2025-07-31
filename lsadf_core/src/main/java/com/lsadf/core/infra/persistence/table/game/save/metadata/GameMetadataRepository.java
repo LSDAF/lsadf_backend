@@ -31,7 +31,8 @@ public interface GameMetadataRepository
 
   @Query(
       "update t_game_metadata_tgme set tgme_nickname=coalesce(:tgme_nickname, tgme_nickname) where tgme_id=:tgme_id returning *")
-  GameMetadataEntity updateGameSaveEntityNickname(UUID id, String nickname);
+  GameMetadataEntity updateGameSaveEntityNickname(
+      @Param(GAME_METADATA_ID) UUID id, @Param(GAME_METADATA_NICKNAME) String nickname);
 
   @Query(
       """

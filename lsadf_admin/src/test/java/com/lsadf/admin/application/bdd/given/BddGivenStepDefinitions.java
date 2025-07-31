@@ -60,18 +60,34 @@ public class BddGivenStepDefinitions extends BddLoader {
         row -> {
           ItemEntity itemEntity = BddUtils.mapToItemEntity(row);
           itemEntity.setGameSaveId(uuid);
-          var newItemEntity =
-              itemRepository.createNewItemEntity(
-                  itemEntity.getId(),
-                  itemEntity.getGameSaveId(),
-                  itemEntity.getClientId(),
-                  itemEntity.getBlueprintId(),
-                  itemEntity.getItemType(),
-                  itemEntity.getItemRarity(),
-                  itemEntity.getIsEquipped(),
-                  itemEntity.getLevel(),
-                  itemEntity.getMainStatistic(),
-                  itemEntity.getMainBaseValue());
+          ItemEntity newItemEntity;
+          if (itemEntity.getId() != null) {
+            newItemEntity =
+                itemRepository.createNewItemEntity(
+                    itemEntity.getId(),
+                    itemEntity.getGameSaveId(),
+                    itemEntity.getClientId(),
+                    itemEntity.getBlueprintId(),
+                    itemEntity.getItemType(),
+                    itemEntity.getItemRarity(),
+                    itemEntity.getIsEquipped(),
+                    itemEntity.getLevel(),
+                    itemEntity.getMainStatistic(),
+                    itemEntity.getMainBaseValue());
+          } else {
+            newItemEntity =
+                itemRepository.createNewItemEntity(
+                    itemEntity.getGameSaveId(),
+                    itemEntity.getClientId(),
+                    itemEntity.getBlueprintId(),
+                    itemEntity.getItemType(),
+                    itemEntity.getItemRarity(),
+                    itemEntity.getIsEquipped(),
+                    itemEntity.getLevel(),
+                    itemEntity.getMainStatistic(),
+                    itemEntity.getMainBaseValue());
+          }
+
           var additionalStats = BddUtils.mapToAdditionalItemStatEntity(row, newItemEntity.getId());
           additionalStats.forEach(
               additionalItemStatEntity -> {
