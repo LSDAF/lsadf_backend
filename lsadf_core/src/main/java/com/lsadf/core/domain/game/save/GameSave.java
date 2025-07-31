@@ -28,6 +28,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class GameSave implements Model {
 
   @Serial private static final long serialVersionUID = -2686370647354845265L;
