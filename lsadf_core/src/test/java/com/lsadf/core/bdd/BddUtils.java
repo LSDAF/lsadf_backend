@@ -652,13 +652,11 @@ public class BddUtils {
    *     map.
    */
   public static List<AdditionalItemStatEntity> mapToAdditionalItemStatEntity(
-      Map<String, String> row) {
+      Map<String, String> row, UUID itemId) {
     List<AdditionalItemStatEntity> additionalItemStatEntities = new ArrayList<>();
-    String itemId = row.get(ID);
-    UUID itemUuid = UUID.fromString(itemId);
     AdditionalItemStatEntity entity1 =
         AdditionalItemStatEntity.builder()
-            .itemId(itemUuid)
+            .itemId(itemId)
             .statistic(
                 row.get(ADDITIONAL_STAT_1_STATISTIC) == null
                     ? null
@@ -672,7 +670,7 @@ public class BddUtils {
 
     AdditionalItemStatEntity entity2 =
         AdditionalItemStatEntity.builder()
-            .itemId(itemUuid)
+            .itemId(itemId)
             .statistic(
                 row.get(ADDITIONAL_STAT_2_STATISTIC) == null
                     ? null
@@ -686,7 +684,7 @@ public class BddUtils {
 
     AdditionalItemStatEntity entity3 =
         AdditionalItemStatEntity.builder()
-            .itemId(itemUuid)
+            .itemId(itemId)
             .statistic(
                 row.get(ADDITIONAL_STAT_3_STATISTIC) == null
                     ? null

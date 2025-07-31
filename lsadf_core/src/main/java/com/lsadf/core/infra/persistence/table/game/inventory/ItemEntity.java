@@ -15,7 +15,6 @@
  */
 package com.lsadf.core.infra.persistence.table.game.inventory;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.*;
 import static com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity.ItemAttributes.*;
 
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
@@ -43,16 +42,16 @@ public class ItemEntity implements Identifiable, Dateable {
   @Serial private static final long serialVersionUID = 7924047722096464427L;
 
   @Id
-  @Column(ID)
+  @Column(ITEM_ID)
   private UUID id;
 
   @Column(ITEM_GAME_SAVE_ID)
   private UUID gameSaveId;
 
-  @Column(CREATED_AT)
+  @Column(ITEM_CREATED_AT)
   private Date createdAt;
 
-  @Column(UPDATED_AT)
+  @Column(ITEM_UPDATED_AT)
   private Date updatedAt;
 
   @Column(ITEM_CLIENT_ID)
@@ -82,15 +81,18 @@ public class ItemEntity implements Identifiable, Dateable {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class ItemAttributes {
     public static final String ITEM_ENTITY = "t_item_tgit";
-    public static final String ITEM_CLIENT_ID = "client_id";
+    public static final String ITEM_ID = "tgit_id";
+    public static final String ITEM_CLIENT_ID = "tgit_client_id";
+    public static final String ITEM_CREATED_AT = "tgit_created_at";
+    public static final String ITEM_UPDATED_AT = "tgit_updated_at";
     public static final String ITEM_GAME_SAVE_ID = "tgme_id";
-    public static final String ITEM_BLUEPRINT_ID = "blueprint_id";
-    public static final String ITEM_TYPE = "type";
-    public static final String ITEM_RARITY = "rarity";
-    public static final String ITEM_MAIN_STATISTIC = "main_statistic";
-    public static final String ITEM_MAIN_BASE_VALUE = "main_base_value";
-    public static final String ITEM_IS_EQUIPPED = "is_equipped";
-    public static final String ITEM_LEVEL = "level";
+    public static final String ITEM_BLUEPRINT_ID = "tgit_blueprint_id";
+    public static final String ITEM_TYPE = "tgit_type";
+    public static final String ITEM_RARITY = "tgit_rarity";
+    public static final String ITEM_MAIN_STATISTIC = "tgit_main_statistic";
+    public static final String ITEM_MAIN_BASE_VALUE = "tgit_main_base_value";
+    public static final String ITEM_IS_EQUIPPED = "tgit_is_equipped";
+    public static final String ITEM_LEVEL = "tgit_level";
   }
 
   @Override

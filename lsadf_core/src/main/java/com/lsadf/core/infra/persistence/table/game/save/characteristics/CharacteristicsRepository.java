@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.infra.persistence.table.game.save.characteristics;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
 import static com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_ID;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -29,40 +29,54 @@ import org.springframework.stereotype.Repository;
 public interface CharacteristicsRepository
     extends org.springframework.data.repository.Repository<CharacteristicsEntity, UUID> {
   @Query(
-      "insert into t_characteristics_tgch (id, attack, crit_chance, crit_damage, health, resistance) values (:id, :attack, :crit_chance, :crit_damage, :health, :resistance) returning *")
+      """
+              insert into t_characteristics_tgch
+                  (tgme_id,
+                   tgch_attack,
+                   tgch_crit_chance,
+                   tgch_crit_damage,
+                   tgch_health,
+                   tgch_resistance)
+              values (:tgme_id,
+                      :tgch_attack,
+                      :tgch_crit_chance,
+                      :tgch_crit_damage,
+                      :tgch_health,
+                      :tgch_resistance)
+              returning *""")
   CharacteristicsEntity createNewCharacteristicsEntity(
-      @Param(ID) UUID id,
+      @Param(GAME_METADATA_ID) UUID id,
       @Param(CHARACTERISTICS_ATTACK) Long attack,
       @Param(CHARACTERISTICS_CRIT_CHANCE) Long critChance,
       @Param(CHARACTERISTICS_CRIT_DAMAGE) Long critDamage,
       @Param(CHARACTERISTICS_HEALTH) Long health,
       @Param(CHARACTERISTICS_RESISTANCE) Long resistance);
 
-  @Query("insert into t_characteristics_tgch (id) values (:id) returning *")
-  CharacteristicsEntity createNewCharacteristicsEntity(@Param(ID) UUID id);
+  @Query("insert into t_characteristics_tgch (tgme_id) values (:tgme_id) returning *")
+  CharacteristicsEntity createNewCharacteristicsEntity(@Param(GAME_METADATA_ID) UUID id);
 
   @Query(
       """
               update t_characteristics_tgch set
-              attack = coalesce(:attack, attack),
-              crit_chance = coalesce(:crit_chance, crit_chance),
-              crit_damage = coalesce(:crit_damage, crit_damage),
-              health = coalesce(:health, health),
-              resistance = coalesce(:resistance, resistance)
-              where id = :id
+              tgch_attack = coalesce(:tgch_attack, tgch_attack),
+              tgch_crit_chance = coalesce(:tgch_crit_chance, tgch_crit_chance),
+              tgch_crit_damage = coalesce(:tgch_crit_damage, tgch_crit_damage),
+              tgch_health = coalesce(:tgch_health, tgch_health),
+              tgch_resistance = coalesce(:tgch_resistance, tgch_resistance)
+              where tgme_id = :tgme_id
               returning *
               """)
   CharacteristicsEntity updateCharacteristics(
-      @Param(ID) UUID id,
+      @Param(GAME_METADATA_ID) UUID id,
       @Param(CHARACTERISTICS_ATTACK) Long attack,
       @Param(CHARACTERISTICS_CRIT_CHANCE) Long critChance,
       @Param(CHARACTERISTICS_CRIT_DAMAGE) Long critDamage,
       @Param(CHARACTERISTICS_HEALTH) Long health,
       @Param(CHARACTERISTICS_RESISTANCE) Long resistance);
 
-  @Query("select * from t_characteristics_tgch where id=:id")
-  Optional<CharacteristicsEntity> findCharacteristicsEntityById(@Param(ID) UUID id);
+  @Query("select * from t_characteristics_tgch where tgme_id=:tgme_id")
+  Optional<CharacteristicsEntity> findCharacteristicsEntityById(@Param(GAME_METADATA_ID) UUID id);
 
-  @Query("select count(id) from t_characteristics_tgch")
+  @Query("select count(tgme_id) from t_characteristics_tgch")
   Long count();
 }

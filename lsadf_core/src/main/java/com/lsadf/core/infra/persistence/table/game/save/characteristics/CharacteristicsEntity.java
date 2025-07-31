@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.infra.persistence.table.game.save.characteristics;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
 import static com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_ID;
 
 import com.lsadf.core.infra.persistence.Identifiable;
 import java.io.Serial;
@@ -41,7 +41,7 @@ public class CharacteristicsEntity implements Identifiable {
   }
 
   @Id
-  @Column(ID)
+  @Column(GAME_METADATA_ID)
   private UUID id;
 
   @Column(CHARACTERISTICS_ATTACK)
@@ -62,11 +62,11 @@ public class CharacteristicsEntity implements Identifiable {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class CharacteristicsEntityAttributes {
     public static final String CHARACTERISTICS_ENTITY = "t_characteristics_tgch";
-    public static final String CHARACTERISTICS_ATTACK = "attack";
-    public static final String CHARACTERISTICS_CRIT_CHANCE = "crit_chance";
-    public static final String CHARACTERISTICS_CRIT_DAMAGE = "crit_damage";
-    public static final String CHARACTERISTICS_HEALTH = "health";
-    public static final String CHARACTERISTICS_RESISTANCE = "resistance";
+    public static final String CHARACTERISTICS_ATTACK = "tgch_attack";
+    public static final String CHARACTERISTICS_CRIT_CHANCE = "tgch_crit_chance";
+    public static final String CHARACTERISTICS_CRIT_DAMAGE = "tgch_crit_damage";
+    public static final String CHARACTERISTICS_HEALTH = "tgch_health";
+    public static final String CHARACTERISTICS_RESISTANCE = "tgch_resistance";
   }
 
   @Override

@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.infra.persistence.table.game.save.currency;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
 import static com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity.CurrencyEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_ID;
 
 import com.lsadf.core.infra.persistence.Identifiable;
 import java.io.Serial;
@@ -37,7 +37,7 @@ public class CurrencyEntity implements Identifiable {
   @Serial private static final long serialVersionUID = 1142981637978170899L;
 
   @Id
-  @Column(ID)
+  @Column(GAME_METADATA_ID)
   private UUID id;
 
   @Column(CURRENCY_GOLD_AMOUNT)
@@ -55,10 +55,10 @@ public class CurrencyEntity implements Identifiable {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class CurrencyEntityAttributes {
     public static final String CURRENCY_ENTITY = "t_currency_tgcu";
-    public static final String CURRENCY_GOLD_AMOUNT = "gold_amount";
-    public static final String CURRENCY_DIAMOND_AMOUNT = "diamond_amount";
-    public static final String CURRENCY_EMERALD_AMOUNT = "emerald_amount";
-    public static final String CURRENCY_AMETHYST_AMOUNT = "amethyst_amount";
+    public static final String CURRENCY_GOLD_AMOUNT = "tgcu_gold_amount";
+    public static final String CURRENCY_DIAMOND_AMOUNT = "tgcu_diamond_amount";
+    public static final String CURRENCY_EMERALD_AMOUNT = "tgcu_emerald_amount";
+    public static final String CURRENCY_AMETHYST_AMOUNT = "tgcu_amethyst_amount";
   }
 
   @Override

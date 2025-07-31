@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.persistence.view;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.*;
 import static com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
 import static com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.CHARACTERISTICS_HEALTH;
 import static com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.CHARACTERISTICS_RESISTANCE;
@@ -45,13 +44,13 @@ public class GameSaveViewEntity implements Identifiable, Dateable {
 
   // Game Save
   @Id
-  @Column(ID)
+  @Column(GAME_METADATA_ID)
   private UUID id;
 
-  @Column(CREATED_AT)
+  @Column(GAME_METADATA_CREATED_AT)
   private Date createdAt;
 
-  @Column(UPDATED_AT)
+  @Column(GAME_METADATA_UPDATED_AT)
   private Date updatedAt;
 
   @Column(GAME_METADATA_USER_EMAIL)

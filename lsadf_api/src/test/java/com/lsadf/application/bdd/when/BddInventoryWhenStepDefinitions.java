@@ -61,19 +61,35 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
         row -> {
           ItemEntity itemEntity = BddUtils.mapToItemEntity(row);
           itemEntity.setGameSaveId(uuid);
-          var newItemEntity =
-              itemRepository.createNewItemEntity(
-                  itemEntity.getId(),
-                  itemEntity.getGameSaveId(),
-                  itemEntity.getClientId(),
-                  itemEntity.getBlueprintId(),
-                  itemEntity.getItemType(),
-                  itemEntity.getItemRarity(),
-                  itemEntity.getIsEquipped(),
-                  itemEntity.getLevel(),
-                  itemEntity.getMainStatistic(),
-                  itemEntity.getMainBaseValue());
-          var additionalStats = BddUtils.mapToAdditionalItemStatEntity(row);
+          ItemEntity newItemEntity;
+          if (itemEntity.getId() != null) {
+            newItemEntity =
+                itemRepository.createNewItemEntity(
+                    itemEntity.getId(),
+                    itemEntity.getGameSaveId(),
+                    itemEntity.getClientId(),
+                    itemEntity.getBlueprintId(),
+                    itemEntity.getItemType(),
+                    itemEntity.getItemRarity(),
+                    itemEntity.getIsEquipped(),
+                    itemEntity.getLevel(),
+                    itemEntity.getMainStatistic(),
+                    itemEntity.getMainBaseValue());
+          } else {
+            newItemEntity =
+                itemRepository.createNewItemEntity(
+                    itemEntity.getGameSaveId(),
+                    itemEntity.getClientId(),
+                    itemEntity.getBlueprintId(),
+                    itemEntity.getItemType(),
+                    itemEntity.getItemRarity(),
+                    itemEntity.getIsEquipped(),
+                    itemEntity.getLevel(),
+                    itemEntity.getMainStatistic(),
+                    itemEntity.getMainBaseValue());
+          }
+
+          var additionalStats = BddUtils.mapToAdditionalItemStatEntity(row, newItemEntity.getId());
           additionalStats.forEach(
               additionalItemStatEntity -> {
                 additionalItemStatsRepository.createNewAdditionalItemStatEntity(
@@ -225,7 +241,10 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     Set<ItemResponse> inventory = itemResponseSetStack.peek();
     for (Map<String, String> row : rows) {
       ItemResponse actual =
-          inventory.stream().filter(g -> g.id().equals(row.get("id"))).findFirst().orElseThrow();
+          inventory.stream()
+              .filter(g -> g.clientId().equals(row.get("clientId")))
+              .findFirst()
+              .orElseThrow();
 
       Item expected = BddUtils.mapToItem(row);
 

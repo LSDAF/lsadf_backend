@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.persistence.table.game.inventory;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
 import static com.lsadf.core.infra.persistence.table.game.inventory.AdditionalItemStatEntity.AdditionalStatsEntityAttributes.*;
 
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
@@ -30,7 +29,7 @@ import org.springframework.data.repository.query.Param;
 
 @org.springframework.stereotype.Repository
 public interface AdditionalItemStatsRepository extends Repository<AdditionalItemStatEntity, UUID> {
-  @Query("select count(id) from t_additional_stat_tias")
+  @Query("select count(tias_id) from t_additional_stat_tias")
   Long count();
 
   @Modifying
@@ -42,15 +41,15 @@ public interface AdditionalItemStatsRepository extends Repository<AdditionalItem
   void deleteAllAdditionalItemStatsByItemId(@Param(ADDITIONAL_STATS_ITEM_ID) UUID itemId);
 
   @Query(
-      "insert into t_additional_stat_tias (id, tgit_id, statistic, base_value) values (:id, :tgit_id, :statistic, :base_value) returning *")
+      "insert into t_additional_stat_tias (tias_id, tgit_id, tias_statistic, tias_base_value) values (:tias_id, :tgit_id, :tias_statistic, :tias_base_value) returning *")
   AdditionalItemStatEntity createNewAdditionalItemStatEntity(
-      @Param(ID) UUID id,
+      @Param(ADDITIONAL_STATS_ID) UUID id,
       @Param(ADDITIONAL_STATS_ITEM_ID) UUID itemId,
       @Param(ADDITIONAL_STATS_ITEM_STATISTIC) ItemStatistic statistic,
       @Param(ADDITIONAL_STATS_ITEM_BASE_VALUE) Float baseValue);
 
   @Query(
-      "insert into t_additional_stat_tias (tgit_id, statistic, base_value) values (:tgit_id, :statistic, :base_value) returning *")
+      "insert into t_additional_stat_tias (tgit_id, tias_statistic, tias_base_value) values (:tgit_id, :tias_statistic, :tias_base_value) returning *")
   AdditionalItemStatEntity createNewAdditionalItemStatEntity(
       @Param(ADDITIONAL_STATS_ITEM_ID) UUID itemId,
       @Param(ADDITIONAL_STATS_ITEM_STATISTIC) ItemStatistic statistic,

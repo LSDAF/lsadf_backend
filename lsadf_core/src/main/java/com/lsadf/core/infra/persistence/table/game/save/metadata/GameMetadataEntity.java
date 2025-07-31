@@ -15,7 +15,6 @@
  */
 package com.lsadf.core.infra.persistence.table.game.save.metadata;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.*;
 import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.*;
 
 import com.lsadf.core.infra.persistence.Dateable;
@@ -40,13 +39,13 @@ public class GameMetadataEntity implements Dateable, Identifiable {
   @Serial private static final long serialVersionUID = 7786624859103259009L;
 
   @Id
-  @Column(ID)
+  @Column(GAME_METADATA_ID)
   private UUID id;
 
-  @Column(CREATED_AT)
+  @Column(GAME_METADATA_CREATED_AT)
   private Date createdAt;
 
-  @Column(UPDATED_AT)
+  @Column(GAME_METADATA_UPDATED_AT)
   private Date updatedAt;
 
   @Column(GAME_METADATA_USER_EMAIL)
@@ -58,8 +57,11 @@ public class GameMetadataEntity implements Dateable, Identifiable {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class GameSaveMetadataAttributes {
     public static final String GAME_METADATA_ENTITY = "t_game_metadata_tgme";
-    public static final String GAME_METADATA_USER_EMAIL = "user_email";
-    public static final String GAME_METADATA_NICKNAME = "nickname";
+    public static final String GAME_METADATA_ID = "tgme_id";
+    public static final String GAME_METADATA_CREATED_AT = "tgme_created_at";
+    public static final String GAME_METADATA_UPDATED_AT = "tgme_updated_at";
+    public static final String GAME_METADATA_USER_EMAIL = "tgme_user_email";
+    public static final String GAME_METADATA_NICKNAME = "tgme_nickname";
   }
 
   @Override

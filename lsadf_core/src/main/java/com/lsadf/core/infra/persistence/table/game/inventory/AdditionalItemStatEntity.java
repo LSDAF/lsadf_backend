@@ -48,10 +48,10 @@ public class AdditionalItemStatEntity implements Identifiable {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class AdditionalStatsEntityAttributes {
     public static final String ADDITIONAL_STATS_ENTITY = "t_additional_stat_tias";
-    public static final String ADDITIONAL_STATS_ID = "id";
+    public static final String ADDITIONAL_STATS_ID = "tias_id";
     public static final String ADDITIONAL_STATS_ITEM_ID = "tgit_id";
-    public static final String ADDITIONAL_STATS_ITEM_STATISTIC = "statistic";
-    public static final String ADDITIONAL_STATS_ITEM_BASE_VALUE = "base_value";
+    public static final String ADDITIONAL_STATS_ITEM_STATISTIC = "tias_statistic";
+    public static final String ADDITIONAL_STATS_ITEM_BASE_VALUE = "tias_base_value";
   }
 
   @Override

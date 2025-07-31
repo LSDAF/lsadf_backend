@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.persistence.table.game.save.stage;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_ID;
 import static com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity.StageEntityAttributes.STAGE_CURRENT_STAGE;
 import static com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity.StageEntityAttributes.STAGE_MAX_STAGE;
 
@@ -29,31 +29,31 @@ import org.springframework.stereotype.Repository;
 public interface StageRepository
     extends org.springframework.data.repository.Repository<StageEntity, UUID> {
   @Query(
-      "insert into t_stage_tgst (id, current_stage, max_stage) values (:id, :current_stage, :max_stage) returning *")
+      "insert into t_stage_tgst (tgme_id, tgst_current_stage, tgst_max_stage) values (:tgme_id, :tgst_current_stage, :tgst_max_stage) returning *")
   StageEntity createNewStageEntity(
-      @Param(ID) UUID id,
+      @Param(GAME_METADATA_ID) UUID id,
       @Param(STAGE_CURRENT_STAGE) Long currentStage,
       @Param(STAGE_MAX_STAGE) Long maxStage);
 
-  @Query("insert into t_stage_tgst (id) values (:id) returning *")
-  StageEntity createNewStageEntity(@Param(ID) UUID id);
+  @Query("insert into t_stage_tgst (tgme_id) values (:tgme_id) returning *")
+  StageEntity createNewStageEntity(@Param(GAME_METADATA_ID) UUID id);
 
   @Query(
       """
               update t_stage_tgst set
-              current_stage=coalesce(:current_stage, current_stage),
-              max_stage=coalesce(:max_stage, max_stage)
-              where id=:id
+              tgst_current_stage=coalesce(:tgst_current_stage, tgst_current_stage),
+              tgst_max_stage=coalesce(:tgst_max_stage, tgst_max_stage)
+              where tgme_id=:tgme_id
               returning *
               """)
   StageEntity updateStage(
-      @Param(ID) UUID id,
+      @Param(GAME_METADATA_ID) UUID id,
       @Param(STAGE_CURRENT_STAGE) Long currentStage,
       @Param(STAGE_MAX_STAGE) Long maxStage);
 
-  @Query("select count(id) from t_stage_tgst")
+  @Query("select count(tgme_id) from t_stage_tgst")
   Long count();
 
-  @Query("select * from t_stage_tgst where id=:id")
-  Optional<StageEntity> findStageEntityById(@Param(ID) UUID id);
+  @Query("select * from t_stage_tgst where tgme_id=:tgme_id")
+  Optional<StageEntity> findStageEntityById(@Param(GAME_METADATA_ID) UUID id);
 }

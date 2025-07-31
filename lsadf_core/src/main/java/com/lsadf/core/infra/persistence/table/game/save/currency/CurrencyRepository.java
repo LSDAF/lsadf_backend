@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.infra.persistence.table.game.save.currency;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
 import static com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity.CurrencyEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_ID;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -28,37 +28,37 @@ import org.springframework.stereotype.Repository;
 public interface CurrencyRepository
     extends org.springframework.data.repository.Repository<CurrencyEntity, UUID> {
   @Query(
-      "insert into t_currency_tgcu (id, gold_amount, diamond_amount, emerald_amount, amethyst_amount) values (:id, :gold_amount, :diamond_amount, :emerald_amount, :amethyst_amount) returning *")
+      "insert into t_currency_tgcu (tgme_id, tgcu_gold_amount, tgcu_diamond_amount, tgcu_emerald_amount, tgcu_amethyst_amount) values (:tgme_id, :tgcu_gold_amount, :tgcu_diamond_amount, :tgcu_emerald_amount, :tgcu_amethyst_amount) returning *")
   CurrencyEntity createNewCurrencyEntity(
-      @Param(ID) UUID id,
+      @Param(GAME_METADATA_ID) UUID id,
       @Param(CURRENCY_GOLD_AMOUNT) Long goldAmount,
       @Param(CURRENCY_DIAMOND_AMOUNT) Long diamondAmount,
       @Param(CURRENCY_EMERALD_AMOUNT) Long emeraldAmount,
       @Param(CURRENCY_AMETHYST_AMOUNT) Long amethystAmount);
 
-  @Query("insert into t_currency_tgcu (id) values (:id) returning *")
-  CurrencyEntity createNewCurrencyEntity(@Param(ID) UUID id);
+  @Query("insert into t_currency_tgcu (tgme_id) values (:tgme_id) returning *")
+  CurrencyEntity createNewCurrencyEntity(@Param(GAME_METADATA_ID) UUID id);
 
   @Query(
       """
               update t_currency_tgcu
-              set gold_amount=coalesce(:gold_amount, gold_amount),\
-              diamond_amount=coalesce(:diamond_amount, diamond_amount),\
-              emerald_amount=coalesce(:emerald_amount, emerald_amount),
-              amethyst_amount=coalesce(:amethyst_amount, amethyst_amount)\
-              where id=:id
+              set tgcu_gold_amount=coalesce(:tgcu_gold_amount, tgcu_gold_amount),\
+              tgcu_diamond_amount=coalesce(:tgcu_diamond_amount, tgcu_diamond_amount),\
+              tgcu_emerald_amount=coalesce(:tgcu_emerald_amount, tgcu_emerald_amount),
+              tgcu_amethyst_amount=coalesce(:tgcu_amethyst_amount, tgcu_amethyst_amount)\
+              where tgme_id=:tgme_id
               returning *
               """)
   CurrencyEntity updateCurrency(
-      @Param(ID) UUID id,
+      @Param(GAME_METADATA_ID) UUID id,
       @Param(CURRENCY_GOLD_AMOUNT) Long goldAmount,
       @Param(CURRENCY_DIAMOND_AMOUNT) Long diamondAmount,
       @Param(CURRENCY_EMERALD_AMOUNT) Long emeraldAmount,
       @Param(CURRENCY_AMETHYST_AMOUNT) Long amethystAmount);
 
-  @Query("select * from t_currency_tgcu where id=:id")
-  Optional<CurrencyEntity> findCurrencyEntityById(@Param(ID) UUID id);
+  @Query("select * from t_currency_tgcu where tgme_id=:tgme_id")
+  Optional<CurrencyEntity> findCurrencyEntityById(@Param(GAME_METADATA_ID) UUID id);
 
-  @Query("select count(id) from t_currency_tgcu")
+  @Query("select count(tgme_id) from t_currency_tgcu")
   Long count();
 }

@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.persistence.table.game.save.stage;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_ID;
 import static com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity.StageEntityAttributes.*;
 import static com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity.StageEntityAttributes.STAGE_ENTITY;
 
@@ -36,7 +36,7 @@ public class StageEntity implements com.lsadf.core.infra.persistence.Entity {
   @Serial private static final long serialVersionUID = -5093458201484300006L;
 
   @Id
-  @Column(ID)
+  @Column(GAME_METADATA_ID)
   private UUID id;
 
   @Column(STAGE_CURRENT_STAGE)
@@ -48,7 +48,7 @@ public class StageEntity implements com.lsadf.core.infra.persistence.Entity {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class StageEntityAttributes {
     public static final String STAGE_ENTITY = "t_stage_tgst";
-    public static final String STAGE_CURRENT_STAGE = "current_stage";
-    public static final String STAGE_MAX_STAGE = "max_stage";
+    public static final String STAGE_CURRENT_STAGE = "tgst_current_stage";
+    public static final String STAGE_MAX_STAGE = "tgst_max_stage";
   }
 }

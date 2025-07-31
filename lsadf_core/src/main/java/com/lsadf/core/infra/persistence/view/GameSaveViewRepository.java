@@ -32,10 +32,10 @@ public interface GameSaveViewRepository
   @Query("select * from v_game_save_vgsa")
   Stream<GameSaveViewEntity> findAllGameSaves();
 
-  @Query("select * from v_game_save_vgsa where id=:id")
+  @Query("select * from v_game_save_vgsa where tgme_id=:tgme_id")
   Optional<GameSaveViewEntity> findGameSaveEntityById(UUID id);
 
-  @Query("select * from v_game_save_vgsa tgme where user_email = :user_email")
+  @Query("select * from v_game_save_vgsa tgme where tgme_user_email = :tgme_user_email")
   Stream<GameSaveViewEntity> findGameSaveEntitiesByUserEmail(
       @Param(GAME_METADATA_USER_EMAIL) String userEmail);
 }

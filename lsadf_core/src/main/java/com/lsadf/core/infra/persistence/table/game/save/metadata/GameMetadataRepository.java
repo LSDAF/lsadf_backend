@@ -15,8 +15,7 @@
  */
 package com.lsadf.core.infra.persistence.table.game.save.metadata;
 
-import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_NICKNAME;
-import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_USER_EMAIL;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.*;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -31,52 +30,52 @@ public interface GameMetadataRepository
     extends org.springframework.data.repository.Repository<GameMetadataEntity, UUID> {
 
   @Query(
-      "update t_game_metadata_tgme set nickname=coalesce(:nickname, nickname) where id=:id returning *")
+      "update t_game_metadata_tgme set tgme_nickname=coalesce(:tgme_nickname, tgme_nickname) where tgme_id=:tgme_id returning *")
   GameMetadataEntity updateGameSaveEntityNickname(UUID id, String nickname);
 
   @Query(
       """
-          insert into t_game_metadata_tgme (user_email, nickname) values (:user_email, :nickname) returning *
-          """)
+              insert into t_game_metadata_tgme (tgme_user_email, tgme_nickname) values (:tgme_ser_email, :tgme_nickname) returning *
+              """)
   GameMetadataEntity createNewGameSaveEntity(
       @Param(GAME_METADATA_USER_EMAIL) String userEmail,
       @Param(GAME_METADATA_NICKNAME) String nickname);
 
   @Query(
       """
-              insert into t_game_metadata_tgme (user_email) values (:user_email) returning *
+              insert into t_game_metadata_tgme (tgme_user_email) values (:tgme_user_email) returning *
               """)
   GameMetadataEntity createNewGameSaveEntity(@Param(GAME_METADATA_USER_EMAIL) String userEmail);
 
   @Query(
       """
-          insert into t_game_metadata_tgme (id, user_email, nickname) values (:id, :user_email, :nickname) returning *
+          insert into t_game_metadata_tgme (tgme_id, tgme_user_email, tgme_nickname) values (:tgme_id, :tgme_user_email, :tgme_nickname) returning *
           """)
   GameMetadataEntity createNewGameSaveEntity(
-      @Param("id") UUID id,
+      @Param(GAME_METADATA_ID) UUID id,
       @Param(GAME_METADATA_USER_EMAIL) String userEmail,
       @Param(GAME_METADATA_NICKNAME) String nickname);
 
   @Modifying
-  @Query("delete from t_game_metadata_tgme where id=:id")
-  void deleteGameSaveEntityById(@Param("id") UUID id);
+  @Query("delete from t_game_metadata_tgme where tgme_id=:tgme_id")
+  void deleteGameSaveEntityById(@Param(GAME_METADATA_ID) UUID id);
 
-  @Query("select exists(select 1 from t_game_metadata_tgme where nickname=:nickname)")
+  @Query("select exists(select 1 from t_game_metadata_tgme where tgme_nickname=:tgme_nickname)")
   boolean existsByNickname(@Param(GAME_METADATA_NICKNAME) String nickname);
 
   @Modifying
   @Query("delete from t_game_metadata_tgme")
   void deleteAllGameSaveEntities();
 
-  @Query("select exists(select 1 from t_game_metadata_tgme where id = :id)")
-  boolean existsById(@Param("id") UUID id);
+  @Query("select exists(select 1 from t_game_metadata_tgme where tgme_id = :tgme_id)")
+  boolean existsById(@Param(GAME_METADATA_ID) UUID id);
 
-  @Query("select count(id) from t_game_metadata_tgme")
+  @Query("select count(tgme_id) from t_game_metadata_tgme")
   Long count();
 
-  @Query("select * from t_game_metadata_tgme where id=:id")
-  GameMetadataEntity findGameSaveEntityById(@Param("id") UUID id);
+  @Query("select * from t_game_metadata_tgme where tgme_id=:tgme_id")
+  GameMetadataEntity findGameSaveEntityById(@Param(GAME_METADATA_ID) UUID id);
 
-  @Query("select user_email from t_game_metadata_tgme where id=:id")
-  Optional<String> findUserEmailById(@Param("id") UUID id);
+  @Query("select tgme_user_email from t_game_metadata_tgme where tgme_id=:tgme_id")
+  Optional<String> findUserEmailById(@Param(GAME_METADATA_ID) UUID id);
 }

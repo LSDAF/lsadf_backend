@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.infra.persistence.table.game.inventory;
 
-import static com.lsadf.core.infra.persistence.config.EntityAttributes.ID;
 import static com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity.ItemAttributes.*;
+import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_ID;
 
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
@@ -32,21 +32,21 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ItemRepository extends CrudRepository<ItemEntity, UUID> {
-  @Query("select * from t_item_tgit where tgme_id =:gameSaveId")
-  Set<ItemEntity> findAllItemsByGameSaveId(UUID gameSaveId);
+  @Query("select * from t_item_tgit where tgme_id =:tgme_id")
+  Set<ItemEntity> findAllItemsByGameSaveId(@Param(GAME_METADATA_ID) UUID gameSaveId);
 
-  @Query("select * from t_item_tgit where client_id =:clientId")
-  Optional<ItemEntity> findItemByClientId(String clientId);
+  @Query("select * from t_item_tgit where tgit_client_id =:tgit_client_id")
+  Optional<ItemEntity> findItemByClientId(@Param(ITEM_CLIENT_ID) String clientId);
 
   @Modifying
-  @Query("delete from t_item_tgit where tgme_id=:gameSaveId")
-  void deleteAllItemsByGameSaveId(UUID gameSaveId);
+  @Query("delete from t_item_tgit where tgme_id=:tgme_id")
+  void deleteAllItemsByGameSaveId(@Param(GAME_METADATA_ID) UUID gameSaveId);
 
   @SuppressWarnings("java:S107")
   @Query(
-      "insert into t_item_tgit (id, tgme_id, client_id, blueprint_id, type, rarity, is_equipped, level, main_statistic, main_base_value) values (:id, :tgme_id, :client_id, :blueprint_id, :type, :rarity, :is_equipped, :level, :main_statistic, :main_base_value) returning *")
+      "insert into t_item_tgit (tgit_id, tgme_id, tgit_client_id, tgit_blueprint_id, tgit_type, tgit_rarity, tgit_is_equipped, tgit_level, tgit_main_statistic, tgit_main_base_value) values (:tgit_id, :tgme_id, :tgit_client_id, :tgit_blueprint_id, :tgit_type, :tgit_rarity, :tgit_is_equipped, :tgit_level, :tgit_main_statistic, :tgit_main_base_value) returning *")
   ItemEntity createNewItemEntity(
-      @Param(ID) UUID id,
+      @Param(ITEM_ID) UUID id,
       @Param(ITEM_GAME_SAVE_ID) UUID gameSaveId,
       @Param(ITEM_CLIENT_ID) String clientId,
       @Param(ITEM_BLUEPRINT_ID) String blueprintId,
@@ -59,7 +59,7 @@ public interface ItemRepository extends CrudRepository<ItemEntity, UUID> {
 
   @SuppressWarnings("java:S107")
   @Query(
-      "insert into t_item_tgit (tgme_id, client_id, blueprint_id, type, rarity, is_equipped, level, main_statistic, main_base_value) values (:tgme_id, :client_id, :blueprint_id, :type, :rarity, :is_equipped, :level, :main_statistic, :main_base_value) returning *")
+      "insert into t_item_tgit (tgme_id, tgit_client_id, tgit_blueprint_id, tgit_type, tgit_rarity, tgit_is_equipped, tgit_level, tgit_main_statistic, tgit_main_base_value) values (:tgme_id, :tgit_client_id, :tgit_blueprint_id, :tgit_type, :tgit_rarity, :tgit_is_equipped, :tgit_level, :tgit_main_statistic, :tgit_main_base_value) returning *")
   ItemEntity createNewItemEntity(
       @Param(ITEM_GAME_SAVE_ID) UUID gameSaveId,
       @Param(ITEM_CLIENT_ID) String clientId,

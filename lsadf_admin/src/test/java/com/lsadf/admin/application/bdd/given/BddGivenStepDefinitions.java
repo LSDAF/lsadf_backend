@@ -72,7 +72,7 @@ public class BddGivenStepDefinitions extends BddLoader {
                   itemEntity.getLevel(),
                   itemEntity.getMainStatistic(),
                   itemEntity.getMainBaseValue());
-          var additionalStats = BddUtils.mapToAdditionalItemStatEntity(row);
+          var additionalStats = BddUtils.mapToAdditionalItemStatEntity(row, newItemEntity.getId());
           additionalStats.forEach(
               additionalItemStatEntity -> {
                 additionalItemStatsRepository.createNewAdditionalItemStatEntity(
