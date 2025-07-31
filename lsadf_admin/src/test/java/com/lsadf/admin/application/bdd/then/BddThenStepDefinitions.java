@@ -53,10 +53,8 @@ public class BddThenStepDefinitions extends BddLoader {
   @Then("^the number of game saves should be (.*)$")
   @Transactional(readOnly = true)
   public void then_the_number_of_game_saves_should_be(int expected) {
-    try (var gameSaveStream = gameSaveService.getGameSaves()) {
-      var actual = gameSaveStream.count();
-      assertThat(actual).isEqualTo(expected);
-    }
+    var list = gameSaveService.getGameSaves();
+    assertThat(list).hasSize(expected);
   }
 
   @Then("^I should return false$")
