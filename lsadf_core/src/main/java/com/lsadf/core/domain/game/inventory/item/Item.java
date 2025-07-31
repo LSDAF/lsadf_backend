@@ -36,6 +36,8 @@ public class Item implements Model {
 
   private UUID id;
 
+  private UUID gameSaveId;
+
   private String clientId;
 
   private String blueprintId;
