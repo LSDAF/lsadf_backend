@@ -15,30 +15,16 @@
  */
 package com.lsadf.core.application.game.inventory;
 
-import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
-import com.lsadf.core.infra.persistence.game.inventory.item.ItemRepository;
+import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Configuration class for setting up the inventory service and its dependencies.
- *
- * <p>This configuration defines the required beans for managing game save inventories and items
- * corresponding to those inventories. The {@code InventoryService} allows operations such as
- * retrieving, creating, updating, and deleting inventory items.
- *
- * <p>Beans: - {@code InventoryService}: Provides inventory management functionalities. It is
- * implemented by {@link InventoryServiceImpl} and requires dependencies on {@link
- * InventoryRepository} and {@link ItemRepository}.
- *
- * <p>Dependencies: - {@link InventoryRepository}: Handles data persistence for inventory entities.
- * - {@link ItemRepository}: Handles data persistence for item entities.
- */
 @Configuration
 public class InventoryConfiguration {
   @Bean
   public InventoryService inventoryService(
-      InventoryRepository inventoryRepository, ItemRepository itemRepository) {
-    return new InventoryServiceImpl(inventoryRepository, itemRepository);
+      InventoryRepositoryPort inventoryRepositoryPort,
+      GameMetadataRepositoryPort gameMetadataRepositoryPort) {
+    return new InventoryServiceImpl(inventoryRepositoryPort, gameMetadataRepositoryPort);
   }
 }

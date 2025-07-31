@@ -15,21 +15,22 @@
  */
 package com.lsadf.application.bdd.when;
 
-import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.buildParameterizedCurrencyResponse;
-import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedCurrencyResponse;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.currency.CurrencyController;
-import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -43,7 +44,8 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
   public void when_we_want_to_get_the_currencies_for_the_game_save_with_id(String gameSaveId) {
     try {
       log.info("Getting currencies for game save with id: {}", gameSaveId);
-      Currency currency = this.currencyService.getCurrency(gameSaveId);
+      UUID uuid = UUID.fromString(gameSaveId);
+      Currency currency = this.currencyService.getCurrency(uuid);
       currencyStack.push(currency);
     } catch (Exception e) {
       exceptionStack.push(e);
@@ -61,7 +63,8 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
 
     try {
       log.info("Setting {} for game save with id: {}", currency, gameSaveId);
-      this.currencyService.saveCurrency(gameSaveId, currency, toCache);
+      UUID uuid = UUID.fromString(gameSaveId);
+      this.currencyService.saveCurrency(uuid, currency, toCache);
     } catch (Exception e) {
       exceptionStack.push(e);
     }

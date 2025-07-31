@@ -21,7 +21,7 @@ import com.lsadf.core.infra.cache.properties.CacheProperties;
 import com.lsadf.core.infra.clock.ClockProperties;
 import com.lsadf.core.infra.logging.properties.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.properties.HttpLogProperties;
-import com.lsadf.core.infra.persistence.config.JpaProperties;
+import com.lsadf.core.infra.persistence.config.JdbcProperties;
 import com.lsadf.core.infra.persistence.config.properties.DataSourceProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakAdminProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
@@ -38,9 +38,9 @@ import org.springframework.context.annotation.Configuration;
 public class PropertiesConfiguration {
 
   @Bean
-  @ConfigurationProperties(prefix = "jpa")
-  public JpaProperties jpaProperties() {
-    return new JpaProperties();
+  @ConfigurationProperties(prefix = "jdbc")
+  public JdbcProperties jdbcProperties() {
+    return new JdbcProperties();
   }
 
   @Bean

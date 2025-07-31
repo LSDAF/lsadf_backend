@@ -17,14 +17,14 @@ package com.lsadf.core.infra.cache.listener;
 
 import static com.lsadf.core.infra.cache.RedisConstants.*;
 
-import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.currency.CurrencyService;
-import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.application.game.stage.StageService;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.Message;
@@ -46,7 +46,6 @@ public class ValkeyKeyExpirationListener implements MessageListener {
   public ValkeyKeyExpirationListener(
       CharacteristicsService characteristicsService,
       CurrencyService currencyService,
-      InventoryService inventoryService,
       StageService stageService,
       RedisTemplate<String, Characteristics> characteristicsRedisTemplate,
       RedisTemplate<String, Currency> currencyRedisTemplate,
@@ -92,7 +91,8 @@ public class ValkeyKeyExpirationListener implements MessageListener {
       if (stage == null) {
         throw new NotFoundException("Stage not found in cache");
       }
-      stageService.saveStage(gameSaveId, stage, false);
+      UUID uuid = UUID.fromString(gameSaveId);
+      stageService.saveStage(uuid, stage, false);
       Boolean result = stageRedisTemplate.delete(STAGE_HISTO + gameSaveId);
       if (Boolean.TRUE.equals(result)) {
         log.info("Deleted entry {}", STAGE_HISTO + gameSaveId);
@@ -116,7 +116,8 @@ public class ValkeyKeyExpirationListener implements MessageListener {
       if (characteristics == null) {
         throw new NotFoundException("Characteristics not found in cache");
       }
-      characteristicsService.saveCharacteristics(gameSaveId, characteristics, false);
+      UUID uuid = UUID.fromString(gameSaveId);
+      characteristicsService.saveCharacteristics(uuid, characteristics, false);
       Boolean result = characteristicsRedisTemplate.delete(CHARACTERISTICS_HISTO + gameSaveId);
       if (Boolean.TRUE.equals(result)) {
         log.info("Deleted entry {}", CHARACTERISTICS_HISTO + gameSaveId);
@@ -139,7 +140,8 @@ public class ValkeyKeyExpirationListener implements MessageListener {
       if (currency == null) {
         throw new NotFoundException("Currency not found in cache");
       }
-      currencyService.saveCurrency(gameSaveId, currency, false);
+      UUID uuid = UUID.fromString(gameSaveId);
+      currencyService.saveCurrency(uuid, currency, false);
       Boolean result = currencyRedisTemplate.delete(CURRENCY_HISTO + gameSaveId);
       if (Boolean.TRUE.equals(result)) {
         log.info("Deleted entry {}", CURRENCY_HISTO + gameSaveId);

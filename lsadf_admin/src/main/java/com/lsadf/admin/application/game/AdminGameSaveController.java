@@ -22,12 +22,11 @@ import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.infra.web.controller.Controller;
-import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.game_save.update.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.request.game.save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.save.update.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.ResponseMessages;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
-import com.lsadf.core.shared.validation.Uuid;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -35,6 +34,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -76,8 +76,7 @@ public interface AdminGameSaveController extends Controller {
   @Operation(summary = "Deletes a game save")
   @DeleteMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   ResponseEntity<ApiResponse<Void>> deleteGameSave(
-      @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
+      @AuthenticationPrincipal Jwt jwt, @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId);
 
   /**
    * Creates a game save
@@ -135,8 +134,7 @@ public interface AdminGameSaveController extends Controller {
   @Operation(summary = "Gets a game save by its id")
   @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(
-      @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
+      @AuthenticationPrincipal Jwt jwt, @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId);
 
   /**
    * Gets all the user game saves
@@ -227,7 +225,7 @@ public interface AdminGameSaveController extends Controller {
   @PostMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   ResponseEntity<ApiResponse<GameSaveResponse>> updateGameSave(
       @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
+      @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
       @Valid @RequestBody AdminGameSaveUpdateRequest adminGameSaveUpdateRequest);
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)

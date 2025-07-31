@@ -19,7 +19,7 @@ package com.lsadf.core.unit.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.application.game.game_save.GameSaveService;
+import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.info.GlobalInfoServiceImpl;
 import com.lsadf.core.application.user.UserService;
@@ -54,7 +54,7 @@ class GlobalInfoServiceTests {
   }
 
   @Test
-  void should_return_valid_global_info() {
+  void test_getGlobalInfo_returnsValidGlobalInfo_when_called() {
     GlobalInfo expected =
         GlobalInfo.builder()
             .now(new Date().toInstant())

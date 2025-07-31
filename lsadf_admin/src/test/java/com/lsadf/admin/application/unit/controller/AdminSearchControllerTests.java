@@ -61,7 +61,7 @@ class AdminSearchControllerTests {
 
   @Test
   @SneakyThrows
-  void searchUsers_should_return_401_when_user_not_authenticated() {
+  void test_searchUsers_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -75,7 +75,7 @@ class AdminSearchControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void searchUsers_should_return_403_when_user_not_admin() {
+  void test_searchUsers_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -92,7 +92,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchUsers_should_return_200_when_authenticated_user_is_admin() {
+  void test_searchUsers_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -105,7 +105,7 @@ class AdminSearchControllerTests {
 
   @Test
   @SneakyThrows
-  void searchGameSaves_should_return_401_when_user_not_authenticated() {
+  void test_searchGameSaves_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -119,7 +119,7 @@ class AdminSearchControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void searchGameSaves_should_return_403_when_user_not_admin() {
+  void test_searchGameSaves_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -136,7 +136,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchGameSaves_should_return_200_when_authenticated_user_is_admin() {
+  void test_searchGameSaves_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -153,7 +153,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchUsers_should_return_200_when_no_body() {
+  void test_searchUsers_returns200_when_noBody() {
     // when
     mockMvc
         .perform(
@@ -170,7 +170,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchGameSaves_should_return_200_when_no_body() {
+  void test_searchGameSaves_returns200_when_noBody() {
     // when
     mockMvc
         .perform(
@@ -187,7 +187,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchUsers_should_return_200_when_order_by_is_set() {
+  void test_searchUsers_returns200_when_orderByIsSet() {
     // when
     mockMvc
         .perform(
@@ -205,7 +205,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchGameSaves_should_return_200_when_order_by_is_set() {
+  void test_searchGameSaves_returns200_when_orderByIsSet() {
     // when
     mockMvc
         .perform(
@@ -226,7 +226,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchUsers_should_return_400_when_invalid_order_by() {
+  void test_searchUsers_returns400_when_invalidOrderBy() {
     // when
     mockMvc
         .perform(
@@ -244,7 +244,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchGameSaves_should_return_400_when_invalid_order_by() {
+  void test_searchGameSaves_returns400_when_invalidOrderBy() {
     // when
     mockMvc
         .perform(
@@ -262,7 +262,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchUsers_should_return_400_when_null_filter_type() {
+  void test_searchUsers_returns400_when_nullFilterType() {
     // given
     List<Filter> filters = List.of(new Filter(null, "Test"));
     SearchRequest request = new SearchRequest(filters);
@@ -283,7 +283,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchUsers_should_return_400_when_null_filter_value() {
+  void test_searchUsers_returns400_when_nullFilterValue() {
     // given
     List<Filter> filters = List.of(new Filter("Test", null));
     SearchRequest request = new SearchRequest(filters);
@@ -304,7 +304,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchGameSaves_should_return_400_when_null_filter_type() {
+  void test_searchGameSaves_returns400_when_nullFilterType() {
     // given
     List<Filter> filters = List.of(new Filter(null, "Test"));
     SearchRequest request = new SearchRequest(filters);
@@ -325,7 +325,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchGameSaves_should_return_400_when_null_filter_value() {
+  void test_searchGameSaves_returns400_when_nullFilterValue() {
     // given
     List<Filter> filters = List.of(new Filter("Test", null));
     SearchRequest request = new SearchRequest(filters);
@@ -346,7 +346,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchUsers_should_return_200_when_valid_filters() {
+  void test_searchUsers_returns200_when_validFilters() {
     // given
     List<Filter> filters = List.of(new Filter("Test", "Test"), new Filter("Test", "Test"));
     SearchRequest request = new SearchRequest(filters);
@@ -367,7 +367,7 @@ class AdminSearchControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void searchGameSaves_should_return_200_when_valid_filters() {
+  void test_searchGameSaves_returns200_when_validFilters() {
     // given
     List<Filter> filters = List.of(new Filter("Test", "Test"), new Filter("Test", "Test"));
     SearchRequest request = new SearchRequest(filters);

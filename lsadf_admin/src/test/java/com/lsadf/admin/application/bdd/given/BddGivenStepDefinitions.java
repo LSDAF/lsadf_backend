@@ -17,26 +17,25 @@ package com.lsadf.admin.application.bdd.given;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.lsadf.admin.application.bdd.BddFieldConstants;
 import com.lsadf.admin.application.bdd.BddLoader;
-import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.admin.application.bdd.CacheEntryType;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.bdd.BddFieldConstants;
+import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
+import com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,28 +49,55 @@ public class BddGivenStepDefinitions extends BddLoader {
   public void given_the_following_items(String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
-    InventoryEntity inventoryEntity;
-
-    Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
-    if (optionalInventoryEntity.isEmpty()) {
-      throw new RuntimeException("Inventory not found");
-    } else {
-      inventoryEntity = optionalInventoryEntity.get();
-    }
-
-    if (inventoryEntity.getItems() == null) {
-      inventoryEntity.setItems(new HashSet<>());
+    UUID uuid = UUID.fromString(gameSaveId);
+    var exists = gameMetadataRepository.existsById(uuid);
+    if (!exists) {
+      throw new NotFoundException("Game save with id: " + gameSaveId + " not found.");
     }
 
     log.info("Creating items...");
     rows.forEach(
         row -> {
           ItemEntity itemEntity = BddUtils.mapToItemEntity(row);
-          itemEntity.setInventoryEntity(inventoryEntity);
-          inventoryEntity.getItems().add(itemEntity);
-        });
+          itemEntity.setGameSaveId(uuid);
+          ItemEntity newItemEntity;
+          if (itemEntity.getId() != null) {
+            newItemEntity =
+                itemRepository.createNewItemEntity(
+                    itemEntity.getId(),
+                    itemEntity.getGameSaveId(),
+                    itemEntity.getClientId(),
+                    itemEntity.getBlueprintId(),
+                    itemEntity.getItemType(),
+                    itemEntity.getItemRarity(),
+                    itemEntity.getIsEquipped(),
+                    itemEntity.getLevel(),
+                    itemEntity.getMainStatistic(),
+                    itemEntity.getMainBaseValue());
+          } else {
+            newItemEntity =
+                itemRepository.createNewItemEntity(
+                    itemEntity.getGameSaveId(),
+                    itemEntity.getClientId(),
+                    itemEntity.getBlueprintId(),
+                    itemEntity.getItemType(),
+                    itemEntity.getItemRarity(),
+                    itemEntity.getIsEquipped(),
+                    itemEntity.getLevel(),
+                    itemEntity.getMainStatistic(),
+                    itemEntity.getMainBaseValue());
+          }
 
-    inventoryRepository.save(inventoryEntity);
+          var additionalStats = BddUtils.mapToAdditionalItemStatEntity(row, newItemEntity.getId());
+          additionalStats.forEach(
+              additionalItemStatEntity -> {
+                additionalItemStatsRepository.createNewAdditionalItemStatEntity(
+                    additionalItemStatEntity.getItemId(),
+                    additionalItemStatEntity.getStatistic(),
+                    additionalItemStatEntity.getBaseValue());
+              });
+          log.info("Item created: {}", newItemEntity);
+        });
 
     log.info("Items created");
   }
@@ -132,17 +158,14 @@ public class BddGivenStepDefinitions extends BddLoader {
   public void given_i_have_a_clean_database() throws NotFoundException {
     log.info("Cleaning database repositories...");
 
-    this.characteristicsRepository.deleteAll();
-    this.currencyRepository.deleteAll();
-    this.stageRepository.deleteAll();
-    this.inventoryRepository.deleteAll();
-    this.gameSaveRepository.deleteAll();
+    this.gameMetadataRepository.deleteAllGameSaveEntities();
 
     assertThat(characteristicsRepository.count()).isZero();
     assertThat(currencyRepository.count()).isZero();
     assertThat(stageRepository.count()).isZero();
-    assertThat(inventoryRepository.count()).isZero();
-    assertThat(gameSaveRepository.count()).isZero();
+    assertThat(itemRepository.count()).isZero();
+    assertThat(additionalItemStatsRepository.count()).isZero();
+    assertThat(gameMetadataRepository.count()).isZero();
 
     // Clear caches
     redisCacheService.clearCaches();
@@ -167,9 +190,34 @@ public class BddGivenStepDefinitions extends BddLoader {
 
     rows.forEach(
         row -> {
-          GameSaveEntity gameSaveEntity = BddUtils.mapToGameSaveEntity(row);
-          GameSaveEntity newEntity = gameSaveRepository.save(gameSaveEntity);
-          log.info("Game save created: {}", newEntity);
+          GameMetadataEntity gameMetadataEntity = BddUtils.mapToGameSaveEntity(row);
+          CurrencyEntity currencyEntity = BddUtils.mapToCurrencyEntity(row);
+          CharacteristicsEntity characteristicsEntity = BddUtils.mapToCharacteristicsEntity(row);
+          StageEntity stageEntity = BddUtils.mapToStageEntity(row);
+
+          GameMetadataEntity newGameMetadataEntity =
+              gameMetadataRepository.createNewGameSaveEntity(
+                  gameMetadataEntity.getId(),
+                  gameMetadataEntity.getUserEmail(),
+                  gameMetadataEntity.getNickname());
+          currencyRepository.createNewCurrencyEntity(
+              newGameMetadataEntity.getId(),
+              currencyEntity.getGoldAmount(),
+              currencyEntity.getDiamondAmount(),
+              currencyEntity.getEmeraldAmount(),
+              currencyEntity.getAmethystAmount());
+          stageRepository.createNewStageEntity(
+              newGameMetadataEntity.getId(),
+              stageEntity.getCurrentStage(),
+              stageEntity.getMaxStage());
+          characteristicsRepository.createNewCharacteristicsEntity(
+              newGameMetadataEntity.getId(),
+              characteristicsEntity.getAttack(),
+              characteristicsEntity.getCritChance(),
+              characteristicsEntity.getCritDamage(),
+              characteristicsEntity.getHealth(),
+              characteristicsEntity.getResistance());
+          log.info("Game save created: {}", newGameMetadataEntity);
         });
 
     log.info("Game saves created");

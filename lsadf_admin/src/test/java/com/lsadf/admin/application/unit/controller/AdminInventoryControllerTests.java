@@ -25,6 +25,7 @@ import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
+import java.util.UUID;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ class AdminInventoryControllerTests {
   @Autowired private ObjectMapper objectMapper;
 
   private static final String GAME_SAVE_ID = "550e8400-e29b-41d4-a716-446655440000";
-  private static final String ITEM_CLIENT_ID = "client-item-123";
+  private static final String ITEM_CLIENT_ID = UUID.randomUUID() + "__" + UUID.randomUUID();
 
   private ItemRequest createTestItemRequest() {
     ItemStat mainStat = new ItemStat(ItemStatistic.ATTACK_ADD, 100.0f);
@@ -76,7 +77,7 @@ class AdminInventoryControllerTests {
   // Tests for getInventory
   @Test
   @SneakyThrows
-  void getInventory_should_return_401_when_user_not_authenticated() {
+  void test_getInventory_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -90,7 +91,7 @@ class AdminInventoryControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getInventory_should_return_403_when_user_not_admin() {
+  void test_getInventory_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -107,7 +108,7 @@ class AdminInventoryControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getInventory_should_return_200_when_authenticated_user_is_admin() {
+  void test_getInventory_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -121,7 +122,7 @@ class AdminInventoryControllerTests {
   // Tests for createItemInInventory
   @Test
   @SneakyThrows
-  void createItemInInventory_should_return_401_when_user_not_authenticated() {
+  void test_createItemInInventory_returns401_when_userNotAuthenticated() {
     // given
     ItemRequest itemRequest = createTestItemRequest();
 
@@ -139,7 +140,7 @@ class AdminInventoryControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void createItemInInventory_should_return_403_when_user_not_admin() {
+  void test_createItemInInventory_returns403_when_userNotAdmin() {
     // given
     ItemRequest itemRequest = createTestItemRequest();
 
@@ -160,7 +161,7 @@ class AdminInventoryControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void createItemInInventory_should_return_200_when_authenticated_user_is_admin() {
+  void test_createItemInInventory_returns200_when_authenticatedUserIsAdmin() {
     // given
     ItemRequest itemRequest = createTestItemRequest();
 
@@ -178,7 +179,7 @@ class AdminInventoryControllerTests {
   // Tests for deleteItemFromInventory
   @Test
   @SneakyThrows
-  void deleteItemFromInventory_should_return_401_when_user_not_authenticated() {
+  void test_deleteItemFromInventory_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -193,7 +194,7 @@ class AdminInventoryControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void deleteItemFromInventory_should_return_403_when_user_not_admin() {
+  void test_deleteItemFromInventory_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -211,7 +212,7 @@ class AdminInventoryControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void deleteItemFromInventory_should_return_200_when_authenticated_user_is_admin() {
+  void test_deleteItemFromInventory_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -226,7 +227,7 @@ class AdminInventoryControllerTests {
   // Tests for updateItemInInventory
   @Test
   @SneakyThrows
-  void updateItemInInventory_should_return_401_when_user_not_authenticated() {
+  void test_updateItemInInventory_returns401_when_userNotAuthenticated() {
     // given
     ItemRequest itemRequest = createTestItemRequest();
 
@@ -245,7 +246,7 @@ class AdminInventoryControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void updateItemInInventory_should_return_403_when_user_not_admin() {
+  void test_updateItemInInventory_returns403_when_userNotAdmin() {
     // given
     ItemRequest itemRequest = createTestItemRequest();
 
@@ -267,7 +268,7 @@ class AdminInventoryControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void updateItemInInventory_should_return_200_when_authenticated_user_is_admin() {
+  void test_updateItemInInventory_returns200_when_authenticatedUserIsAdmin() {
     // given
     ItemRequest itemRequest = createTestItemRequest();
 
@@ -286,7 +287,7 @@ class AdminInventoryControllerTests {
   // Tests for clearInventoryItems
   @Test
   @SneakyThrows
-  void clearInventoryItems_should_return_401_when_user_not_authenticated() {
+  void test_clearInventoryItems_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -300,7 +301,7 @@ class AdminInventoryControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void clearInventoryItems_should_return_403_when_user_not_admin() {
+  void test_clearInventoryItems_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -317,7 +318,7 @@ class AdminInventoryControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void clearInventoryItems_should_return_200_when_authenticated_user_is_admin() {
+  void test_clearInventoryItems_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(

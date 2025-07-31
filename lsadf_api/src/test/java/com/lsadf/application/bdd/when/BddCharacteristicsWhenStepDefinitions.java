@@ -15,21 +15,22 @@
  */
 package com.lsadf.application.bdd.when;
 
-import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.buildParameterizedCharacteristicsResponse;
-import static com.lsadf.application.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedCharacteristicsResponse;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.characteristics.CharacteristicsController;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -44,7 +45,8 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
   public void when_we_want_to_get_the_characteristics_for_the_game_save_with_id(String gameSaveId) {
     try {
       log.info("Getting characteristics for game save with id: {}", gameSaveId);
-      Characteristics characteristics = this.characteristicsService.getCharacteristics(gameSaveId);
+      UUID uuid = UUID.fromString(gameSaveId);
+      Characteristics characteristics = this.characteristicsService.getCharacteristics(uuid);
       characteristicsStack.push(characteristics);
     } catch (Exception e) {
       exceptionStack.push(e);
@@ -62,7 +64,8 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
 
     try {
       log.info("Setting {} for game save with id: {}", characteristics, gameSaveId);
-      this.characteristicsService.saveCharacteristics(gameSaveId, characteristics, toCache);
+      UUID uuid = UUID.fromString(gameSaveId);
+      this.characteristicsService.saveCharacteristics(uuid, characteristics, toCache);
     } catch (Exception e) {
       exceptionStack.push(e);
     }

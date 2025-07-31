@@ -52,7 +52,7 @@ class StageControllerTests {
 
   @Test
   @SneakyThrows
-  void getStage_should_return_401_when_user_not_authenticated() {
+  void test_getStage_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(get("/api/v1/stage/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
@@ -63,7 +63,7 @@ class StageControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getStage_should_return_400_when_non_uuid_gameSaveId() {
+  void test_getStage_returns400_when_nonUuidGameSaveId() {
     // when
     mockMvc
         .perform(get("/api/v1/stage/{gameSaveId}", "testtesttest"))
@@ -74,7 +74,7 @@ class StageControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getStage_should_return_200_when_authenticated_user_and_valid_uuid() {
+  void test_getStage_returns200_when_authenticatedUserAndValidUuid() {
     // when
     mockMvc
         .perform(
@@ -87,7 +87,7 @@ class StageControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveStage_should_return_400_when_no_body() {
+  void test_saveStage_returns400_when_noBody() {
     // when
     mockMvc
         .perform(
@@ -100,7 +100,7 @@ class StageControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveStage_should_return_400_when_body_is_null() {
+  void test_saveStage_returns400_when_bodyIsNull() {
     // when
     mockMvc
         .perform(
@@ -114,7 +114,7 @@ class StageControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveStage_should_return_400_when_gameSaveId_is_non_uuid() {
+  void test_saveStage_returns400_when_gameSaveIdIsNonUuid() {
     // given
     StageRequest stageRequest = new StageRequest(5L, 2L);
     // when
@@ -130,7 +130,7 @@ class StageControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveStage_should_return_400_when_max_stage_smaller_than_current_stage() {
+  void test_saveStage_returns400_when_maxStageSmallerThanCurrentStage() {
     // given
     StageRequest stageRequest = new StageRequest(5L, 2L);
 
@@ -147,7 +147,7 @@ class StageControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveStage_should_return_400_when_stages_negative() {
+  void test_saveStage_returns400_when_stagesNegative() {
     // given
     StageRequest stageRequest = new StageRequest(-5L, -2L);
 
@@ -163,7 +163,7 @@ class StageControllerTests {
 
   @Test
   @SneakyThrows
-  void saveStage_should_return_401_when_user_not_authenticated() {
+  void test_saveStage_returns401_when_userNotAuthenticated() {
     // given
     StageRequest stageRequest = new StageRequest(10L, 25L);
     // when
@@ -179,7 +179,7 @@ class StageControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveStage_should_return_200_when_valid_body_valid_gameSaveId_and_authenticated_user() {
+  void test_saveStage_returns200_when_validBodyValidGameSaveIdAndAuthenticatedUser() {
     // given
     StageRequest stageRequest = new StageRequest(10L, 25L);
     // when
@@ -195,7 +195,7 @@ class StageControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveStage_should_return_200_if_one_stageRequest_field_is_null() {
+  void test_saveStage_returns200_when_oneStageRequestFieldIsNull() {
     // given
     StageRequest stageRequest1 = new StageRequest(125L, null);
     // when

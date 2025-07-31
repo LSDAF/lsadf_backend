@@ -25,7 +25,7 @@ import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.request.search.SearchRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.ResponseMessages;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.user.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

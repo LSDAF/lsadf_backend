@@ -25,13 +25,13 @@ import com.lsadf.application.controller.constant.SwaggerConstants;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
-import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.Set;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -77,8 +77,7 @@ public interface InventoryController {
             description = "Internal Server Error")
       })
   ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventoryItems(
-      @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId);
+      @AuthenticationPrincipal Jwt jwt, @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId);
 
   /**
    * Creates an item in the inventory of a specific game save.
@@ -110,7 +109,7 @@ public interface InventoryController {
       })
   ResponseEntity<ApiResponse<ItemResponse>> createItemInInventory(
       @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
+      @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
       @RequestBody @Valid ItemRequest itemRequest);
 
   /**
@@ -143,7 +142,7 @@ public interface InventoryController {
       })
   ResponseEntity<ApiResponse<Void>> deleteItemFromInventory(
       @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
+      @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
       @PathVariable(value = CLIENT_ID) String itemClientId);
 
   /**
@@ -177,7 +176,7 @@ public interface InventoryController {
       })
   ResponseEntity<ApiResponse<ItemResponse>> updateItemInInventory(
       @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) @Uuid String gameSaveId,
+      @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
       @PathVariable(value = CLIENT_ID) String itemClientId,
       @RequestBody @Valid ItemRequest itemRequest);
 

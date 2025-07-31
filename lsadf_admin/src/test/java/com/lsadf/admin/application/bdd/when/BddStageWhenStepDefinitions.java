@@ -15,14 +15,14 @@
  */
 package com.lsadf.admin.application.bdd.when;
 
-import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
-import com.lsadf.admin.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 
 /** Step definitions for the when steps in the BDD scenarios */
@@ -33,7 +33,8 @@ public class BddStageWhenStepDefinitions extends BddLoader {
   public void when_we_want_to_get_the_stages_for_the_game_save_with_id(String gameSaveId) {
     try {
       log.info("Getting currencies for game save with id: {}", gameSaveId);
-      Stage stage = this.stageService.getStage(gameSaveId);
+      UUID uuid = UUID.fromString(gameSaveId);
+      Stage stage = this.stageService.getStage(uuid);
       stageStack.push(stage);
     } catch (Exception e) {
       exceptionStack.push(e);
@@ -50,7 +51,8 @@ public class BddStageWhenStepDefinitions extends BddLoader {
 
     try {
       log.info("Setting {} for game save with id: {}", stage, gameSaveId);
-      this.stageService.saveStage(gameSaveId, stage, toCache);
+      UUID uuid = UUID.fromString(gameSaveId);
+      this.stageService.saveStage(uuid, stage, toCache);
     } catch (Exception e) {
       exceptionStack.push(e);
     }

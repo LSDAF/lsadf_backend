@@ -17,19 +17,19 @@ package com.lsadf.core.unit.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.metadata.GameMetadata;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntityMapper;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyEntityMapper;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntityMapper;
-import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.game.stage.StageEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntityMapper;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntityMapper;
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserRepresentationMapper;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequestMapper;
@@ -49,7 +49,7 @@ class ModelMapperTests {
   private final String userEmail = "toto@toto.com";
 
   @Test
-  void should_map_stage_request_to_stage() {
+  void test_map_mapsCorrectly_when_stageRequestToStage() {
     // given
     StageRequest stageRequest = new StageRequest(25L, 500L);
     StageRequestMapper mapper = StageRequestMapper.INSTANCE;
@@ -57,41 +57,33 @@ class ModelMapperTests {
     Stage stage = mapper.map(stageRequest);
 
     // then
-    assertThat(stage.getCurrentStage()).isEqualTo(25L);
-    assertThat(stage.getMaxStage()).isEqualTo(500L);
+    assertThat(stage.currentStage()).isEqualTo(25L);
+    assertThat(stage.maxStage()).isEqualTo(500L);
   }
 
   @Test
-  void should_map_stage_entity_to_stage() {
+  void test_map_mapsCorrectly_when_stageEntityToStage() {
     // given
-    GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
     StageEntityMapper stageEntityMapper = StageEntityMapper.INSTANCE;
     StageEntity stageEntity =
-        StageEntity.builder()
-            .maxStage(500L)
-            .currentStage(25L)
-            .id(UUID.randomUUID().toString())
-            .gameSave(gameSaveEntity)
-            .userEmail(userEmail)
-            .build();
+        StageEntity.builder().maxStage(500L).currentStage(25L).id(UUID.randomUUID()).build();
 
     // when
     Stage stage = stageEntityMapper.map(stageEntity);
 
     // then
-    assertThat(stage.getCurrentStage()).isEqualTo(25L);
-    assertThat(stage.getMaxStage()).isEqualTo(500L);
+    assertThat(stage.currentStage()).isEqualTo(25L);
+    assertThat(stage.maxStage()).isEqualTo(500L);
   }
 
   @Test
-  void should_map_characteristics_entity_to_characteristics() {
+  void test_map_mapsCorrectly_when_characteristicsEntityToCharacteristics() {
     // given
-    GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
     CharacteristicsEntityMapper characteristicsEntityModelMapper =
         CharacteristicsEntityMapper.INSTANCE;
     CharacteristicsEntity characteristicsEntity =
         CharacteristicsEntity.builder()
-            .gameSave(gameSaveEntity)
+            .id(UUID.randomUUID())
             .attack(100L)
             .critChance(200L)
             .critDamage(300L)
@@ -103,15 +95,15 @@ class ModelMapperTests {
     Characteristics characteristics = characteristicsEntityModelMapper.map(characteristicsEntity);
 
     // then
-    assertThat(characteristics.getAttack()).isEqualTo(100L);
-    assertThat(characteristics.getCritChance()).isEqualTo(200L);
-    assertThat(characteristics.getCritDamage()).isEqualTo(300L);
-    assertThat(characteristics.getHealth()).isEqualTo(400L);
-    assertThat(characteristics.getResistance()).isEqualTo(500L);
+    assertThat(characteristics.attack()).isEqualTo(100L);
+    assertThat(characteristics.critChance()).isEqualTo(200L);
+    assertThat(characteristics.critDamage()).isEqualTo(300L);
+    assertThat(characteristics.health()).isEqualTo(400L);
+    assertThat(characteristics.resistance()).isEqualTo(500L);
   }
 
   @Test
-  void should_map_characteristics_request_to_characteristics() {
+  void test_map_mapsCorrectly_when_characteristicsRequestToCharacteristics() {
     // given
     CharacteristicsRequestMapper mapper = CharacteristicsRequestMapper.INSTANCE;
     CharacteristicsRequest characteristicsRequest =
@@ -121,15 +113,15 @@ class ModelMapperTests {
     Characteristics characteristics = mapper.map(characteristicsRequest);
 
     // then
-    assertThat(characteristics.getAttack()).isEqualTo(100L);
-    assertThat(characteristics.getCritChance()).isEqualTo(200L);
-    assertThat(characteristics.getCritDamage()).isEqualTo(300L);
-    assertThat(characteristics.getHealth()).isEqualTo(400L);
-    assertThat(characteristics.getResistance()).isEqualTo(500L);
+    assertThat(characteristics.attack()).isEqualTo(100L);
+    assertThat(characteristics.critChance()).isEqualTo(200L);
+    assertThat(characteristics.critDamage()).isEqualTo(300L);
+    assertThat(characteristics.health()).isEqualTo(400L);
+    assertThat(characteristics.resistance()).isEqualTo(500L);
   }
 
   @Test
-  void should_map_currency_request_to_currency() {
+  void test_map_mapsCorrectly_when_currencyRequestToCurrency() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 200L, 300L, 400L);
     CurrencyRequestMapper mapper = CurrencyRequestMapper.INSTANCE;
@@ -137,16 +129,15 @@ class ModelMapperTests {
     Currency currency = mapper.map(currencyRequest);
 
     // then
-    assertThat(currency.getGold()).isEqualTo(100L);
-    assertThat(currency.getDiamond()).isEqualTo(200L);
-    assertThat(currency.getEmerald()).isEqualTo(300L);
-    assertThat(currency.getAmethyst()).isEqualTo(400L);
+    assertThat(currency.gold()).isEqualTo(100L);
+    assertThat(currency.diamond()).isEqualTo(200L);
+    assertThat(currency.emerald()).isEqualTo(300L);
+    assertThat(currency.amethyst()).isEqualTo(400L);
   }
 
   @Test
-  void should_map_currency_entity_to_currency() {
+  void test_map_mapsCorrectly_when_currencyEntityToCurrency() {
     // given
-    GameSaveEntity gameSaveEntity = GameSaveEntity.builder().build();
     CurrencyEntityMapper mapper = CurrencyEntityMapper.INSTANCE;
     CurrencyEntity currencyEntity =
         CurrencyEntity.builder()
@@ -154,94 +145,45 @@ class ModelMapperTests {
             .diamondAmount(200L)
             .emeraldAmount(300L)
             .amethystAmount(400L)
-            .id(UUID.randomUUID().toString())
-            .gameSave(gameSaveEntity)
-            .userEmail(userEmail)
+            .id(UUID.randomUUID())
             .build();
 
     // when
     Currency currency = mapper.map(currencyEntity);
 
     // then
-    assertThat(currency.getGold()).isEqualTo(100L);
-    assertThat(currency.getDiamond()).isEqualTo(200L);
-    assertThat(currency.getEmerald()).isEqualTo(300L);
-    assertThat(currency.getAmethyst()).isEqualTo(400L);
+    assertThat(currency.gold()).isEqualTo(100L);
+    assertThat(currency.diamond()).isEqualTo(200L);
+    assertThat(currency.emerald()).isEqualTo(300L);
+    assertThat(currency.amethyst()).isEqualTo(400L);
   }
 
   @Test
-  void should_map_game_save_entity_to_game_save() {
+  void test_map_mapsCorrectly_when_gameSaveEntityToGameSave() {
     // given
-    GameSaveEntityMapper mapper = GameSaveEntityMapper.INSTANCE;
-    String id = UUID.randomUUID().toString();
-    GameSaveEntity gameSaveEntity =
-        GameSaveEntity.builder()
+    GameMetadataEntityMapper mapper = GameMetadataEntityMapper.INSTANCE;
+    var id = UUID.randomUUID();
+    GameMetadataEntity gameMetadataEntity =
+        GameMetadataEntity.builder()
             .id(id)
             .userEmail(userEmail)
             .nickname("toto")
             .createdAt(new Date())
             .updatedAt(new Date())
             .build();
-    CharacteristicsEntity characteristicsEntity =
-        CharacteristicsEntity.builder()
-            .gameSave(gameSaveEntity)
-            .attack(100L)
-            .critChance(200L)
-            .critDamage(300L)
-            .health(400L)
-            .resistance(500L)
-            .build();
-    CurrencyEntity currencyEntity =
-        CurrencyEntity.builder()
-            .goldAmount(100L)
-            .diamondAmount(200L)
-            .emeraldAmount(300L)
-            .amethystAmount(400L)
-            .id(id)
-            .gameSave(gameSaveEntity)
-            .userEmail(userEmail)
-            .build();
-    StageEntity stageEntity =
-        StageEntity.builder()
-            .maxStage(500L)
-            .currentStage(25L)
-            .id(id)
-            .gameSave(gameSaveEntity)
-            .userEmail(userEmail)
-            .build();
-    gameSaveEntity.setCharacteristicsEntity(characteristicsEntity);
-    gameSaveEntity.setCurrencyEntity(currencyEntity);
-    gameSaveEntity.setStageEntity(stageEntity);
-
     // when
-    GameSave gameSave = mapper.map(gameSaveEntity);
+    GameMetadata gameMetadata = mapper.map(gameMetadataEntity);
 
     // then
-    assertThat(gameSave.getId()).isEqualTo(gameSaveEntity.getId());
-    assertThat(gameSave.getUserEmail()).isEqualTo(gameSaveEntity.getUserEmail());
-    assertThat(gameSave.getNickname()).isEqualTo(gameSaveEntity.getNickname());
-    assertThat(gameSave.getCharacteristics().getAttack())
-        .isEqualTo(characteristicsEntity.getAttack());
-    assertThat(gameSave.getCharacteristics().getCritChance())
-        .isEqualTo(characteristicsEntity.getCritChance());
-    assertThat(gameSave.getCharacteristics().getCritDamage())
-        .isEqualTo(characteristicsEntity.getCritDamage());
-    assertThat(gameSave.getCharacteristics().getHealth())
-        .isEqualTo(characteristicsEntity.getHealth());
-    assertThat(gameSave.getCharacteristics().getResistance())
-        .isEqualTo(characteristicsEntity.getResistance());
-    assertThat(gameSave.getCreatedAt()).isEqualTo(gameSaveEntity.getCreatedAt());
-    assertThat(gameSave.getUpdatedAt()).isEqualTo(gameSaveEntity.getUpdatedAt());
-    assertThat(gameSave.getCurrency().getGold()).isEqualTo(currencyEntity.getGoldAmount());
-    assertThat(gameSave.getCurrency().getDiamond()).isEqualTo(currencyEntity.getDiamondAmount());
-    assertThat(gameSave.getCurrency().getEmerald()).isEqualTo(currencyEntity.getEmeraldAmount());
-    assertThat(gameSave.getCurrency().getAmethyst()).isEqualTo(currencyEntity.getAmethystAmount());
-    assertThat(gameSave.getStage().getCurrentStage()).isEqualTo(stageEntity.getCurrentStage());
-    assertThat(gameSave.getStage().getMaxStage()).isEqualTo(stageEntity.getMaxStage());
+    assertThat(gameMetadata.id()).isEqualTo(gameMetadataEntity.getId());
+    assertThat(gameMetadata.userEmail()).isEqualTo(gameMetadataEntity.getUserEmail());
+    assertThat(gameMetadata.nickname()).isEqualTo(gameMetadataEntity.getNickname());
+    assertThat(gameMetadata.createdAt()).isEqualTo(gameMetadataEntity.getCreatedAt());
+    assertThat(gameMetadata.updatedAt()).isEqualTo(gameMetadataEntity.getUpdatedAt());
   }
 
   @Test
-  void should_map_userRepresentationToUser() {
+  void test_map_mapsCorrectly_when_userRepresentationToUser() {
     // given
     UserRepresentation userRepresentation = new UserRepresentation();
 
@@ -266,12 +208,12 @@ class ModelMapperTests {
     assertThat(user.getCreatedTimestamp()).isNotNull();
     assertThat(user.getUserRoles()).containsExactlyInAnyOrder("user", "admin");
     assertThat(user.getEnabled()).isFalse();
-    assertThat(user.getId()).isEqualTo(userRepresentation.getId());
+    assertThat(user.getId()).isEqualTo(UUID.fromString(userRepresentation.getId()));
     assertThat(user.getEmailVerified()).isTrue();
   }
 
   @Test
-  void should_map_user_creation_request_to_user_representation() {
+  void test_map_mapsCorrectly_when_userCreationRequestToUserRepresentation() {
     // given
     UserCreationRequestMapper mapper = UserCreationRequestMapper.INSTANCE;
     SimpleUserCreationRequest simpleUserCreationRequest =

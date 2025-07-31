@@ -18,17 +18,18 @@ package com.lsadf.core.unit.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.application.game.stage.StageService;
-import com.lsadf.core.application.game.stage.StageServiceImpl;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
+import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageServiceImpl;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.stage.StageEntity;
-import com.lsadf.core.infra.persistence.game.stage.StageRepository;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -41,95 +42,88 @@ class StageServiceTests {
 
   private StageService stageService;
 
-  @Mock private StageRepository stageRepository;
+  @Mock private StageRepositoryPort stageRepositoryPort;
 
   @Mock private Cache<Stage> stageCache;
+
+  private static final UUID UUID = java.util.UUID.randomUUID();
 
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    stageService = new StageServiceImpl(stageRepository, stageCache);
+    stageService = new StageServiceImpl(stageRepositoryPort, stageCache);
   }
 
   @Test
-  void get_stage_on_non_existing_gamesave_id() {
+  void test_getStage_throwsNotFoundException_when_gameSaveIdDoesNotExist() {
     // Arrange
-    when(stageRepository.findById(anyString())).thenReturn(Optional.empty());
+    when(stageRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.empty());
     when(stageCache.isEnabled()).thenReturn(true);
 
     // Assert
-    assertThrows(NotFoundException.class, () -> stageService.getStage("1"));
+    assertThrows(NotFoundException.class, () -> stageService.getStage(UUID));
   }
 
   @Test
-  void get_stage_on_existing_gamesave_id_when_cached() {
+  void test_getStage_returnsCachedStage_when_gameSaveIdExistsAndCacheEnabled() {
     // Arrange
-    StageEntity stageEntity =
-        StageEntity.builder().userEmail("test@test.com").currentStage(1L).maxStage(2L).build();
-
     Stage stage = Stage.builder().currentStage(1L).maxStage(2L).build();
 
-    when(stageRepository.findById(anyString())).thenReturn(Optional.of(stageEntity));
+    when(stageRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(stage));
     when(stageCache.isEnabled()).thenReturn(true);
     when(stageCache.get(anyString())).thenReturn(Optional.of(stage));
 
     // Act
-    Stage result = stageService.getStage("1");
+    Stage result = stageService.getStage(UUID);
 
     // Assert
     assertThat(result).isEqualTo(stage);
   }
 
   @Test
-  void get_stage_on_existing_gamesave_id_when_not_cached() {
+  void test_getStage_returnsStageFromRepository_when_gameSaveIdExistsAndCacheDisabled() {
     // Arrange
-    StageEntity stageEntity =
-        StageEntity.builder().userEmail("test@test.com").currentStage(1L).maxStage(2L).build();
-
     Stage stage = Stage.builder().currentStage(1L).maxStage(2L).build();
 
-    when(stageRepository.findById(anyString())).thenReturn(Optional.of(stageEntity));
+    when(stageRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(stage));
     when(stageCache.isEnabled()).thenReturn(false);
     when(stageCache.get(anyString())).thenReturn(Optional.empty());
 
     // Act
-    Stage result = stageService.getStage("1");
+    Stage result = stageService.getStage(UUID);
 
     // Assert
     assertThat(result).isEqualTo(stage);
   }
 
   @Test
-  void get_stage_on_existing_gamesave_id_when_partially_cached() {
+  void test_getStage_returnsCompleteStageFromRepository_when_cachedStageIsPartial() {
     // Arrange
-    StageEntity stageEntity =
-        StageEntity.builder().userEmail("test@test.com").currentStage(1L).maxStage(2L).build();
-
     Stage stageCached = Stage.builder().maxStage(200L).build();
 
     Stage stage = Stage.builder().currentStage(1L).maxStage(200L).build();
 
-    when(stageRepository.findById(anyString())).thenReturn(Optional.of(stageEntity));
+    when(stageRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(stage));
     when(stageCache.isEnabled()).thenReturn(true);
     when(stageCache.get(anyString())).thenReturn(Optional.of(stageCached));
 
     // Act
-    Stage result = stageService.getStage("1");
+    Stage result = stageService.getStage(UUID);
 
     // Assert
     assertThat(result).isEqualTo(stage);
   }
 
   @Test
-  void get_stage_on_null_gamesave_id() {
+  void test_getStage_throwsIllegalArgumentException_when_gameSaveIdIsNull() {
     // Act & Assert
     assertThrows(IllegalArgumentException.class, () -> stageService.getStage(null));
   }
 
   @Test
-  void save_stage_on_null_game_save_id_with_to_cache_to_true() {
+  void test_saveStage_throwsIllegalArgumentException_when_gameSaveIdIsNullAndCacheEnabled() {
     // Arrange
     Stage stage = new Stage(1L, 2L);
 
@@ -138,7 +132,7 @@ class StageServiceTests {
   }
 
   @Test
-  void save_stage_on_null_game_save_id_with_to_cache_to_false() {
+  void test_saveStage_throwsIllegalArgumentException_when_gameSaveIdIsNullAndCacheDisabled() {
     // Arrange
     Stage stage = new Stage(1L, 2L);
 
@@ -147,41 +141,41 @@ class StageServiceTests {
   }
 
   @Test
-  void save_stage_on_null_stage_with_to_cache_to_false() {
+  void test_saveStage_throwsIllegalArgumentException_when_stageIsNullAndCacheDisabled() {
     // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage("1", null, false));
+    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage(UUID, null, false));
   }
 
   @Test
-  void save_stage_on_null_stage_with_to_cache_to_true() {
+  void test_saveStage_throwsIllegalArgumentException_when_stageIsNullAndCacheEnabled() {
     // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage("1", null, true));
+    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage(UUID, null, true));
   }
 
   @Test
-  void save_stage_where_all_properties_are_null_with_cache_to_true() {
+  void test_saveStage_throwsIllegalArgumentException_when_stagePropertiesAreNullAndCacheEnabled() {
     // Arrange
     Stage stage = new Stage(null, null);
 
     // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage("1", stage, true));
+    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage(UUID, stage, true));
   }
 
   @Test
-  void save_stage_where_all_properties_are_null_with_cache_to_false() {
+  void test_saveStage_throwsIllegalArgumentException_when_stagePropertiesAreNullAndCacheDisabled() {
     // Arrange
     Stage stage = new Stage(null, null);
 
     // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage("1", stage, false));
+    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage(UUID, stage, false));
   }
 
   @Test
-  void save_stage_on_existing_gamesave_with_all_valid_currencies_value() {
+  void test_saveStage_succeeds_when_gameSaveExistsAndStageValuesAreValid() {
     // Arrange
     Stage stage = new Stage(1L, 2L);
 
     // Act + Assert
-    assertDoesNotThrow(() -> stageService.saveStage("1", stage, true));
+    assertDoesNotThrow(() -> stageService.saveStage(UUID, stage, true));
   }
 }

@@ -33,7 +33,7 @@ class DateUtilsTests {
   private static final ZoneId ZONE_ID = ZoneId.of(ZONE);
 
   @Test
-  void test_dateFromClock() {
+  void test_dateFromClock_returnsDate_when_clockProvided() {
     // Given
     Instant instant = Instant.parse(FIXED_DATE_TIME);
     Clock clock = Clock.fixed(instant, ZONE_ID);
@@ -46,7 +46,7 @@ class DateUtilsTests {
   }
 
   @Test
-  void test_dateTimeToString() {
+  void test_dateTimeToString_returnsFormattedString_when_dateTimeProvided() {
     // Given
     Instant instant = Instant.parse(FIXED_DATE_TIME);
     LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZONE_ID);
@@ -59,7 +59,7 @@ class DateUtilsTests {
   }
 
   @Test
-  void test_dateToString() {
+  void test_dateToString_returnsFormattedString_when_dateProvided() {
     // Given
     Instant instant = Instant.parse(FIXED_DATE_TIME);
     Date date = Date.from(instant);
@@ -72,7 +72,7 @@ class DateUtilsTests {
   }
 
   @Test
-  void test_dateToLocalDateTime() {
+  void test_dateToLocalDateTime_returnsLocalDateTime_when_dateProvided() {
     // Given
     Instant instant = Instant.parse(FIXED_DATE_TIME);
     Date date = Date.from(instant);
@@ -85,7 +85,7 @@ class DateUtilsTests {
   }
 
   @Test
-  void test_timestampToLocalDateTime() {
+  void test_timestampToLocalDateTime_returnsLocalDateTime_when_timestampAndZoneProvided() {
     // Given
     Instant instant = Instant.parse(FIXED_DATE_TIME);
     long timestamp = instant.getEpochSecond();
@@ -98,7 +98,7 @@ class DateUtilsTests {
   }
 
   @Test
-  void test_dateStringToDate() {
+  void test_dateTimeStringToDate_returnsDate_when_dateStringAndZoneProvided() {
     // Given
     String dateString = "2020-01-01 22:22:22.222";
 
@@ -110,7 +110,7 @@ class DateUtilsTests {
   }
 
   @Test
-  void test_dateFromTimestamp() {
+  void test_dateFromTimestamp_returnsDate_when_timestampProvided() {
     // Given
     Instant instant = Instant.parse(FIXED_DATE_TIME);
     Date date = Date.from(instant);

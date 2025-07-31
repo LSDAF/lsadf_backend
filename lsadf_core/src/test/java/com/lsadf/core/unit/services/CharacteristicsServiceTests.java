@@ -18,17 +18,18 @@ package com.lsadf.core.unit.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.characteristics.CharacteristicsServiceImpl;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsServiceImpl;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -40,9 +41,11 @@ import org.mockito.MockitoAnnotations;
 class CharacteristicsServiceTests {
   private CharacteristicsService characteristicsService;
 
-  @Mock private CharacteristicsRepository characteristicsRepository;
+  @Mock private CharacteristicsRepositoryPort characteristicsRepositoryPort;
 
   @Mock private Cache<Characteristics> characteristicsCache;
+
+  private static final UUID UUID = java.util.UUID.randomUUID();
 
   @BeforeEach
   void init() {
@@ -50,29 +53,30 @@ class CharacteristicsServiceTests {
     MockitoAnnotations.openMocks(this);
 
     characteristicsService =
-        new CharacteristicsServiceImpl(characteristicsRepository, characteristicsCache);
+        new CharacteristicsServiceImpl(characteristicsRepositoryPort, characteristicsCache);
   }
 
   @Test
-  void get_characteristics_on_non_existing_gamesave_id() {
+  void test_getCharacteristics_throwsNotFoundException_when_nonExistingGameSaveId() {
     // Arrange
-    when(characteristicsRepository.findById(anyString())).thenReturn(Optional.empty());
+    when(characteristicsRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.empty());
     when(characteristicsCache.isEnabled()).thenReturn(true);
 
     // Assert
-    assertThrows(NotFoundException.class, () -> characteristicsService.getCharacteristics("1"));
+    assertThrows(NotFoundException.class, () -> characteristicsService.getCharacteristics(UUID));
   }
 
   @Test
-  void get_characteristics_on_existing_gamesave_id_when_cached() {
+  void test_getCharacteristics_returnsCharacteristics_when_existingGameSaveIdAndCached() {
     // Arrange
-    CharacteristicsEntity characteristicsEntity =
-        CharacteristicsEntity.builder()
-            .attack(1L)
-            .critChance(2L)
-            .critDamage(3L)
-            .health(4L)
-            .resistance(5L)
+
+    Characteristics cachedCharacteristics =
+        Characteristics.builder()
+            .attack(2L)
+            .critChance(3L)
+            .critDamage(4L)
+            .health(5L)
+            .resistance(6L)
             .build();
 
     Characteristics characteristics =
@@ -84,30 +88,21 @@ class CharacteristicsServiceTests {
             .resistance(5L)
             .build();
 
-    when(characteristicsRepository.findById(anyString()))
-        .thenReturn(Optional.of(characteristicsEntity));
+    when(characteristicsRepositoryPort.findById(any(UUID.class)))
+        .thenReturn(Optional.of(characteristics));
     when(characteristicsCache.isEnabled()).thenReturn(true);
-    when(characteristicsCache.get(anyString())).thenReturn(Optional.of(characteristics));
+    when(characteristicsCache.get(anyString())).thenReturn(Optional.of(cachedCharacteristics));
 
     // Act
-    Characteristics result = characteristicsService.getCharacteristics("1");
+    Characteristics result = characteristicsService.getCharacteristics(UUID);
 
     // Assert
-    assertThat(result).isEqualTo(characteristics);
+    assertThat(result).isEqualTo(cachedCharacteristics);
   }
 
   @Test
-  void get_characteristics_on_existing_gamesave_id_when_not_cached() {
+  void test_getCharacteristics_returnsCharacteristics_when_existingGameSaveIdAndNotCached() {
     // Arrange
-    CharacteristicsEntity characteristicsEntity =
-        CharacteristicsEntity.builder()
-            .attack(1L)
-            .critChance(2L)
-            .critDamage(3L)
-            .health(4L)
-            .resistance(5L)
-            .build();
-
     Characteristics characteristics =
         Characteristics.builder()
             .attack(1L)
@@ -117,62 +112,27 @@ class CharacteristicsServiceTests {
             .resistance(5L)
             .build();
 
-    when(characteristicsRepository.findById(anyString()))
-        .thenReturn(Optional.of(characteristicsEntity));
+    when(characteristicsRepositoryPort.findById(any(UUID.class)))
+        .thenReturn(Optional.of(characteristics));
     when(characteristicsCache.isEnabled()).thenReturn(false);
     when(characteristicsCache.get(anyString())).thenReturn(Optional.empty());
 
     // Act
-    Characteristics result = characteristicsService.getCharacteristics("1");
+    Characteristics result = characteristicsService.getCharacteristics(UUID);
 
     // Assert
     assertThat(result).isEqualTo(characteristics);
   }
 
   @Test
-  void get_characteristics_on_existing_gamesave_id_when_partially_cached() {
-    // Arrange
-    CharacteristicsEntity characteristicsEntity =
-        CharacteristicsEntity.builder()
-            .attack(1L)
-            .critChance(2L)
-            .critDamage(3L)
-            .health(4L)
-            .resistance(5L)
-            .build();
-
-    Characteristics characteristicsCached = Characteristics.builder().attack(1L).build();
-
-    Characteristics characteristics =
-        Characteristics.builder()
-            .attack(1L)
-            .critChance(2L)
-            .critDamage(3L)
-            .health(4L)
-            .resistance(5L)
-            .build();
-
-    when(characteristicsRepository.findById(anyString()))
-        .thenReturn(Optional.of(characteristicsEntity));
-    when(characteristicsCache.isEnabled()).thenReturn(true);
-    when(characteristicsCache.get(anyString())).thenReturn(Optional.of(characteristicsCached));
-
-    // Act
-    Characteristics result = characteristicsService.getCharacteristics("1");
-
-    // Assert
-    assertThat(result).isEqualTo(characteristics);
-  }
-
-  @Test
-  void get_characteristics_on_null_gamesave_id() {
+  void test_getCharacteristics_throwsIllegalArgumentException_when_nullGameSaveId() {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class, () -> characteristicsService.getCharacteristics(null));
   }
 
   @Test
-  void save_characteristics_on_null_game_save_id_with_to_cache_to_true() {
+  void test_saveCharacteristics_throwsIllegalArgumentException_when_nullGameSaveIdAndToCacheTrue() {
     // Arrange
     Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
 
@@ -183,7 +143,8 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void save_characteristics_on_null_game_save_id_with_to_cache_to_false() {
+  void
+      test_saveCharacteristics_throwsIllegalArgumentException_when_nullGameSaveIdAndToCacheFalse() {
     // Arrange
     Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
 
@@ -194,50 +155,54 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void save_characteristics_on_null_characteristics_with_to_cache_to_false() {
+  void
+      test_saveCharacteristics_throwsIllegalArgumentException_when_nullCharacteristicsAndToCacheFalse() {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics("1", null, false));
+        () -> characteristicsService.saveCharacteristics(UUID, null, false));
   }
 
   @Test
-  void save_characteristics_on_null_characteristics_with_to_cache_to_true() {
+  void
+      test_saveCharacteristics_throwsIllegalArgumentException_when_nullCharacteristicsAndToCacheTrue() {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics("1", null, true));
+        () -> characteristicsService.saveCharacteristics(UUID, null, true));
   }
 
   @Test
-  void save_characteristics_where_all_properties_are_null_with_cache_to_true() {
+  void
+      test_saveCharacteristics_throwsIllegalArgumentException_when_allPropertiesNullAndCacheTrue() {
     // Arrange
     Characteristics characteristics = new Characteristics(null, null, null, null, null);
 
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics("1", characteristics, true));
+        () -> characteristicsService.saveCharacteristics(UUID, characteristics, true));
   }
 
   @Test
-  void save_characteristics_where_all_properties_are_null_with_cache_to_false() {
+  void
+      test_saveCharacteristics_throwsIllegalArgumentException_when_allPropertiesNullAndCacheFalse() {
     // Arrange
     Characteristics characteristics = new Characteristics(null, null, null, null, null);
 
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics("1", characteristics, false));
+        () -> characteristicsService.saveCharacteristics(UUID, characteristics, false));
   }
 
   @Test
-  void save_characteristics_on_existing_gamesave_with_all_valid_characteristics_value() {
+  void test_saveCharacteristics_savesSuccessfully_when_existingGameSaveAndValidCharacteristics() {
     // Arrange
     Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
 
     // Act + Assert
     assertDoesNotThrow(
-        () -> characteristicsService.saveCharacteristics("1", characteristics, true));
+        () -> characteristicsService.saveCharacteristics(UUID, characteristics, true));
   }
 }

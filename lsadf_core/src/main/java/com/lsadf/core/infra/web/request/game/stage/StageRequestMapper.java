@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.web.request.game.stage;
 
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.web.request.RequestModelMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

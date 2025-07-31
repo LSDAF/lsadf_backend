@@ -17,15 +17,18 @@ package com.lsadf.application.bdd.given;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.lsadf.application.bdd.BddFieldConstants;
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.application.bdd.BddUtils;
 import com.lsadf.application.bdd.CacheEntryType;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.bdd.BddFieldConstants;
+import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import java.time.Clock;
@@ -97,17 +100,14 @@ public class BddGivenStepDefinitions extends BddLoader {
   public void given_i_have_a_clean_database() throws NotFoundException {
     log.info("Cleaning database repositories...");
 
-    this.characteristicsRepository.deleteAll();
-    this.currencyRepository.deleteAll();
-    this.stageRepository.deleteAll();
-    this.inventoryRepository.deleteAll();
-    this.gameSaveRepository.deleteAll();
+    this.gameMetadataRepository.deleteAllGameSaveEntities();
 
     assertThat(characteristicsRepository.count()).isZero();
     assertThat(currencyRepository.count()).isZero();
     assertThat(stageRepository.count()).isZero();
-    assertThat(inventoryRepository.count()).isZero();
-    assertThat(gameSaveRepository.count()).isZero();
+    assertThat(itemRepository.count()).isZero();
+    assertThat(additionalItemStatsRepository.count()).isZero();
+    assertThat(gameMetadataRepository.count()).isZero();
 
     // Clear caches
     redisCacheService.clearCaches();
@@ -126,14 +126,40 @@ public class BddGivenStepDefinitions extends BddLoader {
   }
 
   @Given("^the following game saves$")
+  @Transactional
   public void given_i_have_the_following_game_saves(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     log.info("Creating game saves...");
 
     rows.forEach(
         row -> {
-          GameSaveEntity gameSaveEntity = BddUtils.mapToGameSaveEntity(row);
-          GameSaveEntity newEntity = gameSaveRepository.save(gameSaveEntity);
+          GameMetadataEntity gameMetadataEntity = BddUtils.mapToGameSaveEntity(row);
+          GameMetadataEntity newEntity =
+              gameMetadataEntity.getId() != null
+                  ? gameMetadataRepository.createNewGameSaveEntity(
+                      gameMetadataEntity.getId(),
+                      gameMetadataEntity.getUserEmail(),
+                      gameMetadataEntity.getNickname())
+                  : gameMetadataRepository.createNewGameSaveEntity(
+                      gameMetadataEntity.getUserEmail(), gameMetadataEntity.getNickname());
+          CurrencyEntity currencyEntity = BddUtils.mapToCurrencyEntity(row);
+          currencyRepository.createNewCurrencyEntity(
+              newEntity.getId(),
+              currencyEntity.getGoldAmount(),
+              currencyEntity.getDiamondAmount(),
+              currencyEntity.getEmeraldAmount(),
+              currencyEntity.getAmethystAmount());
+          StageEntity stageEntity = BddUtils.mapToStageEntity(row);
+          stageRepository.createNewStageEntity(
+              newEntity.getId(), stageEntity.getCurrentStage(), stageEntity.getMaxStage());
+          CharacteristicsEntity characteristicsEntity = BddUtils.mapToCharacteristicsEntity(row);
+          characteristicsRepository.createNewCharacteristicsEntity(
+              newEntity.getId(),
+              characteristicsEntity.getAttack(),
+              characteristicsEntity.getCritChance(),
+              characteristicsEntity.getCritDamage(),
+              characteristicsEntity.getHealth(),
+              characteristicsEntity.getResistance());
           log.info("Game save created: {}", newEntity);
         });
 

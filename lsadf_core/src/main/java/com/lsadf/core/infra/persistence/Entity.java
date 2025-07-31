@@ -18,19 +18,17 @@ package com.lsadf.core.infra.persistence;
 import java.io.Serializable;
 
 /**
- * Represents an entity that can be uniquely identified within the persistence layer. This interface
- * provides a contract for retrieving the unique identifier of an entity. Entity classes
- * implementing this interface often serve as a foundation for domain-specific objects in the
- * application.
+ * An interface representing a generic, serializable entity.
  *
- * <p>This interface extends {@link Serializable}, allowing entities to be serialized and
- * deserialized as needed, such as for caching or data transfer purposes.
+ * <p>This interface is typically implemented by classes representing domain entities that are
+ * intended to be stored in a persistent storage. It extends the {@link Serializable} interface to
+ * ensure that implementing classes can be serialized, which is often required for persistence
+ * operations or distributed communication.
+ *
+ * <p>Classes implementing this interface are expected to define their own unique identifier and any
+ * additional attributes or behaviors required for their domain-specific functionality.
+ *
+ * <p>This serves as a marker interface, outlining a standard contract for entities without
+ * enforcing specific method implementations.
  */
-public interface Entity extends Serializable {
-  /**
-   * Retrieves the unique identifier of the entity.
-   *
-   * @return a string representing the unique identifier of the entity
-   */
-  String getId();
-}
+public interface Entity extends Serializable {}

@@ -15,201 +15,156 @@
  */
 package com.lsadf.core.application.game.inventory;
 
+import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.infra.exception.AlreadyExistingItemClientIdException;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
-import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntity;
-import com.lsadf.core.infra.persistence.game.inventory.item.ItemEntityMapper;
-import com.lsadf.core.infra.persistence.game.inventory.item.ItemRepository;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 import org.springframework.transaction.annotation.Transactional;
 
 public class InventoryServiceImpl implements InventoryService {
 
-  private final InventoryRepository inventoryRepository;
-  private final ItemRepository itemRepository;
-  private static final ItemEntityMapper itemEntityMapper = ItemEntityMapper.INSTANCE;
+  private final InventoryRepositoryPort inventoryRepositoryPort;
+  private final GameMetadataRepositoryPort gameMetadataRepositoryPort;
 
   public InventoryServiceImpl(
-      InventoryRepository inventoryRepository, ItemRepository itemRepository) {
-    this.inventoryRepository = inventoryRepository;
-    this.itemRepository = itemRepository;
+      InventoryRepositoryPort inventoryRepositoryPort,
+      GameMetadataRepositoryPort gameMetadataRepositoryPort) {
+    this.inventoryRepositoryPort = inventoryRepositoryPort;
+    this.gameMetadataRepositoryPort = gameMetadataRepositoryPort;
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
-  public Set<Item> getInventoryItems(String gameSaveId) throws NotFoundException {
+  public Set<Item> getInventoryItems(UUID gameSaveId) throws NotFoundException {
     if (gameSaveId == null) {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
 
-    InventoryEntity inventoryEntity = getInventoryEntity(gameSaveId);
-    Set<ItemEntity> itemEntities = inventoryEntity.getItems();
-    return itemEntities.stream().map(itemEntityMapper::map).collect(Collectors.toSet());
+    if (!gameMetadataRepositoryPort.existsById(gameSaveId)) {
+      throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
+    }
+
+    return inventoryRepositoryPort.findAllItemsByGameSaveId(gameSaveId);
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional
-  public Item createItemInInventory(String gameSaveId, ItemRequest itemRequest)
+  public Item createItemInInventory(UUID gameSaveId, ItemRequest itemRequest)
       throws NotFoundException, AlreadyExistingItemClientIdException {
     if (gameSaveId == null) {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
 
-    Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
-    if (optionalInventoryEntity.isEmpty()) {
-      throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
+    if (!gameMetadataRepositoryPort.existsById(gameSaveId)) {
+      throw new NotFoundException("Game save not found for id " + gameSaveId);
     }
 
-    if (itemRepository.findItemEntityByClientId(itemRequest.clientId()).isPresent()) {
+    if (inventoryRepositoryPort.existsByClientId(itemRequest.clientId())) {
       throw new AlreadyExistingItemClientIdException(
-          "Game save with id " + itemRequest.clientId() + " already exists");
+          "Item with client id " + itemRequest.clientId() + " already exists");
     }
 
-    InventoryEntity inventoryEntity = optionalInventoryEntity.get();
+    ItemType itemType = ItemType.fromString(itemRequest.itemType());
+    ItemRarity itemRarity = ItemRarity.fromString(itemRequest.itemRarity());
 
-    Set<ItemEntity> items = inventoryEntity.getItems();
-
-    if (items.stream().anyMatch(i -> i.getClientId().equals(itemRequest.clientId()))) {
-      throw new AlreadyExistingItemClientIdException(
-          "Game save with id " + itemRequest.clientId() + " already exists");
-    }
-
-    ItemEntity itemEntity =
-        ItemEntity.builder()
-            .inventoryEntity(inventoryEntity)
+    Item item =
+        Item.builder()
+            .gameSaveId(gameSaveId)
             .clientId(itemRequest.clientId())
-            .itemType(ItemType.fromString(itemRequest.itemType()))
             .blueprintId(itemRequest.blueprintId())
-            .itemRarity(ItemRarity.fromString(itemRequest.itemRarity()))
+            .itemType(itemType)
+            .itemRarity(itemRarity)
             .isEquipped(itemRequest.isEquipped())
             .level(itemRequest.level())
             .mainStat(itemRequest.mainStat())
             .additionalStats(itemRequest.additionalStats())
             .build();
 
-    inventoryEntity.getItems().add(itemEntity);
-
-    var updated = inventoryRepository.save(inventoryEntity);
-    var item =
-        updated.getItems().stream()
-            .filter(i -> i.getClientId().equals(itemRequest.clientId()))
-            .findFirst()
-            .orElseThrow(
-                () ->
-                    new NotFoundException(
-                        "Item not found for item client id " + itemRequest.clientId()));
-    return itemEntityMapper.map(item);
+    return inventoryRepositoryPort.createItem(gameSaveId, item);
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional
-  public void deleteItemFromInventory(String gameSaveId, String itemClientId)
+  public void deleteItemFromInventory(UUID gameSaveId, String itemClientId)
       throws NotFoundException, ForbiddenException {
     if (gameSaveId == null || itemClientId == null) {
       throw new IllegalArgumentException("Game save id and item client id cannot be null");
     }
 
-    Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
-
-    if (optionalInventoryEntity.isEmpty()) {
+    if (!gameMetadataRepositoryPort.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
 
-    InventoryEntity inventoryEntity = optionalInventoryEntity.get();
+    Optional<Item> optionalItem = inventoryRepositoryPort.findItemByClientId(itemClientId);
 
-    Optional<ItemEntity> optionalItemEntity = itemRepository.findItemEntityByClientId(itemClientId);
-
-    if (optionalItemEntity.isEmpty()) {
+    if (optionalItem.isEmpty()) {
       throw new NotFoundException("Item not found for item client id " + itemClientId);
     }
 
-    if (!optionalItemEntity.get().getInventoryEntity().getGameSave().getId().equals(gameSaveId)) {
-      throw new ForbiddenException(
-          "The given game save id is not the owner of item with the given client id");
-    }
-
-    ItemEntity itemEntity = optionalItemEntity.get();
-
-    inventoryEntity.getItems().remove(itemEntity);
-
-    inventoryRepository.save(inventoryEntity);
+    inventoryRepositoryPort.deleteItemByClientId(itemClientId);
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional
-  public Item updateItemInInventory(String gameSaveId, String itemClientId, ItemRequest itemRequest)
+  public Item updateItemInInventory(UUID gameSaveId, String itemClientId, ItemRequest itemRequest)
       throws NotFoundException, ForbiddenException {
     if (gameSaveId == null || itemClientId == null || itemRequest == null) {
       throw new IllegalArgumentException(
           "Game save id, item client id and item request cannot be null");
     }
 
-    Optional<InventoryEntity> optionalInventoryEntity = inventoryRepository.findById(gameSaveId);
-
-    if (optionalInventoryEntity.isEmpty()) {
+    if (!gameMetadataRepositoryPort.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
 
-    InventoryEntity inventoryEntity = optionalInventoryEntity.get();
+    Optional<Item> optionalItem = inventoryRepositoryPort.findItemByClientId(itemClientId);
+    if (optionalItem.isEmpty()) {
+      throw new NotFoundException("Item not found for item client id " + itemClientId);
+    }
 
-    Set<ItemEntity> items = inventoryEntity.getItems();
-    ItemEntity toUpdate =
-        items.stream()
-            .filter(item -> item.getClientId().equals(itemClientId))
-            .findFirst()
-            .orElseThrow(
-                () ->
-                    new NotFoundException(
-                        "Item not found for game save id "
-                            + gameSaveId
-                            + " and item client id "
-                            + itemClientId));
+    Item existingItem = optionalItem.get();
 
-    toUpdate.setLevel(itemRequest.level());
-    toUpdate.setMainStat(itemRequest.mainStat());
-    toUpdate.setAdditionalStats(itemRequest.additionalStats());
-    toUpdate.setIsEquipped(itemRequest.isEquipped());
-    toUpdate.setItemType(ItemType.fromString(itemRequest.itemType()));
-    toUpdate.setBlueprintId(itemRequest.blueprintId());
-    toUpdate.setItemRarity(ItemRarity.fromString(itemRequest.itemRarity()));
+    ItemType itemType = ItemType.fromString(itemRequest.itemType());
+    ItemRarity itemRarity = ItemRarity.fromString(itemRequest.itemRarity());
 
-    InventoryEntity updated = inventoryRepository.save(inventoryEntity);
-    ItemEntity updatedItemEntity =
-        updated.getItems().stream()
-            .filter(item -> item.getClientId().equals(itemClientId))
-            .findFirst()
-            .orElseThrow(
-                () -> new NotFoundException("Item not found for item client id " + itemClientId));
-    return itemEntityMapper.map(updatedItemEntity);
-  }
+    Item updatedItem =
+        Item.builder()
+            .id(existingItem.getId())
+            .gameSaveId(gameSaveId)
+            .clientId(itemClientId)
+            .blueprintId(itemRequest.blueprintId())
+            .itemType(itemType)
+            .itemRarity(itemRarity)
+            .isEquipped(itemRequest.isEquipped())
+            .level(itemRequest.level())
+            .mainStat(itemRequest.mainStat())
+            .additionalStats(itemRequest.additionalStats())
+            .build();
 
-  /** {@inheritDoc} */
-  private InventoryEntity getInventoryEntity(String gameSaveId) throws NotFoundException {
-    return inventoryRepository
-        .findById(gameSaveId)
-        .orElseThrow(
-            () -> new NotFoundException("Inventory not found for game save id " + gameSaveId));
+    return inventoryRepositoryPort.updateItem(gameSaveId, updatedItem);
   }
 
   /** {@inheritDoc} */
   @Override
   @Transactional
-  public void clearInventory(String gameSaveId) throws NotFoundException {
-    InventoryEntity inventoryEntity = getInventoryEntity(gameSaveId);
-    inventoryEntity.getItems().clear();
-    inventoryRepository.save(inventoryEntity);
+  public void clearInventory(UUID gameSaveId) throws NotFoundException {
+    if (gameSaveId == null) {
+      throw new IllegalArgumentException("Game save id cannot be null");
+    }
+
+    if (!gameMetadataRepositoryPort.existsById(gameSaveId)) {
+      throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
+    }
+
+    inventoryRepositoryPort.deleteAllItemsByGameSaveId(gameSaveId);
   }
 }

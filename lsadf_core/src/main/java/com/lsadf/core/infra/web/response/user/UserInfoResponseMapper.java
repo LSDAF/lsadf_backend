@@ -19,6 +19,7 @@ package com.lsadf.core.infra.web.response.user;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.response.ModelResponseMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -56,5 +57,6 @@ public interface UserInfoResponseMapper extends ModelResponseMapper<UserInfo, Us
    * @return the GlobalInfoResponse object representing the mapped data
    */
   @Override
+  @Mapping(target = "username", source = "email")
   UserInfoResponse map(UserInfo model);
 }

@@ -15,19 +15,19 @@
  */
 package com.lsadf.admin.application.bdd.then;
 
-import static com.lsadf.admin.application.bdd.BddFieldConstants.Item.CLIENT_ID;
+import static com.lsadf.core.bdd.BddFieldConstants.Item.CLIENT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
-import com.lsadf.admin.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.user.UserResponse;
@@ -53,8 +53,8 @@ public class BddThenStepDefinitions extends BddLoader {
   @Then("^the number of game saves should be (.*)$")
   @Transactional(readOnly = true)
   public void then_the_number_of_game_saves_should_be(int expected) {
-    long actual = gameSaveService.getGameSaves().count();
-    assertThat(actual).isEqualTo(expected);
+    var list = gameSaveService.getGameSaves();
+    assertThat(list).hasSize(expected);
   }
 
   @Then("^I should return false$")
@@ -83,7 +83,7 @@ public class BddThenStepDefinitions extends BddLoader {
 
   @Then("^I should have no game save entries in DB$")
   public void then_i_should_have_no_game_save_entries_in_db() {
-    assertThat(gameSaveRepository.count()).isZero();
+    assertThat(gameMetadataRepository.count()).isZero();
   }
 
   @Then("^I should have no characteristics entries in DB$")
@@ -159,8 +159,11 @@ public class BddThenStepDefinitions extends BddLoader {
 
       assertThat(actual)
           .usingRecursiveComparison()
-          .ignoringFields("id", "createdAt", "updatedAt")
+          .ignoringFields("id", "additionalStats")
           .isEqualTo(expected);
+
+      assertThat(actual.additionalStats())
+          .contains(expected.additionalStats().toArray(new ItemStat[0]));
     }
   }
 
@@ -279,13 +282,15 @@ public class BddThenStepDefinitions extends BddLoader {
 
     for (Map<String, String> row : rows) {
       var list = gameSaveResponseListStack.peek();
+      String id = row.get("id");
+      UUID uuid = UUID.fromString(id);
       var actual =
-          list.stream().filter(g -> g.id().equals(row.get("id"))).findFirst().orElseThrow();
-      GameSave expected = BddUtils.mapToGameSave(row);
+          list.stream().filter(g -> g.metadata().id().equals(uuid)).findFirst().orElseThrow();
+      GameSaveResponse expected = BddUtils.mapToGameSaveResponse(row);
 
       assertThat(actual)
           .usingRecursiveComparison()
-          .ignoringFields("id", "createdAt", "updatedAt")
+          .ignoringFields("id", "metadata.createdAt", "metadata.updatedAt")
           .isEqualTo(expected);
     }
   }
@@ -382,14 +387,15 @@ public class BddThenStepDefinitions extends BddLoader {
       GameSaveResponse expectedGameSaveResponse = expected.get(i);
       assertThat(actualGameSaveResponse)
           .usingRecursiveComparison()
-          .ignoringFields("id", "createdAt", "updatedAt")
+          .ignoringFields("metadata.id", "metadata.createdAt", "metadata.updatedAt")
           .isEqualTo(expectedGameSaveResponse);
     }
   }
 
   @Then("^the inventory of the game save with id (.*) should be empty$")
   public void then_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
-    var results = inventoryService.getInventoryItems(gameSaveId);
+    UUID uuid = UUID.fromString(gameSaveId);
+    var results = inventoryService.getInventoryItems(uuid);
     assertThat(results).isEmpty();
   }
 }

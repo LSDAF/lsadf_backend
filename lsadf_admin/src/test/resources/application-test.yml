@@ -13,7 +13,7 @@ db:
   url: jdbc:url
   username: username
 
-jpa:
+jdbc:
   enabled: false
 
 cache:

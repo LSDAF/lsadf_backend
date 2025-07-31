@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.JsonAttributes.CURRENT_STAGE;
 import static com.lsadf.core.infra.web.JsonAttributes.MAX_STAGE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.domain.game.stage.validation.StageConsistency;
+import com.lsadf.core.domain.game.save.stage.validation.StageConsistency;
 import com.lsadf.core.infra.web.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;

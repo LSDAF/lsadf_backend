@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.*;
 
 @NoArgsConstructor
@@ -33,7 +34,9 @@ public class Item implements Model {
 
   @Serial private static final long serialVersionUID = 6615198748250122221L;
 
-  private String id;
+  private UUID id;
+
+  private UUID gameSaveId;
 
   private String clientId;
 

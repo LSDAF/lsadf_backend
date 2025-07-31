@@ -33,11 +33,6 @@ spring:
     location: classpath:lsadf_banner.txt
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss.SSS
-  jpa:
-    show-sql: false
-    defer-datasource-initialization: false
-    hibernate:
-      ddl-auto: none
   config:
     import: optional:classpath:env.properties
   data:
@@ -205,7 +200,7 @@ clock:
 configuration-display:
   enabled: true
 
-jpa:
+jdbc:
   enabled: true
 
 vaadin:

@@ -18,15 +18,17 @@ package com.lsadf.application.controller.game.game_save;
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
-import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
+import com.lsadf.core.infra.web.request.game.save.creation.GameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.save.creation.SimpleGameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponseMapper;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponseMapper;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -62,7 +64,8 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
 
     String username = getUsernameFromJwt(jwt);
 
-    GameSave newSave = gameSaveService.createGameSave(username);
+    GameSaveCreationRequest creationRequest = new SimpleGameSaveCreationRequest(username);
+    GameSave newSave = gameSaveService.createGameSave(creationRequest);
     log.info("Successfully created new game for user with username {}", username);
 
     GameSaveResponse newSaveResponse = gameSaveResponseMapper.map(newSave);
@@ -72,7 +75,7 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
   /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> updateNickname(
-      Jwt jwt, String id, GameSaveNicknameUpdateRequest gameSaveNicknameUpdateRequest) {
+      Jwt jwt, UUID id, GameSaveNicknameUpdateRequest gameSaveNicknameUpdateRequest) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(id, username);
@@ -88,11 +91,9 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
 
-    try (Stream<GameSave> gameSaveStream = gameSaveService.getGameSavesByUsername(username)) {
-      List<GameSaveResponse> gameSaveList =
-          gameSaveStream.map(gameSaveResponseMapper::map).toList();
-      log.info("Successfully retrieved game saves for user with email {}", username);
-      return generateResponse(HttpStatus.OK, gameSaveList);
-    }
+    List<GameSave> gameSaveList = gameSaveService.getGameSavesByUsername(username);
+    var mapped = gameSaveList.stream().map(gameSaveResponseMapper::map).toList();
+    log.info("Successfully retrieved game saves for user with email {}", username);
+    return generateResponse(HttpStatus.OK, mapped);
   }
 }

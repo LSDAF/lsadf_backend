@@ -16,28 +16,26 @@
 package com.lsadf.admin.application.bdd.when;
 
 import static com.lsadf.admin.application.auth.AdminAuthController.Constants.ApiPaths.*;
-import static com.lsadf.admin.application.bdd.ParameterizedTypeReferenceUtils.*;
-import static com.lsadf.admin.application.user.AdminUserController.Constants.ApiPaths.ME;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 import com.lsadf.admin.application.bdd.BddLoader;
-import com.lsadf.admin.application.bdd.BddUtils;
 import com.lsadf.admin.application.bdd.CacheEntryType;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.AdminGameSaveController;
-import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.web.request.game.game_save.update.GameSaveNicknameUpdateRequest;
-import com.lsadf.core.infra.web.request.user.creation.SimpleUserCreationRequest;
+import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.core.infra.web.request.game.save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -147,43 +145,12 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
   }
 
-  @When(
-      "^the user requests the endpoint to register a user with the following SimpleUserCreationRequest$")
-  public void
-      when_the_user_request_the_endpoint_to_register_a_user_with_the_following_UserCreationRequest(
-          DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    // it should have only one line
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-    SimpleUserCreationRequest simpleUserCreationRequest = BddUtils.mapToUserCreationRequest(row);
-    String fullPath = AdminApiPathConstants.AUTH + REGISTER;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    HttpEntity<SimpleUserCreationRequest> request =
-        BddUtils.buildHttpEntity(simpleUserCreationRequest);
-    try {
-
-      ResponseEntity<ApiResponse<UserInfo>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.POST, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfo> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
   @When("^we want to delete the game save with id (.*)$")
   public void when_the_user_with_email_deletes_a_game_save(String saveId) {
     try {
-      gameSaveService.deleteGameSave(saveId);
+      UUID uuid = UUID.fromString(saveId);
+
+      gameSaveService.deleteGameSave(uuid);
     } catch (Exception e) {
       exceptionStack.push(e);
     }
@@ -193,7 +160,9 @@ public class BddWhenStepDefinitions extends BddLoader {
   public void when_we_check_the_game_save_ownership_with_id_for_the_user_with_email(
       String saveId, String userEmail) {
     try {
-      gameSaveService.checkGameSaveOwnership(saveId, userEmail);
+      UUID uuid = UUID.fromString(saveId);
+
+      gameSaveService.checkGameSaveOwnership(uuid, userEmail);
     } catch (Exception e) {
       exceptionStack.push(e);
     }
@@ -293,49 +262,6 @@ public class BddWhenStepDefinitions extends BddLoader {
           testRestTemplate.exchange(
               url, HttpMethod.POST, request, buildParameterizedVoidResponse());
       ApiResponse<Void> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^the user requests the endpoint to get his UserInfo with no token$")
-  public void when_the_user_requests_the_endpoint_to_get_his_user_info_with_no_token() {
-    String fullPath = AdminApiPathConstants.ADMIN_USER + ME;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-      HttpEntity<Void> request = new HttpEntity<>(new HttpHeaders());
-      ResponseEntity<ApiResponse<UserInfo>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfo> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^the user requests the endpoint to get his UserInfo$")
-  public void when_the_user_requests_the_endpoint_to_get_his_user_info() {
-    String fullPath = AdminApiPathConstants.ADMIN_USER + ME;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-
-      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
-      String token = jwtAuthenticationResponse.accessToken();
-      HttpHeaders headers = new HttpHeaders();
-      headers.setBearerAuth(token);
-      HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<UserInfo>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfo> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", result);
 

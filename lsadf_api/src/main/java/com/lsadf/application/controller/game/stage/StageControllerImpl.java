@@ -18,16 +18,17 @@ package com.lsadf.application.controller.game.stage;
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
-import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.application.game.stage.StageService;
-import com.lsadf.core.domain.game.stage.Stage;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.cache.service.CacheService;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.stage.StageResponse;
-import com.lsadf.core.infra.web.response.game.stage.StageResponseMapper;
+import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
+import com.lsadf.core.infra.web.response.game.save.stage.StageResponseMapper;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class StageControllerImpl extends BaseController implements StageControll
   /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> saveStage(
-      Jwt jwt, String gameSaveId, StageRequest stageRequest) {
+      Jwt jwt, UUID gameSaveId, StageRequest stageRequest) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
@@ -71,7 +72,7 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<StageResponse>> getStage(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<StageResponse>> getStage(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);

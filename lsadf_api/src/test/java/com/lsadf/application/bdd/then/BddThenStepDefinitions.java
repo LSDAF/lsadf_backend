@@ -18,21 +18,20 @@ package com.lsadf.application.bdd.then;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.application.bdd.BddUtils;
-import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.core.domain.game.save.GameSave;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveEntity;
-import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponseMapper;
-import com.lsadf.core.infra.web.response.game.currency.CurrencyResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
-import com.lsadf.core.infra.web.response.game.stage.StageResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponseMapper;
+import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.user.UserInfoResponse;
 import com.lsadf.core.infra.web.response.user.UserInfoResponseMapper;
@@ -41,6 +40,7 @@ import io.cucumber.java.en.Then;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,7 +64,7 @@ public class BddThenStepDefinitions extends BddLoader {
       GameSave expectedGameSave = BddUtils.mapToGameSave(row);
       GameSave actualGameSave =
           actual.stream()
-              .filter(g -> g.getId().equals(expectedGameSave.getId()))
+              .filter(g -> g.getMetadata().id().equals(expectedGameSave.getMetadata().id()))
               .findFirst()
               .orElseThrow();
 
@@ -73,33 +73,6 @@ public class BddThenStepDefinitions extends BddLoader {
           .ignoringFields("id", "createdAt", "updatedAt")
           .ignoringExpectedNullFields()
           .isEqualTo(expectedGameSave);
-    }
-  }
-
-  @Then("^I should return the following game save entities$")
-  public void then_i_should_return_the_following_game_save_entities(DataTable dataTable)
-      throws NotFoundException {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    List<GameSaveEntity> actual = gameSaveEntityListStack.peek();
-
-    for (Map<String, String> row : rows) {
-      GameSaveEntity expected = BddUtils.mapToGameSaveEntity(row);
-      GameSaveEntity gameSave =
-          actual.stream()
-              .filter(
-                  g -> {
-                    if (expected.getId() == null) {
-                      return g.getUserEmail().equals(expected.getUserEmail());
-                    }
-                    return g.getId().equals(expected.getId());
-                  })
-              .findFirst()
-              .orElseThrow();
-
-      long gold = gameSave.getCurrencyEntity().getGoldAmount();
-      long expectedGold = expected.getCurrencyEntity().getGoldAmount();
-      assertThat(gold).isEqualTo(expectedGold);
     }
   }
 
@@ -112,8 +85,8 @@ public class BddThenStepDefinitions extends BddLoader {
   @Then("^the number of game saves should be (.*)$")
   @Transactional(readOnly = true)
   public void then_the_number_of_game_saves_should_be(int expected) {
-    long actual = gameSaveService.getGameSaves().count();
-    assertThat(actual).isEqualTo(expected);
+    var count = gameSaveService.getGameSaves().size();
+    assertThat(count).isEqualTo(expected);
   }
 
   @Then("^I should return false$")
@@ -164,7 +137,7 @@ public class BddThenStepDefinitions extends BddLoader {
 
   @Then("^I should have no game save entries in DB$")
   public void then_i_should_have_no_game_save_entries_in_db() {
-    assertThat(gameSaveRepository.count()).isZero();
+    assertThat(gameMetadataRepository.count()).isZero();
   }
 
   @Then("^I should have no characteristics entries in DB$")
@@ -312,7 +285,7 @@ public class BddThenStepDefinitions extends BddLoader {
 
     assertThat(actual)
         .usingRecursiveComparison()
-        .ignoringFields("id", "createdAt", "updatedAt")
+        .ignoringFields("metadata.id", "createdAt", "updatedAt")
         .ignoringExpectedNullFields()
         .isEqualTo(expected);
   }
@@ -333,19 +306,21 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
-  @Then("the response should have the following GameSaveResponses")
+  @Then("^the response should have the following GameSaveResponses$")
   public void then_the_response_should_have_the_following_game_saves(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     for (Map<String, String> row : rows) {
       List<GameSaveResponse> list = gameSaveResponseListStack.peek();
+      String id = row.get("id");
+      UUID uuid = UUID.fromString(id);
       GameSaveResponse actual =
-          list.stream().filter(g -> g.id().equals(row.get("id"))).findFirst().orElseThrow();
+          list.stream().filter(g -> g.metadata().id().equals(uuid)).findFirst().orElseThrow();
       GameSave expected = BddUtils.mapToGameSave(row);
 
       assertThat(actual)
           .usingRecursiveComparison()
-          .ignoringFields("id", "createdAt", "updatedAt")
+          .ignoringFields("id", "metadata.createdAt", "metadata.updatedAt")
           .isEqualTo(expected);
     }
   }
