@@ -15,30 +15,30 @@
  */
 
 CREATE VIEW v_game_save_vgsa AS
-SELECT tgme.id,
-       tgme.created_at,
-       tgme.updated_at,
-       tgme.user_email,
-       tgme.nickname,
+SELECT tgme.tgme_id,
+       tgme.tgme_created_at,
+       tgme.tgme_updated_at,
+       tgme.tgme_user_email,
+       tgme.tgme_nickname,
 
        -- Characteristics
-       tgch.attack,
-       tgch.crit_chance,
-       tgch.crit_damage,
-       tgch.health,
-       tgch.resistance,
+       tgch.tgch_attack,
+       tgch.tgch_crit_chance,
+       tgch.tgch_crit_damage,
+       tgch.tgch_health,
+       tgch.tgch_resistance,
 
        -- Currency amounts
-       tgcu.gold_amount,
-       tgcu.diamond_amount,
-       tgcu.emerald_amount,
-       tgcu.amethyst_amount,
+       tgcu.tgcu_gold_amount,
+       tgcu.tgcu_diamond_amount,
+       tgcu.tgcu_emerald_amount,
+       tgcu.tgcu_amethyst_amount,
 
        -- Stage progression
-       tgst.current_stage,
-       tgst.max_stage
+       tgst.tgst_current_stage,
+       tgst.tgst_max_stage
 
 FROM t_game_metadata_tgme tgme
-         LEFT JOIN t_characteristics_tgch tgch ON tgme.id = tgch.id
-         LEFT JOIN t_currency_tgcu tgcu ON tgme.id = tgcu.id
-         LEFT JOIN t_stage_tgst tgst ON tgme.id = tgst.id;
+         LEFT JOIN t_characteristics_tgch tgch ON tgme.tgme_id = tgch.tgme_id
+         LEFT JOIN t_currency_tgcu tgcu ON tgme.tgme_id = tgcu.tgme_id
+         LEFT JOIN t_stage_tgst tgst ON tgme.tgme_id = tgst.tgme_id;

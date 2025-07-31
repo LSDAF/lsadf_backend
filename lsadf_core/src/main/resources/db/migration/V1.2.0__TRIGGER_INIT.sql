@@ -23,18 +23,19 @@ DECLARE
 BEGIN
     -- Determine the game save ID based on the table
     CASE TG_TABLE_NAME
-        WHEN 't_characteristics_tgch', 't_currency_tgcu', 't_stage_tgst' THEN game_save_uuid := COALESCE(NEW.id, OLD.id);
+        WHEN 't_characteristics_tgch', 't_currency_tgcu', 't_stage_tgst'
+            THEN game_save_uuid := COALESCE(NEW.tgme_id, OLD.tgme_id);
         WHEN 't_item_tgit' THEN game_save_uuid := COALESCE(NEW.tgme_id, OLD.tgme_id);
         WHEN 't_additional_stat_tias' THEN SELECT tgit.tgme_id
                                            INTO game_save_uuid
                                            FROM t_item_tgit tgit
-                                           WHERE tgit.id = COALESCE(NEW.tgit_id, OLD.tgit_id);
+                                           WHERE tgit.tgit_id = COALESCE(NEW.tgit_id, OLD.tgit_id);
         END CASE;
 
     -- Update the game save timestamp
     UPDATE t_game_metadata_tgme
-    SET updated_at = CURRENT_TIMESTAMP
-    WHERE id = game_save_uuid;
+    SET tgme_updated_at = CURRENT_TIMESTAMP
+    WHERE tgme_id = game_save_uuid;
 
     RETURN COALESCE(NEW, OLD);
 END;
