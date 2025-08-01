@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache;
 
-import java.util.Map;
+package com.lsadf.core.infra.valkey.cache;
 
-public class NoOpHistoCache<T> extends NoOpCache<T> implements HistoCache<T> {
-  @Override
-  public Map<String, T> getAllHisto() {
-    return Map.of();
-  }
+import java.io.Serializable;
+
+/** Interface for a hash. */
+public interface Hash<I> extends Serializable {
+  I getId();
+
+  Long getExpiration();
 }

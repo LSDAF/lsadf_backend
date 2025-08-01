@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.properties;
 
-import com.lsadf.core.infra.cache.config.ValkeyProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package com.lsadf.core.infra.valkey.cache.game.save.metadata;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class CacheProperties {
-  private ValkeyProperties valkeyProperties;
-  private CacheExpirationProperties cacheExpirationProperties;
+import com.lsadf.core.domain.game.save.metadata.GameMetadata;
+import com.lsadf.core.infra.valkey.cache.HashModelMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
+@Mapper
+public interface GameMetadataHashMapper extends HashModelMapper<GameMetadataHash, GameMetadata> {
+  GameMetadataHashMapper INSTANCE = Mappers.getMapper(GameMetadataHashMapper.class);
 }

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache;
 
-import java.util.Map;
+package com.lsadf.core.application.game.save.stage;
 
-public interface HistoCache<T> extends Cache<T> {
-  Map<String, T> getAllHisto();
-}
+import com.lsadf.core.application.shared.GameCachePort;
+import com.lsadf.core.domain.game.save.stage.Stage;
+
+public interface StageCachePort extends GameCachePort<Stage> {}

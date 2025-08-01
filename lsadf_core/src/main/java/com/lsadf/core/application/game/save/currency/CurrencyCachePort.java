@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache;
 
-@FunctionalInterface
-public interface KeyValueConsumer<T> {
-  void accept(String key, T value);
-}
+package com.lsadf.core.application.game.save.currency;
+
+import com.lsadf.core.application.shared.GameCachePort;
+import com.lsadf.core.domain.game.save.currency.Currency;
+
+public interface CurrencyCachePort extends GameCachePort<Currency> {}
