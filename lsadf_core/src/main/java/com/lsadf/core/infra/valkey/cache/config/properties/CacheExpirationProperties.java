@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.properties;
+package com.lsadf.core.infra.valkey.cache.config.properties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,10 +23,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CacheExpirationProperties {
-  private int characteristicsExpirationSeconds;
-  private int currencyExpirationSeconds;
-  private int inventoryExpirationSeconds;
-  private int stageExpirationSeconds;
-  private int gameSaveOwnershipExpirationSeconds;
-  private int localUserExpirationSeconds;
+  private Integer characteristicsExpirationSeconds;
+  private Integer currencyExpirationSeconds;
+  private Integer inventoryExpirationSeconds;
+  private Integer stageExpirationSeconds;
+  private Integer gameMetadataExpirationSeconds;
+  private Integer localUserExpirationSeconds;
 }
