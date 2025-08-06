@@ -18,45 +18,16 @@ package com.lsadf.core.infra.valkey.cache.game.save.characteristics;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.infra.valkey.cache.HashModelMapper;
-import com.lsadf.core.infra.valkey.cache.ValkeyCacheAdapter;
-import java.util.UUID;
-import org.springframework.data.repository.CrudRepository;
+import com.lsadf.core.infra.valkey.RedisConstants;
+import com.lsadf.core.infra.valkey.cache.ValkeyHistoCacheAdapter;
+import org.springframework.data.redis.core.RedisTemplate;
 
-public class CharacteristicsCacheAdapter
-    extends ValkeyCacheAdapter<CharacteristicsHash, Characteristics, UUID>
+public class CharacteristicsCacheAdapter extends ValkeyHistoCacheAdapter<Characteristics>
     implements CharacteristicsCachePort {
+  private static final String HISTO_KEY_TYPE = RedisConstants.CHARACTERISTICS_HISTO;
 
-  private final CharacteristicsHashRepository characteristicsHashRepository;
-  private static final CharacteristicsHashMapper characteristicsHashMapper =
-      CharacteristicsHashMapper.INSTANCE;
-
-  public CharacteristicsCacheAdapter(CharacteristicsHashRepository characteristicsHashRepository) {
-    this.characteristicsHashRepository = characteristicsHashRepository;
-  }
-
-  @Override
-  protected HashModelMapper<CharacteristicsHash, Characteristics> getMapper() {
-    return characteristicsHashMapper;
-  }
-
-  @Override
-  protected CrudRepository<CharacteristicsHash, UUID> getRepository() {
-    return this.characteristicsHashRepository;
-  }
-
-  @Override
-  public void set(UUID key, Characteristics value) {
-    CharacteristicsHash hash =
-        CharacteristicsHash.builder()
-            .attack(value.attack())
-            .gameSaveId(key)
-            .critDamage(value.critDamage())
-            .critChance(value.critChance())
-            .resistance(value.resistance())
-            .health(value.health())
-            .build();
-
-    this.characteristicsHashRepository.save(hash);
+  public CharacteristicsCacheAdapter(
+      RedisTemplate<String, Characteristics> redisTemplate, String keyType, int expirationSeconds) {
+    super(redisTemplate, keyType, HISTO_KEY_TYPE, expirationSeconds);
   }
 }

@@ -18,43 +18,18 @@ package com.lsadf.core.infra.valkey.cache.game.save.currency;
 
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.infra.valkey.cache.HashModelMapper;
-import com.lsadf.core.infra.valkey.cache.ValkeyCacheAdapter;
-import java.util.UUID;
+import com.lsadf.core.infra.valkey.RedisConstants;
+import com.lsadf.core.infra.valkey.cache.ValkeyHistoCacheAdapter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @Slf4j
-public class CurrencyCacheAdapter extends ValkeyCacheAdapter<CurrencyHash, Currency, UUID>
+public class CurrencyCacheAdapter extends ValkeyHistoCacheAdapter<Currency>
     implements CurrencyCachePort {
+  private static final String HISTO_KEY_TYPE = RedisConstants.CURRENCY_HISTO;
 
-  private final CrudRepository<CurrencyHash, UUID> currencyHashRepository;
-  private CurrencyHashMapper currencyHashMapper = CurrencyHashMapper.INSTANCE;
-
-  public CurrencyCacheAdapter(CrudRepository<CurrencyHash, UUID> currencyHashRepository) {
-    this.currencyHashRepository = currencyHashRepository;
-  }
-
-  @Override
-  protected CrudRepository<CurrencyHash, UUID> getRepository() {
-    return this.currencyHashRepository;
-  }
-
-  @Override
-  protected HashModelMapper<CurrencyHash, Currency> getMapper() {
-    return this.currencyHashMapper;
-  }
-
-  @Override
-  public void set(UUID key, Currency value) {
-    CurrencyHash hash =
-        CurrencyHash.builder()
-            .gold(value.gold())
-            .diamond(value.diamond())
-            .emerald(value.emerald())
-            .amethyst(value.amethyst())
-            .build();
-    var updated = this.currencyHashRepository.save(hash);
-    log.info(updated.toString());
+  public CurrencyCacheAdapter(
+      RedisTemplate<String, Currency> redisTemplate, String keyType, int expirationSeconds) {
+    super(redisTemplate, keyType, HISTO_KEY_TYPE, expirationSeconds);
   }
 }

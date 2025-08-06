@@ -18,34 +18,15 @@ package com.lsadf.core.infra.valkey.cache.game.save.stage;
 
 import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.valkey.cache.HashModelMapper;
-import com.lsadf.core.infra.valkey.cache.ValkeyCacheAdapter;
-import java.util.UUID;
-import org.springframework.data.repository.CrudRepository;
+import com.lsadf.core.infra.valkey.RedisConstants;
+import com.lsadf.core.infra.valkey.cache.ValkeyHistoCacheAdapter;
+import org.springframework.data.redis.core.RedisTemplate;
 
-public class StageCacheAdapter extends ValkeyCacheAdapter<StageHash, Stage, UUID>
-    implements StageCachePort {
-  private final StageHashRepository stageHashRepository;
-  private static final StageHashMapper stageHashMapper = StageHashMapper.INSTANCE;
+public class StageCacheAdapter extends ValkeyHistoCacheAdapter<Stage> implements StageCachePort {
+  private static final String HISTO_KEY_TYPE = RedisConstants.STAGE_HISTO;
 
-  public StageCacheAdapter(StageHashRepository stageHashRepository) {
-    this.stageHashRepository = stageHashRepository;
-  }
-
-  @Override
-  protected CrudRepository<StageHash, UUID> getRepository() {
-    return this.stageHashRepository;
-  }
-
-  @Override
-  protected HashModelMapper<StageHash, Stage> getMapper() {
-    return stageHashMapper;
-  }
-
-  @Override
-  public void set(UUID key, Stage value) {
-    StageHash hash =
-        StageHash.builder().currentStage(value.currentStage()).maxStage(value.maxStage()).build();
-    this.stageHashRepository.save(hash);
+  public StageCacheAdapter(
+      RedisTemplate<String, Stage> redisTemplate, String keyType, int expirationSeconds) {
+    super(redisTemplate, keyType, HISTO_KEY_TYPE, expirationSeconds);
   }
 }
