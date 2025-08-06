@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache;
+package com.lsadf.core.infra.valkey.cache;
 
+import com.lsadf.core.application.shared.CachePort;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 
 @Slf4j
-public class NoOpCache<T> implements Cache<T> {
+public class NoOpCache<T> implements CachePort<T> {
 
   /** {@inheritDoc} */
   @Override
@@ -55,29 +55,6 @@ public class NoOpCache<T> implements Cache<T> {
   /** {@inheritDoc} */
   @Override
   public void unset(String key) {
-    // Do nothing
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public Logger getLogger() {
-    return log;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public boolean isEnabled() {
-    return false;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void setEnabled(boolean enabled) {
-    // Do nothing
-  }
-
-  @Override
-  public void setExpiration(int expirationSeconds) {
     // Do nothing
   }
 }

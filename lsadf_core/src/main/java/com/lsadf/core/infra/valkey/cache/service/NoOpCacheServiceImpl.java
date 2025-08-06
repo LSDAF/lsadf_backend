@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.service;
+package com.lsadf.core.infra.valkey.cache.service;
 
 public class NoOpCacheServiceImpl implements CacheService {
 

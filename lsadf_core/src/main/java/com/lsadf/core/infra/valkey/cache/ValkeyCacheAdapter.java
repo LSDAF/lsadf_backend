@@ -13,42 +13,85 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.valkey.cache;
 
 import com.lsadf.core.application.shared.CachePort;
-import com.lsadf.core.shared.model.Model;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.data.repository.CrudRepository;
+import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisTemplate;
 
-public abstract class ValkeyCacheAdapter<H extends Hash<I>, M extends Model, I>
-    implements CachePort<M, I> {
-  protected abstract CrudRepository<H, I> getRepository();
+@Slf4j
+public abstract class ValkeyCacheAdapter<T> implements CachePort<T> {
 
-  protected abstract HashModelMapper<H, M> getMapper();
+  protected final RedisTemplate<String, T> redisTemplate;
+  protected final String keyType;
 
+  protected int expirationSeconds;
+
+  protected ValkeyCacheAdapter(
+      RedisTemplate<String, T> redisTemplate, String keyType, int expirationSeconds) {
+    this.redisTemplate = redisTemplate;
+    this.keyType = keyType;
+    this.expirationSeconds = expirationSeconds;
+  }
+
+  /** {@inheritDoc} */
   @Override
-  public Optional<M> get(I key) {
-    Optional<H> optionalHash = getRepository().findById(key);
-    return optionalHash.map(hash -> getMapper().map(hash));
+  public Optional<T> get(String key) {
+    try {
+      T object = redisTemplate.opsForValue().get(keyType + key);
+      return Optional.ofNullable(object);
+    } catch (DataAccessException e) {
+      log.warn("Error while getting element from redis cache", e);
+      return Optional.empty();
+    }
   }
 
   @Override
-  public void unset(I key) {
-    getRepository().deleteById(key);
+  public void set(String key, T value, int expirationSeconds) {
+    try {
+      redisTemplate.opsForValue().set(keyType + key, value, expirationSeconds, TimeUnit.SECONDS);
+    } catch (DataAccessException e) {
+      log.warn("Error while setting entry in redis cache", e);
+    }
   }
 
+  /** {@inheritDoc} */
   @Override
-  public Map<I, M> getAll() {
-    Map<I, M> map = new HashMap<>();
-    getRepository().findAll().forEach(h -> map.put(h.getId(), getMapper().map(h)));
-    return map;
+  public void set(String key, T value) {
+    try {
+      if (expirationSeconds > 0) {
+        redisTemplate.opsForValue().set(keyType + key, value, expirationSeconds, TimeUnit.SECONDS);
+      } else {
+        redisTemplate.opsForValue().set(keyType + key, value);
+      }
+    } catch (DataAccessException e) {
+      log.warn("Error while setting entry in redis cache", e);
+    }
   }
 
+  /** {@inheritDoc} */
+  @Override
+  public Map<String, T> getAll() {
+    return CacheUtils.getAllEntries(redisTemplate, keyType);
+  }
+
+  /** {@inheritDoc} */
   @Override
   public void clear() {
-    getRepository().deleteAll();
+    CacheUtils.clearCache(redisTemplate, keyType);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void unset(String key) {
+    try {
+      redisTemplate.delete(keyType + key);
+    } catch (DataAccessException e) {
+      log.warn("Error while deleting entry from redis cache", e);
+    }
   }
 }

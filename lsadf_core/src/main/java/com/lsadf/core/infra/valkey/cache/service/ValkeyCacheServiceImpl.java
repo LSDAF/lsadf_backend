@@ -13,35 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.service;
+package com.lsadf.core.infra.valkey.cache.service;
 
-import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.HistoCache;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.infra.valkey.cache.config.properties.ValkeyProperties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ValkeyCacheServiceImpl implements CacheService {
 
-  private final Cache<String> gameSaveOwnershipCache;
-  private final HistoCache<Characteristics> characteristicsCache;
-  private final HistoCache<Currency> currencyCache;
-  private final HistoCache<Stage> stageCache;
+  private final GameMetadataCachePort gameMetadataCache;
+  private final CharacteristicsCachePort characteristicsCache;
+  private final CurrencyCachePort currencyCache;
+  private final StageCachePort stageCache;
 
-  private final AtomicBoolean isEnabled = new AtomicBoolean(true);
+  private final AtomicBoolean isEnabled;
 
   public ValkeyCacheServiceImpl(
-      Cache<String> gameSaveOwnershipCache,
-      HistoCache<Characteristics> characteristicsCache,
-      HistoCache<Currency> currencyCache,
-      HistoCache<Stage> stageCache) {
+      GameMetadataCachePort gameMetadataCache,
+      CharacteristicsCachePort characteristicsCache,
+      CurrencyCachePort currencyCache,
+      StageCachePort stageCache,
+      ValkeyProperties valkeyProperties) {
     this.characteristicsCache = characteristicsCache;
     this.currencyCache = currencyCache;
     this.stageCache = stageCache;
-    this.gameSaveOwnershipCache = gameSaveOwnershipCache;
+    this.gameMetadataCache = gameMetadataCache;
+    this.isEnabled = new AtomicBoolean(valkeyProperties.isEnabled());
   }
 
   /** {@inheritDoc} */
@@ -56,10 +58,6 @@ public class ValkeyCacheServiceImpl implements CacheService {
     boolean newValue = !oldValue;
     log.info(oldValue ? "Disabling redis caches" : "Enabling redis caches");
     isEnabled.set(newValue);
-    characteristicsCache.setEnabled(newValue);
-    currencyCache.setEnabled(newValue);
-    stageCache.setEnabled(newValue);
-    gameSaveOwnershipCache.setEnabled(newValue);
   }
 
   /** {@inheritDoc} */
@@ -69,7 +67,7 @@ public class ValkeyCacheServiceImpl implements CacheService {
     characteristicsCache.clear();
     currencyCache.clear();
     stageCache.clear();
-    gameSaveOwnershipCache.clear();
+    gameMetadataCache.clear();
     log.info("Caches cleared");
   }
 
@@ -80,7 +78,7 @@ public class ValkeyCacheServiceImpl implements CacheService {
     characteristicsCache.unset(key);
     currencyCache.unset(key);
     stageCache.unset(key);
-    gameSaveOwnershipCache.unset(key);
-    log.info("Cache cleared for key: {}", key);
+    gameMetadataCache.unset(key);
+    log.info("CachePort cleared for key: {}", key);
   }
 }
