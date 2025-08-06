@@ -15,7 +15,6 @@
  */
 package com.lsadf.core.infra.valkey.cache.config;
 
-import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
@@ -196,7 +195,6 @@ public class ValkeyCacheConfiguration {
   public CacheFlushService cacheFlushService(
       CharacteristicsService characteristicsService,
       CurrencyService currencyService,
-      InventoryService inventoryService,
       StageService stageService,
       CachePort<Characteristics> characteristicsCache,
       CachePort<Currency> currencyCache,
@@ -204,7 +202,6 @@ public class ValkeyCacheConfiguration {
     return new RedisCacheFlushServiceImpl(
         characteristicsService,
         currencyService,
-        inventoryService,
         stageService,
         characteristicsCache,
         currencyCache,
