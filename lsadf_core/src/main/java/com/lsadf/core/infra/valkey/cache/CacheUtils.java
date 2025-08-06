@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache;
+package com.lsadf.core.infra.valkey.cache;
 
 import java.util.HashMap;
 import java.util.Map;

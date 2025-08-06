@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.flush;
+package com.lsadf.core.infra.valkey.cache.service;
 
-public interface CacheFlushService {
+public interface CacheService {
+
   /**
-   * Flush the characteristics cache, and persists the characteristics of every entries in the
-   * database
+   * Check if the cache is enabled
+   *
+   * @return true if cache is enabled, false otherwise
    */
-  void flushCharacteristics();
+  Boolean isEnabled();
 
-  /** Flush the currency cache, and persists the currency of every entries in the database */
-  void flushCurrencies();
+  /** Toggle the cache enabling */
+  void toggleCacheEnabling();
 
-  /** Flush the stage cache, and persists the stage of every entries in the database */
-  void flushStages();
+  /** Clear all the caches */
+  void clearCaches();
+
+  /**
+   * Clears the cache entry associated with the specified key.
+   *
+   * @param key the key for the cache entry to be cleared
+   */
+  void clearGameSaveValues(String key);
 }

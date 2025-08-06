@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.config;
 
-import com.lsadf.core.infra.cache.flush.CacheFlushService;
+import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
