@@ -26,11 +26,15 @@ public class GameMetadataServiceImpl implements GameMetadataService {
 
   private final CacheService cacheService;
   private final GameMetadataRepositoryPort gameMetadataRepositoryPort;
+  private final GameMetadataCachePort gameMetadataCachePort;
 
   public GameMetadataServiceImpl(
-      CacheService cacheService, GameMetadataRepositoryPort gameMetadataRepositoryPort) {
+      CacheService cacheService,
+      GameMetadataRepositoryPort gameMetadataRepositoryPort,
+      GameMetadataCachePort gameMetadataCachePort) {
     this.cacheService = cacheService;
     this.gameMetadataRepositoryPort = gameMetadataRepositoryPort;
+    this.gameMetadataCachePort = gameMetadataCachePort;
   }
 
   @Override
@@ -42,6 +46,14 @@ public class GameMetadataServiceImpl implements GameMetadataService {
   @Override
   @Transactional(readOnly = true)
   public boolean existsById(UUID gameSaveId) {
+    if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+      var optionalGameMetadata = gameMetadataCachePort.get(gameSaveId.toString());
+      if (optionalGameMetadata.isPresent()) {
+        return true;
+      }
+      return gameMetadataRepositoryPort.existsById(gameSaveId);
+    }
+
     return gameMetadataRepositoryPort.existsById(gameSaveId);
   }
 
@@ -54,9 +66,16 @@ public class GameMetadataServiceImpl implements GameMetadataService {
   @Override
   @Transactional(readOnly = true)
   public GameMetadata getGameMetadata(UUID gameSaveId) {
-    return gameMetadataRepositoryPort
-        .findById(gameSaveId)
-        .orElseThrow(() -> new NotFoundException("Game metadata not found for id: " + gameSaveId));
+    if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+      var optionalGameMetadata = gameMetadataCachePort.get(gameSaveId.toString());
+      if (optionalGameMetadata.isPresent()) {
+        return optionalGameMetadata.get();
+      }
+      GameMetadata gameMetadata = getGameMetadataFromDatabase(gameSaveId);
+      gameMetadataCachePort.set(gameSaveId.toString(), gameMetadata);
+      return gameMetadata;
+    }
+    return getGameMetadataFromDatabase(gameSaveId);
   }
 
   @Override
@@ -83,10 +102,9 @@ public class GameMetadataServiceImpl implements GameMetadataService {
     }
   }
 
-  @Override
-  public String findOwnerEmailById(UUID gameSaveId) {
+  private GameMetadata getGameMetadataFromDatabase(UUID gameSaveId) {
     return gameMetadataRepositoryPort
-        .findOwnerEmailById(gameSaveId)
-        .orElseThrow(() -> new NotFoundException("Game save with id " + gameSaveId + " not found"));
+        .findById(gameSaveId)
+        .orElseThrow(() -> new NotFoundException("Game metadata not found for id: " + gameSaveId));
   }
 }

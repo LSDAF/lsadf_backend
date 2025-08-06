@@ -21,6 +21,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataServiceImpl;
@@ -42,6 +43,7 @@ class GameMetadataServiceTests {
   @Mock private UserService userService;
   @Mock private CacheService cacheService;
   @Mock private GameMetadataRepositoryPort gameMetadataRepositoryPort;
+  @Mock private GameMetadataCachePort gameMetadataCachePort;
 
   private GameMetadataService gameMetadataService;
 
@@ -49,7 +51,9 @@ class GameMetadataServiceTests {
   void init() {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
-    gameMetadataService = new GameMetadataServiceImpl(cacheService, gameMetadataRepositoryPort);
+    gameMetadataService =
+        new GameMetadataServiceImpl(
+            cacheService, gameMetadataRepositoryPort, gameMetadataCachePort);
   }
 
   @Test

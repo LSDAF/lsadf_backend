@@ -85,12 +85,4 @@ public interface GameMetadataService {
    * @return the newly created {@link GameMetadata} object containing game and user metadata
    */
   GameMetadata createNewGameMetadata(UUID gameSaveId, String username, String nickname);
-
-  /**
-   * Retrieves the email address of the user associated with the specified game save ID.
-   *
-   * @param gameSaveId
-   * @return
-   */
-  String findOwnerEmailById(UUID gameSaveId);
 }

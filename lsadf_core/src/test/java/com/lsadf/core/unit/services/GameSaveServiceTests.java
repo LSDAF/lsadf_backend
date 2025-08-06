@@ -339,14 +339,14 @@ class GameSaveServiceTests {
   @Test
   void test_checkGameSaveOwnership_succeeds_when_validIdAndUserEmail() {
     when(cacheService.isEnabled()).thenReturn(false);
-    when(gameMetadataService.findOwnerEmailById(UUID)).thenReturn(USER_EMAIL);
+    when(gameMetadataService.getGameMetadata(UUID)).thenReturn(DB_METADATA);
     gameSaveService.checkGameSaveOwnership(UUID, USER_EMAIL);
   }
 
   @Test
   void test_checkGameSaveOwnership_succeeds_when_validIdAndUserEmailWithCache() {
     when(cacheService.isEnabled()).thenReturn(true);
-    when(gameMetadataCache.get(UUID.toString())).thenReturn(Optional.ofNullable(DB_METADATA));
+    when(gameMetadataCache.get(UUID.toString())).thenReturn(Optional.of(DB_METADATA));
     gameSaveService.checkGameSaveOwnership(UUID, USER_EMAIL);
   }
 
@@ -354,14 +354,14 @@ class GameSaveServiceTests {
   void test_checkGameSaveOwnership_succeeds_when_validIdAndUserEmailWithEmptyCache() {
     when(cacheService.isEnabled()).thenReturn(true);
     when(gameMetadataCache.get(UUID.toString())).thenReturn(Optional.empty());
-    when(gameMetadataService.findOwnerEmailById(UUID)).thenReturn(USER_EMAIL);
+    when(gameMetadataService.getGameMetadata(UUID)).thenReturn(DB_METADATA);
     gameSaveService.checkGameSaveOwnership(UUID, USER_EMAIL);
   }
 
   @Test
   void test_checkGameSaveOwnership_throwsNotFoundException_when_nonExistingId() {
     when(cacheService.isEnabled()).thenReturn(false);
-    when(gameMetadataService.findOwnerEmailById(UUID)).thenThrow(NotFoundException.class);
+    when(gameMetadataService.getGameMetadata(UUID)).thenThrow(NotFoundException.class);
     assertThrows(
         NotFoundException.class, () -> gameSaveService.checkGameSaveOwnership(UUID, USER_EMAIL));
   }
@@ -369,7 +369,7 @@ class GameSaveServiceTests {
   @Test
   void test_checkGameSaveOwnership_throwsForbiddenException_when_invalidUserEmail() {
     when(cacheService.isEnabled()).thenReturn(false);
-    when(gameMetadataService.findOwnerEmailById(UUID)).thenReturn(USER_EMAIL);
+    when(gameMetadataService.getGameMetadata(UUID)).thenReturn(DB_METADATA);
     assertThrows(
         ForbiddenException.class,
         () -> gameSaveService.checkGameSaveOwnership(UUID, "anotherOne@gmail.com"));

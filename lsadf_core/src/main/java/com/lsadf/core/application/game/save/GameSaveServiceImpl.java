@@ -252,8 +252,8 @@ public class GameSaveServiceImpl implements GameSaveService {
   public void checkGameSaveOwnership(UUID saveId, String userEmail)
       throws ForbiddenException, NotFoundException {
     if (Boolean.FALSE.equals(cacheService.isEnabled())) {
-      String ownerEmail = gameMetadataService.findOwnerEmailById(saveId);
-      if (!Objects.equals(ownerEmail, userEmail)) {
+      GameMetadata gameMetadata = gameMetadataService.getGameMetadata(saveId);
+      if (!Objects.equals(gameMetadata.userEmail(), userEmail)) {
         throw new ForbiddenException("The given user email is not the owner of the game save");
       }
       return;

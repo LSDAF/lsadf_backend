@@ -24,7 +24,10 @@ import org.springframework.context.annotation.Configuration;
 public class GameMetadataConfiguration {
   @Bean
   public GameMetadataService gameMetadataService(
-      CacheService cacheService, GameMetadataRepositoryPort gameMetadataRepositoryPort) {
-    return new GameMetadataServiceImpl(cacheService, gameMetadataRepositoryPort);
+      CacheService cacheService,
+      GameMetadataRepositoryPort gameMetadataRepositoryPort,
+      GameMetadataCachePort gameMetadataCachePort) {
+    return new GameMetadataServiceImpl(
+        cacheService, gameMetadataRepositoryPort, gameMetadataCachePort);
   }
 }
