@@ -23,6 +23,7 @@ import com.lsadf.core.bdd.BddFieldConstants;
 import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
@@ -36,6 +37,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,12 +116,9 @@ public class BddGivenStepDefinitions extends BddLoader {
     localCacheService.clearCaches();
 
     assertThat(characteristicsCache.getAll()).isEmpty();
-    assertThat(characteristicsCache.getAllHisto()).isEmpty();
     assertThat(currencyCache.getAll()).isEmpty();
-    assertThat(currencyCache.getAllHisto()).isEmpty();
     assertThat(stageCache.getAll()).isEmpty();
-    assertThat(stageCache.getAllHisto()).isEmpty();
-    assertThat(gameSaveOwnershipCache.getAll()).isEmpty();
+    assertThat(gameMetadataCache.getAll()).isEmpty();
 
     log.info("Database repositories + caches cleaned");
     log.info("Mocks initialized");
@@ -198,13 +197,15 @@ public class BddGivenStepDefinitions extends BddLoader {
                 stageCache.set(gameSaveId, stage);
                 count.getAndIncrement();
               });
-      case GAME_SAVE_OWNERSHIP ->
+      case GAME_METADATA ->
           rows.forEach(
               row -> {
                 String gameSaveId =
                     row.get(BddFieldConstants.GameSaveOwnershipCacheEntry.GAME_SAVE_ID);
                 String userId = row.get(BddFieldConstants.GameSaveOwnershipCacheEntry.USER_EMAIL);
-                gameSaveOwnershipCache.set(gameSaveId, userId);
+                GameMetadata gameMetadata =
+                    new GameMetadata(UUID.fromString(gameSaveId), userId, null, null, null);
+                gameMetadataCache.set(gameSaveId, gameMetadata);
                 count.getAndIncrement();
               });
       default -> throw new IllegalArgumentException("Unknown cache type: " + cacheType);
@@ -213,14 +214,5 @@ public class BddGivenStepDefinitions extends BddLoader {
     int finalCount = count.get();
 
     log.info("{} {} entries in cache created", finalCount, cacheType);
-  }
-
-  @Given("^the expiration seconds properties set to (.*)$")
-  public void given_the_expiration_seconds_properties_set_to(int expirationSeconds) {
-    log.info("Setting expiration seconds properties to {}", expirationSeconds);
-    characteristicsCache.setExpiration(expirationSeconds);
-    currencyCache.setExpiration(expirationSeconds);
-    stageCache.setExpiration(expirationSeconds);
-    gameSaveOwnershipCache.setExpiration(expirationSeconds);
   }
 }

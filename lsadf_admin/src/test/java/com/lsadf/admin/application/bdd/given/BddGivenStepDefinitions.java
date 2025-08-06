@@ -177,7 +177,7 @@ public class BddGivenStepDefinitions extends BddLoader {
     assertThat(currencyCache.getAllHisto()).isEmpty();
     assertThat(stageCache.getAll()).isEmpty();
     assertThat(stageCache.getAllHisto()).isEmpty();
-    assertThat(gameSaveOwnershipCache.getAll()).isEmpty();
+    assertThat(gameMetadataCache.getAll()).isEmpty();
 
     log.info("Database repositories + caches cleaned");
     log.info("Mocks initialized");
@@ -255,29 +255,11 @@ public class BddGivenStepDefinitions extends BddLoader {
                 stageCache.set(gameSaveId, stage);
                 count.getAndIncrement();
               });
-      case GAME_SAVE_OWNERSHIP ->
-          rows.forEach(
-              row -> {
-                String gameSaveId =
-                    row.get(BddFieldConstants.GameSaveOwnershipCacheEntry.GAME_SAVE_ID);
-                String userId = row.get(BddFieldConstants.GameSaveOwnershipCacheEntry.USER_EMAIL);
-                gameSaveOwnershipCache.set(gameSaveId, userId);
-                count.getAndIncrement();
-              });
       default -> throw new IllegalArgumentException("Unknown cache type: " + cacheType);
     }
 
     int finalCount = count.get();
 
     log.info("{} {} entries in cache created", finalCount, cacheType);
-  }
-
-  @Given("^the expiration seconds properties set to (.*)$")
-  public void given_the_expiration_seconds_properties_set_to(int expirationSeconds) {
-    log.info("Setting expiration seconds properties to {}", expirationSeconds);
-    characteristicsCache.setExpiration(expirationSeconds);
-    currencyCache.setExpiration(expirationSeconds);
-    stageCache.setExpiration(expirationSeconds);
-    gameSaveOwnershipCache.setExpiration(expirationSeconds);
   }
 }

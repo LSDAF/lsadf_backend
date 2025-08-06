@@ -55,7 +55,7 @@ public class BddWhenStepDefinitions extends BddLoader {
           case CHARACTERISTICS, CHARACTERISTICS_HISTO -> characteristicsCache.getAllHisto().size();
           case CURRENCY, CURRENCY_HISTO -> currencyCache.getAllHisto().size();
           case STAGE, STAGE_HISTO -> stageCache.getAllHisto().size();
-          case GAME_SAVE_OWNERSHIP -> gameSaveOwnershipCache.getAll().size();
+          case GAME_METADATA -> gameMetadataCache.getAll().size();
         };
     log.info("Waiting for {} cache entry to expire...", cacheType);
     await()
@@ -69,7 +69,7 @@ public class BddWhenStepDefinitions extends BddLoader {
                           characteristicsCache.getAllHisto().size();
                       case CURRENCY, CURRENCY_HISTO -> currencyCache.getAllHisto().size();
                       case STAGE, STAGE_HISTO -> stageCache.getAllHisto().size();
-                      case GAME_SAVE_OWNERSHIP -> gameSaveOwnershipCache.getAll().size();
+                      case GAME_METADATA -> gameMetadataCache.getAll().size();
                     };
                 return newSize < size;
               } catch (Exception e) {
