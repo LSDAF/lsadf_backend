@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.infra.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequestMapper;
