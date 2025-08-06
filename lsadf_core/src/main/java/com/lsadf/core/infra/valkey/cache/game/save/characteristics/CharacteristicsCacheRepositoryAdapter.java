@@ -19,35 +19,29 @@ package com.lsadf.core.infra.valkey.cache.game.save.characteristics;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.valkey.cache.HashModelMapper;
-import java.util.HashMap;
-import java.util.Map;
+import com.lsadf.core.infra.valkey.cache.ValkeyCacheRepositoryAdapter;
+import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CharacteristicsCacheRepositoryAdapter implements CharacteristicsCachePort {
-  private final CharacteristicsHashRepository characteristicsHashRepository;
+public class CharacteristicsCacheRepositoryAdapter
+    extends ValkeyCacheRepositoryAdapter<Characteristics, CharacteristicsHash, UUID>
+    implements CharacteristicsCachePort {
   private static final HashModelMapper<CharacteristicsHash, Characteristics>
       CHARACTERISTICS_HASH_MAPPER = CharacteristicsHashMapper.INSTANCE;
 
   public CharacteristicsCacheRepositoryAdapter(
-      CharacteristicsHashRepository characteristicsHashRepository) {
-    this.characteristicsHashRepository = characteristicsHashRepository;
-  }
-
-  @Override
-  public Optional<Characteristics> getHisto(String key) {
-    return Optional.empty();
-  }
-
-  @Override
-  public Map<String, Characteristics> getAllHisto() {
-    return Map.of();
+      CharacteristicsHashRepository characteristicsHashRepository,
+      CacheExpirationProperties cacheExpirationProperties) {
+    super(characteristicsHashRepository);
+    this.hashMapper = CHARACTERISTICS_HASH_MAPPER;
+    this.expirationSeconds = cacheExpirationProperties.getCharacteristicsExpirationSeconds();
   }
 
   @Override
   public Optional<Characteristics> get(String key) {
     UUID uuid = UUID.fromString(key);
-    Optional<CharacteristicsHash> hashOptional = this.characteristicsHashRepository.findById(uuid);
+    Optional<CharacteristicsHash> hashOptional = this.repository.findById(uuid);
     if (hashOptional.isPresent()) {
       Characteristics characteristics = CHARACTERISTICS_HASH_MAPPER.map(hashOptional.get());
       return Optional.of(characteristics);
@@ -70,7 +64,7 @@ public class CharacteristicsCacheRepositoryAdapter implements CharacteristicsCac
             .health(value.health())
             .build();
 
-    this.characteristicsHashRepository.save(hash);
+    this.repository.save(hash);
   }
 
   @Override
@@ -80,34 +74,18 @@ public class CharacteristicsCacheRepositoryAdapter implements CharacteristicsCac
         CharacteristicsHash.builder()
             .attack(value.attack())
             .gameSaveId(uuid)
+            .expiration(this.expirationSeconds)
             .resistance(value.resistance())
             .critChance(value.critChance())
             .critDamage(value.critDamage())
             .health(value.health())
             .build();
 
-    this.characteristicsHashRepository.save(hash);
-  }
-
-  @Override
-  public Map<String, Characteristics> getAll() {
-    Map<String, Characteristics> characteristicsMap = new HashMap<>();
-    characteristicsHashRepository
-        .findAll()
-        .forEach(
-            hash ->
-                characteristicsMap.put(
-                    hash.getId().toString(), CHARACTERISTICS_HASH_MAPPER.map(hash)));
-    return characteristicsMap;
-  }
-
-  @Override
-  public void clear() {
-    characteristicsHashRepository.deleteAll();
+    this.repository.save(hash);
   }
 
   @Override
   public void unset(String key) {
-    characteristicsHashRepository.deleteById(UUID.fromString(key));
+    repository.deleteById(UUID.fromString(key));
   }
 }
