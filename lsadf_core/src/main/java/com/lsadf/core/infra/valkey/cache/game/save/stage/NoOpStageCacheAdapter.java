@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.converter;
+package com.lsadf.core.infra.valkey.cache.game.save.stage;
 
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.convert.ReadingConverter;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.domain.game.save.stage.Stage;
+import com.lsadf.core.infra.valkey.cache.NoOpHistoCache;
 
-@ReadingConverter
-public class BytesToUuidConverter implements Converter<byte[], java.util.UUID> {
-  @Override
-  public java.util.UUID convert(byte[] source) {
-    return java.util.UUID.fromString(new String(source));
-  }
-}
+public class NoOpStageCacheAdapter extends NoOpHistoCache<Stage> implements StageCachePort {}

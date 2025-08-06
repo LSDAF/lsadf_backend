@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.converter;
+package com.lsadf.core.infra.valkey.cache;
 
-import java.util.UUID;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.convert.WritingConverter;
+import com.lsadf.core.application.shared.HistoCachePort;
+import java.util.Map;
+import java.util.Optional;
 
-@WritingConverter
-public class UuidToBytesConverter implements Converter<UUID, byte[]> {
+public class NoOpHistoCache<T> extends NoOpCache<T> implements HistoCachePort<T> {
   @Override
-  public byte[] convert(UUID source) {
-    return source.toString().getBytes();
+  public Optional<T> getHisto(String key) {
+    return Optional.empty();
+  }
+
+  @Override
+  public Map<String, T> getAllHisto() {
+    return Map.of();
   }
 }

@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.application.shared;
+package com.lsadf.core.infra.valkey.cache.game.save.characteristics;
 
-import com.lsadf.core.shared.model.Model;
-import java.util.UUID;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.infra.valkey.cache.NoOpHistoCache;
 
-public interface GameCachePort<M extends Model> extends CachePort<M, UUID> {}
+public class NoOpCharacteristicsCacheAdapter extends NoOpHistoCache<Characteristics>
+    implements CharacteristicsCachePort {}
