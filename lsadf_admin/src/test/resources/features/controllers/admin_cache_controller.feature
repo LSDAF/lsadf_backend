@@ -69,4 +69,4 @@ Feature: Admin Cache Controller BDD tests
     And the characteristics cache should be empty
     And the currency cache should be empty
     And the stage cache should be empty
-    And the game_save_ownership cache should be empty
+    And the game_metadata cache should be empty

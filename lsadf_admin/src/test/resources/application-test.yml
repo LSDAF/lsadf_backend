@@ -25,12 +25,12 @@ cache:
     database: 0
     embedded: false
   expiration:
-    game-save-ownership-expiration-seconds: -1
     local-user-expiration-seconds: -1
     characteristics-expiration-seconds: -1
     currency-expiration-seconds: -1
     inventory-expiration-seconds: -1
     stage-expiration-seconds: -1
+    game-metadata-expiration-seconds: -1
 mail:
   host: test
   port: 9000
