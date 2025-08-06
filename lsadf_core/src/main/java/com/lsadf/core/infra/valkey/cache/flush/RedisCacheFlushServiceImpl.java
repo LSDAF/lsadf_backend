@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.flush;
+package com.lsadf.core.infra.valkey.cache.flush;
 
-import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import java.util.Map;
 import java.util.UUID;
@@ -33,27 +32,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class RedisCacheFlushServiceImpl implements CacheFlushService {
 
   private final CharacteristicsService characteristicsService;
-  private final Cache<Characteristics> characteristicsCache;
+  private final CachePort<Characteristics> characteristicsCache;
 
   private final CurrencyService currencyService;
-  private final Cache<Currency> currencyCache;
-
-  private final InventoryService inventoryService;
+  private final CachePort<Currency> currencyCache;
 
   private final StageService stageService;
-  private final Cache<Stage> stageCache;
+  private final CachePort<Stage> stageCache;
 
   public RedisCacheFlushServiceImpl(
       CharacteristicsService characteristicsService,
       CurrencyService currencyService,
-      InventoryService inventoryService,
       StageService stageService,
-      Cache<Characteristics> characteristicsCache,
-      Cache<Currency> currencyCache,
-      Cache<Stage> stageCache) {
+      CachePort<Characteristics> characteristicsCache,
+      CachePort<Currency> currencyCache,
+      CachePort<Stage> stageCache) {
     this.characteristicsService = characteristicsService;
     this.currencyService = currencyService;
-    this.inventoryService = inventoryService;
     this.stageService = stageService;
     this.characteristicsCache = characteristicsCache;
     this.currencyCache = currencyCache;
