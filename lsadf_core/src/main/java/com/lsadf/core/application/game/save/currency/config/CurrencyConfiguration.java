@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.save.currency;
+package com.lsadf.core.application.game.save.currency.config;
 
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
+import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
+import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.impl.CurrencyServiceImpl;
 import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

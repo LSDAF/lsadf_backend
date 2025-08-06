@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
-import com.lsadf.core.application.game.save.currency.CurrencyServiceImpl;
+import com.lsadf.core.application.game.save.currency.impl.CurrencyServiceImpl;
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.exception.http.NotFoundException;

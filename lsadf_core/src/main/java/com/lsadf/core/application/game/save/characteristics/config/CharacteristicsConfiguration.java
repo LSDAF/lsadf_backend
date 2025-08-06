@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.save.characteristics;
+package com.lsadf.core.application.game.save.characteristics.config;
 
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsServiceImpl;
 import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

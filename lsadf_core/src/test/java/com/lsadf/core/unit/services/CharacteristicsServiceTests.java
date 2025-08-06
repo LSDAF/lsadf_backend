@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsServiceImpl;
+import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsServiceImpl;
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.exception.http.NotFoundException;

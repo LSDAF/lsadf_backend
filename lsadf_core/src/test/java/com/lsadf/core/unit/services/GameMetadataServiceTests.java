@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
-import com.lsadf.core.application.game.save.metadata.GameMetadataServiceImpl;
+import com.lsadf.core.application.game.save.metadata.impl.GameMetadataServiceImpl;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.infra.valkey.cache.service.CacheService;

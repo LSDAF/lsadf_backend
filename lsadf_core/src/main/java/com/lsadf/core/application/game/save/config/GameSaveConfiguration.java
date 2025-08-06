@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.save;
+package com.lsadf.core.application.game.save.config;
 
+import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
+import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsConfiguration;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.config.CharacteristicsConfiguration;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
-import com.lsadf.core.application.game.save.currency.CurrencyConfiguration;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.config.CurrencyConfiguration;
+import com.lsadf.core.application.game.save.impl.GameSaveServiceImpl;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
-import com.lsadf.core.application.game.save.metadata.GameMetadataConfiguration;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
+import com.lsadf.core.application.game.save.metadata.config.GameMetadataConfiguration;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.application.game.save.stage.StageConfiguration;
 import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.config.StageConfiguration;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import org.springframework.context.annotation.Bean;

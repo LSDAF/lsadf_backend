@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.save.characteristics;
+package com.lsadf.core.application.game.save.characteristics.impl;
 
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.exception.http.NotFoundException;

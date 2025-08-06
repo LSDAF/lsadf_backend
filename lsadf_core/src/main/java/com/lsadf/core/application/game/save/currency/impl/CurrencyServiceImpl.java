@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.save.currency;
+package com.lsadf.core.application.game.save.currency.impl;
 
+import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
+import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.exception.http.NotFoundException;

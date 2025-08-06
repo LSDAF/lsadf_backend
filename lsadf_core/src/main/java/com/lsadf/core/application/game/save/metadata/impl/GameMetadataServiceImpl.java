@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.application.game.save.metadata;
+package com.lsadf.core.application.game.save.metadata.impl;
 
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.valkey.cache.service.CacheService;

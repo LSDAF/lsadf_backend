@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.save.stage;
+package com.lsadf.core.application.game.save.stage.config;
 
+import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
+import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.impl.StageServiceImpl;
 import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

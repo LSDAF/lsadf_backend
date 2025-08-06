@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.application.game.save.metadata;
+package com.lsadf.core.application.game.save.metadata.config;
 
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataService;
+import com.lsadf.core.application.game.save.metadata.impl.GameMetadataServiceImpl;
 import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
