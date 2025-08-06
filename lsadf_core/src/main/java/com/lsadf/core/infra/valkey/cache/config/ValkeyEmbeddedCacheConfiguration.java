@@ -39,7 +39,7 @@ public class ValkeyEmbeddedCacheConfiguration {
     return RedisServer.newRedisServer()
         .setting("requirepass " + valkeyProperties.getPassword())
         .setting("bind 127.0.0.1")
-        .setting("notify-keyspace-events KEA")
+        .setting("notify-keyspace-events Ex")
         .port(valkeyProperties.getPort())
         .build();
   }
