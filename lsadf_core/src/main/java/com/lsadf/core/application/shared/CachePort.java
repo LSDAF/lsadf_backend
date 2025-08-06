@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache;
+package com.lsadf.core.application.shared;
 
 import java.util.Map;
 import java.util.Optional;
-import org.slf4j.Logger;
 
-public interface Cache<T> {
+public interface CachePort<T> {
 
   /**
    * Get the value for the key
@@ -62,32 +61,4 @@ public interface Cache<T> {
 
   /** Clear the cache */
   void clear();
-
-  /**
-   * Get the logger for the cache
-   *
-   * @return The logger for the cache
-   */
-  Logger getLogger();
-
-  /**
-   * Set the cache to be enabled or disabled
-   *
-   * @param enabled Whether the cache should be enabled or disabled
-   */
-  void setEnabled(boolean enabled);
-
-  /**
-   * Check if the cache is enabled
-   *
-   * @return Whether the cache is enabled
-   */
-  boolean isEnabled();
-
-  /**
-   * Set the expiration time for the cache
-   *
-   * @param expirationSeconds The expiration time in seconds
-   */
-  void setExpiration(int expirationSeconds);
 }
