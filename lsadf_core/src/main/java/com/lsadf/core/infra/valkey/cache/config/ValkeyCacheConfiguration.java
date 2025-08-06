@@ -13,23 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.cache.config;
+package com.lsadf.core.infra.valkey.cache.config;
 
 import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.infra.cache.flush.CacheFlushService;
-import com.lsadf.core.infra.cache.flush.RedisCacheFlushServiceImpl;
-import com.lsadf.core.infra.cache.listener.ValkeyKeyExpirationListener;
-import com.lsadf.core.infra.cache.service.CacheService;
-import com.lsadf.core.infra.cache.service.ValkeyCacheServiceImpl;
+import com.lsadf.core.infra.valkey.RedisConstants;
+import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.valkey.cache.config.properties.ValkeyProperties;
+import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
+import com.lsadf.core.infra.valkey.cache.flush.RedisCacheFlushServiceImpl;
+import com.lsadf.core.infra.valkey.cache.game.save.characteristics.CharacteristicsCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.game.save.currency.CurrencyCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.game.save.metadata.GameMetadataCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.game.save.stage.StageCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.listener.ValkeyKeyExpirationListener;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.service.ValkeyCacheServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -64,6 +75,18 @@ public class ValkeyCacheConfiguration {
     template.setConnectionFactory(redisConnectionFactory);
     template.setKeySerializer(new StringRedisSerializer());
     template.setValueSerializer(new GenericToStringSerializer<>(Long.class));
+    return template;
+  }
+
+  @Bean
+  public RedisTemplate<String, GameMetadata> gameMetadataRedisTemplate(
+      RedisConnectionFactory redisConnectionFactory) {
+    RedisTemplate<String, GameMetadata> template = new RedisTemplate<>();
+    template.setConnectionFactory(redisConnectionFactory);
+    template.setKeySerializer(new StringRedisSerializer());
+    template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+    template.setHashKeySerializer(new StringRedisSerializer());
+    template.setHashValueSerializer(new GenericToStringSerializer<>(GameMetadata.class));
     return template;
   }
 
@@ -117,12 +140,13 @@ public class ValkeyCacheConfiguration {
 
   @Bean
   public CacheService redisCacheService(
-      Cache<String> gameSaveOwnershipCache,
-      HistoCache<Characteristics> characteristicsCache,
-      HistoCache<Currency> currencyCache,
-      HistoCache<Stage> stageCache) {
+      GameMetadataCachePort gameMetadataCache,
+      CharacteristicsCachePort characteristicsCache,
+      CurrencyCachePort currencyCache,
+      StageCachePort stageCache,
+      ValkeyProperties valkeyProperties) {
     return new ValkeyCacheServiceImpl(
-        gameSaveOwnershipCache, characteristicsCache, currencyCache, stageCache);
+        gameMetadataCache, characteristicsCache, currencyCache, stageCache, valkeyProperties);
   }
 
   @Bean
@@ -174,9 +198,9 @@ public class ValkeyCacheConfiguration {
       CurrencyService currencyService,
       InventoryService inventoryService,
       StageService stageService,
-      Cache<Characteristics> characteristicsCache,
-      Cache<Currency> currencyCache,
-      Cache<Stage> stageCache) {
+      CachePort<Characteristics> characteristicsCache,
+      CachePort<Currency> currencyCache,
+      CachePort<Stage> stageCache) {
     return new RedisCacheFlushServiceImpl(
         characteristicsService,
         currencyService,
@@ -185,5 +209,45 @@ public class ValkeyCacheConfiguration {
         characteristicsCache,
         currencyCache,
         stageCache);
+  }
+
+  @Bean
+  public CharacteristicsCachePort characteristicsCachePort(
+      RedisTemplate<String, Characteristics> characteristicsRedisTemplate,
+      CacheExpirationProperties cacheExpirationProperties) {
+    return new CharacteristicsCacheAdapter(
+        characteristicsRedisTemplate,
+        RedisConstants.CHARACTERISTICS,
+        cacheExpirationProperties.getCharacteristicsExpirationSeconds());
+  }
+
+  @Bean
+  public CurrencyCachePort currencyCachePort(
+      RedisTemplate<String, Currency> currencyRedisTemplate,
+      CacheExpirationProperties cacheExpirationProperties) {
+    return new CurrencyCacheAdapter(
+        currencyRedisTemplate,
+        RedisConstants.CURRENCY,
+        cacheExpirationProperties.getCurrencyExpirationSeconds());
+  }
+
+  @Bean
+  public StageCachePort stageCachePort(
+      RedisTemplate<String, Stage> stageRedisTemplate,
+      CacheExpirationProperties cacheExpirationProperties) {
+    return new StageCacheAdapter(
+        stageRedisTemplate,
+        RedisConstants.STAGE,
+        cacheExpirationProperties.getStageExpirationSeconds());
+  }
+
+  @Bean
+  public GameMetadataCachePort gameMetadataCachePort(
+      RedisTemplate<String, GameMetadata> gameMetadataRedisTemplate,
+      CacheExpirationProperties cacheExpirationProperties) {
+    return new GameMetadataCacheAdapter(
+        gameMetadataRedisTemplate,
+        RedisConstants.GAME_METADATA,
+        cacheExpirationProperties.getGameMetadataExpirationSeconds());
   }
 }
