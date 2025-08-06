@@ -40,9 +40,11 @@ import com.lsadf.core.infra.valkey.cache.game.save.stage.StageCacheAdapter;
 import com.lsadf.core.infra.valkey.cache.listener.ValkeyKeyExpirationListener;
 import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import com.lsadf.core.infra.valkey.cache.service.ValkeyCacheServiceImpl;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -57,6 +59,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @ConditionalOnProperty(prefix = "cache.redis", name = "enabled", havingValue = "true")
+@Import(ValkeyCacheRepositoryConfiguration.class)
 public class ValkeyCacheConfiguration {
 
   @Bean
@@ -209,6 +212,7 @@ public class ValkeyCacheConfiguration {
   }
 
   @Bean
+  @ConditionalOnMissingBean
   public CharacteristicsCachePort characteristicsCachePort(
       RedisTemplate<String, Characteristics> characteristicsRedisTemplate,
       CacheExpirationProperties cacheExpirationProperties) {
@@ -219,6 +223,7 @@ public class ValkeyCacheConfiguration {
   }
 
   @Bean
+  @ConditionalOnMissingBean
   public CurrencyCachePort currencyCachePort(
       RedisTemplate<String, Currency> currencyRedisTemplate,
       CacheExpirationProperties cacheExpirationProperties) {
@@ -229,6 +234,7 @@ public class ValkeyCacheConfiguration {
   }
 
   @Bean
+  @ConditionalOnMissingBean
   public StageCachePort stageCachePort(
       RedisTemplate<String, Stage> stageRedisTemplate,
       CacheExpirationProperties cacheExpirationProperties) {
@@ -239,6 +245,7 @@ public class ValkeyCacheConfiguration {
   }
 
   @Bean
+  @ConditionalOnMissingBean
   public GameMetadataCachePort gameMetadataCachePort(
       RedisTemplate<String, GameMetadata> gameMetadataRedisTemplate,
       CacheExpirationProperties cacheExpirationProperties) {
