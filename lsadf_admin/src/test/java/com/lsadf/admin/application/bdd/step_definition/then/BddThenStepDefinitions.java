@@ -13,138 +13,71 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.bdd.then;
+package com.lsadf.admin.application.bdd.step_definition.then;
 
 import static com.lsadf.core.bdd.BddFieldConstants.Item.CLIENT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
+import com.lsadf.admin.application.bdd.CacheEntryType;
 import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
-import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.exception.http.ForbiddenException;
-import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
-import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.user.UserResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Step definitions for the then steps in the BDD scenarios */
 @Slf4j(topic = "[THEN STEP DEFINITIONS]")
 public class BddThenStepDefinitions extends BddLoader {
 
-  @Autowired private Stack<List<UserResponse>> userResponseListStack;
-
-  @Then("^I should return true$")
-  public void then_i_should_return_true() {
-    boolean actual = booleanStack.peek();
-    assertThat(actual).isTrue();
+  @Then("^the (.*) cache should be empty$")
+  public void thenTheCacheShouldBeEmpty(String cacheType) {
+    log.info("Checking {} if cache is empty...", cacheType);
+    CacheEntryType cacheEntryType = CacheEntryType.fromString(cacheType);
+    switch (cacheEntryType) {
+      case CHARACTERISTICS -> assertThat(characteristicsCache.getAll()).isEmpty();
+      case CHARACTERISTICS_HISTO -> assertThat(characteristicsCache.getAllHisto()).isEmpty();
+      case CURRENCY -> assertThat(currencyCache.getAll()).isEmpty();
+      case CURRENCY_HISTO -> assertThat(currencyCache.getAllHisto()).isEmpty();
+      case GAME_METADATA -> assertThat(gameMetadataCache.getAll()).isEmpty();
+      case STAGE -> assertThat(stageCache.getAll()).isEmpty();
+      case STAGE_HISTO -> assertThat(stageCache.getAllHisto()).isEmpty();
+    }
   }
 
   @Then("^the number of game saves should be (.*)$")
   @Transactional(readOnly = true)
-  public void then_the_number_of_game_saves_should_be(int expected) {
+  public void thenTheNumberOfGameSavesShouldBe(int expected) {
     var list = gameSaveService.getGameSaves();
     assertThat(list).hasSize(expected);
   }
 
-  @Then("^I should return false$")
-  public void then_i_should_return_false() {
-    boolean actual = booleanStack.peek();
-    assertThat(actual).isFalse();
-  }
-
   @Then("^the response should have the following Boolean (.*)$")
-  public void then_the_response_should_have_the_following_boolean(boolean expected) {
+  public void thenTheResponseShouldHaveTheFollowingBoolean(boolean expected) {
     boolean actual = (boolean) responseStack.peek().data();
     assertThat(actual).isEqualTo(expected);
   }
 
   @Then("^the response status code should be (.*)$")
-  public void then_the_response_status_code_should_be(int statusCode) {
+  public void thenTheResponseStatusCodeShouldBe(int statusCode) {
     int actual = responseStack.peek().status();
     assertThat(actual).isEqualTo(statusCode);
   }
 
   @Then("^the number of users should be (.*)$")
-  public void then_the_number_of_users_should_be(int expected) {
+  public void thenTheNumberOfUsersShouldBe(int expected) {
     long actual = userService.getUsers().count();
     assertThat(actual).isEqualTo(expected);
   }
 
-  @Then("^I should have no game save entries in DB$")
-  public void then_i_should_have_no_game_save_entries_in_db() {
-    assertThat(gameMetadataRepository.count()).isZero();
-  }
-
-  @Then("^I should have no characteristics entries in DB$")
-  public void then_i_should_have_no_characteristics_entries_in_db() {
-    assertThat(characteristicsRepository.count()).isZero();
-  }
-
-  @Then("^I should have no currency entries in DB$")
-  public void then_i_should_have_no_currency_entries_in_db() {
-    assertThat(currencyRepository.count()).isZero();
-  }
-
-  @Then("^I should throw a NotFoundException$")
-  public void then_i_should_throw_a_not_found_exception() {
-    Exception exception = exceptionStack.peek();
-    assertThat(exception).isInstanceOf(NotFoundException.class);
-  }
-
-  @Then("^I should throw a IllegalArgumentException$")
-  public void then_i_should_throw_a_illegal_argument_exception() {
-    Exception exception = exceptionStack.peek();
-    assertThat(exception).isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @Then("^the characteristics should be the following$")
-  public void then_the_characteristics_amount_should_be(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    Characteristics expected = BddUtils.mapToCharacteristics(row);
-
-    Characteristics actual = characteristicsStack.peek();
-
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-  }
-
-  @Then("^the currency should be the following$")
-  public void then_the_currency_amount_should_be(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    Currency expected = BddUtils.mapToCurrency(row);
-
-    Currency actual = currencyStack.peek();
-
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-  }
-
   @Then("^the response should have the following itemResponses$")
-  public void then_the_response_should_have_the_following_items_in_the_inventory(
-      DataTable dataTable) {
+  public void thenTheResponseShouldHaveTheFollowingItemsInTheInventory(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     Set<ItemResponse> inventory = itemResponseSetStack.peek();
@@ -167,81 +100,8 @@ public class BddThenStepDefinitions extends BddLoader {
     }
   }
 
-  @Then("^I should throw a ForbiddenException$")
-  public void then_i_should_throw_a_forbidden_exception() {
-    Exception exception = exceptionStack.peek();
-    assertThat(exception).isInstanceOf(ForbiddenException.class);
-  }
-
-  @Then("^the response should have the following StageResponse$")
-  public void then_the_response_should_have_the_following_stage(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    Stage expected = BddUtils.mapToStage(row);
-    Stage actual = (Stage) responseStack.peek().data();
-
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-  }
-
-  @Then("^the response should have the following Characteristics$")
-  public void then_the_response_should_have_the_following_characteristics(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    Characteristics expected = BddUtils.mapToCharacteristics(row);
-    Characteristics actual = (Characteristics) responseStack.peek().data();
-
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-  }
-
-  @Then("^the response should have the following CurrencyResponse$")
-  public void then_the_response_should_have_the_following_currency(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    Currency expected = BddUtils.mapToCurrency(row);
-    Currency actual = (Currency) responseStack.peek().data();
-
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-  }
-
-  @Then("^I should throw no Exception$")
-  public void then_i_should_throw_no_exception() {
-    assertThat(exceptionStack).isEmpty();
-  }
-
-  @Then("^the token from the response should not be null$")
-  public void then_the_token_from_the_response_should_not_be_null() {
-    JwtAuthenticationResponse jwtAuthenticationResponse =
-        (JwtAuthenticationResponse) responseStack.peek().data();
-    assertThat(jwtAuthenticationResponse.accessToken()).isNotNull();
-  }
-
-  @Then("^the refresh token from the response should not be null$")
-  public void then_the_refresh_token_from_the_response_should_not_be_null() {
-    JwtAuthenticationResponse jwtAuthenticationResponse =
-        (JwtAuthenticationResponse) responseStack.peek().data();
-    assertThat(jwtAuthenticationResponse.refreshToken()).isNotNull();
-  }
-
   @Then("^the response should have the following GameSaveResponse$")
-  public void then_the_response_should_have_the_following_game_save_response(DataTable dataTable) {
+  public void thenTheResponseShouldHaveTheFollowingGameSaveResponse(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     if (rows.size() > 1) {
@@ -261,7 +121,7 @@ public class BddThenStepDefinitions extends BddLoader {
   }
 
   @Then("the response should have the following GlobalInfo")
-  public void then_the_response_should_have_the_tollowing_global_info(DataTable dataTable) {
+  public void thenTheResponseShouldHaveTheTollowingGlobalInfo(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     if (rows.size() > 1) {
@@ -277,7 +137,7 @@ public class BddThenStepDefinitions extends BddLoader {
   }
 
   @Then("^the response should have the following GameSaveResponses$")
-  public void then_the_response_should_have_the_following_game_saves(DataTable dataTable) {
+  public void thenTheResponseShouldHaveTheFollowingGameSaves(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     for (Map<String, String> row : rows) {
@@ -296,8 +156,7 @@ public class BddThenStepDefinitions extends BddLoader {
   }
 
   @Then("^the response should have the following UserResponses in exact order$")
-  public void then_the_response_should_have_the_following_user_responses_in_exact_order(
-      DataTable dataTable) {
+  public void thenTheResponseShouldHaveTheFollowingUserResponsesInExactOrder(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     List<UserResponse> actual = userResponseListStack.peek();
     List<UserResponse> expected = new ArrayList<>();
@@ -321,7 +180,7 @@ public class BddThenStepDefinitions extends BddLoader {
   }
 
   @Then("^the response should have the following UserResponse$")
-  public void then_the_response_should_have_the_following_userResponse(DataTable dataTable) {
+  public void thenTheResponseShouldHaveTheFollowingUserResponse(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     if (rows.size() > 1) {
@@ -343,7 +202,7 @@ public class BddThenStepDefinitions extends BddLoader {
   }
 
   @Then("^the response should have the following UserResponses$")
-  public void then_the_response_should_have_the_following_users(DataTable dataTable) {
+  public void thenTheResponseShouldHaveTheFollowingUsers(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     List<UserResponse> actual = userResponseListStack.peek();
@@ -367,8 +226,7 @@ public class BddThenStepDefinitions extends BddLoader {
   }
 
   @Then("^the response should have the following GameSaveResponses in exact order$")
-  public void then_the_response_should_have_the_following_game_saves_in_exact_order(
-      DataTable dataTable) {
+  public void thenTheResponseShouldHaveTheFollowingGameSavesInExactOrder(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     List<GameSaveResponse> actual = gameSaveResponseListStack.peek();
@@ -393,7 +251,7 @@ public class BddThenStepDefinitions extends BddLoader {
   }
 
   @Then("^the inventory of the game save with id (.*) should be empty$")
-  public void then_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
+  public void thenTheInventoryOfTheGameSaveWithIdShouldBeEmpty(String gameSaveId) {
     UUID uuid = UUID.fromString(gameSaveId);
     var results = inventoryService.getInventoryItems(uuid);
     assertThat(results).isEmpty();

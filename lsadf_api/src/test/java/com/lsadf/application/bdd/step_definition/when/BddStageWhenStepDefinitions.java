@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.bdd.when;
+package com.lsadf.application.bdd.step_definition.when;
 
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedCurrencyResponse;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedStageResponse;
 import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.controller.constant.ApiPathConstants;
-import com.lsadf.application.controller.game.currency.CurrencyController;
+import com.lsadf.application.controller.game.stage.StageController;
 import com.lsadf.core.bdd.BddUtils;
-import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
@@ -36,47 +36,23 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 /** Step definitions for the when steps in the BDD scenarios */
-@Slf4j(topic = "[CURRENCY WHEN STEP DEFINITIONS]")
-public class BddCurrencyWhenStepDefinitions extends BddLoader {
+@Slf4j(topic = "[STAGE WHEN STEP DEFINITIONS]")
+public class BddStageWhenStepDefinitions extends BddLoader {
 
-  @When("^the user requests the endpoint to get the currencies of the game save with id (.*)$")
-  public void whenUserRequestsEndpointToGetCurrencies(
-      String gameSaveId) {
-    String fullPath =
-        ApiPathConstants.CURRENCY
-            + CurrencyController.Constants.ApiPaths.GAME_SAVE_ID.replace(
-                "{game_save_id}", gameSaveId);
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
-      String token = jwtAuthenticationResponse.accessToken();
-      HttpHeaders headers = new HttpHeaders();
-      headers.setBearerAuth(token);
-      HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<CurrencyResponse>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedCurrencyResponse());
-      var body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
 
   @When(
-      "^the user requests the endpoint to set the currencies with the following CurrencyRequest for the game save with id (.*)$")
-  public void whenUserRequestsEndpointToSetCurrencies(
-      String gameSaveId, DataTable dataTable) {
+      "^the user requests the endpoint to set the stages with the following StageRequest for the game save with id (.*)$")
+  public void
+      whenUserRequestsEndpointToSetStages(
+          String gameSaveId, DataTable dataTable) {
     var data = dataTable.asMaps(String.class, String.class);
     assertThat(data).hasSize(1);
 
-    CurrencyRequest request = BddUtils.mapToCurrencyRequest(data.get(0));
+    StageRequest request = BddUtils.mapToStageRequest(data.get(0));
 
     String fullPath =
-        ApiPathConstants.CURRENCY
-            + CurrencyController.Constants.ApiPaths.GAME_SAVE_ID.replace(
-                "{game_save_id}", gameSaveId);
+        ApiPathConstants.STAGE
+            + StageController.Constants.ApiPaths.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -84,7 +60,7 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
 
-      HttpEntity<CurrencyRequest> httpRequest = new HttpEntity<>(request, headers);
+      HttpEntity<StageRequest> httpRequest = new HttpEntity<>(request, headers);
       ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
               url, HttpMethod.POST, httpRequest, buildParameterizedVoidResponse());
@@ -92,6 +68,30 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
       responseStack.push(body);
       log.info("Response: {}", result);
 
+    } catch (Exception e) {
+      exceptionStack.push(e);
+    }
+  }
+
+  @When("^the user requests the endpoint to get the stages of the game save with id (.*)$")
+  public void whenUserRequestsEndpointToGetStages(
+      String gameSaveId) {
+    String fullPath =
+        ApiPathConstants.STAGE
+            + StageController.Constants.ApiPaths.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);
+    String url = BddUtils.buildUrl(this.serverPort, fullPath);
+    try {
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
+      HttpHeaders headers = new HttpHeaders();
+      headers.setBearerAuth(token);
+      HttpEntity<Void> request = new HttpEntity<>(headers);
+      ResponseEntity<ApiResponse<StageResponse>> result =
+          testRestTemplate.exchange(
+              url, HttpMethod.GET, request, buildParameterizedStageResponse());
+      var body = result.getBody();
+      responseStack.push(body);
+      log.info("Response: {}", result);
     } catch (Exception e) {
       exceptionStack.push(e);
     }

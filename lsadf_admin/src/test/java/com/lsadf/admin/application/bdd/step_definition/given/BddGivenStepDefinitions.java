@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.bdd.given;
+package com.lsadf.admin.application.bdd.step_definition.given;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.application.bdd.CacheEntryType;
+import com.lsadf.admin.application.bdd.BddLoader;
+import com.lsadf.admin.application.bdd.CacheEntryType;
 import com.lsadf.core.bdd.BddFieldConstants;
 import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity;
 import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
@@ -35,9 +35,7 @@ import io.cucumber.java.en.Given;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,23 +44,89 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j(topic = "[GIVEN STEP DEFINITIONS]")
 public class BddGivenStepDefinitions extends BddLoader {
 
+  @Given("^the following items to the inventory of the game save with id (.*)$")
+  @Transactional
+  public void givenTheFollowingItems(String gameSaveId, DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+
+    UUID uuid = UUID.fromString(gameSaveId);
+    var exists = gameMetadataRepository.existsById(uuid);
+    if (!exists) {
+      throw new NotFoundException("Game save with id: " + gameSaveId + " not found.");
+    }
+
+    log.info("Creating items...");
+    rows.forEach(
+        row -> {
+          ItemEntity itemEntity = BddUtils.mapToItemEntity(row);
+          itemEntity.setGameSaveId(uuid);
+          ItemEntity newItemEntity;
+          if (itemEntity.getId() != null) {
+            newItemEntity =
+                itemRepository.createNewItemEntity(
+                    itemEntity.getId(),
+                    itemEntity.getGameSaveId(),
+                    itemEntity.getClientId(),
+                    itemEntity.getBlueprintId(),
+                    itemEntity.getItemType(),
+                    itemEntity.getItemRarity(),
+                    itemEntity.getIsEquipped(),
+                    itemEntity.getLevel(),
+                    itemEntity.getMainStatistic(),
+                    itemEntity.getMainBaseValue());
+          } else {
+            newItemEntity =
+                itemRepository.createNewItemEntity(
+                    itemEntity.getGameSaveId(),
+                    itemEntity.getClientId(),
+                    itemEntity.getBlueprintId(),
+                    itemEntity.getItemType(),
+                    itemEntity.getItemRarity(),
+                    itemEntity.getIsEquipped(),
+                    itemEntity.getLevel(),
+                    itemEntity.getMainStatistic(),
+                    itemEntity.getMainBaseValue());
+          }
+
+          var additionalStats = BddUtils.mapToAdditionalItemStatEntity(row, newItemEntity.getId());
+          additionalStats.forEach(
+              additionalItemStatEntity -> {
+                additionalItemStatsRepository.createNewAdditionalItemStatEntity(
+                    additionalItemStatEntity.getItemId(),
+                    additionalItemStatEntity.getStatistic(),
+                    additionalItemStatEntity.getBaseValue());
+              });
+          log.info("Item created: {}", newItemEntity);
+        });
+
+    log.info("Items created");
+  }
+
   @Given("^the BDD engine is ready$")
-  public void givenBddEngineIsReady() {
+  public void givenTheBddEngineIsReady() {
     BddUtils.initTestRestTemplate(testRestTemplate);
 
     log.info("BDD engine is ready. Using port: {}", this.serverPort);
   }
 
   @Given("^the time clock set to the present$")
-  public void givenTimeClockSetToPresent() {
+  public void givenTheTimeClockSetToThePresent() {
     log.info("Setting time clock to the present...");
     this.clockService.setClock(Clock.systemDefaultZone());
     log.info("Time clock set to the present");
   }
 
+  @Given("^the time clock set to the following value (.*)$")
+  public void givenTheTimeClockSetToTheFollowingValue(String time) {
+    log.info("Setting time clock to the following value: {}", time);
+    Instant instant = Instant.parse(time);
+    ZoneId zoneId = clockService.getClock().getZone();
+    clockService.setClock(Clock.fixed(instant, zoneId));
+    log.info("Time clock set to the following value: {}", time);
+  }
 
   @Given("^the cache is enabled$")
-  public void givenCacheIsEnabled() {
+  public void givenTheCacheIsEnabled() {
     log.info("Checking cache status...");
     boolean cacheEnabled = redisCacheService.isEnabled();
     if (!cacheEnabled) {
@@ -75,23 +139,9 @@ public class BddGivenStepDefinitions extends BddLoader {
     }
   }
 
-  @Given("^the cache is disabled$")
-  public void givenCacheIsDisabled() {
-    log.info("Checking cache status...");
-    boolean cacheEnabled = redisCacheService.isEnabled();
-    if (cacheEnabled) {
-      log.info("Cache is enabled. Disabling cache...");
-      redisCacheService.toggleCacheEnabling();
-      assertThat(redisCacheService.isEnabled()).isFalse();
-      log.info("Cache disabled");
-    } else {
-      log.info("Cache is already disabled");
-    }
-  }
-
   @Given("^a clean database$")
   @Transactional
-  public void givenCleanDatabase() throws NotFoundException {
+  public void givenIHaveACleanDatabase() throws NotFoundException {
     log.info("Cleaning database repositories...");
 
     this.gameMetadataRepository.deleteAllGameSaveEntities();
@@ -108,8 +158,11 @@ public class BddGivenStepDefinitions extends BddLoader {
     localCacheService.clearCaches();
 
     assertThat(characteristicsCache.getAll()).isEmpty();
+    assertThat(characteristicsCache.getAllHisto()).isEmpty();
     assertThat(currencyCache.getAll()).isEmpty();
+    assertThat(currencyCache.getAllHisto()).isEmpty();
     assertThat(stageCache.getAll()).isEmpty();
+    assertThat(stageCache.getAllHisto()).isEmpty();
     assertThat(gameMetadataCache.getAll()).isEmpty();
 
     log.info("Database repositories + caches cleaned");
@@ -117,48 +170,47 @@ public class BddGivenStepDefinitions extends BddLoader {
   }
 
   @Given("^the following game saves$")
-  @Transactional
-  public void givenFollowingGameSaves(DataTable dataTable) {
+  public void givenIHaveTheFollowingGameSaves(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     log.info("Creating game saves...");
 
     rows.forEach(
         row -> {
           GameMetadataEntity gameMetadataEntity = BddUtils.mapToGameSaveEntity(row);
-          GameMetadataEntity newEntity =
-              gameMetadataEntity.getId() != null
-                  ? gameMetadataRepository.createNewGameSaveEntity(
-                      gameMetadataEntity.getId(),
-                      gameMetadataEntity.getUserEmail(),
-                      gameMetadataEntity.getNickname())
-                  : gameMetadataRepository.createNewGameSaveEntity(
-                      gameMetadataEntity.getUserEmail(), gameMetadataEntity.getNickname());
           CurrencyEntity currencyEntity = BddUtils.mapToCurrencyEntity(row);
+          CharacteristicsEntity characteristicsEntity = BddUtils.mapToCharacteristicsEntity(row);
+          StageEntity stageEntity = BddUtils.mapToStageEntity(row);
+
+          GameMetadataEntity newGameMetadataEntity =
+              gameMetadataRepository.createNewGameSaveEntity(
+                  gameMetadataEntity.getId(),
+                  gameMetadataEntity.getUserEmail(),
+                  gameMetadataEntity.getNickname());
           currencyRepository.createNewCurrencyEntity(
-              newEntity.getId(),
+              newGameMetadataEntity.getId(),
               currencyEntity.getGoldAmount(),
               currencyEntity.getDiamondAmount(),
               currencyEntity.getEmeraldAmount(),
               currencyEntity.getAmethystAmount());
-          StageEntity stageEntity = BddUtils.mapToStageEntity(row);
           stageRepository.createNewStageEntity(
-              newEntity.getId(), stageEntity.getCurrentStage(), stageEntity.getMaxStage());
-          CharacteristicsEntity characteristicsEntity = BddUtils.mapToCharacteristicsEntity(row);
+              newGameMetadataEntity.getId(),
+              stageEntity.getCurrentStage(),
+              stageEntity.getMaxStage());
           characteristicsRepository.createNewCharacteristicsEntity(
-              newEntity.getId(),
+              newGameMetadataEntity.getId(),
               characteristicsEntity.getAttack(),
               characteristicsEntity.getCritChance(),
               characteristicsEntity.getCritDamage(),
               characteristicsEntity.getHealth(),
               characteristicsEntity.getResistance());
-          log.info("Game save created: {}", newEntity);
+          log.info("Game save created: {}", newGameMetadataEntity);
         });
 
     log.info("Game saves created");
   }
 
   @Given("^the following (.*) entries in cache$")
-  public void givenFollowingCacheEntries(String cacheType, DataTable dataTable) {
+  public void givenTheFollowingCacheEntriesInCache(String cacheType, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     log.info("Creating {} entries in cache...", cacheType);
     CacheEntryType cacheEntryType = CacheEntryType.fromString(cacheType);
@@ -187,17 +239,6 @@ public class BddGivenStepDefinitions extends BddLoader {
                 String gameSaveId = row.get(BddFieldConstants.StageCacheEntry.GAME_SAVE_ID);
                 Stage stage = BddUtils.mapToStage(row);
                 stageCache.set(gameSaveId, stage);
-                count.getAndIncrement();
-              });
-      case GAME_METADATA ->
-          rows.forEach(
-              row -> {
-                String gameSaveId =
-                    row.get(BddFieldConstants.GameSaveOwnershipCacheEntry.GAME_SAVE_ID);
-                String userId = row.get(BddFieldConstants.GameSaveOwnershipCacheEntry.USER_EMAIL);
-                GameMetadata gameMetadata =
-                    new GameMetadata(UUID.fromString(gameSaveId), userId, null, null, null);
-                gameMetadataCache.set(gameSaveId, gameMetadata);
                 count.getAndIncrement();
               });
       default -> throw new IllegalArgumentException("Unknown cache type: " + cacheType);

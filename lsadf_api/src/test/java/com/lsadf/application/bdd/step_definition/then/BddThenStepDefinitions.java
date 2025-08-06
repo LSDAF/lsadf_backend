@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.bdd.then;
+package com.lsadf.application.bdd.step_definition.then;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

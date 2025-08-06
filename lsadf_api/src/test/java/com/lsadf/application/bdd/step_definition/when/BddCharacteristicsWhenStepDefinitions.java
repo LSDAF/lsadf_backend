@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.bdd.when;
+package com.lsadf.application.bdd.step_definition.when;
 
 import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedCharacteristicsResponse;
 import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;

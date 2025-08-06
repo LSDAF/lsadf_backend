@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.bdd.when;
+package com.lsadf.admin.application.bdd.step_definition.when;
 
 import static com.lsadf.admin.application.cache.AdminCacheController.Constants.ApiPaths.*;
 import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_GAME_SAVES;
@@ -39,7 +39,6 @@ import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.user.UserResponse;
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import java.util.Collections;
 import java.util.List;
@@ -55,7 +54,7 @@ import org.springframework.http.ResponseEntity;
 public class BddAdminWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the admin endpoint to get the global info$")
-  public void when_the_user_requests_the_admin_endpoint_for_global_info() {
+  public void whenTheUserRequestsTheAdminEndpointForGlobalInfo() {
     String fullPath = AdminApiPathConstants.ADMIN_GLOBAL_INFO;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -77,8 +76,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the admin endpoint to get all the users ordered by (.*)$")
-  public void when_the_user_requests_the_admin_endpoint_to_get_all_the_users_ordered_by(
-      String orderBy) {
+  public void whenTheUserRequestsTheAdminEndpointToGetAllTheUsersOrderedBy(String orderBy) {
     String fullPath = AdminApiPathConstants.ADMIN_USER + "?order_by=" + orderBy;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -102,8 +100,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the admin endpoint to get all the game saves ordered by (.*)$")
-  public void when_the_user_requests_the_admin_endpoint_to_get_all_save_games_ordered_by(
-      String orderBy) {
+  public void whenTheUserRequestsTheAdminEndpointToGetAllSaveGamesOrderedBy(String orderBy) {
     String fullPath = AdminApiPathConstants.ADMIN_GAME_SAVE + "?order_by=" + orderBy;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -126,8 +123,8 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
     }
   }
 
-  @And("^the user requests the admin endpoint to delete the user with id (.*)$")
-  public void when_the_user_requests_the_admin_endpoint_to_delete_the_user_with_id(String userId) {
+  @When("^the user requests the admin endpoint to delete the user with id (.*)$")
+  public void whenTheUserRequestsTheAdminEndpointToDeleteTheUserWithId(String userId) {
     String fullPath =
         AdminApiPathConstants.ADMIN_USER
             + AdminUserController.Constants.ApiPaths.USER_ID.replace("{user_id}", userId);
@@ -149,9 +146,8 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
     }
   }
 
-  @And("^the user requests the admin endpoint to delete the game save with id (.*)$")
-  public void when_the_user_requests_the_admin_endpoint_to_delete_the_game_save_with_id(
-      String gameSaveId) {
+  @When("^the user requests the admin endpoint to delete the game save with id (.*)$")
+  public void whenTheUserRequestsTheAdminEndpointToDeleteTheGameSaveWithId(String gameSaveId) {
     String fullPath =
         AdminApiPathConstants.ADMIN_GAME_SAVE
             + AdminGameSaveController.Constants.ApiPaths.GAME_SAVE_ID.replace(
@@ -175,8 +171,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the admin endpoint to get the user with the following id (.*)$")
-  public void when_the_user_requests_the_admin_endpoint_to_get_the_user_with_the_following_id(
-      String userId) {
+  public void whenTheUserRequestsTheAdminEndpointToGetTheUserWithTheFollowingId(String userId) {
     String fullPath = AdminApiPathConstants.ADMIN_USER + USER_ID.replace("{user_id}", userId);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -200,7 +195,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the admin endpoint to get a game save with the following id (.*)$")
-  public void when_the_user_requests_the_admin_endpoint_to_get_the_game_save_with_the_following_id(
+  public void whenTheUserRequestsTheAdminEndpointToGetTheGameSaveWithTheFollowingId(
       String gameSaveId) {
     String fullPath =
         AdminApiPathConstants.ADMIN_GAME_SAVE
@@ -228,7 +223,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the admin endpoint to get the user with the following username (.*)$")
-  public void when_the_user_requests_the_admin_endpoint_to_get_the_user_with_the_following_username(
+  public void whenTheUserRequestsTheAdminEndpointToGetTheUserWithTheFollowingUsername(
       String username) {
     String fullPath =
         AdminApiPathConstants.ADMIN_USER
@@ -257,7 +252,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   @When(
       "^the user requests the admin endpoint to search users ordered by (.*) with the following SearchRequest$")
   public void
-      when_the_user_requests_the_admin_endpoint_to_search_users_ordered_by_with_the_following_search_request(
+      whenTheUserRequestsTheAdminEndpointToSearchUsersOrderedByWithTheFollowingSearchRequest(
           String orderBy, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -289,7 +284,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   @When(
       "^the user requests the admin endpoint to search game saves ordered by (.*) with the following SearchRequest$")
   public void
-      when_the_user_requests_the_admin_endpoint_to_search_game_saves_ordered_by_with_the_following_search_request(
+      whenTheUserRequestsTheAdminEndpointToSearchGameSavesOrderedByWithTheFollowingSearchRequest(
           String orderBy, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -321,7 +316,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
   @When(
       "^the user requests the admin endpoint to update the user with id (.*) with the following AdminUserUpdateRequest$")
-  public void when_the_user_requests_the_admin_endpoint_to_update_the_user_with_id(
+  public void whenTheUserRequestsTheAdminEndpointToUpdateTheUserWithId(
       String id, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -356,7 +351,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   @When(
       "^the user requests the admin endpoint to create a new user with the following AdminUserCreationRequest$")
   public void
-      when_the_user_requests_the_admin_endpoint_to_create_a_new_user_with_the_following_AdminUserCreationRequest(
+      whenTheUserRequestsTheAdminEndpointToCreateANewUserWithTheFollowingAdminUserCreationRequest(
           DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -390,7 +385,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the admin endpoint to toggle the cache status$")
-  public void when_the_user_requests_the_admin_endpoint_to_toggle_the_cache_status() {
+  public void whenTheUserRequestsTheAdminEndpointToToggleTheCacheStatus() {
     String fullPath = AdminApiPathConstants.ADMIN_CACHE + TOGGLE;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -410,7 +405,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the admin endpoint to get the cache status$")
-  public void when_the_user_requests_the_admin_endpoint_to_get_the_cache_status() {
+  public void whenTheUserRequestsTheAdminEndpointToGetTheCacheStatus() {
     String fullPath = AdminApiPathConstants.ADMIN_CACHE + ENABLED;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -430,7 +425,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the admin endpoint to flush and clear the cache$")
-  public void when_the_user_requests_the_admin_endpoint_to_clear_the_cache() {
+  public void whenTheUserRequestsTheAdminEndpointToClearTheCache() {
     String fullPath = AdminApiPathConstants.ADMIN_CACHE + FLUSH;
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
@@ -451,7 +446,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   @When(
       "^the user requests the admin endpoint to create a new game save with the following AdminGameSaveCreationRequest$")
   public void
-      when_the_user_requests_the_admin_endpoint_to_create_a_new_game_save_with_the_following_game_save_creation_request(
+      whenTheUserRequestsTheAdminEndpointToCreateANewGameSaveWithTheFollowingGameSaveCreationRequest(
           DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -486,7 +481,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
   @When(
       "^the user requests the admin endpoint to get all the game saves of the user with the following username (.*)$")
   public void
-      when_the_user_requests_the_admin_endpoint_to_get_all_the_game_saves_of_the_user_with_the_following_username(
+      whenTheUserRequestsTheAdminEndpointToGetAllTheGameSavesOfTheUserWithTheFollowingUsername(
           String username) {
     String fullPath =
         AdminApiPathConstants.ADMIN_GAME_SAVE
@@ -514,7 +509,7 @@ public class BddAdminWhenStepDefinitions extends BddLoader {
 
   @When(
       "^the user requests the admin endpoint to update the game save with id (.*) with the following GameSaveUpdateRequest$")
-  public void when_the_user_requests_the_admin_endpoint_to_update_the_game_save_with_id(
+  public void whenTheUserRequestsTheAdminEndpointToUpdateTheGameSaveWithId(
       String saveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 

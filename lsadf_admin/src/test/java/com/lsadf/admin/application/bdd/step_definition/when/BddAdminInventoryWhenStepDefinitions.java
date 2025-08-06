@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.bdd.when;
+package com.lsadf.admin.application.bdd.step_definition.when;
 
 import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,9 +31,7 @@ import io.cucumber.java.en.When;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -43,10 +41,8 @@ import org.springframework.http.ResponseEntity;
 @Slf4j(topic = "[ADMIN INVENTORY WHEN STEP DEFINITIONS]")
 public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
 
-  @Autowired private Stack<ItemResponse> itemResponseStack;
-
   @When("^the user requests the admin endpoint to get the inventory for game save with id (.*)$")
-  public void when_the_user_requests_the_admin_endpoint_to_get_the_inventory_for_game_save_with_id(
+  public void whenTheUserRequestsTheAdminEndpointToGetTheInventoryForGameSaveWithId(
       String gameSaveId) {
     String fullPath =
         AdminApiPathConstants.ADMIN_INVENTORY
@@ -74,7 +70,7 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
   @When(
       "^the user requests the admin endpoint to create a new item in the inventory for game save with id (.*) with the following ItemRequest$")
   public void
-      when_the_user_requests_the_admin_endpoint_to_create_a_new_item_in_the_inventory_for_game_save_with_id_with_the_following_item_request(
+      whenTheUserRequestsTheAdminEndpointToCreateANewItemInTheInventoryForGameSaveWithIdWithTheFollowingItemRequest(
           String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     assertThat(rows).hasSize(1);
@@ -109,37 +105,9 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @When(
-      "^the user requests the admin endpoint to delete an item with clientId (.*) from the inventory for game save with id (.*)$")
-  public void
-      when_the_user_requests_the_admin_endpoint_to_delete_an_item_with_client_id_from_the_inventory_for_game_save_with_id(
-          String itemClientId, String gameSaveId) {
-    String fullPath =
-        AdminApiPathConstants.ADMIN_INVENTORY
-            + AdminInventoryController.Constants.ApiPaths.CLIENT_ID
-                .replace("{game_save_id}", gameSaveId)
-                .replace("{client_id}", itemClientId);
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
-      String token = jwtAuthenticationResponse.accessToken();
-      HttpHeaders headers = new HttpHeaders();
-      headers.setBearerAuth(token);
-      HttpEntity<Void> request = new HttpEntity<>(headers);
-      ResponseEntity<ApiResponse<Void>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.DELETE, request, buildParameterizedVoidResponse());
-      ApiResponse<Void> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When(
       "^the user requests the admin endpoint to update an item with clientId (.*) in the inventory for game save with id (.*) with the following ItemRequest$")
   public void
-      when_the_user_requests_the_admin_endpoint_to_update_an_item_with_client_id_in_the_inventory_for_game_save_with_id_with_the_following_item_request(
+      whenTheUserRequestsTheAdminEndpointToUpdateAnItemWithClientIdInTheInventoryForGameSaveWithIdWithTheFollowingItemRequest(
           String itemClientId, String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     assertThat(rows).hasSize(1);
@@ -174,9 +142,8 @@ public class BddAdminInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the admin endpoint to clear the inventory for game save with id (.*)$")
-  public void
-      when_the_user_requests_the_admin_endpoint_to_clear_the_inventory_for_game_save_with_id(
-          String gameSaveId) {
+  public void whenTheUserRequestsTheAdminEndpointToClearTheInventoryForGameSaveWithId(
+      String gameSaveId) {
     String fullPath =
         AdminApiPathConstants.ADMIN_INVENTORY
             + AdminInventoryController.Constants.ApiPaths.GAME_SAVE_ID.replace(
