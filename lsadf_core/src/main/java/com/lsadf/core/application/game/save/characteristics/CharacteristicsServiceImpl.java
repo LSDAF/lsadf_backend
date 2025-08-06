@@ -71,11 +71,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
           characteristicsCache.get(gameSaveIdString);
       if (optionalCachedCharacteristics.isPresent()) {
         Characteristics characteristics = optionalCachedCharacteristics.get();
-        if (characteristics.attack() == null
-            || characteristics.critChance() == null
-            || characteristics.critDamage() == null
-            || characteristics.health() == null
-            || characteristics.resistance() == null) {
+        if (isCharacteristicsPartial(characteristics)) {
           Characteristics dbCharacteristics = getCharacteristicsFromDatabase(gameSaveId);
           characteristics = mergeCharacteristics(characteristics, dbCharacteristics);
           characteristicsCache.set(gameSaveIdString, characteristics);
@@ -189,5 +185,20 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         && characteristics.critDamage() == null
         && characteristics.health() == null
         && characteristics.resistance() == null;
+  }
+
+  /**
+   * Checks if the given characteristics object has any null fields.
+   *
+   * @param characteristics the characteristics object to be checked
+   * @return true if any of the fields (attack, critChance, critDamage, health, resistance) are
+   *     null, false otherwise
+   */
+  private static boolean isCharacteristicsPartial(Characteristics characteristics) {
+    return characteristics.attack() == null
+        || characteristics.critChance() == null
+        || characteristics.critDamage() == null
+        || characteristics.health() == null
+        || characteristics.resistance() == null;
   }
 }

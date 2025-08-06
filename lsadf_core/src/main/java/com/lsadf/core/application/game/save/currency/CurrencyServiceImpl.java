@@ -52,10 +52,7 @@ public class CurrencyServiceImpl implements CurrencyService {
       Optional<Currency> optionalCachedCurrency = currencyCache.get(gameSaveIdString);
       if (optionalCachedCurrency.isPresent()) {
         currency = optionalCachedCurrency.get();
-        if (currency.amethyst() == null
-            || currency.diamond() == null
-            || currency.emerald() == null
-            || currency.gold() == null) {
+        if (isCurrencyPartial(currency)) {
           Currency dbCurrency = getCurrencyFromDatabase(gameSaveId);
           currency = mergeCurrencies(currency, dbCurrency);
           currencyCache.set(gameSaveIdString, currency);
@@ -160,5 +157,19 @@ public class CurrencyServiceImpl implements CurrencyService {
         && currency.diamond() == null
         && currency.emerald() == null
         && currency.gold() == null;
+  }
+
+  /**
+   * Checks if the provided {@code Currency} instance has any null values for its fields.
+   *
+   * @param currency the {@code Currency} object to be checked
+   * @return true if any of the fields (gold, diamond, emerald, amethyst) in the {@code Currency}
+   *     object are null, false otherwise
+   */
+  private static boolean isCurrencyPartial(Currency currency) {
+    return currency.amethyst() == null
+        || currency.diamond() == null
+        || currency.emerald() == null
+        || currency.gold() == null;
   }
 }

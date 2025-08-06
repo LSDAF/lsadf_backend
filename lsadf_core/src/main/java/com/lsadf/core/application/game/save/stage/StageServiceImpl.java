@@ -64,7 +64,7 @@ public class StageServiceImpl implements StageService {
       Optional<Stage> optionalCachedStage = stageCache.get(gameSaveIdString);
       if (optionalCachedStage.isPresent()) {
         stage = optionalCachedStage.get();
-        if (stage.maxStage() == null || stage.currentStage() == null) {
+        if (isStagePartial(stage)) {
           Stage dbStage = getStageFromDatabase(gameSaveId);
           stage = mergeStages(stage, dbStage);
           stageCache.set(gameSaveIdString, stage);
@@ -138,5 +138,16 @@ public class StageServiceImpl implements StageService {
    */
   private static boolean isStageNull(Stage stage) {
     return stage.currentStage() == null && stage.maxStage() == null;
+  }
+
+  /**
+   * Checks if the provided {@link Stage} is partially defined. A stage is considered partial if
+   * either the current stage or the maximum stage is null.
+   *
+   * @param stage the stage to check
+   * @return true if the stage is partially defined, false otherwise
+   */
+  private static boolean isStagePartial(Stage stage) {
+    return stage.currentStage() == null || stage.maxStage() == null;
   }
 }
