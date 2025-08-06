@@ -47,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BddInventoryWhenStepDefinitions extends BddLoader {
   @Given("^the following items to the inventory of the game save with id (.*)$")
   @Transactional
-  public void given_the_following_items(String gameSaveId, DataTable dataTable) {
+  public void givenFollowingItemsInInventory(String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     UUID uuid = UUID.fromString(gameSaveId);
@@ -104,7 +104,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the endpoint to get the inventory of the game save with id (.*)$")
-  public void when_the_user_requests_the_endpoint_to_get_the_inventory_of_the_game_save_with_id(
+  public void whenUserRequestsEndpointToGetInventory(
       String gameSaveId) {
     String fullPath =
         ApiPathConstants.INVENTORY
@@ -132,7 +132,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   @When(
       "the user requests the endpoint to create an item in the inventory of the game save with id (.*) with the following ItemCreationRequest$")
   public void
-      when_the_user_requests_the_endpoint_to_create_an_item_in_the_inventory_of_the_game_save_with_id_with_the_following_item_creation_request(
+      whenUserRequestsEndpointToCreateInventoryItem(
           String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     assertThat(rows).hasSize(1);
@@ -164,7 +164,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   @When(
       "the user requests the endpoint to delete an item with client id (.*) in the inventory of the game save with id (.*)$")
   public void
-      when_the_user_requests_the_endpoint_to_delete_an_item_with_id_in_the_inventory_of_the_game_save_with_id(
+      whenUserRequestsEndpointToDeleteInventoryItem(
           String clientId, String gameSaveId) {
     String fullPath =
         ApiPathConstants.INVENTORY
@@ -190,7 +190,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   @When(
       "the user requests the endpoint to update an item with client id (.*) in the inventory of the game save with id (.*) with the following ItemUpdateRequest$")
   public void
-      when_the_user_requests_the_endpoint_to_update_an_item_in_the_inventory_of_the_game_save_with_id_with_the_following_item_update_request(
+      whenUserRequestsEndpointToUpdateInventoryItem(
           String clientId, String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     assertThat(rows).hasSize(1);
@@ -221,7 +221,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @Then("^the inventory of the game save with id (.*) should be empty$")
-  public void when_the_inventory_of_the_game_save_with_id_should_be_empty(String gameSaveId) {
+  public void thenInventoryShouldBeEmpty(String gameSaveId) {
     try {
       UUID uuid = UUID.fromString(gameSaveId);
       Set<Item> inventory = inventoryService.getInventoryItems(uuid);
@@ -234,7 +234,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @Then("^the response should have the following itemResponses$")
-  public void then_the_response_should_have_the_following_items_in_the_inventory(
+  public void thenResponseShouldHaveFollowingItemResponses(
       DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 

@@ -47,30 +47,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class BddGivenStepDefinitions extends BddLoader {
 
   @Given("^the BDD engine is ready$")
-  public void given_the_bdd_engine_is_ready() {
+  public void givenBddEngineIsReady() {
     BddUtils.initTestRestTemplate(testRestTemplate);
 
     log.info("BDD engine is ready. Using port: {}", this.serverPort);
   }
 
   @Given("^the time clock set to the present$")
-  public void given_the_time_clock_set_to_the_present() {
+  public void givenTimeClockSetToPresent() {
     log.info("Setting time clock to the present...");
     this.clockService.setClock(Clock.systemDefaultZone());
     log.info("Time clock set to the present");
   }
 
-  @Given("^the time clock set to the following value (.*)$")
-  public void given_the_time_clock_set_to_the_following_value(String time) {
-    log.info("Setting time clock to the following value: {}", time);
-    Instant instant = Instant.parse(time);
-    ZoneId zoneId = clockService.getClock().getZone();
-    clockService.setClock(Clock.fixed(instant, zoneId));
-    log.info("Time clock set to the following value: {}", time);
-  }
 
   @Given("^the cache is enabled$")
-  public void given_the_cache_is_enabled() {
+  public void givenCacheIsEnabled() {
     log.info("Checking cache status...");
     boolean cacheEnabled = redisCacheService.isEnabled();
     if (!cacheEnabled) {
@@ -84,7 +76,7 @@ public class BddGivenStepDefinitions extends BddLoader {
   }
 
   @Given("^the cache is disabled$")
-  public void given_the_cache_is_disabled() {
+  public void givenCacheIsDisabled() {
     log.info("Checking cache status...");
     boolean cacheEnabled = redisCacheService.isEnabled();
     if (cacheEnabled) {
@@ -99,7 +91,7 @@ public class BddGivenStepDefinitions extends BddLoader {
 
   @Given("^a clean database$")
   @Transactional
-  public void given_i_have_a_clean_database() throws NotFoundException {
+  public void givenCleanDatabase() throws NotFoundException {
     log.info("Cleaning database repositories...");
 
     this.gameMetadataRepository.deleteAllGameSaveEntities();
@@ -126,7 +118,7 @@ public class BddGivenStepDefinitions extends BddLoader {
 
   @Given("^the following game saves$")
   @Transactional
-  public void given_i_have_the_following_game_saves(DataTable dataTable) {
+  public void givenFollowingGameSaves(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     log.info("Creating game saves...");
 
@@ -166,7 +158,7 @@ public class BddGivenStepDefinitions extends BddLoader {
   }
 
   @Given("^the following (.*) entries in cache$")
-  public void given_the_following_cache_entries_in_cache(String cacheType, DataTable dataTable) {
+  public void givenFollowingCacheEntries(String cacheType, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     log.info("Creating {} entries in cache...", cacheType);
     CacheEntryType cacheEntryType = CacheEntryType.fromString(cacheType);

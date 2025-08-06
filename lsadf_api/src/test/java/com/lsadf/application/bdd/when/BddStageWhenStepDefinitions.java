@@ -23,14 +23,12 @@ import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.stage.StageController;
 import com.lsadf.core.bdd.BddUtils;
-import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -41,39 +39,11 @@ import org.springframework.http.ResponseEntity;
 @Slf4j(topic = "[STAGE WHEN STEP DEFINITIONS]")
 public class BddStageWhenStepDefinitions extends BddLoader {
 
-  @When("^we want to get the stages for the game save with id (.*)$")
-  public void when_we_want_to_get_the_stages_for_the_game_save_with_id(String gameSaveId) {
-    try {
-      log.info("Getting currencies for game save with id: {}", gameSaveId);
-      UUID uuid = UUID.fromString(gameSaveId);
-      Stage stage = this.stageService.getStage(uuid);
-      stageStack.push(stage);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^we want to set the following stages for the game save with id (.*) with toCache to (.*)$")
-  public void when_we_want_to_set_the_stages_for_the_game_save_with_id_to_with_cache(
-      String gameSaveId, boolean toCache, DataTable dataTable) {
-    var data = dataTable.asMaps(String.class, String.class);
-    assertThat(data).hasSize(1);
-
-    Stage stage = BddUtils.mapToStage(data.get(0));
-
-    try {
-      log.info("Setting {} for game save with id: {}", stage, gameSaveId);
-      UUID uuid = UUID.fromString(gameSaveId);
-      this.stageService.saveStage(uuid, stage, toCache);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
 
   @When(
       "^the user requests the endpoint to set the stages with the following StageRequest for the game save with id (.*)$")
   public void
-      when_the_user_requests_the_endpoint_to_set_the_stages_with_the_following_StageRequest_for_the_game_save_with_id(
+      whenUserRequestsEndpointToSetStages(
           String gameSaveId, DataTable dataTable) {
     var data = dataTable.asMaps(String.class, String.class);
     assertThat(data).hasSize(1);
@@ -104,7 +74,7 @@ public class BddStageWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the endpoint to get the stages of the game save with id (.*)$")
-  public void when_the_user_requests_the_endpoint_to_get_the_stages_of_the_game_save_with_id(
+  public void whenUserRequestsEndpointToGetStages(
       String gameSaveId) {
     String fullPath =
         ApiPathConstants.STAGE

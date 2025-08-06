@@ -18,19 +18,13 @@ package com.lsadf.application.bdd.when;
 import static com.lsadf.application.controller.auth.AuthController.Constants.ApiPaths.*;
 import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.awaitility.Awaitility.await;
 
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.application.bdd.CacheEntryType;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.game_save.GameSaveController;
 import com.lsadf.application.controller.user.UserController;
 import com.lsadf.core.bdd.BddUtils;
-import com.lsadf.core.domain.game.save.GameSave;
-import com.lsadf.core.infra.web.request.game.save.creation.GameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.save.creation.SimpleGameSaveCreationRequest;
 import com.lsadf.core.infra.web.request.game.save.update.GameSaveNicknameUpdateRequest;
-import com.lsadf.core.infra.web.request.user.creation.SimpleUserCreationRequest;
 import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -40,7 +34,6 @@ import com.lsadf.core.infra.web.response.user.UserInfoResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 
@@ -48,59 +41,9 @@ import org.springframework.http.*;
 @Slf4j(topic = "[WHEN STEP DEFINITIONS]")
 public class BddWhenStepDefinitions extends BddLoader {
 
-  @When("^a (.*) cache entry is expired$")
-  public void when_a_cache_entry_is_expired(String cacheType) {
-    CacheEntryType cacheEntryType = CacheEntryType.fromString(cacheType);
-    int size =
-        switch (cacheEntryType) {
-          case CHARACTERISTICS, CHARACTERISTICS_HISTO -> characteristicsCache.getAllHisto().size();
-          case CURRENCY, CURRENCY_HISTO -> currencyCache.getAllHisto().size();
-          case STAGE, STAGE_HISTO -> stageCache.getAllHisto().size();
-          case GAME_METADATA -> gameMetadataCache.getAll().size();
-        };
-    log.info("Waiting for {} cache entry to expire...", cacheType);
-    await()
-        .atMost(1200, TimeUnit.SECONDS)
-        .until(
-            () -> {
-              try {
-                int newSize =
-                    switch (cacheEntryType) {
-                      case CHARACTERISTICS, CHARACTERISTICS_HISTO ->
-                          characteristicsCache.getAllHisto().size();
-                      case CURRENCY, CURRENCY_HISTO -> currencyCache.getAllHisto().size();
-                      case STAGE, STAGE_HISTO -> stageCache.getAllHisto().size();
-                      case GAME_METADATA -> gameMetadataCache.getAll().size();
-                    };
-                return newSize < size;
-              } catch (Exception e) {
-                return false;
-              }
-            });
-  }
-
-  @When("^the cache is flushed$")
-  public void when_the_cache_is_flushed() {
-    log.info("Flushing cache...");
-    this.cacheFlushService.flushCharacteristics();
-    this.cacheFlushService.flushCurrencies();
-    this.cacheFlushService.flushStages();
-  }
-
-  @When("^the user with email (.*) gets the game save with id (.*)$")
-  public void when_the_user_with_email_gets_a_game_save_with_id(
-      String userEmail, String gameSaveId) {
-    try {
-      UUID uuid = UUID.fromString(gameSaveId);
-      GameSave gameSave = gameSaveService.getGameSave(uuid);
-      gameSaveListStack.push(Collections.singletonList(gameSave));
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
 
   @When("^the user logs in with the following refresh token (.*)$")
-  public void logInWithRefreshToken(String refreshToken) {
+  public void whenUserLogsInWithRefreshToken(String refreshToken) {
     try {
       String fullPath = ApiPathConstants.AUTH + REFRESH;
 
@@ -126,7 +69,7 @@ public class BddWhenStepDefinitions extends BddLoader {
   }
 
   @When("the user logs in with the following credentials")
-  public void when_the_user_logs_in_with_the_following_credentials(DataTable dataTable) {
+  public void whenUserLogsInWithCredentials(DataTable dataTable) {
     try {
       var rows = dataTable.asMaps(String.class, String.class);
 
@@ -158,73 +101,9 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
   }
 
-  @When(
-      "^the user requests the endpoint to register a user with the following SimpleUserCreationRequest$")
-  public void
-      when_the_user_request_the_endpoint_to_register_a_user_with_the_following_UserCreationRequest(
-          DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    // it should have only one line
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-    SimpleUserCreationRequest simpleUserCreationRequest = BddUtils.mapToUserCreationRequest(row);
-    String fullPath = ApiPathConstants.AUTH + REGISTER;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    HttpEntity<SimpleUserCreationRequest> request =
-        BddUtils.buildHttpEntity(simpleUserCreationRequest);
-    try {
-
-      ResponseEntity<ApiResponse<UserInfoResponse>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.POST, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfoResponse> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^we want to delete the game save with id (.*)$")
-  public void when_the_user_with_email_deletes_a_game_save(String saveId) {
-    try {
-      UUID uuid = UUID.fromString(saveId);
-      gameSaveService.deleteGameSave(uuid);
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^we want to create a new game save for the user with email (.*)$")
-  public void when_we_want_to_create_a_new_game_save_for_the_user_with_email(String userEmail) {
-    try {
-      GameSaveCreationRequest request = new SimpleGameSaveCreationRequest(userEmail);
-      GameSave gameSave = gameSaveService.createGameSave(request);
-      gameSaveListStack.push(Collections.singletonList(gameSave));
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^we want to get the game save with id (.*)$")
-  public void when_we_want_to_get_the_game_save_with_id(String saveId) {
-    try {
-      UUID saveIdUuid = UUID.fromString(saveId);
-      GameSave gameSave = gameSaveService.getGameSave(saveIdUuid);
-      gameSaveListStack.push(Collections.singletonList(gameSave));
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
 
   @When("^the user requests the endpoint to generate a GameSave$")
-  public void when_the_user_requests_the_endpoint_to_create_a_game_save() {
+  public void whenUserRequestsEndpointToGenerateGameSave() {
     String fullPath = ApiPathConstants.GAME_SAVE + GameSaveController.Constants.ApiPaths.GENERATE;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -246,50 +125,11 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
   }
 
-  @When("^the user requests the endpoint to generate a game save with no token$")
-  public void when_the_user_requests_the_endpoint_to_create_a_game_save_with_no_token() {
-    String fullPath = ApiPathConstants.GAME_SAVE + GameSaveController.Constants.ApiPaths.GENERATE;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-      HttpEntity<Void> request = new HttpEntity<>(new HttpHeaders());
-      ResponseEntity<ApiResponse<GameSaveResponse>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.POST, request, buildParameterizedGameSaveResponse());
-      ApiResponse<GameSaveResponse> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
-
-  @When("^the user requests the endpoint to update a GameSave with no token$")
-  public void when_the_user_requests_the_endpoint_to_update_a_game_save_with_no_token() {
-    String fullPath = ApiPathConstants.GAME_SAVE + "/1";
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-      HttpHeaders headers = new HttpHeaders();
-      HttpEntity<GameSaveNicknameUpdateRequest> request =
-          new HttpEntity<>(new GameSaveNicknameUpdateRequest("Test"), headers);
-      ResponseEntity<ApiResponse<Void>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.POST, request, buildParameterizedVoidResponse());
-      ApiResponse<Void> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
 
   @When(
       "^the user requests the endpoint to update a GameSave with id (.*) with the following GameSaveNicknameUpdateRequest$")
   public void
-      when_the_user_requests_the_endpoint_to_update_a_game_save_with_id_with_the_following_game_save_update_nickname_request(
+      whenUserRequestsEndpointToUpdateGameSave(
           String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -323,27 +163,9 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
   }
 
-  @When("^the user requests the endpoint to get his UserInfo with no token$")
-  public void when_the_user_requests_the_endpoint_to_get_his_user_info_with_no_token() {
-    String fullPath = ApiPathConstants.USER + UserController.Constants.ApiPaths.ME;
-
-    String url = BddUtils.buildUrl(this.serverPort, fullPath);
-    try {
-      HttpEntity<Void> request = new HttpEntity<>(new HttpHeaders());
-      ResponseEntity<ApiResponse<UserInfoResponse>> result =
-          testRestTemplate.exchange(
-              url, HttpMethod.GET, request, buildParameterizedUserInfoResponse());
-      ApiResponse<UserInfoResponse> body = result.getBody();
-      responseStack.push(body);
-      log.info("Response: {}", result);
-
-    } catch (Exception e) {
-      exceptionStack.push(e);
-    }
-  }
 
   @When("^the user requests the endpoint to get his UserInfo$")
-  public void when_the_user_requests_the_endpoint_to_get_his_user_info() {
+  public void whenUserRequestsEndpointToGetUserInfo() {
     String fullPath = ApiPathConstants.USER + UserController.Constants.ApiPaths.ME;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -367,7 +189,7 @@ public class BddWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the endpoint to get his GameSaves$")
-  public void when_the_user_requests_the_endpoint_to_get_his_game_saves() {
+  public void whenUserRequestsEndpointToGetGameSaves() {
     String fullPath = ApiPathConstants.GAME_SAVE + GameSaveController.Constants.ApiPaths.ME;
 
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
@@ -392,9 +214,9 @@ public class BddWhenStepDefinitions extends BddLoader {
   }
 
   @When("the user uses the previously generated refresh token to log in")
-  public void when_the_user_uses_the_previously_generated_refresh_token_to_log_in() {
+  public void whenUserUsesGeneratedRefreshTokenToLogIn() {
     JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
     String refreshToken = jwtAuthenticationResponse.refreshToken();
-    logInWithRefreshToken(refreshToken);
+    whenUserLogsInWithRefreshToken(refreshToken);
   }
 }
