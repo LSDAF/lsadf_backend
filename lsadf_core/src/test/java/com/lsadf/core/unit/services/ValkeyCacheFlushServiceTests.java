@@ -17,15 +17,14 @@ package com.lsadf.core.unit.services;
 
 import static org.mockito.Mockito.*;
 
-import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.flush.RedisCacheFlushServiceImpl;
+import com.lsadf.core.infra.valkey.cache.flush.RedisCacheFlushServiceImpl;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
@@ -41,17 +40,15 @@ class ValkeyCacheFlushServiceTests {
 
   RedisCacheFlushServiceImpl redisCacheFlushService;
 
-  @Mock private Cache<Characteristics> characteristicsCache;
+  @Mock private CachePort<Characteristics> characteristicsCache;
 
-  @Mock private Cache<Currency> currencyCache;
+  @Mock private CachePort<Currency> currencyCache;
 
-  @Mock private Cache<Stage> stageCache;
+  @Mock private CachePort<Stage> stageCache;
 
   @Mock private CharacteristicsService characteristicsService;
 
   @Mock CurrencyService currencyService;
-
-  @Mock InventoryService inventoryService;
 
   @Mock StageService stageService;
 
@@ -65,7 +62,6 @@ class ValkeyCacheFlushServiceTests {
         new RedisCacheFlushServiceImpl(
             characteristicsService,
             currencyService,
-            inventoryService,
             stageService,
             characteristicsCache,
             currencyCache,

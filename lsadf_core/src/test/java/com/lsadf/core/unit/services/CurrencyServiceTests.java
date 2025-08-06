@@ -25,9 +25,10 @@ import static org.mockito.Mockito.when;
 import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.currency.CurrencyServiceImpl;
+import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,8 +43,9 @@ class CurrencyServiceTests {
   private CurrencyService currencyService;
 
   @Mock private CurrencyRepositoryPort currencyRepositoryPort;
+  @Mock private CacheService cacheService;
 
-  @Mock private Cache<Currency> currencyCache;
+  @Mock private CachePort<Currency> currencyCache;
 
   private static final UUID UUID = java.util.UUID.randomUUID();
 
@@ -52,14 +54,14 @@ class CurrencyServiceTests {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    currencyService = new CurrencyServiceImpl(currencyRepositoryPort, currencyCache);
+    currencyService = new CurrencyServiceImpl(cacheService, currencyRepositoryPort, currencyCache);
   }
 
   @Test
   void test_getCurrency_throwsNotFoundException_when_gameSaveNotExists() {
     // Arrange
     when(currencyRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.empty());
-    when(currencyCache.isEnabled()).thenReturn(true);
+    when(cacheService.isEnabled()).thenReturn(true);
 
     // Assert
     assertThrows(NotFoundException.class, () -> currencyService.getCurrency(UUID));
@@ -71,7 +73,7 @@ class CurrencyServiceTests {
     Currency currency = Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
 
     when(currencyRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(currency));
-    when(currencyCache.isEnabled()).thenReturn(true);
+    when(cacheService.isEnabled()).thenReturn(true);
     when(currencyCache.get(anyString())).thenReturn(Optional.of(currency));
 
     // Act
@@ -87,7 +89,7 @@ class CurrencyServiceTests {
     Currency currency = Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
 
     when(currencyRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(currency));
-    when(currencyCache.isEnabled()).thenReturn(false);
+    when(cacheService.isEnabled()).thenReturn(false);
     when(currencyCache.get(anyString())).thenReturn(Optional.empty());
 
     // Act
@@ -106,7 +108,7 @@ class CurrencyServiceTests {
     Currency currency = Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
 
     when(currencyRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(currency));
-    when(currencyCache.isEnabled()).thenReturn(true);
+    when(cacheService.isEnabled()).thenReturn(true);
     when(currencyCache.get(anyString())).thenReturn(Optional.of(currencyCached));
 
     // Act
