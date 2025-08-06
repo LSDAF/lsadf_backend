@@ -16,7 +16,7 @@
 
 package com.lsadf.core.application.game.save.currency;
 
-import com.lsadf.core.application.shared.GameCachePort;
+import com.lsadf.core.application.shared.HistoCachePort;
 import com.lsadf.core.domain.game.save.currency.Currency;
 
-public interface CurrencyCachePort extends GameCachePort<Currency> {}
+public interface CurrencyCachePort extends HistoCachePort<Currency> {}

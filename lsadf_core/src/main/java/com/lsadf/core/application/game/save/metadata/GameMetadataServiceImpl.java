@@ -18,14 +18,18 @@ package com.lsadf.core.application.game.save.metadata;
 
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
 public class GameMetadataServiceImpl implements GameMetadataService {
 
+  private final CacheService cacheService;
   private final GameMetadataRepositoryPort gameMetadataRepositoryPort;
 
-  public GameMetadataServiceImpl(GameMetadataRepositoryPort gameMetadataRepositoryPort) {
+  public GameMetadataServiceImpl(
+      CacheService cacheService, GameMetadataRepositoryPort gameMetadataRepositoryPort) {
+    this.cacheService = cacheService;
     this.gameMetadataRepositoryPort = gameMetadataRepositoryPort;
   }
 
@@ -52,7 +56,7 @@ public class GameMetadataServiceImpl implements GameMetadataService {
   public GameMetadata getGameMetadata(UUID gameSaveId) {
     return gameMetadataRepositoryPort
         .findById(gameSaveId)
-        .orElseThrow(() -> new RuntimeException("Game metadata not found for id: " + gameSaveId));
+        .orElseThrow(() -> new NotFoundException("Game metadata not found for id: " + gameSaveId));
   }
 
   @Override

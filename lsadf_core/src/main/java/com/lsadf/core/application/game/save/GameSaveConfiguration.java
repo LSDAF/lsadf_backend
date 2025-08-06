@@ -15,31 +15,23 @@
  */
 package com.lsadf.core.application.game.save;
 
-import static com.lsadf.core.infra.cache.RedisConstants.GAME_SAVE_OWNERSHIP;
-
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsConfiguration;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyConfiguration;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataConfiguration;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageConfiguration;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.infra.cache.ValkeyCache;
-import com.lsadf.core.infra.cache.config.ValkeyProperties;
-import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.cache.service.CacheService;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * Configuration class for managing the setup of the Game Save related services and components.
@@ -71,10 +63,10 @@ public class GameSaveConfiguration {
       CharacteristicsService characteristicsService,
       StageService stageService,
       CurrencyService currencyService,
-      HistoCache<Stage> stageCache,
-      HistoCache<Currency> currencyCache,
-      HistoCache<Characteristics> characteristicsCache,
-      @Qualifier(GAME_SAVE_OWNERSHIP_CACHE) Cache<String> gameSaveOwnershipCache,
+      CharacteristicsCachePort characteristicsCache,
+      CurrencyCachePort currencyCache,
+      StageCachePort stageCache,
+      GameMetadataCachePort gameMetadataCache,
       CacheService cacheService) {
     return new GameSaveServiceImpl(
         gameMetadataService,
@@ -84,21 +76,9 @@ public class GameSaveConfiguration {
         userService,
         gameSaveRepositoryPort,
         cacheService,
-        gameSaveOwnershipCache,
+        gameMetadataCache,
         stageCache,
         currencyCache,
         characteristicsCache);
-  }
-
-  @Bean(name = GAME_SAVE_OWNERSHIP_CACHE)
-  public Cache<String> gameSaveOwnershipCache(
-      RedisTemplate<String, String> redisTemplate,
-      CacheExpirationProperties cacheExpirationProperties,
-      ValkeyProperties valkeyProperties) {
-    return new ValkeyCache<>(
-        redisTemplate,
-        GAME_SAVE_OWNERSHIP,
-        cacheExpirationProperties.getGameSaveOwnershipExpirationSeconds(),
-        valkeyProperties);
   }
 }

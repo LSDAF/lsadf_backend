@@ -16,7 +16,7 @@
 
 package com.lsadf.core.application.game.save.stage;
 
-import com.lsadf.core.application.shared.GameCachePort;
+import com.lsadf.core.application.shared.HistoCachePort;
 import com.lsadf.core.domain.game.save.stage.Stage;
 
-public interface StageCachePort extends GameCachePort<Stage> {}
+public interface StageCachePort extends HistoCachePort<Stage> {}

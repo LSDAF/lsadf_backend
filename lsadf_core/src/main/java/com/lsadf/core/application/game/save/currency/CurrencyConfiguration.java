@@ -15,17 +15,9 @@
  */
 package com.lsadf.core.application.game.save.currency;
 
-import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.infra.cache.NoOpHistoCache;
-import com.lsadf.core.infra.cache.config.ValkeyProperties;
-import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * CurrencyConfiguration is a configuration class that defines the bean creation for
@@ -39,23 +31,9 @@ public class CurrencyConfiguration {
 
   @Bean
   public CurrencyService currencyService(
-      CurrencyRepositoryPort currencyRepositoryPort, Cache<Currency> currencyCache) {
-    return new CurrencyServiceImpl(currencyRepositoryPort, currencyCache);
-  }
-
-  @Bean(name = CURRENCY_CACHE)
-  @ConditionalOnProperty(prefix = "cache.redis", name = "enabled", havingValue = "true")
-  public HistoCache<Currency> redisCurrencyCache(
-      RedisTemplate<String, Currency> redisTemplate,
-      CacheExpirationProperties cacheExpirationProperties,
-      ValkeyProperties valkeyProperties) {
-    return new ValkeyCurrencyCache(
-        redisTemplate, cacheExpirationProperties.getCurrencyExpirationSeconds(), valkeyProperties);
-  }
-
-  @Bean(name = CURRENCY_CACHE)
-  @ConditionalOnMissingBean
-  public HistoCache<Currency> noOpCurrencyCache() {
-    return new NoOpHistoCache<>();
+      CacheService cacheService,
+      CurrencyRepositoryPort currencyRepositoryPort,
+      CurrencyCachePort currencyCache) {
+    return new CurrencyServiceImpl(cacheService, currencyRepositoryPort, currencyCache);
   }
 }

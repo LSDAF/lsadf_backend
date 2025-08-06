@@ -16,7 +16,7 @@
 
 package com.lsadf.core.application.game.save.metadata;
 
-import com.lsadf.core.application.shared.GameCachePort;
+import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 
-public interface GameMetadataCachePort extends GameCachePort<GameMetadata> {}
+public interface GameMetadataCachePort extends CachePort<GameMetadata> {}

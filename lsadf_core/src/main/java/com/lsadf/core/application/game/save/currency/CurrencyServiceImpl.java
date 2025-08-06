@@ -15,20 +15,26 @@
  */
 package com.lsadf.core.application.game.save.currency;
 
+import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.infra.cache.Cache;
 import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
 public class CurrencyServiceImpl implements CurrencyService {
 
+  private final CacheService cacheService;
+
   private final CurrencyRepositoryPort currencyRepositoryPort;
-  private final Cache<Currency> currencyCache;
+  private final CachePort<Currency> currencyCache;
 
   public CurrencyServiceImpl(
-      CurrencyRepositoryPort currencyRepositoryPort, Cache<Currency> currencyCache) {
+      CacheService cacheService,
+      CurrencyRepositoryPort currencyRepositoryPort,
+      CachePort<Currency> currencyCache) {
+    this.cacheService = cacheService;
     this.currencyRepositoryPort = currencyRepositoryPort;
     this.currencyCache = currencyCache;
   }
@@ -41,7 +47,7 @@ public class CurrencyServiceImpl implements CurrencyService {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
     String gameSaveIdString = gameSaveId.toString();
-    if (currencyCache.isEnabled()) {
+    if (Boolean.TRUE.equals(cacheService.isEnabled())) {
       Optional<Currency> optionalCachedCurrency = currencyCache.get(gameSaveIdString);
       if (optionalCachedCurrency.isPresent()) {
         Currency currency = optionalCachedCurrency.get();

@@ -15,9 +15,13 @@
  */
 package com.lsadf.core.application.game.save;
 
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.save.GameSave;
@@ -25,14 +29,12 @@ import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.infra.cache.service.CacheService;
 import com.lsadf.core.infra.exception.AlreadyExistingGameSaveException;
 import com.lsadf.core.infra.exception.AlreadyTakenNicknameException;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.exception.http.UnauthorizedException;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
@@ -57,10 +59,10 @@ public class GameSaveServiceImpl implements GameSaveService {
   private final GameSaveRepositoryPort gameSaveRepositoryPort;
 
   private final CacheService cacheService;
-  private final Cache<String> gameSaveOwnershipCache;
-  private final HistoCache<Stage> stageCache;
-  private final HistoCache<Currency> currencyCache;
-  private final HistoCache<Characteristics> characteristicsCache;
+  private final GameMetadataCachePort gameMetadataCache;
+  private final StageCachePort stageCache;
+  private final CurrencyCachePort currencyCache;
+  private final CharacteristicsCachePort characteristicsCache;
 
   @Autowired
   public GameSaveServiceImpl(
@@ -71,10 +73,10 @@ public class GameSaveServiceImpl implements GameSaveService {
       UserService userService,
       GameSaveRepositoryPort gameSaveRepositoryPort,
       CacheService cacheService,
-      Cache<String> gameSaveOwnershipCache,
-      HistoCache<Stage> stageCache,
-      HistoCache<Currency> currencyCache,
-      HistoCache<Characteristics> characteristicsCache) {
+      GameMetadataCachePort gameMetadataCache,
+      StageCachePort stageCache,
+      CurrencyCachePort currencyCache,
+      CharacteristicsCachePort characteristicsCache) {
     this.userService = userService;
     this.characteristicsService = characteristicsService;
     this.stageService = stageService;
@@ -82,7 +84,7 @@ public class GameSaveServiceImpl implements GameSaveService {
     this.gameMetadataService = gameMetadataService;
     this.gameSaveRepositoryPort = gameSaveRepositoryPort;
     this.cacheService = cacheService;
-    this.gameSaveOwnershipCache = gameSaveOwnershipCache;
+    this.gameMetadataCache = gameMetadataCache;
     this.stageCache = stageCache;
     this.currencyCache = currencyCache;
     this.characteristicsCache = characteristicsCache;
@@ -249,7 +251,7 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Transactional(readOnly = true)
   public void checkGameSaveOwnership(UUID saveId, String userEmail)
       throws ForbiddenException, NotFoundException {
-    if (!gameSaveOwnershipCache.isEnabled()) {
+    if (Boolean.FALSE.equals(cacheService.isEnabled())) {
       String ownerEmail = gameMetadataService.findOwnerEmailById(saveId);
       if (!Objects.equals(ownerEmail, userEmail)) {
         throw new ForbiddenException("The given user email is not the owner of the game save");
@@ -257,17 +259,17 @@ public class GameSaveServiceImpl implements GameSaveService {
       return;
     }
     String saveIdString = saveId.toString();
-    Optional<String> optionalOwnership = gameSaveOwnershipCache.get(saveIdString);
-    if (optionalOwnership.isEmpty()) {
-      String ownerEmail = gameMetadataService.findOwnerEmailById(saveId);
-      gameSaveOwnershipCache.set(saveIdString, ownerEmail);
-      if (!Objects.equals(ownerEmail, userEmail)) {
+    Optional<GameMetadata> optionalGameMetadata = gameMetadataCache.get(saveIdString);
+    if (optionalGameMetadata.isEmpty()) {
+      GameMetadata gameMetadata = gameMetadataService.getGameMetadata(saveId);
+      gameMetadataCache.set(saveIdString, gameMetadata);
+      if (!Objects.equals(gameMetadata.userEmail(), userEmail)) {
         throw new ForbiddenException("The given user username is not the owner of the game save");
       }
       return;
     }
 
-    if (!Objects.equals(optionalOwnership.get(), userEmail)) {
+    if (!Objects.equals(optionalGameMetadata.get().userEmail(), userEmail)) {
       throw new ForbiddenException("The given username is not the owner of the game save");
     }
   }
@@ -279,7 +281,7 @@ public class GameSaveServiceImpl implements GameSaveService {
     if (!userService.checkUsernameExists(username)) {
       throw new NotFoundException("User with username " + username + " not found");
     }
-    if (!gameSaveOwnershipCache.isEnabled()) {
+    if (Boolean.FALSE.equals(cacheService.isEnabled())) {
       return gameSaveRepositoryPort.findByUserEmail(username).toList();
     }
     return gameSaveRepositoryPort

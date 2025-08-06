@@ -16,7 +16,7 @@
 
 package com.lsadf.core.application.game.save.characteristics;
 
-import com.lsadf.core.application.shared.GameCachePort;
+import com.lsadf.core.application.shared.HistoCachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 
-public interface CharacteristicsCachePort extends GameCachePort<Characteristics> {}
+public interface CharacteristicsCachePort extends HistoCachePort<Characteristics> {}

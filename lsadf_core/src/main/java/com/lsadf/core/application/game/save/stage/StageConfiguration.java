@@ -15,14 +15,9 @@
  */
 package com.lsadf.core.application.game.save.stage;
 
-import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.infra.cache.config.ValkeyProperties;
-import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * Configuration class for the Stage service and its dependencies.
@@ -38,16 +33,9 @@ public class StageConfiguration {
 
   @Bean
   public StageService stageService(
-      StageRepositoryPort stageRepositoryPort, Cache<Stage> stageCache) {
-    return new StageServiceImpl(stageRepositoryPort, stageCache);
-  }
-
-  @Bean(name = STAGE_CACHE)
-  public HistoCache<Stage> redisStageCache(
-      RedisTemplate<String, Stage> redisTemplate,
-      CacheExpirationProperties cacheExpirationProperties,
-      ValkeyProperties valkeyProperties) {
-    return new ValkeyStageCache(
-        redisTemplate, cacheExpirationProperties.getStageExpirationSeconds(), valkeyProperties);
+      CacheService cacheService,
+      StageRepositoryPort stageRepositoryPort,
+      StageCachePort stageCache) {
+    return new StageServiceImpl(cacheService, stageRepositoryPort, stageCache);
   }
 }
