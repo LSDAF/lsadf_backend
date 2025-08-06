@@ -58,17 +58,23 @@ public class StageServiceImpl implements StageService {
     if (gameSaveId == null) {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
+    Stage stage;
     if (Boolean.TRUE.equals(cacheService.isEnabled())) {
       String gameSaveIdString = gameSaveId.toString();
       Optional<Stage> optionalCachedStage = stageCache.get(gameSaveIdString);
       if (optionalCachedStage.isPresent()) {
-        Stage stage = optionalCachedStage.get();
+        stage = optionalCachedStage.get();
         if (stage.maxStage() == null || stage.currentStage() == null) {
           Stage dbStage = getStageFromDatabase(gameSaveId);
-          return mergeStages(stage, dbStage);
+          stage = mergeStages(stage, dbStage);
+          stageCache.set(gameSaveIdString, stage);
+          return stage;
         }
         return stage;
       }
+      stage = getStageFromDatabase(gameSaveId);
+      stageCache.set(gameSaveId.toString(), stage);
+      return stage;
     }
     return getStageFromDatabase(gameSaveId);
   }

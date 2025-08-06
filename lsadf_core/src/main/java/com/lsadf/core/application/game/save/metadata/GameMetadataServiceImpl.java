@@ -51,9 +51,7 @@ public class GameMetadataServiceImpl implements GameMetadataService {
       if (optionalGameMetadata.isPresent()) {
         return true;
       }
-      return gameMetadataRepositoryPort.existsById(gameSaveId);
     }
-
     return gameMetadataRepositoryPort.existsById(gameSaveId);
   }
 

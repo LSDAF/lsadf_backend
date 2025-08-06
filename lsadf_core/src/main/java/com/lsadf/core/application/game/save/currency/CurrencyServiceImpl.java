@@ -43,6 +43,7 @@ public class CurrencyServiceImpl implements CurrencyService {
   @Override
   @Transactional(readOnly = true)
   public Currency getCurrency(UUID gameSaveId) throws NotFoundException {
+    Currency currency;
     if (gameSaveId == null) {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
@@ -50,18 +51,22 @@ public class CurrencyServiceImpl implements CurrencyService {
     if (Boolean.TRUE.equals(cacheService.isEnabled())) {
       Optional<Currency> optionalCachedCurrency = currencyCache.get(gameSaveIdString);
       if (optionalCachedCurrency.isPresent()) {
-        Currency currency = optionalCachedCurrency.get();
+        currency = optionalCachedCurrency.get();
         if (currency.amethyst() == null
             || currency.diamond() == null
             || currency.emerald() == null
             || currency.gold() == null) {
           Currency dbCurrency = getCurrencyFromDatabase(gameSaveId);
-          return mergeCurrencies(currency, dbCurrency);
+          currency = mergeCurrencies(currency, dbCurrency);
+          currencyCache.set(gameSaveIdString, currency);
+          return currency;
         }
         return currency;
       }
     }
-    return getCurrencyFromDatabase(gameSaveId);
+    currency = getCurrencyFromDatabase(gameSaveId);
+    currencyCache.set(gameSaveId.toString(), currency);
+    return currency;
   }
 
   /** {@inheritDoc} */

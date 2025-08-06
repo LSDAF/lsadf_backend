@@ -77,12 +77,16 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
             || characteristics.health() == null
             || characteristics.resistance() == null) {
           Characteristics dbCharacteristics = getCharacteristicsFromDatabase(gameSaveId);
-          return mergeCharacteristics(characteristics, dbCharacteristics);
+          characteristics = mergeCharacteristics(characteristics, dbCharacteristics);
+          characteristicsCache.set(gameSaveIdString, characteristics);
+          return characteristics;
         }
         return characteristics;
       }
     }
-    return getCharacteristicsFromDatabase(gameSaveId);
+    var characteristics = getCharacteristicsFromDatabase(gameSaveId);
+    characteristicsCache.set(gameSaveId.toString(), characteristics);
+    return characteristics;
   }
 
   /**
