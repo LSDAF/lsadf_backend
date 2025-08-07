@@ -40,5 +40,4 @@ public class BddCacheThenStepDefinitions extends BddLoader {
       case STAGE_HISTO -> assertThat(stageCache.getAllHisto()).isEmpty();
     }
   }
-
 }

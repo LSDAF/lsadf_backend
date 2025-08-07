@@ -58,7 +58,6 @@ public class BddGivenStepDefinitions extends BddLoader {
     log.info("Time clock set to the present");
   }
 
-
   @Given("^the cache is enabled$")
   public void givenCacheIsEnabled() {
     log.info("Checking cache status...");

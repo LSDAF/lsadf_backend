@@ -40,8 +40,7 @@ import org.springframework.http.ResponseEntity;
 public class BddCurrencyWhenStepDefinitions extends BddLoader {
 
   @When("^the user requests the endpoint to get the currencies of the game save with id (.*)$")
-  public void whenUserRequestsEndpointToGetCurrencies(
-      String gameSaveId) {
+  public void whenUserRequestsEndpointToGetCurrencies(String gameSaveId) {
     String fullPath =
         ApiPathConstants.CURRENCY
             + CurrencyController.Constants.ApiPaths.GAME_SAVE_ID.replace(
@@ -66,8 +65,7 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
 
   @When(
       "^the user requests the endpoint to set the currencies with the following CurrencyRequest for the game save with id (.*)$")
-  public void whenUserRequestsEndpointToSetCurrencies(
-      String gameSaveId, DataTable dataTable) {
+  public void whenUserRequestsEndpointToSetCurrencies(String gameSaveId, DataTable dataTable) {
     var data = dataTable.asMaps(String.class, String.class);
     assertThat(data).hasSize(1);
 

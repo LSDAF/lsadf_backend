@@ -104,8 +104,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the endpoint to get the inventory of the game save with id (.*)$")
-  public void whenUserRequestsEndpointToGetInventory(
-      String gameSaveId) {
+  public void whenUserRequestsEndpointToGetInventory(String gameSaveId) {
     String fullPath =
         ApiPathConstants.INVENTORY
             + InventoryController.Constants.ApiPaths.GAME_SAVE_ID.replace(
@@ -131,9 +130,8 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
 
   @When(
       "the user requests the endpoint to create an item in the inventory of the game save with id (.*) with the following ItemCreationRequest$")
-  public void
-      whenUserRequestsEndpointToCreateInventoryItem(
-          String gameSaveId, DataTable dataTable) {
+  public void whenUserRequestsEndpointToCreateInventoryItem(
+      String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     assertThat(rows).hasSize(1);
 
@@ -163,9 +161,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
 
   @When(
       "the user requests the endpoint to delete an item with client id (.*) in the inventory of the game save with id (.*)$")
-  public void
-      whenUserRequestsEndpointToDeleteInventoryItem(
-          String clientId, String gameSaveId) {
+  public void whenUserRequestsEndpointToDeleteInventoryItem(String clientId, String gameSaveId) {
     String fullPath =
         ApiPathConstants.INVENTORY
             + CLIENT_ID.replace("{game_save_id}", gameSaveId).replace("{client_id}", clientId);
@@ -189,9 +185,8 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
 
   @When(
       "the user requests the endpoint to update an item with client id (.*) in the inventory of the game save with id (.*) with the following ItemUpdateRequest$")
-  public void
-      whenUserRequestsEndpointToUpdateInventoryItem(
-          String clientId, String gameSaveId, DataTable dataTable) {
+  public void whenUserRequestsEndpointToUpdateInventoryItem(
+      String clientId, String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     assertThat(rows).hasSize(1);
 
@@ -234,8 +229,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @Then("^the response should have the following itemResponses$")
-  public void thenResponseShouldHaveFollowingItemResponses(
-      DataTable dataTable) {
+  public void thenResponseShouldHaveFollowingItemResponses(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     Set<ItemResponse> inventory = itemResponseSetStack.peek();

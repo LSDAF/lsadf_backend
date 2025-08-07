@@ -39,11 +39,8 @@ import org.springframework.http.ResponseEntity;
 @Slf4j(topic = "[CHARACTERISTICS WHEN STEP DEFINITIONS]")
 public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
 
-
   @When("^the user requests the endpoint to get the characteristics of the game save with id (.*)$")
-  public void
-      whenUserRequestsEndpointToGetCharacteristics(
-          String gameSaveId) {
+  public void whenUserRequestsEndpointToGetCharacteristics(String gameSaveId) {
     String fullPath =
         ApiPathConstants.CHARACTERISTICS
             + CharacteristicsController.Constants.ApiPaths.GAME_SAVE_ID.replace(
@@ -68,9 +65,7 @@ public class BddCharacteristicsWhenStepDefinitions extends BddLoader {
 
   @When(
       "^the user requests the endpoint to set the characteristics with the following CharacteristicsRequest for the game save with id (.*)$")
-  public void
-      whenUserRequestsEndpointToSetCharacteristics(
-          String gameSaveId, DataTable dataTable) {
+  public void whenUserRequestsEndpointToSetCharacteristics(String gameSaveId, DataTable dataTable) {
     var data = dataTable.asMaps(String.class, String.class);
     assertThat(data).hasSize(1);
 

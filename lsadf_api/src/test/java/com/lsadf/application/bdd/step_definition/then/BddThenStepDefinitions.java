@@ -44,13 +44,11 @@ public class BddThenStepDefinitions extends BddLoader {
   private static final CharacteristicsResponseMapper characteristicsResponseMapper =
       CharacteristicsResponseMapper.INSTANCE;
 
-
   @Then("^the response status code should be (.*)$")
   public void thenResponseStatusCodeShouldBe(int statusCode) {
     int actual = responseStack.peek().status();
     assertThat(actual).isEqualTo(statusCode);
   }
-
 
   @Then("^the response should have the following UserInfo$")
   public void thenResponseShouldHaveFollowingUserInfo(DataTable dataTable) {
@@ -73,7 +71,6 @@ public class BddThenStepDefinitions extends BddLoader {
 
     assertThat(actual.roles()).containsAll(expectedResponse.roles());
   }
-
 
   @Then("^the response should have the following StageResponse$")
   public void thenResponseShouldHaveFollowingStageResponse(DataTable dataTable) {
@@ -124,7 +121,6 @@ public class BddThenStepDefinitions extends BddLoader {
     assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
   }
 
-
   @Then("^the response should have the following GameSaveResponse$")
   public void thenResponseShouldHaveFollowingGameSaveResponse(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
@@ -145,7 +141,6 @@ public class BddThenStepDefinitions extends BddLoader {
         .isEqualTo(expected);
   }
 
-
   @Then("^the response should have the following GameSaveResponses$")
   public void thenResponseShouldHaveFollowingGameSaves(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
@@ -164,5 +159,4 @@ public class BddThenStepDefinitions extends BddLoader {
           .isEqualTo(expected);
     }
   }
-
 }

@@ -39,12 +39,9 @@ import org.springframework.http.ResponseEntity;
 @Slf4j(topic = "[STAGE WHEN STEP DEFINITIONS]")
 public class BddStageWhenStepDefinitions extends BddLoader {
 
-
   @When(
       "^the user requests the endpoint to set the stages with the following StageRequest for the game save with id (.*)$")
-  public void
-      whenUserRequestsEndpointToSetStages(
-          String gameSaveId, DataTable dataTable) {
+  public void whenUserRequestsEndpointToSetStages(String gameSaveId, DataTable dataTable) {
     var data = dataTable.asMaps(String.class, String.class);
     assertThat(data).hasSize(1);
 
@@ -74,8 +71,7 @@ public class BddStageWhenStepDefinitions extends BddLoader {
   }
 
   @When("^the user requests the endpoint to get the stages of the game save with id (.*)$")
-  public void whenUserRequestsEndpointToGetStages(
-      String gameSaveId) {
+  public void whenUserRequestsEndpointToGetStages(String gameSaveId) {
     String fullPath =
         ApiPathConstants.STAGE
             + StageController.Constants.ApiPaths.GAME_SAVE_ID.replace("{game_save_id}", gameSaveId);

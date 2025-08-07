@@ -41,7 +41,6 @@ import org.springframework.http.*;
 @Slf4j(topic = "[WHEN STEP DEFINITIONS]")
 public class BddWhenStepDefinitions extends BddLoader {
 
-
   @When("^the user logs in with the following refresh token (.*)$")
   public void whenUserLogsInWithRefreshToken(String refreshToken) {
     try {
@@ -101,7 +100,6 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
   }
 
-
   @When("^the user requests the endpoint to generate a GameSave$")
   public void whenUserRequestsEndpointToGenerateGameSave() {
     String fullPath = ApiPathConstants.GAME_SAVE + GameSaveController.Constants.ApiPaths.GENERATE;
@@ -125,12 +123,9 @@ public class BddWhenStepDefinitions extends BddLoader {
     }
   }
 
-
   @When(
       "^the user requests the endpoint to update a GameSave with id (.*) with the following GameSaveNicknameUpdateRequest$")
-  public void
-      whenUserRequestsEndpointToUpdateGameSave(
-          String gameSaveId, DataTable dataTable) {
+  public void whenUserRequestsEndpointToUpdateGameSave(String gameSaveId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
     // it should have only one line
@@ -162,7 +157,6 @@ public class BddWhenStepDefinitions extends BddLoader {
       exceptionStack.push(e);
     }
   }
-
 
   @When("^the user requests the endpoint to get his UserInfo$")
   public void whenUserRequestsEndpointToGetUserInfo() {
