@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.unit.services;
+package com.lsadf.core.unit.application.info;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;

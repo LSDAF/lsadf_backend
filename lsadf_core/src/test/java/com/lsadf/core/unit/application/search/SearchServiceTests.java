@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.unit.services;
+package com.lsadf.core.unit.application.search;
 
 import static com.lsadf.core.infra.web.JsonAttributes.*;
 import static org.assertj.core.api.Assertions.assertThat;
