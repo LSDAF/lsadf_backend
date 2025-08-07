@@ -53,17 +53,11 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
     this.userService = userService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<List<UserResponse>>> getUsers(Jwt jwt, List<String> orderBy) {
     List<UserSortingParameter> sortingParameterList =
@@ -76,11 +70,6 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
     return generateResponse(HttpStatus.OK, userList);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<UserResponse>> getUserById(Jwt jwt, UUID userId) {
     validateUser(jwt);
@@ -89,11 +78,6 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<UserResponse>> getUserByUsername(Jwt jwt, String username) {
     validateUser(jwt);
@@ -102,11 +86,6 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<UserResponse>> updateUser(
       Jwt jwt, UUID userId, AdminUserUpdateRequest user) {
@@ -116,11 +95,6 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<Void>> deleteUser(Jwt jwt, UUID userId) {
     validateUser(jwt);
@@ -128,11 +102,6 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
     return generateResponse(HttpStatus.OK);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<UserResponse>> createUser(
       Jwt jwt, AdminUserCreationRequest adminUserCreationRequest) {

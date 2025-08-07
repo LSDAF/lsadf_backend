@@ -29,25 +29,21 @@ public class ClockServiceImpl implements ClockService {
     this.clock = clock;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Clock getClock() {
     return this.clock;
   }
 
-  /** {@inheritDoc} */
   @Override
   public void setClock(Clock clock) {
     this.clock = clock;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Instant nowInstant() {
     return Instant.now(clock);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Date nowDate() {
     return DateUtils.dateFromClock(clock);

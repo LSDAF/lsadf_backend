@@ -39,7 +39,6 @@ import org.mapstruct.factory.Mappers;
 public interface StageEntityMapper extends EntityModelMapper<StageEntity, Stage> {
   StageEntityMapper INSTANCE = Mappers.getMapper(StageEntityMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   Stage map(StageEntity stageEntity);
 }

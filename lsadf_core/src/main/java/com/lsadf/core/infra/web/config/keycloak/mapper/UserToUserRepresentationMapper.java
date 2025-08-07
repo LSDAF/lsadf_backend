@@ -49,7 +49,6 @@ public interface UserToUserRepresentationMapper
     extends com.lsadf.core.shared.mapper.Mapper<User, UserRepresentation> {
   UserToUserRepresentationMapper INSTANCE = Mappers.getMapper(UserToUserRepresentationMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   @Mapping(target = "email", source = "username")
   @Mapping(target = "realmRoles", source = "userRoles")

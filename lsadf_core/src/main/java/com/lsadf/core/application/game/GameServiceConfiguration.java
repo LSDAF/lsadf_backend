@@ -16,7 +16,7 @@
 package com.lsadf.core.application.game;
 
 import com.lsadf.core.application.game.inventory.InventoryConfiguration;
-import com.lsadf.core.application.game.save.GameSaveConfiguration;
+import com.lsadf.core.application.game.save.config.GameSaveConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 

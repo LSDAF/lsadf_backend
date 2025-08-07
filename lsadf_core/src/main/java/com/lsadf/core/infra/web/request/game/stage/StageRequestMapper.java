@@ -43,7 +43,6 @@ import org.mapstruct.factory.Mappers;
 public interface StageRequestMapper extends RequestModelMapper<StageRequest, Stage> {
   StageRequestMapper INSTANCE = Mappers.getMapper(StageRequestMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   Stage map(StageRequest stageRequest);
 }

@@ -46,13 +46,11 @@ public class AdminGlobalInfoControllerImpl extends BaseController
     this.globalInfoService = globalInfoService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<GlobalInfoResponse>> getGlobalInfo(Jwt jwt) {
     validateUser(jwt);

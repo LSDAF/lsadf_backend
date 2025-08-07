@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.infra.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequestMapper;
@@ -58,7 +58,6 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     this.cacheService = cacheService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCurrency(
       Jwt jwt, UUID gameSaveId, CurrencyRequest currencyRequest) {
@@ -72,7 +71,6 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<CurrencyResponse>> getCurrency(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
@@ -83,7 +81,6 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     return generateResponse(HttpStatus.OK, currencyResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;

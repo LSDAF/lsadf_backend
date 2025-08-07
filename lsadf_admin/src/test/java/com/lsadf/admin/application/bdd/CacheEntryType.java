@@ -22,7 +22,7 @@ public enum CacheEntryType {
   CURRENCY_HISTO,
   STAGE,
   STAGE_HISTO,
-  GAME_SAVE_OWNERSHIP;
+  GAME_METADATA;
 
   public static CacheEntryType fromString(String cacheEntryType) {
     for (CacheEntryType value : CacheEntryType.values()) {

@@ -45,7 +45,6 @@ public interface GameMetadataEntityMapper
     extends EntityModelMapper<GameMetadataEntity, GameMetadata> {
   GameMetadataEntityMapper INSTANCE = Mappers.getMapper(GameMetadataEntityMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   GameMetadata map(GameMetadataEntity gameMetadataEntity);
 

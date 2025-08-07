@@ -1,0 +1,251 @@
+/*
+ * Copyright © 2024-2025 LSDAF
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.lsadf.application.bdd.step_definition.when;
+
+import static com.lsadf.application.controller.game.inventory.InventoryController.Constants.ApiPaths.CLIENT_ID;
+import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.lsadf.application.bdd.BddLoader;
+import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.application.controller.game.inventory.InventoryController;
+import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.core.domain.game.inventory.item.Item;
+import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity;
+import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import java.util.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+
+/** Step definitions for the when steps in the BDD scenarios */
+@Slf4j(topic = "[INVENTORY WHEN STEP DEFINITIONS]")
+public class BddInventoryWhenStepDefinitions extends BddLoader {
+  @Given("^the following items to the inventory of the game save with id (.*)$")
+  @Transactional
+  public void givenFollowingItemsInInventory(String gameSaveId, DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+
+    UUID uuid = UUID.fromString(gameSaveId);
+    var exists = gameMetadataRepository.existsById(uuid);
+    if (!exists) {
+      throw new NotFoundException("Game save with id: " + gameSaveId + " not found.");
+    }
+
+    log.info("Creating items...");
+    rows.forEach(
+        row -> {
+          ItemEntity itemEntity = BddUtils.mapToItemEntity(row);
+          itemEntity.setGameSaveId(uuid);
+          ItemEntity newItemEntity;
+          if (itemEntity.getId() != null) {
+            newItemEntity =
+                itemRepository.createNewItemEntity(
+                    itemEntity.getId(),
+                    itemEntity.getGameSaveId(),
+                    itemEntity.getClientId(),
+                    itemEntity.getBlueprintId(),
+                    itemEntity.getItemType(),
+                    itemEntity.getItemRarity(),
+                    itemEntity.getIsEquipped(),
+                    itemEntity.getLevel(),
+                    itemEntity.getMainStatistic(),
+                    itemEntity.getMainBaseValue());
+          } else {
+            newItemEntity =
+                itemRepository.createNewItemEntity(
+                    itemEntity.getGameSaveId(),
+                    itemEntity.getClientId(),
+                    itemEntity.getBlueprintId(),
+                    itemEntity.getItemType(),
+                    itemEntity.getItemRarity(),
+                    itemEntity.getIsEquipped(),
+                    itemEntity.getLevel(),
+                    itemEntity.getMainStatistic(),
+                    itemEntity.getMainBaseValue());
+          }
+
+          var additionalStats = BddUtils.mapToAdditionalItemStatEntity(row, newItemEntity.getId());
+          additionalStats.forEach(
+              additionalItemStatEntity -> {
+                additionalItemStatsRepository.createNewAdditionalItemStatEntity(
+                    additionalItemStatEntity.getItemId(),
+                    additionalItemStatEntity.getStatistic(),
+                    additionalItemStatEntity.getBaseValue());
+              });
+          log.info("Item created: {}", newItemEntity);
+        });
+
+    log.info("Items created");
+  }
+
+  @When("^the user requests the endpoint to get the inventory of the game save with id (.*)$")
+  public void whenUserRequestsEndpointToGetInventory(String gameSaveId) {
+    String fullPath =
+        ApiPathConstants.INVENTORY
+            + InventoryController.Constants.ApiPaths.GAME_SAVE_ID.replace(
+                "{game_save_id}", gameSaveId);
+    String url = BddUtils.buildUrl(this.serverPort, fullPath);
+    try {
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
+      HttpHeaders headers = new HttpHeaders();
+      headers.setBearerAuth(token);
+      HttpEntity<Void> request = new HttpEntity<>(headers);
+      ResponseEntity<ApiResponse<Set<ItemResponse>>> result =
+          testRestTemplate.exchange(
+              url, HttpMethod.GET, request, buildParameterizedItemSetResponse());
+      ApiResponse<Set<ItemResponse>> body = result.getBody();
+      itemResponseSetStack.push(body.data());
+      responseStack.push(body);
+      log.info("Response: {}", result);
+    } catch (Exception e) {
+      exceptionStack.push(e);
+    }
+  }
+
+  @When(
+      "the user requests the endpoint to create an item in the inventory of the game save with id (.*) with the following ItemCreationRequest$")
+  public void whenUserRequestsEndpointToCreateInventoryItem(
+      String gameSaveId, DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+    assertThat(rows).hasSize(1);
+
+    Map<String, String> row = rows.get(0);
+    ItemRequest itemRequest = BddUtils.mapToItemRequest(row);
+
+    String fullPath =
+        ApiPathConstants.INVENTORY
+            + InventoryController.Constants.ApiPaths.ITEMS.replace("{game_save_id}", gameSaveId);
+    String url = BddUtils.buildUrl(this.serverPort, fullPath);
+    try {
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
+      HttpHeaders headers = new HttpHeaders();
+      headers.setBearerAuth(token);
+      HttpEntity<ItemRequest> request = new HttpEntity<>(itemRequest, headers);
+      ResponseEntity<ApiResponse<Void>> result =
+          testRestTemplate.exchange(
+              url, HttpMethod.POST, request, buildParameterizedVoidResponse());
+      ApiResponse<Void> body = result.getBody();
+      responseStack.push(body);
+      log.info("Response: {}", result);
+    } catch (Exception e) {
+      exceptionStack.push(e);
+    }
+  }
+
+  @When(
+      "the user requests the endpoint to delete an item with client id (.*) in the inventory of the game save with id (.*)$")
+  public void whenUserRequestsEndpointToDeleteInventoryItem(String clientId, String gameSaveId) {
+    String fullPath =
+        ApiPathConstants.INVENTORY
+            + CLIENT_ID.replace("{game_save_id}", gameSaveId).replace("{client_id}", clientId);
+    String url = BddUtils.buildUrl(this.serverPort, fullPath);
+    try {
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
+      HttpHeaders headers = new HttpHeaders();
+      headers.setBearerAuth(token);
+      HttpEntity<Void> request = new HttpEntity<>(headers);
+      ResponseEntity<ApiResponse<Void>> result =
+          testRestTemplate.exchange(
+              url, HttpMethod.DELETE, request, buildParameterizedVoidResponse());
+      ApiResponse<Void> body = result.getBody();
+      responseStack.push(body);
+      log.info("Response: {}", result);
+    } catch (Exception e) {
+      exceptionStack.push(e);
+    }
+  }
+
+  @When(
+      "the user requests the endpoint to update an item with client id (.*) in the inventory of the game save with id (.*) with the following ItemUpdateRequest$")
+  public void whenUserRequestsEndpointToUpdateInventoryItem(
+      String clientId, String gameSaveId, DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+    assertThat(rows).hasSize(1);
+
+    Map<String, String> row = rows.get(0);
+    ItemRequest itemRequest = BddUtils.mapToItemRequest(row);
+
+    String fullPath =
+        ApiPathConstants.INVENTORY
+            + InventoryController.Constants.ApiPaths.CLIENT_ID
+                .replace("{game_save_id}", gameSaveId)
+                .replace("{client_id}", clientId);
+    String url = BddUtils.buildUrl(this.serverPort, fullPath);
+    try {
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
+      HttpHeaders headers = new HttpHeaders();
+      headers.setBearerAuth(token);
+      HttpEntity<ItemRequest> request = new HttpEntity<>(itemRequest, headers);
+      ResponseEntity<ApiResponse<Void>> result =
+          testRestTemplate.exchange(url, HttpMethod.PUT, request, buildParameterizedVoidResponse());
+      ApiResponse<Void> body = result.getBody();
+      responseStack.push(body);
+      log.info("Response: {}", result);
+    } catch (Exception e) {
+      exceptionStack.push(e);
+    }
+  }
+
+  @Then("^the inventory of the game save with id (.*) should be empty$")
+  public void thenInventoryShouldBeEmpty(String gameSaveId) {
+    try {
+      UUID uuid = UUID.fromString(gameSaveId);
+      Set<Item> inventory = inventoryService.getInventoryItems(uuid);
+
+      assertThat(inventory).isNotNull();
+      assertThat(inventory).isEmpty();
+    } catch (Exception e) {
+      exceptionStack.push(e);
+    }
+  }
+
+  @Then("^the response should have the following itemResponses$")
+  public void thenResponseShouldHaveFollowingItemResponses(DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+
+    Set<ItemResponse> inventory = itemResponseSetStack.peek();
+    for (Map<String, String> row : rows) {
+      ItemResponse actual =
+          inventory.stream()
+              .filter(g -> g.clientId().equals(row.get("clientId")))
+              .findFirst()
+              .orElseThrow();
+
+      Item expected = BddUtils.mapToItem(row);
+
+      assertThat(actual)
+          .usingRecursiveComparison()
+          .ignoringFields("id", "createdAt", "updatedAt")
+          .isEqualTo(expected);
+    }
+  }
+}

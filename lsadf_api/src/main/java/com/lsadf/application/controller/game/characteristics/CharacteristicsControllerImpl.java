@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.infra.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequestMapper;
@@ -60,7 +60,6 @@ public class CharacteristicsControllerImpl extends BaseController
     this.cacheService = cacheService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCharacteristics(
       Jwt jwt, UUID gameSaveId, CharacteristicsRequest characteristicsRequest) {
@@ -75,7 +74,6 @@ public class CharacteristicsControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<CharacteristicsResponse>> getCharacteristics(
       Jwt jwt, UUID gameSaveId) {
@@ -87,7 +85,6 @@ public class CharacteristicsControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK, characteristicsResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;

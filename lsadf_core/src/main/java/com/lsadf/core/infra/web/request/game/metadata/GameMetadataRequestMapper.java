@@ -36,7 +36,6 @@ public interface GameMetadataRequestMapper
   GameMetadataRequestMapper INSTANCE =
       org.mapstruct.factory.Mappers.getMapper(GameMetadataRequestMapper.class);
 
-  /** {@inheritDoc}} */
   @Override
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)

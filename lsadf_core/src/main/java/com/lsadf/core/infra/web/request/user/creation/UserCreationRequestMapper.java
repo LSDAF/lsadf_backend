@@ -35,7 +35,6 @@ public interface UserCreationRequestMapper extends RequestModelMapper<UserCreati
   UserCreationRequestMapper INSTANCE =
       org.mapstruct.factory.Mappers.getMapper(UserCreationRequestMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   @Mapping(target = "createdTimestamp", ignore = true)
   @Mapping(target = "id", ignore = true)

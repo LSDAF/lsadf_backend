@@ -38,7 +38,6 @@ public interface CurrencyRequestMapper extends RequestModelMapper<CurrencyReques
   CurrencyRequestMapper INSTANCE =
       org.mapstruct.factory.Mappers.getMapper(CurrencyRequestMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   Currency map(CurrencyRequest currencyRequest);
 }

@@ -53,25 +53,21 @@ public record AdminGameSaveCreationRequest(
 
   @Serial private static final long serialVersionUID = 2925109471468959138L;
 
-  /** {@inheritDoc} */
   @Override
   public GameMetadataRequest getMetadataRequest() {
     return metadata;
   }
 
-  /** {@inheritDoc} */
   @Override
   public CharacteristicsRequest getCharacteristicsRequest() {
     return characteristics;
   }
 
-  /** {@inheritDoc} */
   @Override
   public CurrencyRequest getCurrencyRequest() {
     return currency;
   }
 
-  /** {@inheritDoc} */
   @Override
   public StageRequest getStageRequest() {
     return stage;

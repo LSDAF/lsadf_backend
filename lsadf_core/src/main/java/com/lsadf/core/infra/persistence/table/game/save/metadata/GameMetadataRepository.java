@@ -17,6 +17,7 @@ package com.lsadf.core.infra.persistence.table.game.save.metadata;
 
 import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.*;
 
+import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jdbc.repository.query.Modifying;
@@ -26,8 +27,7 @@ import org.springframework.stereotype.Repository;
 
 /** Repository class for GameMetadataEntity */
 @Repository
-public interface GameMetadataRepository
-    extends org.springframework.data.repository.Repository<GameMetadataEntity, UUID> {
+public interface GameMetadataRepository extends JdbcRepository<GameMetadataEntity> {
 
   @Query(
       "update t_game_metadata_tgme set tgme_nickname=coalesce(:tgme_nickname, tgme_nickname) where tgme_id=:tgme_id returning *")

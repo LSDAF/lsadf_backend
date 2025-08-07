@@ -64,13 +64,11 @@ public class AuthControllerImpl extends BaseController implements AuthController
     this.keycloakProvider = oAuth2ClientProperties.getProvider().get(KEYCLOAK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> login() {
     log.info("Anonymous user wants to login with grant_type=authorization_code");
@@ -80,7 +78,6 @@ public class AuthControllerImpl extends BaseController implements AuthController
     return new ResponseEntity<>(headers, HttpStatus.FOUND);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<JwtAuthenticationResponse>> login(
       @RequestBody @Valid UserLoginRequest userLoginRequest) {
@@ -107,7 +104,6 @@ public class AuthControllerImpl extends BaseController implements AuthController
     return generateResponse(HttpStatus.OK, jwt);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<JwtAuthenticationResponse>> refresh(
       @RequestBody @Valid UserRefreshLoginRequest userRefreshLoginRequest) {
@@ -132,6 +128,12 @@ public class AuthControllerImpl extends BaseController implements AuthController
     return generateResponse(HttpStatus.OK, response);
   }
 
+  /**
+   * Constructs a redirect URL for the OAuth2 authorization process by appending the necessary query
+   * parameters, including client ID, response type, scope, and redirect URI, all properly encoded.
+   *
+   * @return the constructed redirect URL as a string
+   */
   private String buildRedirectUrl() {
     StringBuilder sb = new StringBuilder();
     sb.append(keycloakProvider.getAuthorizationUri());

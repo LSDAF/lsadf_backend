@@ -27,7 +27,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 @BrowserCallable
 @RolesAllowed("ADMIN")
 public class AdminUserInfoHillaUiServiceImpl implements AdminUserInfoHillaUiService {
-  /** {@inheritDoc} */
   @Override
   public UserInfo getUserInfo() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
