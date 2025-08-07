@@ -56,17 +56,11 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
     this.searchService = searchService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<List<UserResponse>>> searchUsers(
       Jwt jwt, SearchRequest searchRequest, List<String> orderBy) {
@@ -82,11 +76,6 @@ public class AdminSearchControllerImpl extends BaseController implements AdminSe
     }
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<List<GameSaveResponse>>> searchGameSaves(
       Jwt jwt, SearchRequest searchRequest, List<String> orderBy) {

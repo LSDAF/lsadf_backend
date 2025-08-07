@@ -46,7 +46,6 @@ public class ValkeyCacheServiceImpl implements CacheService {
     this.isEnabled = new AtomicBoolean(valkeyProperties.isEnabled());
   }
 
-  /** {@inheritDoc} */
   @Override
   public Boolean isEnabled() {
     return this.isEnabled.get();
@@ -60,7 +59,6 @@ public class ValkeyCacheServiceImpl implements CacheService {
     isEnabled.set(newValue);
   }
 
-  /** {@inheritDoc} */
   @Override
   public void clearCaches() {
     log.info("Clearing all caches");
@@ -71,7 +69,6 @@ public class ValkeyCacheServiceImpl implements CacheService {
     log.info("Caches cleared");
   }
 
-  /** {@inheritDoc} */
   @Override
   public void clearGameSaveValues(String key) {
     log.info("Clearing game caches for key: {}", key);

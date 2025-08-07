@@ -44,13 +44,11 @@ public class AdminCacheControllerImpl extends BaseController implements AdminCac
     this.cacheFlushService = cacheFlushService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Boolean>> isCacheEnabled(Jwt jwt) {
     validateUser(jwt);
@@ -58,7 +56,6 @@ public class AdminCacheControllerImpl extends BaseController implements AdminCac
     return generateResponse(HttpStatus.OK, cacheEnabled);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Boolean>> toggleRedisCacheEnabling(Jwt jwt) {
     validateUser(jwt);
@@ -67,7 +64,6 @@ public class AdminCacheControllerImpl extends BaseController implements AdminCac
     return generateResponse(HttpStatus.OK, cacheEnabled);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> flushAndClearCache(Jwt jwt) {
     validateUser(jwt);

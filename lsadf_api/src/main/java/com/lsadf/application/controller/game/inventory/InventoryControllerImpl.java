@@ -53,7 +53,6 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     this.inventoryService = inventoryService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventoryItems(
       Jwt jwt, UUID gameSaveId) {
@@ -66,7 +65,6 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK, itemResponses);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<ItemResponse>> createItemInInventory(
       Jwt jwt, UUID gameSaveId, ItemRequest itemRequest) {
@@ -78,7 +76,6 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK, itemResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> deleteItemFromInventory(
       Jwt jwt, UUID gameSaveId, String itemClientId) {
@@ -89,7 +86,6 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<ItemResponse>> updateItemInInventory(
       Jwt jwt, UUID gameSaveId, String itemClientId, ItemRequest itemRequest) {
@@ -101,7 +97,6 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK, itemResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;

@@ -60,7 +60,6 @@ public class CharacteristicsControllerImpl extends BaseController
     this.cacheService = cacheService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCharacteristics(
       Jwt jwt, UUID gameSaveId, CharacteristicsRequest characteristicsRequest) {
@@ -75,7 +74,6 @@ public class CharacteristicsControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<CharacteristicsResponse>> getCharacteristics(
       Jwt jwt, UUID gameSaveId) {
@@ -87,7 +85,6 @@ public class CharacteristicsControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK, characteristicsResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;

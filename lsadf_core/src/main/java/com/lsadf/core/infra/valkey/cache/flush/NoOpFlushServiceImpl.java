@@ -17,19 +17,16 @@ package com.lsadf.core.infra.valkey.cache.flush;
 
 public class NoOpFlushServiceImpl implements CacheFlushService {
 
-  /** {@inheritDoc} */
   @Override
   public void flushCharacteristics() {
     // Do nothing
   }
 
-  /** {@inheritDoc} */
   @Override
   public void flushCurrencies() {
     // Do nothing
   }
 
-  /** {@inheritDoc} */
   @Override
   public void flushStages() {
     // Do nothing

@@ -55,25 +55,21 @@ public record SimpleGameSaveCreationRequest(
     implements GameSaveCreationRequest {
   @Serial private static final long serialVersionUID = 130532544991093362L;
 
-  /** {@inheritDoc} */
   @Override
   public GameMetadataRequest getMetadataRequest() {
     return GameMetadataRequest.builder().userEmail(userEmail).build();
   }
 
-  /** {@inheritDoc} */
   @Override
   public CharacteristicsRequest getCharacteristicsRequest() {
     return null;
   }
 
-  /** {@inheritDoc} */
   @Override
   public CurrencyRequest getCurrencyRequest() {
     return null;
   }
 
-  /** {@inheritDoc} */
   @Override
   public StageRequest getStageRequest() {
     return null;

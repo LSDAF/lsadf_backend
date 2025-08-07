@@ -62,7 +62,6 @@ public class UserServiceImpl implements UserService {
     this.realm = keycloakProperties.getRealm();
   }
 
-  /** {@inheritDoc} */
   @Override
   public Stream<User> getUsers() {
     // return keycloakAdminClient.getUsers(realm).stream();
@@ -75,20 +74,17 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public Long countUsers() {
     return (long) getUsersResource().count();
   }
 
-  /** {@inheritDoc} */
   @Override
   public List<String> getUserRoles() {
     List<RoleRepresentation> roles = getRolesResource().list();
     return roles.stream().map(RoleRepresentation::getName).toList();
   }
 
-  /** {@inheritDoc} */
   @Override
   public Stream<User> getUsers(String search) {
     if (search == null || search.isEmpty()) {
@@ -106,7 +102,6 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public User getUserById(UUID id) {
     if (id == null) {
@@ -126,7 +121,6 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public User getUserByUsername(String username) {
     if (username == null) {
@@ -148,7 +142,6 @@ public class UserServiceImpl implements UserService {
     return userRepresentationMapper.map(enrichedUser);
   }
 
-  /** {@inheritDoc} */
   @Override
   public User updateUser(UUID id, UserUpdateRequest adminUpdateRequest) {
     if (id == null) {
@@ -202,7 +195,6 @@ public class UserServiceImpl implements UserService {
     return getUserById(id);
   }
 
-  /** {@inheritDoc} */
   @Override
   public void resetUserPassword(UUID id) {
     if (id == null) {
@@ -215,7 +207,6 @@ public class UserServiceImpl implements UserService {
     getUsersResource().get(idString).executeActionsEmail(actions);
   }
 
-  /** {@inheritDoc} */
   @Override
   public void deleteUser(UUID id) {
     if (id == null) {
@@ -229,7 +220,6 @@ public class UserServiceImpl implements UserService {
     getUsersResource().get(idString).remove();
   }
 
-  /** {@inheritDoc} */
   @Override
   public User createUser(UserCreationRequest request) {
     // Check if roles exist
@@ -278,7 +268,6 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public boolean checkUsernameExists(String username) {
     if (username == null) {
@@ -292,7 +281,6 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public boolean checkIdExists(UUID id) {
     // We assert that the null check is done in the calling method to avoid multiple checks

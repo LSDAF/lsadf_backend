@@ -38,7 +38,6 @@ public class InventoryServiceImpl implements InventoryService {
     this.gameMetadataRepositoryPort = gameMetadataRepositoryPort;
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public Set<Item> getInventoryItems(UUID gameSaveId) throws NotFoundException {
@@ -53,7 +52,6 @@ public class InventoryServiceImpl implements InventoryService {
     return inventoryRepositoryPort.findAllItemsByGameSaveId(gameSaveId);
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public Item createItemInInventory(UUID gameSaveId, ItemRequest itemRequest)
@@ -90,7 +88,6 @@ public class InventoryServiceImpl implements InventoryService {
     return inventoryRepositoryPort.createItem(gameSaveId, item);
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public void deleteItemFromInventory(UUID gameSaveId, String itemClientId)
@@ -112,7 +109,6 @@ public class InventoryServiceImpl implements InventoryService {
     inventoryRepositoryPort.deleteItemByClientId(itemClientId);
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public Item updateItemInInventory(UUID gameSaveId, String itemClientId, ItemRequest itemRequest)
@@ -153,7 +149,6 @@ public class InventoryServiceImpl implements InventoryService {
     return inventoryRepositoryPort.updateItem(gameSaveId, updatedItem);
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public void clearInventory(UUID gameSaveId) throws NotFoundException {

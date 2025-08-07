@@ -56,7 +56,6 @@ public class StageControllerImpl extends BaseController implements StageControll
     this.stageService = stageService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> saveStage(
       Jwt jwt, UUID gameSaveId, StageRequest stageRequest) {
@@ -70,7 +69,6 @@ public class StageControllerImpl extends BaseController implements StageControll
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<StageResponse>> getStage(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
@@ -81,7 +79,6 @@ public class StageControllerImpl extends BaseController implements StageControll
     return generateResponse(HttpStatus.OK, stageResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;

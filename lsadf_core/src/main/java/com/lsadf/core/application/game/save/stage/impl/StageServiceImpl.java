@@ -42,19 +42,18 @@ public class StageServiceImpl implements StageService {
     this.stageCache = stageCache;
   }
 
-  /** {@inheritDoc} */
   @Override
+  @Transactional
   public Stage createNewStage(UUID gameSaveId) {
     return stageRepositoryPort.create(gameSaveId);
   }
 
-  /** {@inheritDoc} */
   @Override
+  @Transactional
   public Stage createNewStage(UUID gameSaveId, Long currentStage, Long maxStage) {
     return stageRepositoryPort.create(gameSaveId, currentStage, maxStage);
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public Stage getStage(UUID gameSaveId) throws NotFoundException {
@@ -88,7 +87,6 @@ public class StageServiceImpl implements StageService {
         .orElseThrow(() -> new NotFoundException("Stage not found for game save id " + gameSaveId));
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public void saveStage(UUID gameSaveId, Stage stage, boolean toCache) throws NotFoundException {

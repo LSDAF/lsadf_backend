@@ -39,7 +39,6 @@ public abstract class ValkeyCacheAdapter<T> implements CachePort<T> {
     this.expirationSeconds = expirationSeconds;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Optional<T> get(String key) {
     try {
@@ -60,7 +59,6 @@ public abstract class ValkeyCacheAdapter<T> implements CachePort<T> {
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public void set(String key, T value) {
     try {
@@ -74,19 +72,16 @@ public abstract class ValkeyCacheAdapter<T> implements CachePort<T> {
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public Map<String, T> getAll() {
     return CacheUtils.getAllEntries(redisTemplate, keyType);
   }
 
-  /** {@inheritDoc} */
   @Override
   public void clear() {
     CacheUtils.clearCache(redisTemplate, keyType);
   }
 
-  /** {@inheritDoc} */
   @Override
   public void unset(String key) {
     try {

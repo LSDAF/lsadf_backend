@@ -44,7 +44,6 @@ public interface CharacteristicsEntityMapper
     extends EntityModelMapper<CharacteristicsEntity, Characteristics> {
   CharacteristicsEntityMapper INSTANCE = Mappers.getMapper(CharacteristicsEntityMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   Characteristics map(CharacteristicsEntity characteristicsEntity);
 }

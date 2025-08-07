@@ -51,13 +51,11 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
     this.gameSaveService = gameSaveService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<GameSaveResponse>> generateNewGameSave(Jwt jwt) {
     validateUser(jwt);
@@ -72,7 +70,6 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
     return generateResponse(HttpStatus.OK, newSaveResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> updateNickname(
       Jwt jwt, UUID id, GameSaveNicknameUpdateRequest gameSaveNicknameUpdateRequest) {
@@ -84,7 +81,6 @@ public class GameSaveControllerImpl extends BaseController implements GameSaveCo
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(
       @AuthenticationPrincipal Jwt jwt) {

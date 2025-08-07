@@ -57,7 +57,6 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
     this.stageCache = stageCache;
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public void flushCharacteristics() {
@@ -82,7 +81,6 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
     log.info("Flushed {} characteristics in DB", characteristicsEntries.size());
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public void flushCurrencies() {
@@ -107,7 +105,6 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
     log.info("Flushed {} currencies in DB", currencyEntries.size());
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public void flushStages() {

@@ -41,8 +41,8 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     this.characteristicsCache = characteristicsCache;
   }
 
-  /** {@inheritDoc} */
   @Override
+  @Transactional
   public Characteristics createNewCharacteristics(
       UUID gameSaveId,
       Long attack,
@@ -54,13 +54,12 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         gameSaveId, attack, critChance, critDamage, health, resistance);
   }
 
-  /** {@inheritDoc} */
   @Override
+  @Transactional
   public Characteristics createNewCharacteristics(UUID gameSaveId) {
     return characteristicsRepositoryPort.create(gameSaveId);
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public Characteristics getCharacteristics(UUID gameSaveId) throws NotFoundException {
@@ -121,7 +120,6 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     return builder.build();
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public void saveCharacteristics(UUID gameSaveId, Characteristics characteristics, boolean toCache)

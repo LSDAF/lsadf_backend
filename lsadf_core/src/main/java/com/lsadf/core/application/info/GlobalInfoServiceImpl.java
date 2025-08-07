@@ -36,7 +36,6 @@ public class GlobalInfoServiceImpl implements GlobalInfoService {
     this.gameSaveService = gameSaveService;
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public GlobalInfo getGlobalInfo() {

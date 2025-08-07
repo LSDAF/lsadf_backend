@@ -41,7 +41,6 @@ public class CurrencyServiceImpl implements CurrencyService {
     this.currencyCache = currencyCache;
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public Currency getCurrency(UUID gameSaveId) throws NotFoundException {
@@ -68,14 +67,14 @@ public class CurrencyServiceImpl implements CurrencyService {
     return currency;
   }
 
-  /** {@inheritDoc} */
   @Override
+  @Transactional
   public Currency createNewCurrency(UUID gameSaveId) {
     return currencyRepositoryPort.create(gameSaveId);
   }
 
-  /** {@inheritDoc} */
   @Override
+  @Transactional
   public Currency createNewCurrency(
       UUID gameSaveId, Long gold, Long diamond, Long emerald, Long amethyst) {
     return currencyRepositoryPort.create(gameSaveId, gold, diamond, emerald, amethyst);
@@ -97,7 +96,6 @@ public class CurrencyServiceImpl implements CurrencyService {
     return builder.build();
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public void saveCurrency(UUID gameSaveId, Currency currency, boolean toCache)

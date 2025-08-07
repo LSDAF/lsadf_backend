@@ -44,7 +44,6 @@ import org.mapstruct.factory.Mappers;
 public interface CurrencyEntityMapper extends EntityModelMapper<CurrencyEntity, Currency> {
   CurrencyEntityMapper INSTANCE = Mappers.getMapper(CurrencyEntityMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   @Mapping(source = "goldAmount", target = "gold")
   @Mapping(source = "diamondAmount", target = "diamond")

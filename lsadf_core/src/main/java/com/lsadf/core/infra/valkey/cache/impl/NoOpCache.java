@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NoOpCache<T> implements CachePort<T> {
 
-  /** {@inheritDoc} */
   @Override
   public Optional<T> get(String key) {
     return Optional.empty();
@@ -34,25 +33,21 @@ public class NoOpCache<T> implements CachePort<T> {
     // Do nothing
   }
 
-  /** {@inheritDoc} */
   @Override
   public void set(String key, T value) {
     // Do nothing
   }
 
-  /** {@inheritDoc} */
   @Override
   public Map<String, T> getAll() {
     return Map.of();
   }
 
-  /** {@inheritDoc} */
   @Override
   public void clear() {
     // Do nothing
   }
 
-  /** {@inheritDoc} */
   @Override
   public void unset(String key) {
     // Do nothing

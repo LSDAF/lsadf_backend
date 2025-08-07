@@ -42,7 +42,6 @@ public class SearchServiceImpl implements SearchService {
     this.gameSaveService = gameSaveService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Stream<User> searchUsers(SearchRequest searchRequest, List<UserSortingParameter> orderBy) {
     Stream<User> userStream = userService.getUsers();
@@ -70,7 +69,6 @@ public class SearchServiceImpl implements SearchService {
     return StreamUtils.sortUsers(userStream, orderBy);
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public Stream<GameSave> searchGameSaves(

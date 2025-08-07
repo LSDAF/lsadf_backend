@@ -63,17 +63,11 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     this.gameSaveService = gameSaveService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<List<GameSaveResponse>>> getSaveGames(
       Jwt jwt, List<String> orderBy) {
@@ -92,7 +86,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(
       Jwt jwt, String username) {
@@ -103,11 +96,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     }
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
@@ -116,11 +104,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<GameSaveResponse>> updateGameSave(
       Jwt jwt, UUID gameSaveId, AdminGameSaveUpdateRequest adminGameSaveUpdateRequest) {
@@ -131,11 +114,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<GameSaveResponse>> generateNewSaveGame(
       Jwt jwt, AdminGameSaveCreationRequest creationRequest) {
@@ -146,7 +124,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> deleteGameSave(Jwt jwt, UUID gameSaveId) {
 

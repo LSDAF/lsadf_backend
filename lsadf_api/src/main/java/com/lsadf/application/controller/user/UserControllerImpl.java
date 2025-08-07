@@ -38,13 +38,11 @@ public class UserControllerImpl extends BaseController implements UserController
   private static final UserInfoResponseMapper userInfoResponseMapper =
       UserInfoResponseMapper.INSTANCE;
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<UserInfoResponse>> getUserInfo(Jwt jwt) {
     UserInfo userInfo = getUserInfoFromJwt(jwt);

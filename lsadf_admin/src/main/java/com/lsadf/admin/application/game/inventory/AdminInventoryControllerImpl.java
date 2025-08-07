@@ -52,7 +52,6 @@ public class AdminInventoryControllerImpl extends BaseController
     return log;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventory(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
@@ -62,7 +61,6 @@ public class AdminInventoryControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK, itemResponses);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<ItemResponse>> createItemInInventory(
       Jwt jwt, UUID gameSaveId, ItemRequest itemRequest) {
@@ -72,7 +70,6 @@ public class AdminInventoryControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK, itemResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> deleteItemFromInventory(
       Jwt jwt, UUID gameSaveId, String itemClientId) {
@@ -81,7 +78,6 @@ public class AdminInventoryControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<ItemResponse>> updateItemInInventory(
       Jwt jwt, UUID gameSaveId, String itemClientId, ItemRequest itemRequest) {
@@ -91,7 +87,6 @@ public class AdminInventoryControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK, itemResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> clearInventoryItems(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);

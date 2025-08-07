@@ -39,7 +39,6 @@ public interface CharacteristicsRequestMapper
   CharacteristicsRequestMapper INSTANCE =
       org.mapstruct.factory.Mappers.getMapper(CharacteristicsRequestMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   Characteristics map(CharacteristicsRequest characteristicsRequest);
 }

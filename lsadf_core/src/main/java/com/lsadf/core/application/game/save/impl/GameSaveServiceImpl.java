@@ -92,7 +92,6 @@ public class GameSaveServiceImpl implements GameSaveService {
     this.characteristicsCache = characteristicsCache;
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public GameSave getGameSave(UUID saveId) throws NotFoundException {
@@ -168,7 +167,6 @@ public class GameSaveServiceImpl implements GameSaveService {
     return gameSaveBuilder.build();
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public GameSave updateGameSave(UUID saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
@@ -208,14 +206,12 @@ public class GameSaveServiceImpl implements GameSaveService {
     return enrichGameSaveWithCachedData(gameSave);
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public boolean existsById(UUID gameSaveId) {
     return gameMetadataService.existsById(gameSaveId);
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional
   public void deleteGameSave(UUID saveId) {
@@ -232,7 +228,6 @@ public class GameSaveServiceImpl implements GameSaveService {
     cacheService.clearGameSaveValues(saveIdString);
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public List<GameSave> getGameSaves() {
@@ -248,7 +243,6 @@ public class GameSaveServiceImpl implements GameSaveService {
     return gameMetadataService.count();
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public void checkGameSaveOwnership(UUID saveId, String userEmail)
@@ -276,7 +270,6 @@ public class GameSaveServiceImpl implements GameSaveService {
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   @Transactional(readOnly = true)
   public List<GameSave> getGameSavesByUsername(String username) {
@@ -292,6 +285,14 @@ public class GameSaveServiceImpl implements GameSaveService {
         .toList();
   }
 
+  /**
+   * Enriches the given GameSave object with cached data, if available. Specifically, it attempts to
+   * load and set the characteristics, currency, and stage data from their corresponding caches
+   * based on the metadata ID of the provided GameSave.
+   *
+   * @param gameSave the GameSave object to be enriched with cached data
+   * @return the enriched GameSave object
+   */
   private GameSave enrichGameSaveWithCachedData(GameSave gameSave) {
     GameMetadata metadata = gameSave.getMetadata();
     var cacheCharacteristics = characteristicsCache.get(metadata.id().toString());

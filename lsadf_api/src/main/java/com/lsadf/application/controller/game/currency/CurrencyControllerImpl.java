@@ -58,7 +58,6 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     this.cacheService = cacheService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCurrency(
       Jwt jwt, UUID gameSaveId, CurrencyRequest currencyRequest) {
@@ -72,7 +71,6 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<CurrencyResponse>> getCurrency(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
@@ -83,7 +81,6 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     return generateResponse(HttpStatus.OK, currencyResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
