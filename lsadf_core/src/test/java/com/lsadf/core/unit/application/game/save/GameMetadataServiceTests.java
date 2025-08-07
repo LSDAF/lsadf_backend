@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.unit.services;
+package com.lsadf.core.unit.application.game.save;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;

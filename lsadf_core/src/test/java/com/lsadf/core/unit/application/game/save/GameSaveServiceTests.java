@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.unit.services;
+package com.lsadf.core.unit.application.game.save;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
