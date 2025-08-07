@@ -17,10 +17,12 @@ package com.lsadf.core.unit.services;
 
 import static org.mockito.Mockito.*;
 
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageService;
-import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
@@ -40,11 +42,11 @@ class ValkeyCacheFlushServiceTests {
 
   RedisCacheFlushServiceImpl redisCacheFlushService;
 
-  @Mock private CachePort<Characteristics> characteristicsCache;
+  @Mock private CharacteristicsCachePort characteristicsCache;
 
-  @Mock private CachePort<Currency> currencyCache;
+  @Mock private CurrencyCachePort currencyCache;
 
-  @Mock private CachePort<Stage> stageCache;
+  @Mock private StageCachePort stageCache;
 
   @Mock private CharacteristicsService characteristicsService;
 
