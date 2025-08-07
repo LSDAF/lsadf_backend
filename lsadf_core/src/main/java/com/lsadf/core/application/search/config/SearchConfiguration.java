@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.search;
+package com.lsadf.core.application.search.config;
 
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.search.SearchService;
+import com.lsadf.core.application.search.impl.SearchServiceImpl;
 import com.lsadf.core.application.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

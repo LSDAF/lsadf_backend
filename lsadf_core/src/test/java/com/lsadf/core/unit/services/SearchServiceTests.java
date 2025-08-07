@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.search.SearchService;
-import com.lsadf.core.application.search.SearchServiceImpl;
+import com.lsadf.core.application.search.impl.SearchServiceImpl;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;

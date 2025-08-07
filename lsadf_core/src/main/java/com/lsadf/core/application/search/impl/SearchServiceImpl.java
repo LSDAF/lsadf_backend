@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.search;
+package com.lsadf.core.application.search.impl;
 
 import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.user.User;

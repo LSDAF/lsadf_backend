@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.user;
+package com.lsadf.core.application.user.config;
 
+import com.lsadf.core.application.user.UserService;
+import com.lsadf.core.application.user.impl.UserServiceImpl;
 import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import org.keycloak.admin.client.Keycloak;

@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.inventory;
+package com.lsadf.core.application.game.inventory.config;
 
+import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
+import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.inventory.impl.InventoryServiceImpl;
 import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

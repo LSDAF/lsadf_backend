@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.application.info;
+package com.lsadf.core.application.info.impl;
 
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.info.GlobalInfo;
 import com.lsadf.core.infra.clock.ClockService;
