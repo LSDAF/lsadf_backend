@@ -13,48 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.valkey.cache;
 
-import com.lsadf.core.application.shared.CachePort;
+package com.lsadf.core.infra.valkey.cache.impl;
+
+import com.lsadf.core.application.shared.HistoCachePort;
 import java.util.Map;
 import java.util.Optional;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-public class NoOpCache<T> implements CachePort<T> {
-
-  /** {@inheritDoc} */
+public class NoOpHistoCache<T> extends NoOpCache<T> implements HistoCachePort<T> {
   @Override
-  public Optional<T> get(String key) {
+  public Optional<T> getHisto(String key) {
     return Optional.empty();
   }
 
   @Override
-  public void set(String key, T value, int expirationSeconds) {
-    // Do nothing
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void set(String key, T value) {
-    // Do nothing
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public Map<String, T> getAll() {
+  public Map<String, T> getAllHisto() {
     return Map.of();
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void clear() {
-    // Do nothing
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void unset(String key) {
-    // Do nothing
   }
 }

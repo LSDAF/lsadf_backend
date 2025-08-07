@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.valkey.cache.listener;
 
-import static com.lsadf.core.infra.valkey.RedisConstants.*;
+import static com.lsadf.core.infra.valkey.ValkeyConstants.*;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.save.currency.CurrencyService;

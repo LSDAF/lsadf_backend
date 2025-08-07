@@ -15,10 +15,12 @@
  */
 package com.lsadf.core.infra.valkey.cache.flush;
 
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageService;
-import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
@@ -32,21 +34,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class RedisCacheFlushServiceImpl implements CacheFlushService {
 
   private final CharacteristicsService characteristicsService;
-  private final CachePort<Characteristics> characteristicsCache;
+  private final CharacteristicsCachePort characteristicsCache;
 
   private final CurrencyService currencyService;
-  private final CachePort<Currency> currencyCache;
+  private final CurrencyCachePort currencyCache;
 
   private final StageService stageService;
-  private final CachePort<Stage> stageCache;
+  private final StageCachePort stageCache;
 
   public RedisCacheFlushServiceImpl(
       CharacteristicsService characteristicsService,
       CurrencyService currencyService,
       StageService stageService,
-      CachePort<Characteristics> characteristicsCache,
-      CachePort<Currency> currencyCache,
-      CachePort<Stage> stageCache) {
+      CharacteristicsCachePort characteristicsCache,
+      CurrencyCachePort currencyCache,
+      StageCachePort stageCache) {
     this.characteristicsService = characteristicsService;
     this.currencyService = currencyService;
     this.stageService = stageService;

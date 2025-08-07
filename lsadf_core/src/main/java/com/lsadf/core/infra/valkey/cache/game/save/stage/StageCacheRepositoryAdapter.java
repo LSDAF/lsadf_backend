@@ -19,18 +19,18 @@ package com.lsadf.core.infra.valkey.cache.game.save.stage;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.valkey.cache.HashModelMapper;
-import com.lsadf.core.infra.valkey.cache.ValkeyCacheRepositoryAdapter;
+import com.lsadf.core.infra.valkey.cache.HashRepository;
 import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.valkey.cache.impl.ValkeyCacheRepositoryAdapter;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.data.repository.CrudRepository;
 
 public class StageCacheRepositoryAdapter
     extends ValkeyCacheRepositoryAdapter<Stage, StageHash, UUID> implements StageCachePort {
   private static final HashModelMapper<StageHash, Stage> HASH_MAPPER = StageHashMapper.INSTANCE;
 
   public StageCacheRepositoryAdapter(
-      CrudRepository<StageHash, UUID> repository,
+      HashRepository<StageHash, UUID> repository,
       CacheExpirationProperties cacheExpirationProperties) {
     super(repository);
     this.hashMapper = HASH_MAPPER;

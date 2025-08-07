@@ -18,6 +18,6 @@ package com.lsadf.core.infra.valkey.cache.game.save.stage;
 
 import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.valkey.cache.NoOpHistoCache;
+import com.lsadf.core.infra.valkey.cache.impl.NoOpHistoCache;
 
 public class NoOpStageCacheAdapter extends NoOpHistoCache<Stage> implements StageCachePort {}

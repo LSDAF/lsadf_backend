@@ -16,9 +16,9 @@
 
 package com.lsadf.core.infra.valkey.cache.game.save.characteristics;
 
+import com.lsadf.core.infra.valkey.cache.HashRepository;
 import java.util.UUID;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CharacteristicsHashRepository extends CrudRepository<CharacteristicsHash, UUID> {}
+public interface CharacteristicsHashRepository extends HashRepository<CharacteristicsHash, UUID> {}

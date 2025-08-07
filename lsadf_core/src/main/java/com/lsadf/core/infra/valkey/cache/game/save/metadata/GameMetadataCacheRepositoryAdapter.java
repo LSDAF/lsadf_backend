@@ -19,11 +19,11 @@ package com.lsadf.core.infra.valkey.cache.game.save.metadata;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.infra.valkey.cache.HashModelMapper;
-import com.lsadf.core.infra.valkey.cache.ValkeyCacheRepositoryAdapter;
+import com.lsadf.core.infra.valkey.cache.HashRepository;
 import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.valkey.cache.impl.ValkeyCacheRepositoryAdapter;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.data.repository.CrudRepository;
 
 public class GameMetadataCacheRepositoryAdapter
     extends ValkeyCacheRepositoryAdapter<GameMetadata, GameMetadataHash, UUID>
@@ -33,7 +33,7 @@ public class GameMetadataCacheRepositoryAdapter
       GameMetadataHashMapper.INSTANCE;
 
   public GameMetadataCacheRepositoryAdapter(
-      CrudRepository<GameMetadataHash, UUID> repository,
+      HashRepository<GameMetadataHash, UUID> repository,
       CacheExpirationProperties cacheExpirationProperties) {
     super(repository);
     this.hashMapper = HASH_MAPPER;

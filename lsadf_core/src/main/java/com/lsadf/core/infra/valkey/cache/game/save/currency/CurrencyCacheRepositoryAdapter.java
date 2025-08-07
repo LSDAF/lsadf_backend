@@ -19,8 +19,8 @@ package com.lsadf.core.infra.valkey.cache.game.save.currency;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.valkey.cache.HashModelMapper;
-import com.lsadf.core.infra.valkey.cache.ValkeyCacheRepositoryAdapter;
 import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.valkey.cache.impl.ValkeyCacheRepositoryAdapter;
 import java.util.Optional;
 import java.util.UUID;
 

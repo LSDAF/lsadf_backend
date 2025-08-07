@@ -18,7 +18,7 @@ package com.lsadf.core.infra.valkey.cache.game.save.characteristics;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.infra.valkey.cache.NoOpHistoCache;
+import com.lsadf.core.infra.valkey.cache.impl.NoOpHistoCache;
 
 public class NoOpCharacteristicsCacheAdapter extends NoOpHistoCache<Characteristics>
     implements CharacteristicsCachePort {}

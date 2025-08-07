@@ -16,9 +16,9 @@
 
 package com.lsadf.core.infra.valkey.cache.game.save.stage;
 
+import com.lsadf.core.infra.valkey.cache.HashRepository;
 import java.util.UUID;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StageHashRepository extends CrudRepository<StageHash, UUID> {}
+public interface StageHashRepository extends HashRepository<StageHash, UUID> {}

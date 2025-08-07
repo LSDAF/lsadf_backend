@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.valkey.cache;
+package com.lsadf.core.infra.valkey.cache.util;
 
+import com.lsadf.core.infra.valkey.cache.KeyValueConsumer;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.experimental.UtilityClass;

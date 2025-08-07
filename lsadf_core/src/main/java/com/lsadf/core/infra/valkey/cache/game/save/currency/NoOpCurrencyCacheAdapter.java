@@ -18,7 +18,7 @@ package com.lsadf.core.infra.valkey.cache.game.save.currency;
 
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.infra.valkey.cache.NoOpHistoCache;
+import com.lsadf.core.infra.valkey.cache.impl.NoOpHistoCache;
 
 public class NoOpCurrencyCacheAdapter extends NoOpHistoCache<Currency>
     implements CurrencyCachePort {}

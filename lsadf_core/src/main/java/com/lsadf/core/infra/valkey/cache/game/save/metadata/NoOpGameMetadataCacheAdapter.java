@@ -18,7 +18,7 @@ package com.lsadf.core.infra.valkey.cache.game.save.metadata;
 
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
-import com.lsadf.core.infra.valkey.cache.NoOpHistoCache;
+import com.lsadf.core.infra.valkey.cache.impl.NoOpHistoCache;
 
 public class NoOpGameMetadataCacheAdapter extends NoOpHistoCache<GameMetadata>
     implements GameMetadataCachePort {}

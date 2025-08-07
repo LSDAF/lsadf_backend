@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 
 /** Redis constants class */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class RedisConstants {
+public final class ValkeyConstants {
   public static final String CHARACTERISTICS_HISTO = "characteristics_histo:";
   public static final String CHARACTERISTICS = "characteristics:";
   public static final String CURRENCY = "currency:";

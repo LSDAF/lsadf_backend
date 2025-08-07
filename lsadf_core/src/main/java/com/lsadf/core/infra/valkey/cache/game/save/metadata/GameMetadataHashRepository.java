@@ -16,9 +16,9 @@
 
 package com.lsadf.core.infra.valkey.cache.game.save.metadata;
 
+import com.lsadf.core.infra.valkey.cache.HashRepository;
 import java.util.UUID;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GameMetadataHashRepository extends CrudRepository<GameMetadataHash, UUID> {}
+public interface GameMetadataHashRepository extends HashRepository<GameMetadataHash, UUID> {}

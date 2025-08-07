@@ -16,9 +16,9 @@
 
 package com.lsadf.core.infra.valkey.cache.game.save.currency;
 
+import com.lsadf.core.infra.valkey.cache.HashRepository;
 import java.util.UUID;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CurrencyHashRepository extends CrudRepository<CurrencyHash, UUID> {}
+public interface CurrencyHashRepository extends HashRepository<CurrencyHash, UUID> {}

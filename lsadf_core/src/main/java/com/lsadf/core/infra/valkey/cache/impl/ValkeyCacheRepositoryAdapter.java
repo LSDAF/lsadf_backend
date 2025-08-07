@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache;
+package com.lsadf.core.infra.valkey.cache.impl;
 
 import com.lsadf.core.application.shared.HistoCachePort;
+import com.lsadf.core.infra.valkey.cache.Hash;
+import com.lsadf.core.infra.valkey.cache.HashModelMapper;
+import com.lsadf.core.infra.valkey.cache.HashRepository;
 import com.lsadf.core.shared.model.Model;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.data.repository.CrudRepository;
 
 public abstract class ValkeyCacheRepositoryAdapter<T extends Model, H extends Hash<I>, I>
     implements HistoCachePort<T> {
   protected HashModelMapper<H, T> hashMapper;
-  protected CrudRepository<H, I> repository;
+  protected HashRepository<H, I> repository;
   protected long expirationSeconds;
 
-  protected ValkeyCacheRepositoryAdapter(CrudRepository<H, I> repository) {
+  protected ValkeyCacheRepositoryAdapter(HashRepository<H, I> repository) {
     this.repository = repository;
   }
 
