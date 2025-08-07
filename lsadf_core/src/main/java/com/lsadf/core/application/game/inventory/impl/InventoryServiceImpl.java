@@ -17,7 +17,7 @@ package com.lsadf.core.application.game.inventory.impl;
 
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
@@ -31,13 +31,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class InventoryServiceImpl implements InventoryService {
 
   private final InventoryRepositoryPort inventoryRepositoryPort;
-  private final GameMetadataRepositoryPort gameMetadataRepositoryPort;
+  private final GameMetadataService gameMetadataService;
 
   public InventoryServiceImpl(
-      InventoryRepositoryPort inventoryRepositoryPort,
-      GameMetadataRepositoryPort gameMetadataRepositoryPort) {
+      InventoryRepositoryPort inventoryRepositoryPort, GameMetadataService gameMetadataService) {
     this.inventoryRepositoryPort = inventoryRepositoryPort;
-    this.gameMetadataRepositoryPort = gameMetadataRepositoryPort;
+    this.gameMetadataService = gameMetadataService;
   }
 
   @Override
@@ -47,7 +46,7 @@ public class InventoryServiceImpl implements InventoryService {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
 
-    if (!gameMetadataRepositoryPort.existsById(gameSaveId)) {
+    if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
 
@@ -62,7 +61,7 @@ public class InventoryServiceImpl implements InventoryService {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
 
-    if (!gameMetadataRepositoryPort.existsById(gameSaveId)) {
+    if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Game save not found for id " + gameSaveId);
     }
 
@@ -98,7 +97,7 @@ public class InventoryServiceImpl implements InventoryService {
       throw new IllegalArgumentException("Game save id and item client id cannot be null");
     }
 
-    if (!gameMetadataRepositoryPort.existsById(gameSaveId)) {
+    if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
 
@@ -120,7 +119,7 @@ public class InventoryServiceImpl implements InventoryService {
           "Game save id, item client id and item request cannot be null");
     }
 
-    if (!gameMetadataRepositoryPort.existsById(gameSaveId)) {
+    if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
 
@@ -158,7 +157,7 @@ public class InventoryServiceImpl implements InventoryService {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
 
-    if (!gameMetadataRepositoryPort.existsById(gameSaveId)) {
+    if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
 

@@ -18,7 +18,7 @@ package com.lsadf.core.application.game.inventory.config;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.inventory.impl.InventoryServiceImpl;
-import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,8 +26,7 @@ import org.springframework.context.annotation.Configuration;
 public class InventoryConfiguration {
   @Bean
   public InventoryService inventoryService(
-      InventoryRepositoryPort inventoryRepositoryPort,
-      GameMetadataRepositoryPort gameMetadataRepositoryPort) {
-    return new InventoryServiceImpl(inventoryRepositoryPort, gameMetadataRepositoryPort);
+      InventoryRepositoryPort inventoryRepositoryPort, GameMetadataService gameMetadataService) {
+    return new InventoryServiceImpl(inventoryRepositoryPort, gameMetadataService);
   }
 }
