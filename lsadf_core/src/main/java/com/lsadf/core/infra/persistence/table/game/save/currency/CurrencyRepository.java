@@ -18,6 +18,7 @@ package com.lsadf.core.infra.persistence.table.game.save.currency;
 import static com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity.CurrencyEntityAttributes.*;
 import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_ID;
 
+import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -25,8 +26,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CurrencyRepository
-    extends org.springframework.data.repository.Repository<CurrencyEntity, UUID> {
+public interface CurrencyRepository extends JdbcRepository<CurrencyEntity> {
   @Query(
       "insert into t_currency_tgcu (tgme_id, tgcu_gold_amount, tgcu_diamond_amount, tgcu_emerald_amount, tgcu_amethyst_amount) values (:tgme_id, :tgcu_gold_amount, :tgcu_diamond_amount, :tgcu_emerald_amount, :tgcu_amethyst_amount) returning *")
   CurrencyEntity createNewCurrencyEntity(

@@ -21,6 +21,7 @@ import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMeta
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
+import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -31,7 +32,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ItemRepository extends CrudRepository<ItemEntity, UUID> {
+public interface ItemRepository
+    extends CrudRepository<ItemEntity, UUID>, JdbcRepository<ItemEntity> {
   @Query("select * from t_item_tgit where tgme_id =:tgme_id")
   Set<ItemEntity> findAllItemsByGameSaveId(@Param(GAME_METADATA_ID) UUID gameSaveId);
 

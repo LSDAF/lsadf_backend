@@ -19,6 +19,7 @@ import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMeta
 import static com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity.StageEntityAttributes.STAGE_CURRENT_STAGE;
 import static com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity.StageEntityAttributes.STAGE_MAX_STAGE;
 
+import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -26,8 +27,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StageRepository
-    extends org.springframework.data.repository.Repository<StageEntity, UUID> {
+public interface StageRepository extends JdbcRepository<StageEntity> {
   @Query(
       "insert into t_stage_tgst (tgme_id, tgst_current_stage, tgst_max_stage) values (:tgme_id, :tgst_current_stage, :tgst_max_stage) returning *")
   StageEntity createNewStageEntity(

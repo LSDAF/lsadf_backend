@@ -19,16 +19,16 @@ package com.lsadf.core.infra.persistence.table.game.inventory;
 import static com.lsadf.core.infra.persistence.table.game.inventory.AdditionalItemStatEntity.AdditionalStatsEntityAttributes.*;
 
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
+import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
 @org.springframework.stereotype.Repository
-public interface AdditionalItemStatsRepository extends Repository<AdditionalItemStatEntity, UUID> {
+public interface AdditionalItemStatsRepository extends JdbcRepository<AdditionalItemStatEntity> {
   @Query("select count(tias_id) from t_additional_stat_tias")
   Long count();
 

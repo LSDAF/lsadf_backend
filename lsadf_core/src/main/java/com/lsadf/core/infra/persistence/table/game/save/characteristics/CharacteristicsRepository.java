@@ -18,6 +18,7 @@ package com.lsadf.core.infra.persistence.table.game.save.characteristics;
 import static com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity.CharacteristicsEntityAttributes.*;
 import static com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity.GameSaveMetadataAttributes.GAME_METADATA_ID;
 
+import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -26,8 +27,7 @@ import org.springframework.stereotype.Repository;
 
 /** Repository class for CharacteristicsEntity */
 @Repository
-public interface CharacteristicsRepository
-    extends org.springframework.data.repository.Repository<CharacteristicsEntity, UUID> {
+public interface CharacteristicsRepository extends JdbcRepository<CharacteristicsEntity> {
   @Query(
       """
               insert into t_characteristics_tgch
