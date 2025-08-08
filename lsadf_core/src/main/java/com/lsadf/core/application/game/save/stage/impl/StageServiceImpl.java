@@ -20,7 +20,7 @@ import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,16 +28,16 @@ import org.springframework.transaction.annotation.Transactional;
 /** Implementation of the stage service. */
 public class StageServiceImpl implements StageService {
 
-  private final CacheService cacheService;
+  private final CacheManager cacheManager;
 
   private final StageRepositoryPort stageRepositoryPort;
   private final StageCachePort stageCache;
 
   public StageServiceImpl(
-      CacheService cacheService,
+      CacheManager cacheManager,
       StageRepositoryPort stageRepositoryPort,
       StageCachePort stageCache) {
-    this.cacheService = cacheService;
+    this.cacheManager = cacheManager;
     this.stageRepositoryPort = stageRepositoryPort;
     this.stageCache = stageCache;
   }
@@ -61,7 +61,7 @@ public class StageServiceImpl implements StageService {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
     Stage stage;
-    if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+    if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       String gameSaveIdString = gameSaveId.toString();
       Optional<Stage> optionalCachedStage = stageCache.get(gameSaveIdString);
       if (optionalCachedStage.isPresent()) {

@@ -128,11 +128,11 @@ public class BddGivenStepDefinitions extends BddLoader {
   @Given("^the cache is enabled$")
   public void givenTheCacheIsEnabled() {
     log.info("Checking cache status...");
-    boolean cacheEnabled = redisCacheService.isEnabled();
+    boolean cacheEnabled = redisCacheManager.isEnabled();
     if (!cacheEnabled) {
       log.info("Cache is disabled. Enabling cache...");
-      redisCacheService.toggleCacheEnabling();
-      assertThat(redisCacheService.isEnabled()).isTrue();
+      redisCacheManager.toggleCacheEnabling();
+      assertThat(redisCacheManager.isEnabled()).isTrue();
       log.info("Cache enabled");
     } else {
       log.info("Cache is already enabled");
@@ -154,8 +154,8 @@ public class BddGivenStepDefinitions extends BddLoader {
     assertThat(gameMetadataRepository.count()).isZero();
 
     // Clear caches
-    redisCacheService.clearCaches();
-    localCacheService.clearCaches();
+    redisCacheManager.clearCaches();
+    localCacheManager.clearCaches();
 
     assertThat(characteristicsCache.getAll()).isEmpty();
     assertThat(characteristicsCache.getAllHisto()).isEmpty();

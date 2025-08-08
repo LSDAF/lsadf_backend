@@ -28,7 +28,7 @@ import com.lsadf.core.application.game.save.characteristics.impl.Characteristics
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +43,7 @@ class CharacteristicsServiceTests {
   private CharacteristicsService characteristicsService;
 
   @Mock private CharacteristicsRepositoryPort characteristicsRepositoryPort;
-  @Mock private CacheService cacheService;
+  @Mock private CacheManager cacheManager;
   @Mock private CachePort<Characteristics> characteristicsCache;
 
   private static final UUID UUID = java.util.UUID.randomUUID();
@@ -55,14 +55,14 @@ class CharacteristicsServiceTests {
 
     characteristicsService =
         new CharacteristicsServiceImpl(
-            cacheService, characteristicsRepositoryPort, characteristicsCache);
+            cacheManager, characteristicsRepositoryPort, characteristicsCache);
   }
 
   @Test
   void test_getCharacteristics_throwsNotFoundException_when_nonExistingGameSaveId() {
     // Arrange
     when(characteristicsRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.empty());
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
 
     // Assert
     assertThrows(NotFoundException.class, () -> characteristicsService.getCharacteristics(UUID));
@@ -92,7 +92,7 @@ class CharacteristicsServiceTests {
 
     when(characteristicsRepositoryPort.findById(any(UUID.class)))
         .thenReturn(Optional.of(characteristics));
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
     when(characteristicsCache.get(anyString())).thenReturn(Optional.of(cachedCharacteristics));
 
     // Act
@@ -116,7 +116,7 @@ class CharacteristicsServiceTests {
 
     when(characteristicsRepositoryPort.findById(any(UUID.class)))
         .thenReturn(Optional.of(characteristics));
-    when(cacheService.isEnabled()).thenReturn(false);
+    when(cacheManager.isEnabled()).thenReturn(false);
     when(characteristicsCache.get(anyString())).thenReturn(Optional.empty());
 
     // Act

@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequestMapper;
@@ -43,7 +43,7 @@ public class CharacteristicsControllerImpl extends BaseController
     implements CharacteristicsController {
   private final GameSaveService gameSaveService;
   private final CharacteristicsService characteristicsService;
-  private final CacheService cacheService;
+  private final CacheManager cacheManager;
 
   private static final CharacteristicsRequestMapper requestMapper =
       CharacteristicsRequestMapper.INSTANCE;
@@ -54,10 +54,10 @@ public class CharacteristicsControllerImpl extends BaseController
   public CharacteristicsControllerImpl(
       GameSaveService gameSaveService,
       CharacteristicsService characteristicsService,
-      CacheService cacheService) {
+      CacheManager cacheManager) {
     this.gameSaveService = gameSaveService;
     this.characteristicsService = characteristicsService;
-    this.cacheService = cacheService;
+    this.cacheManager = cacheManager;
   }
 
   @Override
@@ -69,7 +69,7 @@ public class CharacteristicsControllerImpl extends BaseController
 
     Characteristics characteristics = requestMapper.map(characteristicsRequest);
     characteristicsService.saveCharacteristics(
-        gameSaveId, characteristics, cacheService.isEnabled());
+        gameSaveId, characteristics, cacheManager.isEnabled());
 
     return generateResponse(HttpStatus.OK);
   }

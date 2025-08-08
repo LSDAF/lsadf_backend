@@ -20,23 +20,23 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsServi
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
 public class CharacteristicsServiceImpl implements CharacteristicsService {
 
-  private final CacheService cacheService;
+  private final CacheManager cacheManager;
 
   private final CharacteristicsRepositoryPort characteristicsRepositoryPort;
   private final CachePort<Characteristics> characteristicsCache;
 
   public CharacteristicsServiceImpl(
-      CacheService cacheService,
+      CacheManager cacheManager,
       CharacteristicsRepositoryPort characteristicsRepositoryPort,
       CachePort<Characteristics> characteristicsCache) {
-    this.cacheService = cacheService;
+    this.cacheManager = cacheManager;
     this.characteristicsRepositoryPort = characteristicsRepositoryPort;
     this.characteristicsCache = characteristicsCache;
   }
@@ -66,7 +66,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     if (gameSaveId == null) {
       throw new IllegalArgumentException("Game save id cannot be null");
     }
-    if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+    if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       String gameSaveIdString = gameSaveId.toString();
       Optional<Characteristics> optionalCachedCharacteristics =
           characteristicsCache.get(gameSaveIdString);

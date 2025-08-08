@@ -26,7 +26,7 @@ import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.config.ShutdownListener;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
 import javax.sql.DataSource;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -65,7 +65,7 @@ public class UnitTestConfiguration {
 
   @MockBean private InventoryService inventoryService;
 
-  @MockBean private CacheService redisCacheService;
+  @MockBean private CacheManager redisCacheManager;
 
   @MockBean private CacheFlushService cacheFlushService;
 

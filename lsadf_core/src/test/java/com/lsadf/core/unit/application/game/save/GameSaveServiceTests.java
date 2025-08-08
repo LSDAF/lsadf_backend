@@ -42,7 +42,7 @@ import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.AlreadyExistingGameSaveException;
 import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
@@ -66,7 +66,7 @@ import org.mockito.MockitoAnnotations;
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class GameSaveServiceTests {
 
-  @Mock private CacheService cacheService;
+  @Mock private CacheManager cacheManager;
   @Mock private UserService userService;
   @Mock private GameMetadataService gameMetadataService;
   @Mock private StageService stageService;
@@ -132,7 +132,7 @@ class GameSaveServiceTests {
     cachedGameSave =
         new GameSave(DB_METADATA, CACHED_CHARACERISTICS, CACHED_CURRENCY, CACHED_STAGE);
     Mockito.reset(
-        cacheService,
+        cacheManager,
         userService,
         gameMetadataService,
         stageService,
@@ -151,7 +151,7 @@ class GameSaveServiceTests {
             currencyService,
             userService,
             gameSaveRepositoryPort,
-            cacheService,
+            cacheManager,
             gameMetadataCache,
             stageCache,
             currencyCache,
@@ -338,21 +338,21 @@ class GameSaveServiceTests {
 
   @Test
   void test_checkGameSaveOwnership_succeeds_when_validIdAndUserEmail() {
-    when(cacheService.isEnabled()).thenReturn(false);
+    when(cacheManager.isEnabled()).thenReturn(false);
     when(gameMetadataService.getGameMetadata(UUID)).thenReturn(DB_METADATA);
     gameSaveService.checkGameSaveOwnership(UUID, USER_EMAIL);
   }
 
   @Test
   void test_checkGameSaveOwnership_succeeds_when_validIdAndUserEmailWithCache() {
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
     when(gameMetadataCache.get(UUID.toString())).thenReturn(Optional.of(DB_METADATA));
     gameSaveService.checkGameSaveOwnership(UUID, USER_EMAIL);
   }
 
   @Test
   void test_checkGameSaveOwnership_succeeds_when_validIdAndUserEmailWithEmptyCache() {
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
     when(gameMetadataCache.get(UUID.toString())).thenReturn(Optional.empty());
     when(gameMetadataService.getGameMetadata(UUID)).thenReturn(DB_METADATA);
     gameSaveService.checkGameSaveOwnership(UUID, USER_EMAIL);
@@ -360,7 +360,7 @@ class GameSaveServiceTests {
 
   @Test
   void test_checkGameSaveOwnership_throwsNotFoundException_when_nonExistingId() {
-    when(cacheService.isEnabled()).thenReturn(false);
+    when(cacheManager.isEnabled()).thenReturn(false);
     when(gameMetadataService.getGameMetadata(UUID)).thenThrow(NotFoundException.class);
     assertThrows(
         NotFoundException.class, () -> gameSaveService.checkGameSaveOwnership(UUID, USER_EMAIL));
@@ -368,7 +368,7 @@ class GameSaveServiceTests {
 
   @Test
   void test_checkGameSaveOwnership_throwsForbiddenException_when_invalidUserEmail() {
-    when(cacheService.isEnabled()).thenReturn(false);
+    when(cacheManager.isEnabled()).thenReturn(false);
     when(gameMetadataService.getGameMetadata(UUID)).thenReturn(DB_METADATA);
     assertThrows(
         ForbiddenException.class,
@@ -379,7 +379,7 @@ class GameSaveServiceTests {
   void test_getGameSavesByUsername_returnsGameSaves_when_noCache() {
     List<GameSave> gameSaves = List.of(gameSave);
     when(userService.checkUsernameExists(USER_EMAIL)).thenReturn(true);
-    when(cacheService.isEnabled()).thenReturn(false);
+    when(cacheManager.isEnabled()).thenReturn(false);
     when(gameSaveRepositoryPort.findByUserEmail(USER_EMAIL)).thenReturn(gameSaves.stream());
     var actual = gameSaveService.getGameSavesByUsername(USER_EMAIL);
     assertThat(actual).isEqualTo(gameSaves);
@@ -388,7 +388,7 @@ class GameSaveServiceTests {
   @Test
   void test_getGameSavesByUsername_returnsGameSaves_when_cached() {
     Stream<GameSave> gameSaves = Stream.of(gameSave);
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
     when(userService.checkUsernameExists(USER_EMAIL)).thenReturn(true);
     when(characteristicsCache.get(UUID.toString())).thenReturn(Optional.of(CACHED_CHARACERISTICS));
     when(stageCache.get(UUID.toString())).thenReturn(Optional.of(CACHED_STAGE));
@@ -402,7 +402,7 @@ class GameSaveServiceTests {
   @Test
   void test_getGameSaves_returnsGameSaves_when_noCache() {
     List<GameSave> gameSaves = List.of(gameSave);
-    when(cacheService.isEnabled()).thenReturn(false);
+    when(cacheManager.isEnabled()).thenReturn(false);
     when(gameSaveRepositoryPort.findAll()).thenReturn(gameSaves.stream());
     var actual = gameSaveService.getGameSaves();
     assertThat(actual).isEqualTo(gameSaves);
@@ -411,7 +411,7 @@ class GameSaveServiceTests {
   @Test
   void test_getGameSaves_returnsGameSaves_when_cached() {
     Stream<GameSave> gameSaves = Stream.of(gameSave);
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
     when(gameSaveRepositoryPort.findAll()).thenReturn(gameSaves);
     when(characteristicsCache.get(UUID.toString())).thenReturn(Optional.of(CACHED_CHARACERISTICS));
     when(stageCache.get(UUID.toString())).thenReturn(Optional.of(CACHED_STAGE));

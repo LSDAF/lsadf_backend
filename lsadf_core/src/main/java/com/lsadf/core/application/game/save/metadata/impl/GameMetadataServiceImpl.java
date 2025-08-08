@@ -21,21 +21,21 @@ import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
 public class GameMetadataServiceImpl implements GameMetadataService {
 
-  private final CacheService cacheService;
+  private final CacheManager cacheManager;
   private final GameMetadataRepositoryPort gameMetadataRepositoryPort;
   private final GameMetadataCachePort gameMetadataCachePort;
 
   public GameMetadataServiceImpl(
-      CacheService cacheService,
+      CacheManager cacheManager,
       GameMetadataRepositoryPort gameMetadataRepositoryPort,
       GameMetadataCachePort gameMetadataCachePort) {
-    this.cacheService = cacheService;
+    this.cacheManager = cacheManager;
     this.gameMetadataRepositoryPort = gameMetadataRepositoryPort;
     this.gameMetadataCachePort = gameMetadataCachePort;
   }
@@ -49,7 +49,7 @@ public class GameMetadataServiceImpl implements GameMetadataService {
   @Override
   @Transactional(readOnly = true)
   public boolean existsById(UUID gameSaveId) {
-    if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+    if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       var optionalGameMetadata = gameMetadataCachePort.get(gameSaveId.toString());
       if (optionalGameMetadata.isPresent()) {
         return true;
@@ -67,7 +67,7 @@ public class GameMetadataServiceImpl implements GameMetadataService {
   @Override
   @Transactional(readOnly = true)
   public GameMetadata getGameMetadata(UUID gameSaveId) {
-    if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+    if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       var optionalGameMetadata = gameMetadataCachePort.get(gameSaveId.toString());
       if (optionalGameMetadata.isPresent()) {
         return optionalGameMetadata.get();

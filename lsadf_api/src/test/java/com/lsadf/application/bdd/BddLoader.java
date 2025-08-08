@@ -58,7 +58,7 @@ import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepo
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
 import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -180,9 +180,9 @@ public class BddLoader {
 
   @Autowired protected StageService stageService;
 
-  @Autowired protected CacheService redisCacheService;
+  @Autowired protected CacheManager redisCacheManager;
 
-  @Autowired protected CacheService localCacheService;
+  @Autowired protected CacheManager localCacheManager;
 
   @Autowired protected CacheFlushService cacheFlushService;
 

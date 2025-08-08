@@ -26,7 +26,7 @@ import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.valkey.cache.flush.RedisCacheFlushServiceImpl;
+import com.lsadf.core.infra.valkey.cache.flush.impl.RedisCacheFlushServiceImpl;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;

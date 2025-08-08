@@ -28,7 +28,7 @@ import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.application.game.save.stage.impl.StageServiceImpl;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +44,7 @@ class StageServiceTests {
   private StageService stageService;
 
   @Mock private StageRepositoryPort stageRepositoryPort;
-  @Mock private CacheService cacheService;
+  @Mock private CacheManager cacheManager;
   @Mock private StageCachePort stageCache;
 
   private static final UUID UUID = java.util.UUID.randomUUID();
@@ -54,14 +54,14 @@ class StageServiceTests {
     // Create all mocks and inject them into the service
     MockitoAnnotations.openMocks(this);
 
-    stageService = new StageServiceImpl(cacheService, stageRepositoryPort, stageCache);
+    stageService = new StageServiceImpl(cacheManager, stageRepositoryPort, stageCache);
   }
 
   @Test
   void test_getStage_throwsNotFoundException_when_gameSaveIdDoesNotExist() {
     // Arrange
     when(stageRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.empty());
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
 
     // Assert
     assertThrows(NotFoundException.class, () -> stageService.getStage(UUID));
@@ -73,7 +73,7 @@ class StageServiceTests {
     Stage stage = Stage.builder().currentStage(1L).maxStage(2L).build();
 
     when(stageRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(stage));
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
     when(stageCache.get(anyString())).thenReturn(Optional.of(stage));
 
     // Act
@@ -89,7 +89,7 @@ class StageServiceTests {
     Stage stage = Stage.builder().currentStage(1L).maxStage(2L).build();
 
     when(stageRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(stage));
-    when(cacheService.isEnabled()).thenReturn(false);
+    when(cacheManager.isEnabled()).thenReturn(false);
     when(stageCache.get(anyString())).thenReturn(Optional.empty());
 
     // Act
@@ -107,7 +107,7 @@ class StageServiceTests {
     Stage stage = Stage.builder().currentStage(1L).maxStage(200L).build();
 
     when(stageRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(stage));
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
     when(stageCache.get(anyString())).thenReturn(Optional.of(stageCached));
 
     // Act

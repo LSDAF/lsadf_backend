@@ -31,14 +31,14 @@ import com.lsadf.core.infra.valkey.ValkeyConstants;
 import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.valkey.cache.config.properties.ValkeyProperties;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
-import com.lsadf.core.infra.valkey.cache.flush.RedisCacheFlushServiceImpl;
-import com.lsadf.core.infra.valkey.cache.game.save.characteristics.CharacteristicsCacheAdapter;
-import com.lsadf.core.infra.valkey.cache.game.save.currency.CurrencyCacheAdapter;
-import com.lsadf.core.infra.valkey.cache.game.save.metadata.GameMetadataCacheAdapter;
-import com.lsadf.core.infra.valkey.cache.game.save.stage.StageCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.flush.impl.RedisCacheFlushServiceImpl;
+import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.impl.save.currency.CurrencyCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.impl.save.metadata.GameMetadataCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.impl.save.stage.StageCacheAdapter;
 import com.lsadf.core.infra.valkey.cache.listener.ValkeyRepositoryKeyExpirationListener;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
-import com.lsadf.core.infra.valkey.cache.service.ValkeyCacheServiceImpl;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
+import com.lsadf.core.infra.valkey.cache.manager.impl.ValkeyCacheManagerImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -138,13 +138,13 @@ public class ValkeyCacheConfiguration {
   }
 
   @Bean
-  public CacheService redisCacheService(
+  public CacheManager redisCacheService(
       GameMetadataCachePort gameMetadataCache,
       CharacteristicsCachePort characteristicsCache,
       CurrencyCachePort currencyCache,
       StageCachePort stageCache,
       ValkeyProperties valkeyProperties) {
-    return new ValkeyCacheServiceImpl(
+    return new ValkeyCacheManagerImpl(
         gameMetadataCache, characteristicsCache, currencyCache, stageCache, valkeyProperties);
   }
 

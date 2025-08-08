@@ -31,7 +31,7 @@ import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.application.game.save.stage.config.StageConfiguration;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -70,7 +70,7 @@ public class GameSaveConfiguration {
       CurrencyCachePort currencyCache,
       StageCachePort stageCache,
       GameMetadataCachePort gameMetadataCache,
-      CacheService cacheService) {
+      CacheManager cacheManager) {
     return new GameSaveServiceImpl(
         gameMetadataService,
         characteristicsService,
@@ -78,7 +78,7 @@ public class GameSaveConfiguration {
         currencyService,
         userService,
         gameSaveRepositoryPort,
-        cacheService,
+        cacheManager,
         gameMetadataCache,
         stageCache,
         currencyCache,
