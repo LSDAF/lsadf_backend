@@ -19,6 +19,8 @@ import com.lsadf.core.infra.valkey.cache.config.properties.ValkeyProperties;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import redis.embedded.RedisServer;
@@ -36,6 +38,7 @@ public class ValkeyEmbeddedCacheConfiguration {
   }
 
   public RedisServer initRedisServer(ValkeyProperties valkeyProperties) throws IOException {
+    Path tempDir = Files.createTempDirectory("redis-test-dir");
     return RedisServer.newRedisServer()
         .setting("requirepass " + valkeyProperties.getPassword())
         .setting("bind 127.0.0.1")
@@ -44,6 +47,8 @@ public class ValkeyEmbeddedCacheConfiguration {
         .setting("appendfsync everysec")
         .setting("auto-aof-rewrite-percentage 100")
         .setting("auto-aof-rewrite-min-size 100mb")
+        .setting("appendfilename test-appendonly.aof")
+        .setting("dir " + tempDir.toAbsolutePath())
         .port(valkeyProperties.getPort())
         .build();
   }
