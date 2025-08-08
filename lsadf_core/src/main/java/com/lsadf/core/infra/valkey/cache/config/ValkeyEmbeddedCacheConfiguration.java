@@ -42,6 +42,8 @@ public class ValkeyEmbeddedCacheConfiguration {
         .setting("notify-keyspace-events Ex")
         .setting("appendonly yes")
         .setting("appendfsync everysec")
+        .setting("auto-aof-rewrite-percentage 100")
+        .setting("auto-aof-rewrite-min-size 100mb")
         .port(valkeyProperties.getPort())
         .build();
   }
