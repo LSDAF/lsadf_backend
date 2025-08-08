@@ -15,8 +15,6 @@
  */
 package com.lsadf.admin.application.bdd;
 
-import static com.lsadf.core.application.game.game_save.GameSaveConfiguration.GAME_SAVE_OWNERSHIP_CACHE;
-
 import com.lsadf.admin.application.auth.AdminAuthController;
 import com.lsadf.admin.application.auth.AdminAuthControllerImpl;
 import com.lsadf.admin.application.auth.OAuth2Controller;
@@ -35,33 +33,36 @@ import com.lsadf.admin.application.search.AdminSearchControllerImpl;
 import com.lsadf.admin.application.user.AdminUserController;
 import com.lsadf.admin.application.user.AdminUserControllerImpl;
 import com.lsadf.admin.config.LsadfAdminConfiguration;
-import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.currency.CurrencyService;
-import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.application.game.stage.StageService;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
+import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.domain.game.GameSave;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.domain.game.currency.Currency;
-import com.lsadf.core.domain.game.stage.Stage;
-import com.lsadf.core.infra.cache.Cache;
-import com.lsadf.core.infra.cache.HistoCache;
-import com.lsadf.core.infra.cache.flush.CacheFlushService;
-import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.cache.service.CacheService;
+import com.lsadf.core.domain.game.save.GameSave;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.persistence.game.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.persistence.game.currency.CurrencyRepository;
-import com.lsadf.core.infra.persistence.game.game_save.GameSaveRepository;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryEntity;
-import com.lsadf.core.infra.persistence.game.inventory.InventoryRepository;
-import com.lsadf.core.infra.persistence.game.stage.StageRepository;
+import com.lsadf.core.infra.persistence.table.game.inventory.AdditionalItemStatsRepository;
+import com.lsadf.core.infra.persistence.table.game.inventory.ItemRepository;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsRepository;
+import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyRepository;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataRepository;
+import com.lsadf.core.infra.persistence.table.game.save.stage.StageRepository;
+import com.lsadf.core.infra.persistence.view.GameSaveViewRepository;
+import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.response.user.UserResponse;
@@ -76,9 +77,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.keycloak.admin.client.Keycloak;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.oauth2.client.reactive.ReactiveOAuth2ClientAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.reactive.ReactiveOAuth2ResourceServerAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -86,7 +85,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.data.redis.core.RedisKeyValueAdapter;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -125,8 +126,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ExtendWith(MockitoExtension.class)
 @EnableConfigurationProperties
 @CucumberContextConfiguration
-@EnableJpaRepositories(basePackages = "com.lsadf.core.infra.persistence")
-@EntityScan(basePackages = "com.lsadf.core.infra.persistence")
+@EnableRedisRepositories(
+    basePackages = "com.lsadf.core.infra.valkey.cache",
+    shadowCopy = RedisKeyValueAdapter.ShadowCopy.ON,
+    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_DEMAND)
+@EnableJdbcRepositories(basePackages = "com.lsadf.core.infra.persistence")
 @EnableAutoConfiguration(
     exclude = {
       SecurityAutoConfiguration.class,
@@ -139,26 +143,28 @@ public class BddLoader {
 
   // Caches
 
-  @Autowired
-  @Qualifier(GAME_SAVE_OWNERSHIP_CACHE)
-  protected Cache<String> gameSaveOwnershipCache;
+  @Autowired protected GameMetadataCachePort gameMetadataCache;
 
-  @Autowired protected HistoCache<Characteristics> characteristicsCache;
+  @Autowired protected CharacteristicsCachePort characteristicsCache;
 
-  @Autowired protected HistoCache<Currency> currencyCache;
+  @Autowired protected CurrencyCachePort currencyCache;
 
-  @Autowired protected HistoCache<Stage> stageCache;
+  @Autowired protected StageCachePort stageCache;
 
   // Repositories
   @Autowired protected CharacteristicsRepository characteristicsRepository;
 
   @Autowired protected CurrencyRepository currencyRepository;
 
-  @Autowired protected InventoryRepository inventoryRepository;
+  @Autowired protected ItemRepository itemRepository;
 
   @Autowired protected StageRepository stageRepository;
 
-  @Autowired protected GameSaveRepository gameSaveRepository;
+  @Autowired protected GameMetadataRepository gameMetadataRepository;
+
+  @Autowired protected GameSaveViewRepository gameSaveViewRepository;
+
+  @Autowired protected AdditionalItemStatsRepository additionalItemStatsRepository;
 
   @Autowired protected PasswordEncoder passwordEncoder;
 
@@ -201,8 +207,6 @@ public class BddLoader {
   @Autowired protected Stack<Characteristics> characteristicsStack;
 
   @Autowired protected Stack<Currency> currencyStack;
-
-  @Autowired protected Stack<InventoryEntity> inventoryEntityStack;
 
   @Autowired protected Stack<ItemResponse> itemStack;
 

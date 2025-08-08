@@ -26,8 +26,6 @@ import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.infra.web.JsonAttributes;
 import com.lsadf.core.infra.web.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Embedded;
 import java.util.List;
 import lombok.Builder;
 
@@ -53,10 +51,7 @@ public record ItemResponse(
     @JsonProperty(value = IS_EQUIPPED) @Schema(description = "Is Equipped", example = "true")
         Boolean isEquipped,
     @JsonProperty(value = LEVEL) @Schema(description = "Item level", example = "20") Integer level,
-    @JsonProperty(value = MAIN_STAT) @Schema(description = "Main item stat") @Embedded
-        ItemStat mainStat,
-    @JsonProperty(value = ADDITIONAL_STATS)
-        @Schema(description = "Additional item stat list")
-        @ElementCollection
+    @JsonProperty(value = MAIN_STAT) @Schema(description = "Main item stat") ItemStat mainStat,
+    @JsonProperty(value = ADDITIONAL_STATS) @Schema(description = "Additional item stat list")
         List<ItemStat> additionalStats)
     implements Response {}

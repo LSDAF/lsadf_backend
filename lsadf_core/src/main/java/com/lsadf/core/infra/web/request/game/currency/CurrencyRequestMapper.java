@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.web.request.game.currency;
 
-import com.lsadf.core.domain.game.currency.Currency;
+import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.web.request.RequestModelMapper;
 import org.mapstruct.Mapper;
 
@@ -38,7 +38,6 @@ public interface CurrencyRequestMapper extends RequestModelMapper<CurrencyReques
   CurrencyRequestMapper INSTANCE =
       org.mapstruct.factory.Mappers.getMapper(CurrencyRequestMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   Currency map(CurrencyRequest currencyRequest);
 }

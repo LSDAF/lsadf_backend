@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.web.request.game.characteristics;
 
-import com.lsadf.core.domain.game.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.web.request.RequestModelMapper;
 import org.mapstruct.Mapper;
 
@@ -39,7 +39,6 @@ public interface CharacteristicsRequestMapper
   CharacteristicsRequestMapper INSTANCE =
       org.mapstruct.factory.Mappers.getMapper(CharacteristicsRequestMapper.class);
 
-  /** {@inheritDoc} */
   @Override
   Characteristics map(CharacteristicsRequest characteristicsRequest);
 }

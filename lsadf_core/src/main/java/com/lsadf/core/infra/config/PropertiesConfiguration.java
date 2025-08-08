@@ -15,14 +15,13 @@
  */
 package com.lsadf.core.infra.config;
 
-import com.lsadf.core.infra.cache.config.ValkeyProperties;
-import com.lsadf.core.infra.cache.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.cache.properties.CacheProperties;
 import com.lsadf.core.infra.clock.ClockProperties;
 import com.lsadf.core.infra.logging.properties.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.properties.HttpLogProperties;
-import com.lsadf.core.infra.persistence.config.JpaProperties;
+import com.lsadf.core.infra.persistence.config.JdbcProperties;
 import com.lsadf.core.infra.persistence.config.properties.DataSourceProperties;
+import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.valkey.cache.config.properties.ValkeyProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakAdminProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.config.security.OAuth2Properties;
@@ -38,9 +37,9 @@ import org.springframework.context.annotation.Configuration;
 public class PropertiesConfiguration {
 
   @Bean
-  @ConfigurationProperties(prefix = "jpa")
-  public JpaProperties jpaProperties() {
-    return new JpaProperties();
+  @ConfigurationProperties(prefix = "jdbc")
+  public JdbcProperties jdbcProperties() {
+    return new JdbcProperties();
   }
 
   @Bean
@@ -65,12 +64,6 @@ public class PropertiesConfiguration {
   @ConfigurationProperties(prefix = "keycloak.admin")
   public KeycloakAdminProperties keycloakAdminProperties() {
     return new KeycloakAdminProperties();
-  }
-
-  @Bean
-  @ConfigurationProperties(prefix = "cache")
-  public CacheProperties cacheProperties() {
-    return new CacheProperties();
   }
 
   @Bean

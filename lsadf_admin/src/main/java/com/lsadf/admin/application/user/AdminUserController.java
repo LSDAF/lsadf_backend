@@ -27,7 +27,6 @@ import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.ResponseMessages;
 import com.lsadf.core.infra.web.response.user.UserResponse;
-import com.lsadf.core.shared.validation.Uuid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -35,6 +34,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -78,7 +78,7 @@ public interface AdminUserController extends Controller {
   @Operation(summary = "Updates a user")
   ResponseEntity<ApiResponse<UserResponse>> updateUser(
       @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = USER_ID) @Uuid String userId,
+      @PathVariable(value = USER_ID) UUID userId,
       @Valid @RequestBody AdminUserUpdateRequest user);
 
   /**
@@ -140,7 +140,7 @@ public interface AdminUserController extends Controller {
   @Operation(summary = "Deletes a user")
   @DeleteMapping(value = Constants.ApiPaths.USER_ID)
   ResponseEntity<ApiResponse<Void>> deleteUser(
-      @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) @Uuid String userId);
+      @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) UUID userId);
 
   /**
    * Gets a user by its email
@@ -201,7 +201,7 @@ public interface AdminUserController extends Controller {
       })
   @Operation(summary = "Gets a UserAdminDetails by the user id")
   ResponseEntity<ApiResponse<UserResponse>> getUserById(
-      @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) @Uuid String userId);
+      @AuthenticationPrincipal Jwt jwt, @PathVariable(value = USER_ID) UUID userId);
 
   /**
    * Gets all users

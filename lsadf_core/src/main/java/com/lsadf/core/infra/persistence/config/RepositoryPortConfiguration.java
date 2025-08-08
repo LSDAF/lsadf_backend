@@ -1,0 +1,73 @@
+/*
+ * Copyright © 2024-2025 LSDAF
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.lsadf.core.infra.persistence.config;
+
+import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
+import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
+import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
+import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
+import com.lsadf.core.infra.persistence.table.game.inventory.*;
+import com.lsadf.core.infra.persistence.table.game.save.characteristics.*;
+import com.lsadf.core.infra.persistence.table.game.save.currency.*;
+import com.lsadf.core.infra.persistence.table.game.save.metadata.*;
+import com.lsadf.core.infra.persistence.table.game.save.stage.*;
+import com.lsadf.core.infra.persistence.view.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class RepositoryPortConfiguration {
+
+  // Adapter Bean Definitions
+  @Bean
+  public GameSaveRepositoryPort gameSaveRepositoryAdapter(
+      GameSaveViewRepository gameSaveViewRepository) {
+    return new GameSaveViewRepositoryAdapter(gameSaveViewRepository);
+  }
+
+  @Bean
+  public InventoryRepositoryPort inventoryRepositoryAdapter(
+      ItemRepository itemRepository, AdditionalItemStatsRepository additionalItemStatsRepository) {
+    return new InventoryRepositoryAdapter(itemRepository, additionalItemStatsRepository);
+  }
+
+  @Bean
+  public GameMetadataRepositoryPort gameMetadataRepositoryAdapter(
+      GameMetadataRepository gameMetadataRepository) {
+    return new GameMetadataRepositoryAdapter(gameMetadataRepository);
+  }
+
+  @Bean
+  public CharacteristicsRepositoryPort characteristicsRepositoryAdapter(
+      com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsRepository
+          characteristicsRepository) {
+    return new CharacteristicsRepositoryAdapter(characteristicsRepository);
+  }
+
+  @Bean
+  public CurrencyRepositoryPort currencyRepositoryAdapter(
+      com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyRepository
+          currencyRepository) {
+    return new CurrencyRepositoryPortAdapter(currencyRepository);
+  }
+
+  @Bean
+  public StageRepositoryPort stageRepositoryAdapter(StageRepository stageRepository) {
+    return new StageRepositoryAdapter(stageRepository);
+  }
+}

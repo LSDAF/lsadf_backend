@@ -17,9 +17,11 @@
 package com.lsadf.core.infra.web.config.keycloak.mapper;
 
 import com.lsadf.core.domain.user.User;
+import java.util.Date;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -47,9 +49,35 @@ public interface UserToUserRepresentationMapper
     extends com.lsadf.core.shared.mapper.Mapper<User, UserRepresentation> {
   UserToUserRepresentationMapper INSTANCE = Mappers.getMapper(UserToUserRepresentationMapper.class);
 
-  /** {@inheritDoc} */
-  @Mapping(target = "createdTimestamp", ignore = true)
-  @Mapping(target = "id", ignore = true)
   @Override
+  @Mapping(target = "email", source = "username")
+  @Mapping(target = "realmRoles", source = "userRoles")
+  @Mapping(
+      target = "createdTimestamp",
+      source = "createdTimestamp",
+      qualifiedByName = "mapDateToTimestamp")
+  @Mapping(target = "self", ignore = true)
+  @Mapping(target = "totp", ignore = true)
+  @Mapping(target = "attributes", ignore = true)
+  @Mapping(target = "credentials", ignore = true)
+  @Mapping(target = "requiredActions", ignore = true)
+  @Mapping(target = "federatedIdentities", ignore = true)
+  @Mapping(target = "socialLinks", ignore = true)
+  @Mapping(target = "clientRoles", ignore = true)
+  @Mapping(target = "clientConsents", ignore = true)
+  @Mapping(target = "notBefore", ignore = true)
+  @Mapping(target = "federationLink", ignore = true)
+  @Mapping(target = "serviceAccountClientId", ignore = true)
+  @Mapping(target = "groups", ignore = true)
+  @Mapping(target = "origin", ignore = true)
+  @Mapping(target = "disableableCredentialTypes", ignore = true)
+  @Mapping(target = "access", ignore = true)
+  @Mapping(target = "userProfileMetadata", ignore = true)
+  @Mapping(target = "applicationRoles", ignore = true)
   UserRepresentation map(User user);
+
+  @Named("mapDateToTimestamp")
+  default Long map(Date value) {
+    return value == null ? null : value.getTime();
+  }
 }

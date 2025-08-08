@@ -29,6 +29,7 @@ import com.lsadf.core.infra.web.response.user.UserResponse;
 import com.lsadf.core.infra.web.response.user.UserResponseMapper;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -52,17 +53,11 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
     this.userService = userService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<List<UserResponse>>> getUsers(Jwt jwt, List<String> orderBy) {
     List<UserSortingParameter> sortingParameterList =
@@ -75,24 +70,14 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
     return generateResponse(HttpStatus.OK, userList);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
-  public ResponseEntity<ApiResponse<UserResponse>> getUserById(Jwt jwt, String userId) {
+  public ResponseEntity<ApiResponse<UserResponse>> getUserById(Jwt jwt, UUID userId) {
     validateUser(jwt);
     User user = userService.getUserById(userId);
     UserResponse response = userResponseMapper.map(user);
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<UserResponse>> getUserByUsername(Jwt jwt, String username) {
     validateUser(jwt);
@@ -101,37 +86,22 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<UserResponse>> updateUser(
-      Jwt jwt, String userId, AdminUserUpdateRequest user) {
+      Jwt jwt, UUID userId, AdminUserUpdateRequest user) {
     validateUser(jwt);
     User updatedUser = userService.updateUser(userId, user);
     UserResponse response = userResponseMapper.map(updatedUser);
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
-  public ResponseEntity<ApiResponse<Void>> deleteUser(Jwt jwt, String userId) {
+  public ResponseEntity<ApiResponse<Void>> deleteUser(Jwt jwt, UUID userId) {
     validateUser(jwt);
     userService.deleteUser(userId);
     return generateResponse(HttpStatus.OK);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<UserResponse>> createUser(
       Jwt jwt, AdminUserCreationRequest adminUserCreationRequest) {

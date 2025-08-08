@@ -15,46 +15,27 @@
  */
 package com.lsadf.core.application.game;
 
-import com.lsadf.core.application.game.characteristics.CharacteristicsConfiguration;
-import com.lsadf.core.application.game.currency.CurrencyConfiguration;
-import com.lsadf.core.application.game.game_save.GameSaveConfiguration;
-import com.lsadf.core.application.game.inventory.InventoryConfiguration;
-import com.lsadf.core.application.game.stage.StageConfiguration;
+import com.lsadf.core.application.game.inventory.config.InventoryConfiguration;
+import com.lsadf.core.application.game.save.config.GameSaveConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Configuration class for setting up and integrating various service components within the game
- * service module. This class imports multiple configurations responsible for providing necessary
- * beans and dependencies for specific functionality areas in the game framework.
+ * Configuration class for initializing game service functionalities.
  *
- * <p>Imported Configurations:
+ * <p>Aggregates and imports configurations required for game-related services, such as game saves
+ * and inventory management. By importing the required configurations, it ensures proper setup and
+ * integration of the Game Save and Inventory service modules into the Spring application context.
  *
- * <p>- {@link CharacteristicsConfiguration}: Configures and provides beans related to the
- * characteristics service, facilitating management of entity characteristics and caching
- * mechanisms.
+ * <p>GameSaveConfiguration handles the setup of components and dependencies relevant to game save
+ * management, including services, repositories, and caches.
  *
- * <p>- {@link CurrencyConfiguration}: Handles the setup of the CurrencyService and related
- * dependencies for managing in-game currency operations.
+ * <p>InventoryConfiguration manages the initialization of inventory service components, responsible
+ * for functionalities related to item repositories and metadata management.
  *
- * <p>- {@link GameSaveConfiguration}: Configures the GameSaveService and its associated
- * dependencies such as repositories, caches, and other service beans for managing game save data.
- *
- * <p>- {@link InventoryConfiguration}: Provides the configuration for inventory management,
- * including services for handling inventory creation, updates, and persistence.
- *
- * <p>- {@link StageConfiguration}: Manages the configuration of the StageService, enabling
- * stage-related processing and caching functionalities.
- *
- * <p>This configuration serves as a centralized module for assembling the various services required
- * for the core game logic, ensuring proper dependency wiring and efficient data management.
+ * <p>This class serves as a central configuration hub for game-related service management and is
+ * utilized in higher-level application configurations.
  */
 @Configuration
-@Import({
-  CharacteristicsConfiguration.class,
-  CurrencyConfiguration.class,
-  GameSaveConfiguration.class,
-  InventoryConfiguration.class,
-  StageConfiguration.class
-})
+@Import({GameSaveConfiguration.class, InventoryConfiguration.class})
 public class GameServiceConfiguration {}

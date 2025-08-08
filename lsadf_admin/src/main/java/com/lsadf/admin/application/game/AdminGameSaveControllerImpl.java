@@ -17,18 +17,19 @@ package com.lsadf.admin.application.game;
 
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
-import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.domain.game.GameSave;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.infra.util.StreamUtils;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.request.game.game_save.GameSaveSortingParameter;
-import com.lsadf.core.infra.web.request.game.game_save.creation.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.game_save.update.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.request.game.save.GameSaveSortingParameter;
+import com.lsadf.core.infra.web.request.game.save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.save.update.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponse;
-import com.lsadf.core.infra.web.response.game.game_save.GameSaveResponseMapper;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.response.game.save.GameSaveResponseMapper;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -62,17 +63,11 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     this.gameSaveService = gameSaveService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<List<GameSaveResponse>>> getSaveGames(
       Jwt jwt, List<String> orderBy) {
@@ -82,7 +77,7 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
       gameSaveOrderBy = orderBy.stream().map(GameSaveSortingParameter::fromString).toList();
     }
     validateUser(jwt);
-    try (Stream<GameSave> stream = gameSaveService.getGameSaves()) {
+    try (Stream<GameSave> stream = gameSaveService.getGameSaves().stream()) {
       Stream<GameSave> orderedStream = StreamUtils.sortGameSaves(stream, gameSaveOrderBy);
       List<GameSave> gameSaves = orderedStream.toList();
       List<GameSaveResponse> responses =
@@ -91,38 +86,27 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<List<GameSaveResponse>>> getUserGameSaves(
       Jwt jwt, String username) {
     validateUser(jwt);
-    try (Stream<GameSave> stream = gameSaveService.getGameSavesByUsername(username)) {
+    try (Stream<GameSave> stream = gameSaveService.getGameSavesByUsername(username).stream()) {
       List<GameSaveResponse> gameSaves = stream.map(gameSaveResponseMapper::map).toList();
       return generateResponse(HttpStatus.OK, gameSaves);
     }
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
-  public ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<GameSaveResponse>> getGameSave(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     GameSave gameSave = gameSaveService.getGameSave(gameSaveId);
     GameSaveResponse response = gameSaveResponseMapper.map(gameSave);
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<GameSaveResponse>> updateGameSave(
-      Jwt jwt, String gameSaveId, AdminGameSaveUpdateRequest adminGameSaveUpdateRequest) {
+      Jwt jwt, UUID gameSaveId, AdminGameSaveUpdateRequest adminGameSaveUpdateRequest) {
 
     validateUser(jwt);
     GameSave gameSave = gameSaveService.updateGameSave(gameSaveId, adminGameSaveUpdateRequest);
@@ -130,11 +114,6 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @return
-   */
   @Override
   public ResponseEntity<ApiResponse<GameSaveResponse>> generateNewSaveGame(
       Jwt jwt, AdminGameSaveCreationRequest creationRequest) {
@@ -145,9 +124,8 @@ public class AdminGameSaveControllerImpl extends BaseController implements Admin
     return generateResponse(HttpStatus.OK, response);
   }
 
-  /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<Void>> deleteGameSave(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<Void>> deleteGameSave(Jwt jwt, UUID gameSaveId) {
 
     validateUser(jwt);
 

@@ -21,9 +21,6 @@ import static com.lsadf.core.infra.web.JsonAttributes.STATISTIC;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.shared.model.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -31,14 +28,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
 @Valid
 public class ItemStat implements Model {
   @JsonProperty(value = STATISTIC)
   @Schema(description = "Item stat statistic", example = "ATTACK_ADD")
-  @Enumerated(EnumType.STRING)
   private ItemStatistic statistic;
 
   @JsonProperty(value = BASE_VALUE)

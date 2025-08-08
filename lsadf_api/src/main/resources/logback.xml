@@ -23,7 +23,8 @@
             <markerToMatch>CONSOLE</markerToMatch>
         </filter>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%green(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight([%thread]) %magenta(%-4level) %logger{36} - %msg%n</pattern>
+            <pattern>%green(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight([%thread]) %magenta(%-4level) %logger{36} - %msg%n
+            </pattern>
         </encoder>
 
     </appender>
@@ -32,7 +33,10 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <logger name = "com.lsadf.core.http_clients" level="DEBUG" additivity="false">
+    <logger name="com.lsadf.core.http_clients" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="org.springframework.jdbc.core" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
 </configuration>

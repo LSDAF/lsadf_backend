@@ -56,7 +56,7 @@ class CharacteristicsControllerTests {
 
   @Test
   @SneakyThrows
-  void getCharacteristics_should_return_401_when_user_not_authenticated() {
+  void test_getCharacteristics_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -67,7 +67,7 @@ class CharacteristicsControllerTests {
 
   @Test
   @SneakyThrows
-  void saveCharacteristics_should_return_401_when_user_not_authenticated() {
+  void test_saveCharacteristics_returns401_when_userNotAuthenticated() {
     // given
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
     // when
@@ -83,7 +83,7 @@ class CharacteristicsControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getCharacteristics_should_return_400_when_non_uuid_gameSaveId() {
+  void test_getCharacteristics_returns400_when_nonUuidGameSaveId() {
     // when
     mockMvc
         .perform(get("/api/v1/characteristics/{gameSaveId}", "testtesttest"))
@@ -94,7 +94,7 @@ class CharacteristicsControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getCharacteristics_should_return_200_when_authenticated_user_and_valid_uuid() {
+  void test_getCharacteristics_returns200_when_authenticatedUserAndValidUuid() {
     // when
     mockMvc
         .perform(
@@ -106,7 +106,7 @@ class CharacteristicsControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCharacteristics_should_return_400_when_no_body() {
+  void test_saveCharacteristics_returns400_when_noBody() {
     // when
     mockMvc
         .perform(
@@ -119,7 +119,7 @@ class CharacteristicsControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCharacteristics_should_return_400_when_body_is_null() {
+  void test_saveCharacteristics_returns400_when_bodyIsNull() {
     // when
     mockMvc
         .perform(
@@ -133,7 +133,7 @@ class CharacteristicsControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCharacteristics_should_return_400_when_gameSaveId_is_non_uuid() {
+  void test_saveCharacteristics_returns400_when_gameSaveIdIsNonUuid() {
     // given
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
     // when
@@ -149,7 +149,7 @@ class CharacteristicsControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCharacteristics_should_return_400_when_one_CharacteristicsRequest_field_is_negative() {
+  void test_saveCharacteristics_returns400_when_oneCharacteristicsRequestFieldIsNegative() {
     // given
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(-1L, 1L, 1L, 1L, 1L);
     // when
@@ -165,7 +165,7 @@ class CharacteristicsControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCharacteristics_should_return_400_when_one_CharacteristicsRequest_field_is_zero() {
+  void test_saveCharacteristics_returns400_when_oneCharacteristicsRequestFieldIsZero() {
     // given
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 0L, 1L, 1L, 1L);
     // when
@@ -181,7 +181,7 @@ class CharacteristicsControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void saveCharacteristics_should_return_200_if_one_CharacteristicsRequest_field_is_null() {
+  void test_saveCharacteristics_returns200_when_oneCharacteristicsRequestFieldIsNull() {
     // given
     CharacteristicsRequest characteristicsRequest =
         new CharacteristicsRequest(null, 1L, 1L, 1L, 1L);
@@ -198,8 +198,7 @@ class CharacteristicsControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void
-      saveCharacteristics_should_return_200_when_authenticated_user_valid_body_and_vlaid_gameSaveId() {
+  void test_saveCharacteristics_returns200_when_authenticatedUserValidBodyAndValidGameSaveId() {
     // given
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
     // when

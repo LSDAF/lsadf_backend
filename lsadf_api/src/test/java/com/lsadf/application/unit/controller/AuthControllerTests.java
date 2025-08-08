@@ -51,7 +51,7 @@ class AuthControllerTests {
 
   @Test
   @SneakyThrows
-  void should_return_400_when_login_request_contains_null_username() {
+  void test_login_returns_400_when_username_is_null() {
     // given
     UserLoginRequest loginRequest = new UserLoginRequest(null, "password");
     // when
@@ -67,7 +67,7 @@ class AuthControllerTests {
 
   @Test
   @SneakyThrows
-  void should_return_400_when_login_request_contains_null_password() {
+  void test_login_returns_400_when_password_is_null() {
     // given
     UserLoginRequest loginRequest = new UserLoginRequest("test@test.com", null);
     // when
@@ -83,7 +83,7 @@ class AuthControllerTests {
 
   @Test
   @SneakyThrows
-  void should_return_400_when_login_request_contains_not_email_username() {
+  void test_login_returns_400_when_username_is_not_email_format() {
     // given
     UserLoginRequest loginRequest = new UserLoginRequest("username", "password");
     // when
@@ -99,7 +99,7 @@ class AuthControllerTests {
 
   @Test
   @SneakyThrows
-  void should_return_400_when_login_request_is_null() {
+  void test_login_returns_400_when_request_body_is_null() {
     // given
     UserLoginRequest loginRequest = null;
     // when
@@ -115,7 +115,7 @@ class AuthControllerTests {
 
   @Test
   @SneakyThrows
-  void should_return_400_when_refresh_request_contains_null_refresh_token() {
+  void test_refresh_returns_400_when_refresh_token_is_null() {
     // given
     UserRefreshLoginRequest refreshRequest = new UserRefreshLoginRequest(null);
     // when

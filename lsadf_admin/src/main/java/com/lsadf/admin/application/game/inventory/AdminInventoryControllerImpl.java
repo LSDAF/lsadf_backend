@@ -25,6 +25,7 @@ import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponseMapper;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -51,9 +52,8 @@ public class AdminInventoryControllerImpl extends BaseController
     return log;
   }
 
-  /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventory(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventory(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     Set<Item> items = inventoryService.getInventoryItems(gameSaveId);
     Set<ItemResponse> itemResponses =
@@ -61,38 +61,34 @@ public class AdminInventoryControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK, itemResponses);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<ItemResponse>> createItemInInventory(
-      Jwt jwt, String gameSaveId, ItemRequest itemRequest) {
+      Jwt jwt, UUID gameSaveId, ItemRequest itemRequest) {
     validateUser(jwt);
     Item item = inventoryService.createItemInInventory(gameSaveId, itemRequest);
     ItemResponse itemResponse = itemResponseMapper.map(item);
     return generateResponse(HttpStatus.OK, itemResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> deleteItemFromInventory(
-      Jwt jwt, String gameSaveId, String itemClientId) {
+      Jwt jwt, UUID gameSaveId, String itemClientId) {
     validateUser(jwt);
     inventoryService.deleteItemFromInventory(gameSaveId, itemClientId);
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<ItemResponse>> updateItemInInventory(
-      Jwt jwt, String gameSaveId, String itemClientId, ItemRequest itemRequest) {
+      Jwt jwt, UUID gameSaveId, String itemClientId, ItemRequest itemRequest) {
     validateUser(jwt);
     Item item = inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
     ItemResponse itemResponse = itemResponseMapper.map(item);
     return generateResponse(HttpStatus.OK, itemResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
-  public ResponseEntity<ApiResponse<Void>> clearInventoryItems(Jwt jwt, String gameSaveId) {
+  public ResponseEntity<ApiResponse<Void>> clearInventoryItems(Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     inventoryService.clearInventory(gameSaveId);
     return generateResponse(HttpStatus.OK);

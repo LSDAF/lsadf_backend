@@ -23,7 +23,8 @@
             <markerToMatch>CONSOLE</markerToMatch>
         </filter>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%green(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight([%thread]) %magenta(%-4level) %logger{36} - %msg%n</pattern>
+            <pattern>%green(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight([%thread]) %magenta(%-4level) %logger{36} - %msg%n
+            </pattern>
         </encoder>
     </appender>
 
@@ -37,7 +38,8 @@
             <maxHistory>7</maxHistory>
             <totalSizeCap>100MB</totalSizeCap>
             <maxFileSize>10MB</maxFileSize>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFileNamingAndTriggeringPolicy">
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFileNamingAndTriggeringPolicy">
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
@@ -49,4 +51,8 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>
+
+    <logger name="org.springframework.jdbc.core" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
 </configuration>

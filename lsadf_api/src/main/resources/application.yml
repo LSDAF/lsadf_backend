@@ -31,11 +31,6 @@ spring:
     location: classpath:lsadf_banner.txt
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss.SSS
-  jpa:
-    show-sql: true
-    defer-datasource-initialization: false
-    hibernate:
-      ddl-auto: none
   config:
     import: optional:classpath:env.properties
   data:
@@ -175,12 +170,11 @@ cache:
     database: ${REDIS_DATABASE}
     embedded: false
   expiration:
-    game-save-ownership-expiration-seconds: ${GAME_SAVE_OWNERSHIP_EXPIRATION_SECONDS}
     local-user-expiration-seconds: ${LOCAL_USER_EXPIRATION_SECONDS}
     characteristics-expiration-seconds: ${CHARACTERISTICS_EXPIRATION_SECONDS}
     currency-expiration-seconds: ${CURRENCY_EXPIRATION_SECONDS}
-    inventory-expiration-seconds: ${INVENTORY_EXPIRATION_SECONDS}
     stage-expiration-seconds: ${STAGE_EXPIRATION_SECONDS}
+    game-metadata-expiration-seconds: ${GAME_METADATA_EXPIRATION_SECONDS}
 
 shutdown:
   flush-cache-at-shutdown: true
@@ -192,5 +186,5 @@ clock:
 configuration-display:
   enabled: true
 
-jpa:
+jdbc:
   enabled: true

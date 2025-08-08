@@ -1,130 +1,114 @@
-CREATE TABLE t_characteristics
+/*
+ * Copyright © 2024-2025 LSDAF
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+CREATE TABLE t_game_metadata_tgme
 (
-    game_save_id VARCHAR(255) NOT NULL,
-    attack       BIGINT,
-    crit_chance  BIGINT,
-    crit_damage  BIGINT,
-    health       BIGINT,
-    resistance   BIGINT,
-    CONSTRAINT pk_t_characteristics PRIMARY KEY (game_save_id)
+    tgme_id         UUID PRIMARY KEY                     DEFAULT gen_random_uuid(),
+    tgme_created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    tgme_updated_at TIMESTAMP WITHOUT TIME ZONE          DEFAULT CURRENT_TIMESTAMP,
+    tgme_user_email VARCHAR(255)                NOT NULL
+        CONSTRAINT chk_tgme_user_email_format CHECK (tgme_user_email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+    tgme_nickname   VARCHAR(100)                         DEFAULT gen_random_uuid()::text
 );
 
-CREATE TABLE t_currency
+-- Create an index on user_email for better query performance
+CREATE INDEX idx_tgme_user_email ON t_game_metadata_tgme (tgme_user_email);
+
+CREATE TABLE t_characteristics_tgch
 (
-    game_save_id    VARCHAR(255) NOT NULL,
-    user_email      VARCHAR(255),
-    gold_amount     BIGINT,
-    diamond_amount  BIGINT,
-    emerald_amount  BIGINT,
-    amethyst_amount BIGINT,
-    CONSTRAINT pk_t_currency PRIMARY KEY (game_save_id)
+    tgme_id          UUID PRIMARY KEY,
+    tgch_attack      BIGINT NOT NULL DEFAULT 1
+        CONSTRAINT chk_tgch_strict_positive_attack CHECK (tgch_attack > 0),
+    tgch_crit_chance BIGINT NOT NULL DEFAULT 0
+        CONSTRAINT chk_tgch_positive_crit_chance CHECK (tgch_crit_chance >= 0),
+    tgch_crit_damage BIGINT NOT NULL DEFAULT 0
+        CONSTRAINT chk_tgch_positive_crit_damage CHECK (tgch_crit_damage >= 0),
+    tgch_health      BIGINT NOT NULL DEFAULT 1
+        CONSTRAINT chk_tgch_strict_positive_health CHECK (tgch_health > 0),
+    tgch_resistance  BIGINT NOT NULL DEFAULT 0
+        CONSTRAINT chk_tgch_positive_resistance CHECK (tgch_resistance >= 0)
 );
 
-CREATE TABLE t_game_save
+ALTER TABLE t_characteristics_tgch
+    ADD CONSTRAINT fk_t_characteristics_on_tgme FOREIGN KEY (tgme_id) REFERENCES t_game_metadata_tgme (tgme_id) ON DELETE CASCADE;
+
+CREATE TABLE t_currency_tgcu
 (
-    id                 VARCHAR(255) NOT NULL,
-    created_at         TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_at         TIMESTAMP WITHOUT TIME ZONE,
-    user_email         VARCHAR(255),
-    nickname           VARCHAR(255),
-    characteristics_id VARCHAR(255),
-    currency_id        VARCHAR(255),
-    inventory_id       VARCHAR(255),
-    stage_id           VARCHAR(255),
-    CONSTRAINT pk_t_game_save PRIMARY KEY (id)
+    tgme_id              UUID PRIMARY KEY,
+    tgcu_gold_amount     BIGINT NOT NULL DEFAULT 0
+        CONSTRAINT chk_tgcu_positive_gold_amount CHECK (tgcu_gold_amount >= 0),
+    tgcu_diamond_amount  BIGINT NOT NULL DEFAULT 0
+        CONSTRAINT chk_thcu_positive_diamond_amount CHECK (tgcu_diamond_amount >= 0),
+    tgcu_emerald_amount  BIGINT NOT NULL DEFAULT 0
+        CONSTRAINT chk_tgcu_positive_emerald_amount CHECK (tgcu_emerald_amount >= 0),
+    tgcu_amethyst_amount BIGINT NOT NULL DEFAULT 0
+        CONSTRAINT chk_tgcu_positive_amethyst_amount CHECK (tgcu_amethyst_amount >= 0)
 );
 
-CREATE TABLE t_inventory
+ALTER TABLE t_currency_tgcu
+    ADD CONSTRAINT fk_t_currency_on_gsa FOREIGN KEY (tgme_id) REFERENCES t_game_metadata_tgme (tgme_id) ON DELETE CASCADE;
+
+CREATE TABLE t_stage_tgst
 (
-    game_save_id VARCHAR(255) NOT NULL,
-    created_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_at   TIMESTAMP WITHOUT TIME ZONE,
-    CONSTRAINT pk_t_inventory PRIMARY KEY (game_save_id)
+    tgme_id            UUID PRIMARY KEY,
+    tgst_current_stage BIGINT NOT NULL DEFAULT 1
+        CONSTRAINT chk_tgst_strict_positive_current_stage CHECK (tgst_current_stage > 0),
+    tgst_max_stage     BIGINT NOT NULL DEFAULT 1
+        CONSTRAINT chk_tgst_strict_positive_max_stage CHECK (tgst_max_stage > 0),
+    CONSTRAINT chk_tgst_consistent_stage CHECK (tgst_max_stage >= tgst_current_stage)
 );
 
-CREATE TABLE t_inventory_items
+ALTER TABLE t_stage_tgst
+    ADD CONSTRAINT fk_t_stage_on_gsa FOREIGN KEY (tgme_id) REFERENCES t_game_metadata_tgme (tgme_id) ON DELETE CASCADE;
+
+CREATE TABLE t_item_tgit
 (
-    items_id                 VARCHAR(255) NOT NULL,
-    t_inventory_game_save_id VARCHAR(255) NOT NULL,
-    CONSTRAINT pk_t_inventory_items PRIMARY KEY (items_id, t_inventory_game_save_id)
+    tgit_id              UUID PRIMARY KEY                     DEFAULT gen_random_uuid(),
+    tgme_id              UUID                        NOT NULL,
+    tgit_created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    tgit_updated_at      TIMESTAMP WITHOUT TIME ZONE          DEFAULT CURRENT_TIMESTAMP,
+    tgit_client_id       VARCHAR(100) UNIQUE         NOT NULL,
+    tgit_blueprint_id    VARCHAR(255)                NOT NULL,
+    tgit_type            VARCHAR(32)                 NOT NULL,
+    tgit_rarity          VARCHAR(32)                 NOT NULL,
+    tgit_is_equipped     BOOLEAN,
+    tgit_level           INTEGER                     NOT NULL DEFAULT 1
+        CONSTRAINT chk_tgit_strict_positive_level CHECK (tgit_level >= 0),
+    tgit_main_statistic  VARCHAR(64)                 NOT NULL,
+    tgit_main_base_value FLOAT                       NOT NULL
 );
 
-CREATE TABLE t_item
+ALTER TABLE t_item_tgit
+    ADD CONSTRAINT fk_t_item_on_gsa FOREIGN KEY (tgme_id) REFERENCES t_game_metadata_tgme (tgme_id) ON DELETE CASCADE;
+
+ALTER TABLE t_item_tgit
+    ADD CONSTRAINT uc_t_item_client UNIQUE (tgit_client_id);
+
+CREATE INDEX idx_tgit_client_id ON t_item_tgit (tgit_client_id);
+
+CREATE TABLE t_additional_stat_tias
 (
-    id                            VARCHAR(255) NOT NULL,
-    created_at                    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    updated_at                    TIMESTAMP WITHOUT TIME ZONE,
-    inventory_entity_game_save_id VARCHAR(255),
-    client_id                     VARCHAR(255),
-    blueprint_id                  VARCHAR(255),
-    type                          VARCHAR(255),
-    rarity                        VARCHAR(255),
-    is_equipped                   BOOLEAN,
-    level                         INTEGER,
-    statistic                     VARCHAR(255),
-    base_value                    FLOAT,
-    CONSTRAINT pk_t_item PRIMARY KEY (id)
+    tias_id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tgit_id         UUID        NOT NULL,
+    tias_base_value FLOAT       NOT NULL,
+    tias_statistic  VARCHAR(64) NOT NULL
 );
 
-CREATE TABLE t_stage
-(
-    game_save_id  VARCHAR(255) NOT NULL,
-    user_email    VARCHAR(255),
-    current_stage BIGINT,
-    max_stage     BIGINT,
-    CONSTRAINT pk_t_stage PRIMARY KEY (game_save_id)
-);
+ALTER TABLE t_additional_stat_tias
+    ADD CONSTRAINT fk_t_additional_stat_on_git FOREIGN KEY (tgit_id) references t_item_tgit (tgit_id) ON DELETE CASCADE;
 
-ALTER TABLE t_game_save
-    ADD CONSTRAINT uc_t_game_save_characteristics UNIQUE (characteristics_id);
-
-ALTER TABLE t_game_save
-    ADD CONSTRAINT uc_t_game_save_currency UNIQUE (currency_id);
-
-ALTER TABLE t_game_save
-    ADD CONSTRAINT uc_t_game_save_inventory UNIQUE (inventory_id);
-
-ALTER TABLE t_game_save
-    ADD CONSTRAINT uc_t_game_save_nickname UNIQUE (nickname);
-
-ALTER TABLE t_game_save
-    ADD CONSTRAINT uc_t_game_save_stage UNIQUE (stage_id);
-
-ALTER TABLE t_inventory_items
-    ADD CONSTRAINT uc_t_inventory_items_items UNIQUE (items_id);
-
-ALTER TABLE t_item
-    ADD CONSTRAINT uc_t_item_client UNIQUE (client_id);
-
-ALTER TABLE t_characteristics
-    ADD CONSTRAINT FK_T_CHARACTERISTICS_ON_GAMESAVE FOREIGN KEY (game_save_id) REFERENCES t_game_save (id);
-
-ALTER TABLE t_currency
-    ADD CONSTRAINT FK_T_CURRENCY_ON_GAMESAVE FOREIGN KEY (game_save_id) REFERENCES t_game_save (id);
-
-ALTER TABLE t_game_save
-    ADD CONSTRAINT FK_T_GAME_SAVE_ON_CHARACTERISTICS FOREIGN KEY (characteristics_id) REFERENCES t_characteristics (game_save_id);
-
-ALTER TABLE t_game_save
-    ADD CONSTRAINT FK_T_GAME_SAVE_ON_CURRENCY FOREIGN KEY (currency_id) REFERENCES t_currency (game_save_id);
-
-ALTER TABLE t_game_save
-    ADD CONSTRAINT FK_T_GAME_SAVE_ON_INVENTORY FOREIGN KEY (inventory_id) REFERENCES t_inventory (game_save_id);
-
-ALTER TABLE t_game_save
-    ADD CONSTRAINT FK_T_GAME_SAVE_ON_STAGE FOREIGN KEY (stage_id) REFERENCES t_stage (game_save_id);
-
-ALTER TABLE t_inventory
-    ADD CONSTRAINT FK_T_INVENTORY_ON_GAMESAVE FOREIGN KEY (game_save_id) REFERENCES t_game_save (id);
-
-ALTER TABLE t_item
-    ADD CONSTRAINT FK_T_ITEM_ON_INVENTORYENTITY_GAMESAVE FOREIGN KEY (inventory_entity_game_save_id) REFERENCES t_inventory (game_save_id);
-
-ALTER TABLE t_stage
-    ADD CONSTRAINT FK_T_STAGE_ON_GAMESAVE FOREIGN KEY (game_save_id) REFERENCES t_game_save (id);
-
-ALTER TABLE t_inventory_items
-    ADD CONSTRAINT fk_tinvite_on_inventory_entity FOREIGN KEY (t_inventory_game_save_id) REFERENCES t_inventory (game_save_id);
-
-ALTER TABLE t_inventory_items
-    ADD CONSTRAINT fk_tinvite_on_item_entity FOREIGN KEY (items_id) REFERENCES t_item (id);
+CREATE INDEX idx_tias_tgit_id ON t_additional_stat_tias (tgit_id);

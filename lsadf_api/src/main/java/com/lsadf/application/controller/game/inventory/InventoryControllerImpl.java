@@ -18,8 +18,8 @@ package com.lsadf.application.controller.game.inventory;
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
-import com.lsadf.core.application.game.game_save.GameSaveService;
 import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
@@ -27,6 +27,7 @@ import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponseMapper;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -52,10 +53,9 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     this.inventoryService = inventoryService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventoryItems(
-      Jwt jwt, String gameSaveId) {
+      Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -65,10 +65,9 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK, itemResponses);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<ItemResponse>> createItemInInventory(
-      Jwt jwt, String gameSaveId, ItemRequest itemRequest) {
+      Jwt jwt, UUID gameSaveId, ItemRequest itemRequest) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -77,10 +76,9 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK, itemResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> deleteItemFromInventory(
-      Jwt jwt, String gameSaveId, String itemClientId) {
+      Jwt jwt, UUID gameSaveId, String itemClientId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -88,10 +86,9 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<ItemResponse>> updateItemInInventory(
-      Jwt jwt, String gameSaveId, String itemClientId, ItemRequest itemRequest) {
+      Jwt jwt, UUID gameSaveId, String itemClientId, ItemRequest itemRequest) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -100,7 +97,6 @@ public class InventoryControllerImpl extends BaseController implements Inventory
     return generateResponse(HttpStatus.OK, itemResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;

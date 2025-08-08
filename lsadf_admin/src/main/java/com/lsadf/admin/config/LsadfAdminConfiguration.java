@@ -16,15 +16,15 @@
 package com.lsadf.admin.config;
 
 import com.lsadf.core.application.ApplicationServiceConfiguration;
-import com.lsadf.core.infra.cache.config.NoValkeyCacheConfiguration;
-import com.lsadf.core.infra.cache.config.ValkeyCacheConfiguration;
-import com.lsadf.core.infra.cache.config.ValkeyEmbeddedCacheConfiguration;
 import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.config.ApplicationListenerConfiguration;
 import com.lsadf.core.infra.config.PropertiesConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
-import com.lsadf.core.infra.persistence.config.JpaConfiguration;
+import com.lsadf.core.infra.persistence.config.JdbcConfiguration;
+import com.lsadf.core.infra.valkey.cache.config.NoValkeyCacheConfiguration;
+import com.lsadf.core.infra.valkey.cache.config.ValkeyCacheConfiguration;
+import com.lsadf.core.infra.valkey.cache.config.ValkeyEmbeddedCacheConfiguration;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakConfiguration;
 import com.lsadf.core.infra.web.config.security.CorsConfiguration;
 import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
@@ -48,7 +48,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   PropertiesConfiguration.class,
   SwaggerConfiguration.class,
   ApplicationServiceConfiguration.class,
-  JpaConfiguration.class,
+  JdbcConfiguration.class,
   CorsConfiguration.class,
   SecurityConfiguration.class,
   LoggingConfiguration.class,

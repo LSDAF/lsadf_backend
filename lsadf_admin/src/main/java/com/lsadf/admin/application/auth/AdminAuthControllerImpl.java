@@ -65,13 +65,11 @@ public class AdminAuthControllerImpl extends BaseController implements AdminAuth
     this.keycloakProvider = oAuth2ClientProperties.getProvider().get(KEYCLOAK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> login() {
     log.info("Anonymous user wants to login with grant_type=authorization_code");
@@ -81,7 +79,6 @@ public class AdminAuthControllerImpl extends BaseController implements AdminAuth
     return new ResponseEntity<>(headers, HttpStatus.FOUND);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<JwtAuthenticationResponse>> login(
       @RequestBody @Valid UserLoginRequest userLoginRequest) {
@@ -108,7 +105,6 @@ public class AdminAuthControllerImpl extends BaseController implements AdminAuth
     return generateResponse(HttpStatus.OK, jwt);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<JwtAuthenticationResponse>> refresh(
       @RequestBody @Valid UserRefreshLoginRequest userRefreshLoginRequest) {

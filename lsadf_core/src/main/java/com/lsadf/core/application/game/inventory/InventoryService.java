@@ -21,6 +21,7 @@ import com.lsadf.core.infra.exception.http.ForbiddenException;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import java.util.Set;
+import java.util.UUID;
 
 public interface InventoryService {
 
@@ -30,7 +31,7 @@ public interface InventoryService {
    * @param gameSaveId the ID of the game save for which the inventory is to be retrieved
    * @return a set of items representing the inventory of the specified game save
    */
-  Set<Item> getInventoryItems(String gameSaveId);
+  Set<Item> getInventoryItems(UUID gameSaveId);
 
   /**
    * Create an item in the inventory of a game save
@@ -39,7 +40,7 @@ public interface InventoryService {
    * @param itemRequest the item to add
    * @throws NotFoundException
    */
-  Item createItemInInventory(String gameSaveId, ItemRequest itemRequest)
+  Item createItemInInventory(UUID gameSaveId, ItemRequest itemRequest)
       throws NotFoundException, AlreadyExistingItemClientIdException;
 
   /**
@@ -49,7 +50,7 @@ public interface InventoryService {
    * @param itemClientId the item to remove
    * @throws NotFoundException, ForbiddenException
    */
-  void deleteItemFromInventory(String gameSaveId, String itemClientId)
+  void deleteItemFromInventory(UUID gameSaveId, String itemClientId)
       throws NotFoundException, ForbiddenException;
 
   /**
@@ -60,7 +61,7 @@ public interface InventoryService {
    * @param itemRequest the item to update
    * @throws NotFoundException, ForbiddenException
    */
-  Item updateItemInInventory(String gameSaveId, String itemClientId, ItemRequest itemRequest)
+  Item updateItemInInventory(UUID gameSaveId, String itemClientId, ItemRequest itemRequest)
       throws NotFoundException, ForbiddenException;
 
   /**
@@ -68,5 +69,5 @@ public interface InventoryService {
    *
    * @param gameSaveId the ID of the game save whose inventory will be cleared
    */
-  void clearInventory(String gameSaveId) throws NotFoundException;
+  void clearInventory(UUID gameSaveId) throws NotFoundException;
 }

@@ -64,7 +64,7 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  void updateUser_should_return_401_when_user_not_authenticated() {
+  void test_updateUser_returns401_when_userNotAuthenticated() {
     // given
     AdminUserUpdateRequest request =
         AdminUserUpdateRequest.builder()
@@ -88,7 +88,7 @@ class AdminUserControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void updateUser_should_return_403_when_user_not_admin() {
+  void test_updateUser_returns403_when_userNotAdmin() {
     // given
     AdminUserUpdateRequest request =
         AdminUserUpdateRequest.builder()
@@ -115,7 +115,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void updateUser_should_return_400_when_id_is_not_uuid() {
+  void test_updateUser_returns400_when_idIsNotUuid() {
     // given
     AdminUserUpdateRequest request =
         AdminUserUpdateRequest.builder()
@@ -141,7 +141,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void updateUser_should_return_200_when_authenticated_user_is_admin() {
+  void test_updateUser_returns200_when_authenticatedUserIsAdmin() {
     // given
     AdminUserUpdateRequest request =
         AdminUserUpdateRequest.builder()
@@ -180,7 +180,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void updateUser_should_return_400_when_request_is_invalid(
+  void test_updateUser_returns400_when_requestIsInvalid(
       String firstName, String lastName, Boolean enabled, Boolean emailVerified) {
     // given
     AdminUserUpdateRequest request =
@@ -204,7 +204,7 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  void createUser_should_return_401_when_user_not_authenticated() {
+  void test_createUser_returns401_when_userNotAuthenticated() {
     // given
     AdminUserCreationRequest request =
         AdminUserCreationRequest.builder()
@@ -228,7 +228,7 @@ class AdminUserControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void createUser_should_return_403_when_user_not_admin() {
+  void test_createUser_returns403_when_userNotAdmin() {
     // given
     AdminUserCreationRequest request =
         AdminUserCreationRequest.builder()
@@ -255,7 +255,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void createUser_should_return_200_when_authenticated_user_is_admin() {
+  void test_createUser_returns200_when_authenticatedUserIsAdmin() {
     // given
     AdminUserCreationRequest request =
         AdminUserCreationRequest.builder()
@@ -295,7 +295,7 @@ class AdminUserControllerTests {
       name = "Paul OCHON",
       roles = {"ADMIN"})
   @MethodSource("createUserArgumentsProvider")
-  void createUser_should_return_400_when_request_is_invalid(
+  void test_createUser_returns400_when_requestIsInvalid(
       String username, String firstName, String lastName, Boolean enabled, Boolean emailVerified) {
     // given
     AdminUserCreationRequest request =
@@ -319,7 +319,7 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  void deleteUser_should_return_401_when_user_not_authenticated() {
+  void test_deleteUser_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -332,7 +332,7 @@ class AdminUserControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void deleteUser_should_return_403_when_user_not_admin() {
+  void test_deleteUser_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -348,7 +348,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void deleteUser_should_return_400_when_id_is_not_uuid() {
+  void test_deleteUser_returns400_when_idIsNotUuid() {
     // when
     mockMvc
         .perform(MockMvcRequestBuilders.delete("/api/v1/admin/user/id/{user_id}", "testtesttest"))
@@ -362,7 +362,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void deleteUser_should_return_200_when_authenticated_user_is_admin() {
+  void test_deleteUser_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -374,7 +374,7 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  void getUserByUsername_should_return_401_when_user_not_authenticated() {
+  void test_getUserByUsername_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -389,7 +389,7 @@ class AdminUserControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getUserByUsername_should_return_403_when_user_not_admin() {
+  void test_getUserByUsername_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -407,7 +407,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getUserByUsername_should_return_200_when_authenticated_user_is_admin() {
+  void test_getUserByUsername_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -424,7 +424,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getUserByUsername_should_return_400_when_username_is_not_valid() {
+  void test_getUserByUsername_returns400_when_usernameIsNotValid() {
     // when
     mockMvc
         .perform(
@@ -437,7 +437,7 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  void getUserById_should_return_401_when_user_not_authenticated() {
+  void test_getUserById_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -452,7 +452,7 @@ class AdminUserControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getUserById_should_return_403_when_user_not_admin() {
+  void test_getUserById_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -470,7 +470,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getUserById_should_return_200_when_authenticated_user_is_admin_and_valid_uuid() {
+  void test_getUserById_returns200_when_authenticatedUserIsAdminAndValidUuid() {
     // when
     mockMvc
         .perform(
@@ -488,7 +488,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getUserByid_should_return_400_when_id_is_not_uuid() {
+  void test_getUserById_returns400_when_idIsNotUuid() {
     // when
     mockMvc
         .perform(
@@ -501,7 +501,7 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  void getUsers_should_return_401_when_user_not_authenticated() {
+  void test_getUsers_returns401_when_userNotAuthenticated() {
     // when
     mockMvc
         .perform(
@@ -515,7 +515,7 @@ class AdminUserControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void getUsers_should_return_403_when_user_not_admin() {
+  void test_getUsers_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
@@ -532,7 +532,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getUsers_should_return_200_when_authenticated_user_is_admin() {
+  void test_getUsers_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
@@ -549,7 +549,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getUsers_should_return_400_when_invalid_order_by() {
+  void test_getUsers_returns400_when_invalidOrderBy() {
     // when
     mockMvc
         .perform(
@@ -567,7 +567,7 @@ class AdminUserControllerTests {
       username = "paul.ochon@test.com",
       name = "Paul OCHON",
       roles = {"ADMIN"})
-  void getUsers_should_return_200_when_order_by_is_set() {
+  void test_getUsers_returns200_when_orderByIsSet() {
     // when
     mockMvc
         .perform(

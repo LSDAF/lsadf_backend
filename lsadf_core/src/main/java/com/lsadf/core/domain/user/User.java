@@ -19,6 +19,7 @@ import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import lombok.*;
 
 @AllArgsConstructor
@@ -30,7 +31,7 @@ public class User implements Model {
 
   @Serial private static final long serialVersionUID = 144315795668992686L;
 
-  private final String id;
+  private final UUID id;
 
   private String firstName;
 

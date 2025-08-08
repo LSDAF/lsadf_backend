@@ -1,0 +1,308 @@
+/*
+ * Copyright © 2024-2025 LSDAF
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.lsadf.core.application.game.save.impl;
+
+import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
+import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataService;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.user.UserService;
+import com.lsadf.core.domain.game.save.GameSave;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.domain.game.save.metadata.GameMetadata;
+import com.lsadf.core.domain.game.save.stage.Stage;
+import com.lsadf.core.infra.exception.AlreadyExistingGameSaveException;
+import com.lsadf.core.infra.exception.AlreadyTakenNicknameException;
+import com.lsadf.core.infra.exception.http.ForbiddenException;
+import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.infra.exception.http.UnauthorizedException;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
+import com.lsadf.core.infra.web.request.game.save.creation.GameSaveCreationRequest;
+import com.lsadf.core.infra.web.request.game.save.update.GameSaveUpdateRequest;
+import com.lsadf.core.infra.web.request.game.stage.StageRequest;
+import java.util.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+/** Implementation of GameSaveService */
+@Slf4j
+public class GameSaveServiceImpl implements GameSaveService {
+  private final UserService userService;
+  private final GameMetadataService gameMetadataService;
+  private final CharacteristicsService characteristicsService;
+  private final StageService stageService;
+  private final CurrencyService currencyService;
+
+  // Repository port to access game save data
+  private final GameSaveRepositoryPort gameSaveRepositoryPort;
+
+  private final CacheService cacheService;
+  private final GameMetadataCachePort gameMetadataCache;
+  private final StageCachePort stageCache;
+  private final CurrencyCachePort currencyCache;
+  private final CharacteristicsCachePort characteristicsCache;
+
+  @Autowired
+  public GameSaveServiceImpl(
+      GameMetadataService gameMetadataService,
+      CharacteristicsService characteristicsService,
+      StageService stageService,
+      CurrencyService currencyService,
+      UserService userService,
+      GameSaveRepositoryPort gameSaveRepositoryPort,
+      CacheService cacheService,
+      GameMetadataCachePort gameMetadataCache,
+      StageCachePort stageCache,
+      CurrencyCachePort currencyCache,
+      CharacteristicsCachePort characteristicsCache) {
+    this.userService = userService;
+    this.characteristicsService = characteristicsService;
+    this.stageService = stageService;
+    this.currencyService = currencyService;
+    this.gameMetadataService = gameMetadataService;
+    this.gameSaveRepositoryPort = gameSaveRepositoryPort;
+    this.cacheService = cacheService;
+    this.gameMetadataCache = gameMetadataCache;
+    this.stageCache = stageCache;
+    this.currencyCache = currencyCache;
+    this.characteristicsCache = characteristicsCache;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public GameSave getGameSave(UUID saveId) throws NotFoundException {
+    if (saveId == null) {
+      throw new IllegalArgumentException("Game Save ID cannot be null");
+    }
+    GameSave gameSave =
+        gameSaveRepositoryPort
+            .findById(saveId)
+            .orElseThrow(() -> new NotFoundException("Game save with id " + saveId + " not found"));
+    return enrichGameSaveWithCachedData(gameSave);
+  }
+
+  @Override
+  @Transactional
+  public GameSave createGameSave(GameSaveCreationRequest creationRequest)
+      throws NotFoundException, AlreadyExistingGameSaveException {
+    GameMetadataRequest metadataRequest = creationRequest.getMetadataRequest();
+    if (metadataRequest.id() != null && gameMetadataService.existsById(metadataRequest.id())) {
+      throw new AlreadyExistingGameSaveException(
+          "Game save with id " + metadataRequest.id() + " already exists");
+    }
+    if (metadataRequest.nickname() != null
+        && gameMetadataService.existsByNickname(metadataRequest.nickname())) {
+      throw new AlreadyExistingGameSaveException(
+          "Game save with nickname " + metadataRequest.nickname() + " already exists");
+    }
+    if (!userService.checkUsernameExists(metadataRequest.userEmail())) {
+      throw new NotFoundException("User with email " + metadataRequest.userEmail() + " not found");
+    }
+
+    GameSave.GameSaveBuilder gameSaveBuilder = GameSave.builder();
+
+    GameMetadata newGameMetadata =
+        gameMetadataService.createNewGameMetadata(
+            metadataRequest.id(), metadataRequest.userEmail(), metadataRequest.nickname());
+    gameSaveBuilder.metadata(newGameMetadata);
+
+    CharacteristicsRequest characteristicsRequest = creationRequest.getCharacteristicsRequest();
+    Characteristics newCharacteristics =
+        (characteristicsRequest != null)
+            ? characteristicsService.createNewCharacteristics(
+                newGameMetadata.id(),
+                characteristicsRequest.attack(),
+                characteristicsRequest.critChance(),
+                characteristicsRequest.critDamage(),
+                characteristicsRequest.health(),
+                characteristicsRequest.resistance())
+            : characteristicsService.createNewCharacteristics(newGameMetadata.id());
+
+    gameSaveBuilder.characteristics(newCharacteristics);
+
+    CurrencyRequest currencyRequest = creationRequest.getCurrencyRequest();
+    Currency newCurrency =
+        (currencyRequest != null)
+            ? currencyService.createNewCurrency(
+                newGameMetadata.id(),
+                currencyRequest.gold(),
+                currencyRequest.diamond(),
+                currencyRequest.emerald(),
+                currencyRequest.amethyst())
+            : currencyService.createNewCurrency(newGameMetadata.id());
+    gameSaveBuilder.currency(newCurrency);
+
+    StageRequest stageRequest = creationRequest.getStageRequest();
+    Stage newStage =
+        (stageRequest != null)
+            ? stageService.createNewStage(
+                newGameMetadata.id(), stageRequest.currentStage(), stageRequest.maxStage())
+            : stageService.createNewStage(newGameMetadata.id());
+    gameSaveBuilder.stage(newStage);
+
+    return gameSaveBuilder.build();
+  }
+
+  @Override
+  @Transactional
+  public GameSave updateGameSave(UUID saveId, GameSaveUpdateRequest gameSaveUpdateRequest)
+      throws ForbiddenException,
+          NotFoundException,
+          UnauthorizedException,
+          AlreadyTakenNicknameException {
+    if (saveId == null) {
+      throw new IllegalArgumentException("Game save id is null");
+    }
+
+    if (gameMetadataService.existsByNickname(gameSaveUpdateRequest.getNickname())) {
+      throw new AlreadyTakenNicknameException(
+          "Nickname " + gameSaveUpdateRequest.getNickname() + " is already taken");
+    }
+
+    if (gameSaveUpdateRequest.getCharacteristics() != null) {
+      Characteristics characteristicsUpdate = gameSaveUpdateRequest.getCharacteristics();
+      characteristicsService.saveCharacteristics(
+          saveId, characteristicsUpdate, cacheService.isEnabled());
+    }
+    if (gameSaveUpdateRequest.getCurrency() != null) {
+      Currency currencyUpdate = gameSaveUpdateRequest.getCurrency();
+      currencyService.saveCurrency(saveId, currencyUpdate, cacheService.isEnabled());
+    }
+    if (gameSaveUpdateRequest.getStage() != null) {
+      Stage stageUpdate = gameSaveUpdateRequest.getStage();
+      stageService.saveStage(saveId, stageUpdate, cacheService.isEnabled());
+    }
+
+    gameMetadataService.updateNickname(saveId, gameSaveUpdateRequest.getNickname());
+
+    GameSave gameSave =
+        gameSaveRepositoryPort
+            .findById(saveId)
+            .orElseThrow(() -> new NotFoundException("Game save with id " + saveId + " not found"));
+    return enrichGameSaveWithCachedData(gameSave);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean existsById(UUID gameSaveId) {
+    return gameMetadataService.existsById(gameSaveId);
+  }
+
+  @Override
+  @Transactional
+  public void deleteGameSave(UUID saveId) {
+    if (saveId == null) {
+      throw new NotFoundException("Game save id is null");
+    }
+    if (!gameMetadataService.existsById(saveId)) {
+      log.error("Game save with id {} not found", saveId);
+      throw new NotFoundException("Game save with id " + saveId + " not found");
+    }
+    // Delete entities from currency & stage before deleting the game save
+    gameMetadataService.deleteById(saveId);
+    String saveIdString = saveId.toString();
+    cacheService.clearGameSaveValues(saveIdString);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<GameSave> getGameSaves() {
+    if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+      return gameSaveRepositoryPort.findAll().map(this::enrichGameSaveWithCachedData).toList();
+    }
+    return gameSaveRepositoryPort.findAll().toList();
+  }
+
+  @Transactional(readOnly = true)
+  @Override
+  public Long countGameSaves() {
+    return gameMetadataService.count();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public void checkGameSaveOwnership(UUID saveId, String userEmail)
+      throws ForbiddenException, NotFoundException {
+    if (Boolean.FALSE.equals(cacheService.isEnabled())) {
+      GameMetadata gameMetadata = gameMetadataService.getGameMetadata(saveId);
+      if (!Objects.equals(gameMetadata.userEmail(), userEmail)) {
+        throw new ForbiddenException("The given user email is not the owner of the game save");
+      }
+      return;
+    }
+    String saveIdString = saveId.toString();
+    Optional<GameMetadata> optionalGameMetadata = gameMetadataCache.get(saveIdString);
+    if (optionalGameMetadata.isEmpty()) {
+      GameMetadata gameMetadata = gameMetadataService.getGameMetadata(saveId);
+      gameMetadataCache.set(saveIdString, gameMetadata);
+      if (!Objects.equals(gameMetadata.userEmail(), userEmail)) {
+        throw new ForbiddenException("The given user username is not the owner of the game save");
+      }
+      return;
+    }
+
+    if (!Objects.equals(optionalGameMetadata.get().userEmail(), userEmail)) {
+      throw new ForbiddenException("The given username is not the owner of the game save");
+    }
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<GameSave> getGameSavesByUsername(String username) {
+    if (!userService.checkUsernameExists(username)) {
+      throw new NotFoundException("User with username " + username + " not found");
+    }
+    if (Boolean.FALSE.equals(cacheService.isEnabled())) {
+      return gameSaveRepositoryPort.findByUserEmail(username).toList();
+    }
+    return gameSaveRepositoryPort
+        .findByUserEmail(username)
+        .map(this::enrichGameSaveWithCachedData)
+        .toList();
+  }
+
+  /**
+   * Enriches the given GameSave object with cached data, if available. Specifically, it attempts to
+   * load and set the characteristics, currency, and stage data from their corresponding caches
+   * based on the metadata ID of the provided GameSave.
+   *
+   * @param gameSave the GameSave object to be enriched with cached data
+   * @return the enriched GameSave object
+   */
+  private GameSave enrichGameSaveWithCachedData(GameSave gameSave) {
+    GameMetadata metadata = gameSave.getMetadata();
+    var cacheCharacteristics = characteristicsCache.get(metadata.id().toString());
+    cacheCharacteristics.ifPresent(gameSave::setCharacteristics);
+
+    var cacheCurrency = currencyCache.get(metadata.id().toString());
+    cacheCurrency.ifPresent(gameSave::setCurrency);
+
+    var cacheStage = stageCache.get(metadata.id().toString());
+    cacheStage.ifPresent(gameSave::setStage);
+    return gameSave;
+  }
+}

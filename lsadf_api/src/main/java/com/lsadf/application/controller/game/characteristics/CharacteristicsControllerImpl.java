@@ -18,16 +18,17 @@ package com.lsadf.application.controller.game.characteristics;
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
-import com.lsadf.core.application.game.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.game_save.GameSaveService;
-import com.lsadf.core.domain.game.characteristics.Characteristics;
-import com.lsadf.core.infra.cache.service.CacheService;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.infra.valkey.cache.service.CacheService;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequestMapper;
 import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.response.game.characteristics.CharacteristicsResponseMapper;
+import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponseMapper;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,10 +60,9 @@ public class CharacteristicsControllerImpl extends BaseController
     this.cacheService = cacheService;
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCharacteristics(
-      Jwt jwt, String gameSaveId, CharacteristicsRequest characteristicsRequest) {
+      Jwt jwt, UUID gameSaveId, CharacteristicsRequest characteristicsRequest) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -74,10 +74,9 @@ public class CharacteristicsControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK);
   }
 
-  /** {@inheritDoc} */
   @Override
   public ResponseEntity<ApiResponse<CharacteristicsResponse>> getCharacteristics(
-      Jwt jwt, String gameSaveId) {
+      Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -86,7 +85,6 @@ public class CharacteristicsControllerImpl extends BaseController
     return generateResponse(HttpStatus.OK, characteristicsResponse);
   }
 
-  /** {@inheritDoc} */
   @Override
   public Logger getLogger() {
     return log;
