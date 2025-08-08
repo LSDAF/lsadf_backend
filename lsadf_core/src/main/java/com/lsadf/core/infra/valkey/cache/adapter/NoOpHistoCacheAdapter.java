@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.impl;
+package com.lsadf.core.infra.valkey.cache.adapter;
 
 import com.lsadf.core.application.shared.HistoCachePort;
 import java.util.Map;
 import java.util.Optional;
 
-public class NoOpHistoCache<T> extends NoOpCache<T> implements HistoCachePort<T> {
+public class NoOpHistoCacheAdapter<T> extends NoOpCacheAdapter<T> implements HistoCachePort<T> {
   @Override
   public Optional<T> getHisto(String key) {
     return Optional.empty();

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.impl.save.stage;
+package com.lsadf.core.infra.valkey.cache.adapter.game.save.stage;
 
 import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.valkey.cache.impl.NoOpHistoCache;
+import com.lsadf.core.infra.valkey.cache.adapter.NoOpHistoCacheAdapter;
 
-public class NoOpStageCacheAdapter extends NoOpHistoCache<Stage> implements StageCachePort {}
+public class NoOpStageCacheAdapter extends NoOpHistoCacheAdapter<Stage> implements StageCachePort {}

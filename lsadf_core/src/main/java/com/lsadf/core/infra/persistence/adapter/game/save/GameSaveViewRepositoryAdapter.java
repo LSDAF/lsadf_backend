@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.impl.view;
+package com.lsadf.core.infra.persistence.adapter.game.save;
 
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.domain.game.save.GameSave;
+import com.lsadf.core.infra.persistence.impl.view.GameSaveViewMapper;
+import com.lsadf.core.infra.persistence.impl.view.GameSaveViewRepository;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;

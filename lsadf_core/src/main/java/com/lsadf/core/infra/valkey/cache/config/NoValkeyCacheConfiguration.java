@@ -19,12 +19,12 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsCache
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.infra.valkey.cache.adapter.game.save.characteristics.NoOpCharacteristicsCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.adapter.game.save.currency.NoOpCurrencyCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.adapter.game.save.metadata.NoOpGameMetadataCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.adapter.game.save.stage.NoOpStageCacheAdapter;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.cache.flush.impl.NoOpFlushServiceImpl;
-import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.NoOpCharacteristicsCacheAdapter;
-import com.lsadf.core.infra.valkey.cache.impl.save.currency.NoOpCurrencyCacheAdapter;
-import com.lsadf.core.infra.valkey.cache.impl.save.metadata.NoOpGameMetadataCacheAdapter;
-import com.lsadf.core.infra.valkey.cache.impl.save.stage.NoOpStageCacheAdapter;
 import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.valkey.cache.manager.impl.NoOpCacheManagerImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

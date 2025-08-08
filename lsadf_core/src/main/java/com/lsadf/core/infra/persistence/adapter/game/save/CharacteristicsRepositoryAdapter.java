@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.impl.game.save.characteristics;
+package com.lsadf.core.infra.persistence.adapter.game.save;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsEntityMapper;
+import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsRepository;
 import java.util.Optional;
 import java.util.UUID;
 

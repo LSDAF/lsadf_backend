@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.impl.save.stage;
+package com.lsadf.core.infra.valkey.cache.adapter.game.save.currency;
 
-import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.domain.game.save.stage.Stage;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
+import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.valkey.ValkeyConstants;
-import com.lsadf.core.infra.valkey.cache.impl.ValkeyHistoCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.adapter.ValkeyHistoCacheAdapter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 
-public class StageCacheAdapter extends ValkeyHistoCacheAdapter<Stage> implements StageCachePort {
-  private static final String HISTO_KEY_TYPE = ValkeyConstants.STAGE_HISTO;
+@Slf4j
+public class CurrencyCacheAdapter extends ValkeyHistoCacheAdapter<Currency>
+    implements CurrencyCachePort {
+  private static final String HISTO_KEY_TYPE = ValkeyConstants.CURRENCY_HISTO;
 
-  public StageCacheAdapter(
-      RedisTemplate<String, Stage> redisTemplate, String keyType, int expirationSeconds) {
+  public CurrencyCacheAdapter(
+      RedisTemplate<String, Currency> redisTemplate, String keyType, int expirationSeconds) {
     super(redisTemplate, keyType, HISTO_KEY_TYPE, expirationSeconds);
   }
 }

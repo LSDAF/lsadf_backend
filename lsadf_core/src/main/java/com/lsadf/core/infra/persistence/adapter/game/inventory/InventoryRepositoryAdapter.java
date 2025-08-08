@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.impl.game.inventory;
+package com.lsadf.core.infra.persistence.adapter.game.inventory;
 
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.infra.persistence.impl.game.inventory.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

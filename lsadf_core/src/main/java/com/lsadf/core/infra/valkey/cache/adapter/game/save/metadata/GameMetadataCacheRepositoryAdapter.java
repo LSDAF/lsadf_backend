@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.impl.save.metadata;
+package com.lsadf.core.infra.valkey.cache.adapter.game.save.metadata;
 
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.infra.valkey.cache.HashModelMapper;
 import com.lsadf.core.infra.valkey.cache.HashRepository;
+import com.lsadf.core.infra.valkey.cache.adapter.ValkeyCacheRepositoryAdapter;
 import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.valkey.cache.impl.ValkeyCacheRepositoryAdapter;
+import com.lsadf.core.infra.valkey.cache.impl.save.metadata.GameMetadataHash;
+import com.lsadf.core.infra.valkey.cache.impl.save.metadata.GameMetadataHashMapper;
 import java.util.Optional;
 import java.util.UUID;
 

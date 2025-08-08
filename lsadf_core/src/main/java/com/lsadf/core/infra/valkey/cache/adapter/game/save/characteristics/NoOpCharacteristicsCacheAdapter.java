@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.impl.save.characteristics;
+package com.lsadf.core.infra.valkey.cache.adapter.game.save.characteristics;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.infra.valkey.ValkeyConstants;
-import com.lsadf.core.infra.valkey.cache.impl.ValkeyHistoCacheAdapter;
-import org.springframework.data.redis.core.RedisTemplate;
+import com.lsadf.core.infra.valkey.cache.adapter.NoOpHistoCacheAdapter;
 
-public class CharacteristicsCacheAdapter extends ValkeyHistoCacheAdapter<Characteristics>
-    implements CharacteristicsCachePort {
-  private static final String HISTO_KEY_TYPE = ValkeyConstants.CHARACTERISTICS_HISTO;
-
-  public CharacteristicsCacheAdapter(
-      RedisTemplate<String, Characteristics> redisTemplate, String keyType, int expirationSeconds) {
-    super(redisTemplate, keyType, HISTO_KEY_TYPE, expirationSeconds);
-  }
-}
+public class NoOpCharacteristicsCacheAdapter extends NoOpHistoCacheAdapter<Characteristics>
+    implements CharacteristicsCachePort {}

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.valkey.cache.impl;
+package com.lsadf.core.infra.valkey.cache.adapter;
 
 import com.lsadf.core.application.shared.CachePort;
 import java.util.Map;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class NoOpCache<T> implements CachePort<T> {
+public class NoOpCacheAdapter<T> implements CachePort<T> {
 
   @Override
   public Optional<T> get(String key) {

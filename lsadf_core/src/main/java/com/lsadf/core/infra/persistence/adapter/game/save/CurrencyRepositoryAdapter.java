@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.impl.game.save.currency;
+package com.lsadf.core.infra.persistence.adapter.game.save;
 
 import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
 import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyEntityMapper;
+import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CurrencyRepositoryPortAdapter implements CurrencyRepositoryPort {
+public class CurrencyRepositoryAdapter implements CurrencyRepositoryPort {
 
   private final CurrencyRepository currencyRepository;
   private static final CurrencyEntityMapper currencyEntityMapper = CurrencyEntityMapper.INSTANCE;
 
-  public CurrencyRepositoryPortAdapter(CurrencyRepository currencyRepository) {
+  public CurrencyRepositoryAdapter(CurrencyRepository currencyRepository) {
     this.currencyRepository = currencyRepository;
   }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.impl;
+package com.lsadf.core.infra.valkey.cache.adapter;
 
 import com.lsadf.core.application.shared.HistoCachePort;
 import com.lsadf.core.infra.valkey.cache.util.CacheUtils;

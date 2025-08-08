@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.persistence.impl.game.save.metadata;
+package com.lsadf.core.infra.persistence.adapter.game.save;
 
 import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntityMapper;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
 import java.util.Optional;
 import java.util.UUID;
 

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.impl.save.metadata;
+package com.lsadf.core.infra.valkey.cache.adapter.game.save.metadata;
 
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
-import com.lsadf.core.infra.valkey.cache.impl.ValkeyCacheAdapter;
+import com.lsadf.core.infra.valkey.cache.adapter.ValkeyCacheAdapter;
 import org.springframework.data.redis.core.RedisTemplate;
 
 public class GameMetadataCacheAdapter extends ValkeyCacheAdapter<GameMetadata>

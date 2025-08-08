@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache;
+package com.lsadf.core.infra.valkey.cache.util;
 
 @FunctionalInterface
 public interface KeyValueConsumer<T> {

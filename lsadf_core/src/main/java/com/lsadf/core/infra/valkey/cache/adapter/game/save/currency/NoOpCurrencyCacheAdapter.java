@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.impl.save.metadata;
+package com.lsadf.core.infra.valkey.cache.adapter.game.save.currency;
 
-import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
-import com.lsadf.core.domain.game.save.metadata.GameMetadata;
-import com.lsadf.core.infra.valkey.cache.impl.NoOpHistoCache;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
+import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.infra.valkey.cache.adapter.NoOpHistoCacheAdapter;
 
-public class NoOpGameMetadataCacheAdapter extends NoOpHistoCache<GameMetadata>
-    implements GameMetadataCachePort {}
+public class NoOpCurrencyCacheAdapter extends NoOpHistoCacheAdapter<Currency>
+    implements CurrencyCachePort {}

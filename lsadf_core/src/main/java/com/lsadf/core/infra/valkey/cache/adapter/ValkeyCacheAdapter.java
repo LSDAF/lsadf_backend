@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.valkey.cache.impl;
+package com.lsadf.core.infra.valkey.cache.adapter;
 
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.infra.valkey.cache.util.CacheUtils;
