@@ -21,12 +21,19 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepos
 import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
-import com.lsadf.core.infra.persistence.table.game.inventory.*;
-import com.lsadf.core.infra.persistence.table.game.save.characteristics.*;
-import com.lsadf.core.infra.persistence.table.game.save.currency.*;
-import com.lsadf.core.infra.persistence.table.game.save.metadata.*;
-import com.lsadf.core.infra.persistence.table.game.save.stage.*;
-import com.lsadf.core.infra.persistence.view.*;
+import com.lsadf.core.infra.persistence.impl.game.inventory.AdditionalItemStatsRepository;
+import com.lsadf.core.infra.persistence.impl.game.inventory.InventoryRepositoryAdapter;
+import com.lsadf.core.infra.persistence.impl.game.inventory.ItemRepository;
+import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsRepository;
+import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsRepositoryAdapter;
+import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyRepository;
+import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyRepositoryPortAdapter;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepositoryAdapter;
+import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
+import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepositoryAdapter;
+import com.lsadf.core.infra.persistence.impl.view.GameSaveViewRepository;
+import com.lsadf.core.infra.persistence.impl.view.GameSaveViewRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -54,15 +61,12 @@ public class RepositoryPortConfiguration {
 
   @Bean
   public CharacteristicsRepositoryPort characteristicsRepositoryAdapter(
-      com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsRepository
-          characteristicsRepository) {
+      CharacteristicsRepository characteristicsRepository) {
     return new CharacteristicsRepositoryAdapter(characteristicsRepository);
   }
 
   @Bean
-  public CurrencyRepositoryPort currencyRepositoryAdapter(
-      com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyRepository
-          currencyRepository) {
+  public CurrencyRepositoryPort currencyRepositoryAdapter(CurrencyRepository currencyRepository) {
     return new CurrencyRepositoryPortAdapter(currencyRepository);
   }
 

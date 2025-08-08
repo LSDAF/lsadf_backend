@@ -22,7 +22,7 @@ import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
