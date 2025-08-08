@@ -40,6 +40,8 @@ public class ValkeyEmbeddedCacheConfiguration {
         .setting("requirepass " + valkeyProperties.getPassword())
         .setting("bind 127.0.0.1")
         .setting("notify-keyspace-events Ex")
+        .setting("appendonly yes")
+        .setting("appendfsync everysec")
         .port(valkeyProperties.getPort())
         .build();
   }
