@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 public class CacheExpirationProperties {
   private Integer characteristicsExpirationSeconds;
   private Integer currencyExpirationSeconds;
-  private Integer inventoryExpirationSeconds;
   private Integer stageExpirationSeconds;
   private Integer gameMetadataExpirationSeconds;
   private Integer localUserExpirationSeconds;

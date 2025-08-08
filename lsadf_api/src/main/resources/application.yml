@@ -173,7 +173,6 @@ cache:
     local-user-expiration-seconds: ${LOCAL_USER_EXPIRATION_SECONDS}
     characteristics-expiration-seconds: ${CHARACTERISTICS_EXPIRATION_SECONDS}
     currency-expiration-seconds: ${CURRENCY_EXPIRATION_SECONDS}
-    inventory-expiration-seconds: ${INVENTORY_EXPIRATION_SECONDS}
     stage-expiration-seconds: ${STAGE_EXPIRATION_SECONDS}
     game-metadata-expiration-seconds: ${GAME_METADATA_EXPIRATION_SECONDS}
 
