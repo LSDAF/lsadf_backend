@@ -35,7 +35,7 @@ public class StageHash implements Hash<UUID> {
 
   @Id
   @Column(value = STAGE_GAME_SAVE_ID)
-  private UUID gameSaveId;
+  private UUID id;
 
   @Column(value = STAGE_CURRENT_STAGE)
   private Long currentStage;
@@ -51,10 +51,5 @@ public class StageHash implements Hash<UUID> {
     public static final String STAGE_GAME_SAVE_ID = "gameSaveId";
     public static final String STAGE_CURRENT_STAGE = "currentStage";
     public static final String STAGE_MAX_STAGE = "maxStage";
-  }
-
-  @Override
-  public UUID getId() {
-    return this.gameSaveId;
   }
 }

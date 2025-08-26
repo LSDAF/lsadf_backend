@@ -51,7 +51,7 @@ public class StageCacheRepositoryAdapter
     UUID uuid = UUID.fromString(key);
     StageHash hash =
         StageHash.builder()
-            .gameSaveId(uuid)
+            .id(uuid)
             .maxStage(value.maxStage())
             .expiration(this.expirationSeconds)
             .currentStage(value.currentStage())
@@ -64,7 +64,7 @@ public class StageCacheRepositoryAdapter
     UUID uuid = UUID.fromString(key);
     StageHash hash =
         StageHash.builder()
-            .gameSaveId(uuid)
+            .id(uuid)
             .maxStage(value.maxStage())
             .currentStage(value.currentStage())
             .expiration((long) expirationSeconds)

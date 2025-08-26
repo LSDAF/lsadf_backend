@@ -98,6 +98,11 @@ public class StageServiceImpl implements StageService {
     }
     if (toCache) {
       String gameSaveIdString = gameSaveId.toString();
+      if (isStagePartial(stage)) {
+        Stage existingStage =
+            stageCache.get(gameSaveIdString).orElseGet(() -> getStageFromDatabase(gameSaveId));
+        stage = mergeStages(stage, existingStage);
+      }
       stageCache.set(gameSaveIdString, stage);
     } else {
       saveStageToDatabase(gameSaveId, stage);
