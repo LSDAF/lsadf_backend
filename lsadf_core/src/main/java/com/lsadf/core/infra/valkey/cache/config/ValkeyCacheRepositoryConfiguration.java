@@ -38,7 +38,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableRedisRepositories(
     basePackages = "com.lsadf.core.infra.valkey.cache",
     shadowCopy = RedisKeyValueAdapter.ShadowCopy.ON,
-    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_DEMAND)
+    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP)
 public class ValkeyCacheRepositoryConfiguration {
   @Bean
   public CharacteristicsCachePort characteristicsCachePort(
