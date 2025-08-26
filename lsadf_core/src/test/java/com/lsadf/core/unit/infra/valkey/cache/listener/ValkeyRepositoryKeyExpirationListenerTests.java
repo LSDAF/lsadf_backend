@@ -16,6 +16,9 @@
 
 package com.lsadf.core.unit.infra.valkey.cache.listener;
 
+import static com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsHash.CharacteristicsHashAttributes.*;
+import static com.lsadf.core.infra.valkey.cache.impl.save.currency.CurrencyHash.CurrencyHashAttributes.*;
+import static com.lsadf.core.infra.valkey.cache.impl.save.stage.StageHash.StageHashAttributes.*;
 import static org.mockito.Mockito.verify;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
@@ -24,6 +27,7 @@ import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
+import com.lsadf.core.infra.valkey.cache.Hash;
 import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsHash;
 import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsHashMapper;
 import com.lsadf.core.infra.valkey.cache.impl.save.currency.CurrencyHash;
@@ -50,13 +54,13 @@ class ValkeyRepositoryKeyExpirationListenerTests {
   private static final UUID UUID = java.util.UUID.fromString(UUID_STRING);
 
   private static final CurrencyHash CURRENCY_HASH =
-      CurrencyHash.builder().gameSaveId(UUID).gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
+      CurrencyHash.builder().id(UUID).gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
 
   private static final Currency CURRENCY = CurrencyHashMapper.INSTANCE.map(CURRENCY_HASH);
 
   private static final CharacteristicsHash CHARACTERISTICS_HASH =
       CharacteristicsHash.builder()
-          .gameSaveId(UUID)
+          .id(UUID)
           .attack(10L)
           .critChance(20L)
           .critDamage(30L)
@@ -68,7 +72,7 @@ class ValkeyRepositoryKeyExpirationListenerTests {
       CharacteristicsHashMapper.INSTANCE.map(CHARACTERISTICS_HASH);
 
   private static final StageHash STAGE_HASH =
-      StageHash.builder().gameSaveId(UUID).currentStage(50L).maxStage(100L).build();
+      StageHash.builder().id(UUID).currentStage(50L).maxStage(100L).build();
 
   private static final Stage STAGE = StageHashMapper.INSTANCE.map(STAGE_HASH);
 
@@ -82,29 +86,33 @@ class ValkeyRepositoryKeyExpirationListenerTests {
 
   @Test
   void test_handleExpiredCurrencyHash() {
-    RedisKeyExpiredEvent<CurrencyHash> redisKeyExpiredEvent =
-        new RedisKeyExpiredEvent<>(UUID_STRING.getBytes(StandardCharsets.UTF_8), CURRENCY_HASH);
+    RedisKeyExpiredEvent<Hash<UUID>> redisKeyExpiredEvent =
+        new RedisKeyExpiredEvent<>(
+            (CURRENCY_HASH_KEY + ":" + UUID_STRING).getBytes(StandardCharsets.UTF_8),
+            CURRENCY_HASH);
 
-    valkeyRepositoryKeyExpirationListener.handleExpiredCurrencyHash(redisKeyExpiredEvent);
+    valkeyRepositoryKeyExpirationListener.handleExpiredHash(redisKeyExpiredEvent);
     verify(currencyService).saveCurrency(UUID, CURRENCY, false);
   }
 
   @Test
   void test_handleExpiredCharacteristicsHash() {
-    RedisKeyExpiredEvent<CharacteristicsHash> redisKeyExpiredEvent =
+    RedisKeyExpiredEvent<Hash<UUID>> redisKeyExpiredEvent =
         new RedisKeyExpiredEvent<>(
-            UUID_STRING.getBytes(StandardCharsets.UTF_8), CHARACTERISTICS_HASH);
+            (CHARACTERISTICS_HASH_KEY + ":" + UUID_STRING).getBytes(StandardCharsets.UTF_8),
+            CHARACTERISTICS_HASH);
 
-    valkeyRepositoryKeyExpirationListener.handleExpiredCharacteristicsHash(redisKeyExpiredEvent);
+    valkeyRepositoryKeyExpirationListener.handleExpiredHash(redisKeyExpiredEvent);
     verify(characteristicsService).saveCharacteristics(UUID, CHARACTERISTICS, false);
   }
 
   @Test
   void test_handleExpiredStageHash() {
-    RedisKeyExpiredEvent<StageHash> redisKeyExpiredEvent =
-        new RedisKeyExpiredEvent<>(UUID_STRING.getBytes(StandardCharsets.UTF_8), STAGE_HASH);
+    RedisKeyExpiredEvent<Hash<UUID>> redisKeyExpiredEvent =
+        new RedisKeyExpiredEvent<>(
+            (STAGE_HASH_KEY + ":" + UUID_STRING).getBytes(StandardCharsets.UTF_8), STAGE_HASH);
 
-    valkeyRepositoryKeyExpirationListener.handleExpiredStageHash(redisKeyExpiredEvent);
+    valkeyRepositoryKeyExpirationListener.handleExpiredHash(redisKeyExpiredEvent);
     verify(stageService).saveStage(UUID, STAGE, false);
   }
 }

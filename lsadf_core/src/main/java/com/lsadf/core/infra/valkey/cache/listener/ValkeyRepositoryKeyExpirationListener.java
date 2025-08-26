@@ -20,6 +20,7 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsServi
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.currency.Currency;
+import com.lsadf.core.infra.valkey.cache.Hash;
 import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsHash;
 import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsHashMapper;
 import com.lsadf.core.infra.valkey.cache.impl.save.currency.CurrencyHash;
@@ -53,26 +54,51 @@ public class ValkeyRepositoryKeyExpirationListener {
   }
 
   @EventListener
-  public void handleExpiredCurrencyHash(RedisKeyExpiredEvent<CurrencyHash> event) {
-    String eventId = new String(event.getId());
-    UUID uuid = UUID.fromString(eventId);
-    CurrencyHash currencyHash = (CurrencyHash) event.getValue();
-    log.info("Currency hash with id {} expired", event.getId());
+  public void handleExpiredHash(RedisKeyExpiredEvent<Hash<UUID>> event) {
+    var keyspace = event.getKeyspace();
+    switch (keyspace) {
+      case CharacteristicsHash.CharacteristicsHashAttributes.CHARACTERISTICS_HASH_KEY -> {
+        CharacteristicsHash characteristicsHash = (CharacteristicsHash) event.getValue();
+        if (characteristicsHash != null) {
+          handleExpiredCharacteristicsHash(characteristicsHash);
+        } else {
+          log.error("Characteristics hash is null");
+        }
+      }
+      case CurrencyHash.CurrencyHashAttributes.CURRENCY_HASH_KEY -> {
+        CurrencyHash currencyHash = (CurrencyHash) event.getValue();
+        if (currencyHash != null) {
+          handleExpiredCurrencyHash(currencyHash);
+        } else {
+          log.error("Currency hash is null");
+        }
+      }
+      case StageHash.StageHashAttributes.STAGE_HASH_KEY -> {
+        StageHash stageHash = (StageHash) event.getValue();
+        if (stageHash != null) {
+          handleExpiredStageHash(stageHash);
+        } else {
+          log.error("Stage hash is null");
+        }
+      }
+      default -> log.error("Unknown keyspace: {}. Ignoring expired key.", keyspace);
+    }
+  }
+
+  private void handleExpiredCurrencyHash(CurrencyHash currencyHash) {
+    var uuid = currencyHash.getId();
+    log.info("Currency hash with id {} expired", currencyHash.getId());
     Currency currency = currencyHashMapper.map(currencyHash);
     try {
       currencyService.saveCurrency(uuid, currency, false);
     } catch (Exception e) {
       log.error("Error while saving currency with id {}", uuid, e);
     }
-    log.info("Saved currency with id {} in DB", uuid);
   }
 
-  @EventListener
-  public void handleExpiredCharacteristicsHash(RedisKeyExpiredEvent<CharacteristicsHash> event) {
-    String eventId = new String(event.getId());
-    UUID uuid = UUID.fromString(eventId);
-    CharacteristicsHash characteristicsHash = (CharacteristicsHash) event.getValue();
-    log.info("Characteristics hash with id {} expired", event.getId());
+  private void handleExpiredCharacteristicsHash(CharacteristicsHash characteristicsHash) {
+    UUID uuid = characteristicsHash.getId();
+    log.info("Characteristics hash with id {} expired", uuid);
     com.lsadf.core.domain.game.save.characteristics.Characteristics characteristics =
         characteristicsHashMapper.map(characteristicsHash);
     try {
@@ -82,18 +108,14 @@ public class ValkeyRepositoryKeyExpirationListener {
     }
   }
 
-  @EventListener
-  public void handleExpiredStageHash(RedisKeyExpiredEvent<StageHash> event) {
-    String eventId = new String(event.getId());
-    UUID uuid = UUID.fromString(eventId);
-    StageHash stageHash = (StageHash) event.getValue();
-    log.info("Stage hash with id {} expired", event.getId());
+  private void handleExpiredStageHash(StageHash stageHash) {
+    UUID uuid = stageHash.getId();
+    log.info("Stage hash with id {} expired", uuid);
     com.lsadf.core.domain.game.save.stage.Stage stage = stageHashMapper.map(stageHash);
     try {
       stageService.saveStage(uuid, stage, false);
     } catch (Exception e) {
       log.error("Error while saving stage with id {}", uuid, e);
     }
-    log.info("Saved stage with id {} in DB", uuid);
   }
 }
