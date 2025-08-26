@@ -30,10 +30,8 @@ import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponseMapper;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -42,7 +40,6 @@ import org.springframework.web.bind.annotation.RestController;
 /** Implementation of the Currency Controller */
 @RestController
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CurrencyControllerImpl extends BaseController implements CurrencyController {
 
   private final GameSaveService gameSaveService;
@@ -53,6 +50,17 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
   private static final CurrencyRequestMapper requestModelMapper = CurrencyRequestMapper.INSTANCE;
   private static final CurrencyResponseMapper currencyResponseMapper =
       CurrencyResponseMapper.INSTANCE;
+
+  public CurrencyControllerImpl(
+      GameSaveService gameSaveService,
+      CurrencyService currencyService,
+      CurrencyEventPublisherPort currencyEventPublisherPort,
+      CacheManager cacheManager) {
+    this.gameSaveService = gameSaveService;
+    this.currencyService = currencyService;
+    this.currencyEventPublisherPort = currencyEventPublisherPort;
+    this.cacheManager = cacheManager;
+  }
 
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCurrency(

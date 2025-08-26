@@ -30,10 +30,8 @@ import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
 import com.lsadf.core.infra.web.response.game.save.stage.StageResponseMapper;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -42,7 +40,6 @@ import org.springframework.web.bind.annotation.RestController;
 /** Implementation of the Stage Controller */
 @RestController
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class StageControllerImpl extends BaseController implements StageController {
 
   private final GameSaveService gameSaveService;
@@ -52,6 +49,17 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   private static final StageRequestMapper stageRequestMapper = StageRequestMapper.INSTANCE;
   private static final StageResponseMapper stageResponseMapper = StageResponseMapper.INSTANCE;
+
+  public StageControllerImpl(
+      GameSaveService gameSaveService,
+      CacheManager cacheManager,
+      StageService stageService,
+      StageEventPublisherPort stageEventPublisherPort) {
+    this.gameSaveService = gameSaveService;
+    this.cacheManager = cacheManager;
+    this.stageService = stageService;
+    this.stageEventPublisherPort = stageEventPublisherPort;
+  }
 
   @Override
   public ResponseEntity<ApiResponse<Void>> saveStage(

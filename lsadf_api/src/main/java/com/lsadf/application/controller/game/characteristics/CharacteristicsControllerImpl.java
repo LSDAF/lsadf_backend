@@ -29,10 +29,8 @@ import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponseMapper;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -40,7 +38,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CharacteristicsControllerImpl extends BaseController
     implements CharacteristicsController {
   private final GameSaveService gameSaveService;
@@ -51,6 +48,15 @@ public class CharacteristicsControllerImpl extends BaseController
       CharacteristicsRequestMapper.INSTANCE;
   private static final CharacteristicsResponseMapper responseMapper =
       CharacteristicsResponseMapper.INSTANCE;
+
+  public CharacteristicsControllerImpl(
+      GameSaveService gameSaveService,
+      CharacteristicsService characteristicsService,
+      CharacteristicsEventPublisherPort characteristicsEventPublisherPort) {
+    this.gameSaveService = gameSaveService;
+    this.characteristicsService = characteristicsService;
+    this.characteristicsEventPublisherPort = characteristicsEventPublisherPort;
+  }
 
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCharacteristics(
