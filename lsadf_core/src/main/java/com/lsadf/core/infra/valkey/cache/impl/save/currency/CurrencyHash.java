@@ -35,7 +35,7 @@ public class CurrencyHash implements Hash<UUID> {
 
   @Id
   @Column(value = CURRENCY_GAME_SAVE_ID)
-  private UUID gameSaveId;
+  private UUID id;
 
   @Column(value = CURRENCY_GOLD)
   private Long gold;
@@ -51,14 +51,6 @@ public class CurrencyHash implements Hash<UUID> {
 
   @TimeToLive private Long expiration;
 
-  public CurrencyHash(UUID gameSaveId, Long gold, Long diamond, Long emerald, Long amethyst) {
-    this.gameSaveId = gameSaveId;
-    this.gold = gold;
-    this.diamond = diamond;
-    this.emerald = emerald;
-    this.amethyst = amethyst;
-  }
-
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class CurrencyHashAttributes {
     public static final String CURRENCY_GAME_SAVE_ID = "gameSaveId";
@@ -67,10 +59,5 @@ public class CurrencyHash implements Hash<UUID> {
     public static final String CURRENCY_DIAMOND = "diamond";
     public static final String CURRENCY_EMERALD = "emerald";
     public static final String CURRENCY_AMETHYST = "amethyst";
-  }
-
-  @Override
-  public UUID getId() {
-    return this.gameSaveId;
   }
 }

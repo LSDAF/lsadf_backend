@@ -108,6 +108,13 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
     String gameSaveIdString = gameSaveId.toString();
     if (toCache) {
+      if (isCurrencyPartial(currency)) {
+        Currency existingCurrency =
+            currencyCache
+                .get(gameSaveIdString)
+                .orElseGet(() -> getCurrencyFromDatabase(gameSaveId));
+        currency = mergeCurrencies(currency, existingCurrency);
+      }
       currencyCache.set(gameSaveIdString, currency);
     } else {
       saveCurrencyToDatabase(gameSaveId, currency);

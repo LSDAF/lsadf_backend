@@ -58,7 +58,7 @@ public class CurrencyCacheRepositoryAdapter
     UUID uuid = UUID.fromString(key);
     CurrencyHash hash =
         CurrencyHash.builder()
-            .gameSaveId(uuid)
+            .id(uuid)
             .gold(value.gold())
             .emerald(value.emerald())
             .diamond(value.diamond())
@@ -74,7 +74,7 @@ public class CurrencyCacheRepositoryAdapter
     Long expiration = (long) expirationSeconds;
     CurrencyHash hash =
         CurrencyHash.builder()
-            .gameSaveId(uuid)
+            .id(uuid)
             .gold(value.gold())
             .emerald(value.emerald())
             .diamond(value.diamond())
