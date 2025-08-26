@@ -19,9 +19,9 @@ import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequestMapper;
@@ -29,6 +29,7 @@ import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponseMapper;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,26 +40,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CharacteristicsControllerImpl extends BaseController
     implements CharacteristicsController {
   private final GameSaveService gameSaveService;
   private final CharacteristicsService characteristicsService;
-  private final CacheManager cacheManager;
+  private final CharacteristicsEventPublisherPort characteristicsEventPublisherPort;
 
   private static final CharacteristicsRequestMapper requestMapper =
       CharacteristicsRequestMapper.INSTANCE;
   private static final CharacteristicsResponseMapper responseMapper =
       CharacteristicsResponseMapper.INSTANCE;
-
-  @Autowired
-  public CharacteristicsControllerImpl(
-      GameSaveService gameSaveService,
-      CharacteristicsService characteristicsService,
-      CacheManager cacheManager) {
-    this.gameSaveService = gameSaveService;
-    this.characteristicsService = characteristicsService;
-    this.cacheManager = cacheManager;
-  }
 
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCharacteristics(
@@ -68,8 +60,9 @@ public class CharacteristicsControllerImpl extends BaseController
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
 
     Characteristics characteristics = requestMapper.map(characteristicsRequest);
-    characteristicsService.saveCharacteristics(
-        gameSaveId, characteristics, cacheManager.isEnabled());
+
+    characteristicsEventPublisherPort.publishCharacteristicsUpdatedEvent(
+        userEmail, gameSaveId, characteristics);
 
     return generateResponse(HttpStatus.OK);
   }

@@ -188,3 +188,9 @@ configuration-display:
 
 jdbc:
   enabled: true
+
+
+stream:
+  valkey:
+    game-stream-key: game-stream
+    game-stream-consumer-group: gs-group

@@ -25,6 +25,7 @@ import com.lsadf.core.infra.persistence.config.JdbcConfiguration;
 import com.lsadf.core.infra.valkey.cache.config.NoValkeyCacheConfiguration;
 import com.lsadf.core.infra.valkey.cache.config.ValkeyCacheConfiguration;
 import com.lsadf.core.infra.valkey.cache.config.ValkeyEmbeddedCacheConfiguration;
+import com.lsadf.core.infra.valkey.stream.config.ValkeyStreamConfiguration;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakConfiguration;
 import com.lsadf.core.infra.web.config.security.CorsConfiguration;
 import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
@@ -60,5 +61,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   KeycloakConfiguration.class,
   JdbcConfiguration.class,
   LsadfSecurityConfiguration.class,
+  ValkeyStreamConfiguration.class
 })
 public class LsadfConfiguration {}
