@@ -47,10 +47,11 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   private final GameSaveService gameSaveService;
   private final CacheManager cacheManager;
-  private static final StageRequestMapper stageRequestMapper = StageRequestMapper.INSTANCE;
-  private static final StageResponseMapper stageResponseMapper = StageResponseMapper.INSTANCE;
   private final StageService stageService;
   private final StageEventPublisherPort stageEventPublisherPort;
+
+  private static final StageRequestMapper stageRequestMapper = StageRequestMapper.INSTANCE;
+  private static final StageResponseMapper stageResponseMapper = StageResponseMapper.INSTANCE;
 
   @Override
   public ResponseEntity<ApiResponse<Void>> saveStage(
