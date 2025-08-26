@@ -59,7 +59,7 @@ public class CharacteristicsCacheRepositoryAdapter
     CharacteristicsHash hash =
         CharacteristicsHash.builder()
             .attack(value.attack())
-            .gameSaveId(uuid)
+            .id(uuid)
             .resistance(value.resistance())
             .critChance(value.critChance())
             .expiration(expiration)
@@ -76,7 +76,7 @@ public class CharacteristicsCacheRepositoryAdapter
     CharacteristicsHash hash =
         CharacteristicsHash.builder()
             .attack(value.attack())
-            .gameSaveId(uuid)
+            .id(uuid)
             .expiration(this.expirationSeconds)
             .resistance(value.resistance())
             .critChance(value.critChance())

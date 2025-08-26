@@ -132,6 +132,13 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     }
     if (toCache) {
       String gameSaveIdString = gameSaveId.toString();
+      if (isCharacteristicsPartial(characteristics)) {
+        Characteristics existingCharacteristics =
+            characteristicsCache
+                .get(gameSaveIdString)
+                .orElseGet(() -> this.getCharacteristicsFromDatabase(gameSaveId));
+        characteristics = mergeCharacteristics(characteristics, existingCharacteristics);
+      }
       characteristicsCache.set(gameSaveIdString, characteristics);
     } else {
       saveCharacteristicsToDatabase(gameSaveId, characteristics);

@@ -38,7 +38,7 @@ public class CharacteristicsHash implements Hash<UUID> {
 
   @Id
   @Column(value = CHARACTERISTICS_GAME_SAVE_ID)
-  private UUID gameSaveId;
+  private UUID id;
 
   @Column(value = CHARACTERISTICS_ATTACK)
   private Long attack;
@@ -57,21 +57,6 @@ public class CharacteristicsHash implements Hash<UUID> {
 
   @TimeToLive public Long expiration;
 
-  public CharacteristicsHash(
-      UUID gameSaveId,
-      Long attack,
-      Long critDamage,
-      Long critChance,
-      Long health,
-      Long resistance) {
-    this.gameSaveId = gameSaveId;
-    this.attack = attack;
-    this.critDamage = critDamage;
-    this.critChance = critChance;
-    this.health = health;
-    this.resistance = resistance;
-  }
-
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class CharacteristicsHashAttributes {
     public static final String CHARACTERISTICS_HASH_KEY = "characteristics";
@@ -81,10 +66,5 @@ public class CharacteristicsHash implements Hash<UUID> {
     public static final String CHARACTERISTICS_CRIT_CHANCE = "critChance";
     public static final String CHARACTERISTICS_HEALTH = "health";
     public static final String CHARACTERISTICS_RESISTANCE = "resistance";
-  }
-
-  @Override
-  public UUID getId() {
-    return this.gameSaveId;
   }
 }
