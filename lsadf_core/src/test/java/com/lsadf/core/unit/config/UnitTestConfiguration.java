@@ -17,9 +17,11 @@ package com.lsadf.core.unit.config;
 
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
+import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.search.SearchService;
@@ -70,4 +72,8 @@ public class UnitTestConfiguration {
   @MockBean private CacheFlushService cacheFlushService;
 
   @MockBean private DataSource dataSource;
+
+  @MockBean public CharacteristicsEventPublisherPort characteristicsEventPublisherPort;
+
+  @MockBean public StageEventPublisherPort stageEventPublisherPort;
 }

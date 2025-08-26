@@ -19,6 +19,7 @@ import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
@@ -29,6 +30,7 @@ import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
 import com.lsadf.core.infra.web.response.game.save.stage.StageResponseMapper;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 /** Implementation of the Stage Controller */
 @RestController
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class StageControllerImpl extends BaseController implements StageController {
 
   private final GameSaveService gameSaveService;
@@ -47,14 +50,7 @@ public class StageControllerImpl extends BaseController implements StageControll
   private static final StageRequestMapper stageRequestMapper = StageRequestMapper.INSTANCE;
   private static final StageResponseMapper stageResponseMapper = StageResponseMapper.INSTANCE;
   private final StageService stageService;
-
-  @Autowired
-  public StageControllerImpl(
-      GameSaveService gameSaveService, CacheManager cacheManager, StageService stageService) {
-    this.gameSaveService = gameSaveService;
-    this.cacheManager = cacheManager;
-    this.stageService = stageService;
-  }
+  private final StageEventPublisherPort stageEventPublisherPort;
 
   @Override
   public ResponseEntity<ApiResponse<Void>> saveStage(
@@ -64,7 +60,7 @@ public class StageControllerImpl extends BaseController implements StageControll
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
 
     Stage stage = stageRequestMapper.map(stageRequest);
-    stageService.saveStage(gameSaveId, stage, cacheManager.isEnabled());
+    stageEventPublisherPort.publishStageUpdatedEvent(username, gameSaveId, stage);
 
     return generateResponse(HttpStatus.OK);
   }

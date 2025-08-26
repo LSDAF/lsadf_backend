@@ -18,10 +18,12 @@ package com.lsadf.core.infra.valkey.stream.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandlerRegistry;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.CharacteristicsUpdateEventHandler;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.EventHandlerRegistryImpl;
+import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.StageUpdateEventHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,5 +44,16 @@ public class RecordHandlerConfiguration {
     eventHandlerRegistry.registerHandler(
         characteristicsUpdateEventHandler.getEventType(), characteristicsUpdateEventHandler);
     return characteristicsUpdateEventHandler;
+  }
+
+  @Bean
+  public EventHandler stageUpdateEventHandler(
+      ObjectMapper objectMapper,
+      StageService stageService,
+      EventHandlerRegistry eventHandlerRegistry) {
+    EventHandler stageUpdateEventHandler = new StageUpdateEventHandler(stageService, objectMapper);
+    eventHandlerRegistry.registerHandler(
+        stageUpdateEventHandler.getEventType(), stageUpdateEventHandler);
+    return stageUpdateEventHandler;
   }
 }

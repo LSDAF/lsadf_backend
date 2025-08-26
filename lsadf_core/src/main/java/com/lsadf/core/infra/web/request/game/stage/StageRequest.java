@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.game.save.stage.validation.StageConsistency;
 import com.lsadf.core.infra.web.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.io.Serial;
 
@@ -30,10 +31,12 @@ public record StageRequest(
     @Schema(description = "The Current game stage", example = "26")
         @JsonProperty(value = CURRENT_STAGE)
         @Positive
+        @NotNull
         Long currentStage,
     @Schema(description = "The Maximum game stage", example = "260")
         @JsonProperty(value = MAX_STAGE)
         @Positive
+        @NotNull
         Long maxStage)
     implements Request {
 
