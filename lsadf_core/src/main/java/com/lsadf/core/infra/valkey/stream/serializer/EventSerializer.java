@@ -16,4 +16,12 @@
 
 package com.lsadf.core.infra.valkey.stream.serializer;
 
-public interface EventSerializer {}
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.lsadf.core.infra.valkey.stream.event.Event;
+import java.util.Map;
+
+public interface EventSerializer<T extends Event> {
+  Map<String, String> serialize(T event) throws JsonProcessingException;
+
+  T deserialize(Map<String, String> map) throws JsonProcessingException;
+}

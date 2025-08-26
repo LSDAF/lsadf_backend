@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.stream.producer;
+package com.lsadf.core.infra.valkey.stream.consumer;
 
-import com.lsadf.core.infra.valkey.stream.event.Event;
-import org.springframework.data.redis.connection.stream.RecordId;
+import org.springframework.data.redis.connection.stream.MapRecord;
 
-@FunctionalInterface
-public interface StreamProducer<T extends Event> {
-  RecordId publishEvent(String streamKey, T event);
+public interface StreamConsumer {
+  void handleEvent(MapRecord<String, String, String> mapRecord);
+
+  String getId();
 }

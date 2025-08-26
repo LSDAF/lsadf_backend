@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.stream.producer;
+package com.lsadf.core.infra.valkey.stream.event;
 
-import com.lsadf.core.infra.valkey.stream.event.Event;
-import org.springframework.data.redis.connection.stream.RecordId;
-
-@FunctionalInterface
-public interface StreamProducer<T extends Event> {
-  RecordId publishEvent(String streamKey, T event);
+public interface EventType {
+  String getValue();
 }

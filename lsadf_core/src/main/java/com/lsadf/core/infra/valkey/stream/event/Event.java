@@ -17,8 +17,9 @@
 package com.lsadf.core.infra.valkey.stream.event;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public interface Event extends Serializable {
-  UUID getId();
+  EventType getEventType();
+
+  Long getTimestamp();
 }

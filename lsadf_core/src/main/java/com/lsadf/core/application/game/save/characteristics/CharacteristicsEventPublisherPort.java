@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.stream.event.game.impl;
+package com.lsadf.core.application.game.save.characteristics;
 
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType;
-import com.lsadf.core.shared.model.Model;
+import com.lsadf.core.application.shared.EventPublisherPort;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
 
-@AllArgsConstructor
-@Builder
-@Getter
-public abstract class GameSaveEvent<T extends Model>
-    implements com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent<T> {
-  private final UUID id;
-  private final UUID gameSaveId;
-  private final String userId;
-  private final GameSaveEventType eventType;
-  private final Long timestamp;
-  private final T payload;
+public interface CharacteristicsEventPublisherPort extends EventPublisherPort {
+  void publishCharacteristicsUpdatedEvent(
+      String userEmail, UUID gameSaveId, Characteristics characteristics);
 }

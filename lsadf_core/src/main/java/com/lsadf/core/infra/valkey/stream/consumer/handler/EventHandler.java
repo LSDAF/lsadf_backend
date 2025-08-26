@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.stream.producer;
+package com.lsadf.core.infra.valkey.stream.consumer.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.infra.valkey.stream.event.Event;
-import org.springframework.data.redis.connection.stream.RecordId;
+import com.lsadf.core.infra.valkey.stream.event.EventType;
 
-@FunctionalInterface
-public interface StreamProducer<T extends Event> {
-  RecordId publishEvent(String streamKey, T event);
+public interface EventHandler {
+  void handleEvent(Event event) throws JsonProcessingException;
+
+  EventType getEventType();
 }
