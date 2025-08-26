@@ -45,12 +45,6 @@ public class GameMetadataHash implements Hash<UUID> {
 
   @TimeToLive private Long expiration;
 
-  public GameMetadataHash(UUID id, String userEmail, String nickname) {
-    this.id = id;
-    this.userEmail = userEmail;
-    this.nickname = nickname;
-  }
-
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class GameMetadataHashAttributes {
     public static final String GAME_METADATA_HASH_KEY = "game_save_metadata";
