@@ -22,6 +22,7 @@ import com.lsadf.core.infra.persistence.config.JdbcProperties;
 import com.lsadf.core.infra.persistence.config.properties.DataSourceProperties;
 import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.valkey.cache.config.properties.ValkeyProperties;
+import com.lsadf.core.infra.valkey.stream.config.properties.ValkeyStreamProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakAdminProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.config.security.OAuth2Properties;
@@ -46,6 +47,12 @@ public class PropertiesConfiguration {
   @ConfigurationProperties(prefix = "configuration-display")
   public ConfigurationDisplayProperties configurationDisplayProperties() {
     return new ConfigurationDisplayProperties();
+  }
+
+  @Bean
+  @ConfigurationProperties(prefix = "stream.valkey")
+  public ValkeyStreamProperties streamValkeyProperties() {
+    return new ValkeyStreamProperties();
   }
 
   @Bean
