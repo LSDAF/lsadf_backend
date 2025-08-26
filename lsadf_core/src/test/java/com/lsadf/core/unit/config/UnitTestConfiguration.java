@@ -19,6 +19,7 @@ import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
@@ -36,6 +37,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.stream.Subscription;
 
 @TestConfiguration
 @Import({UnitCacheConfiguration.class})
@@ -76,4 +78,8 @@ public class UnitTestConfiguration {
   @MockBean public CharacteristicsEventPublisherPort characteristicsEventPublisherPort;
 
   @MockBean public StageEventPublisherPort stageEventPublisherPort;
+
+  @MockBean public CurrencyEventPublisherPort currencyEventPublisherPort;
+
+  @MockBean public Subscription subscription;
 }

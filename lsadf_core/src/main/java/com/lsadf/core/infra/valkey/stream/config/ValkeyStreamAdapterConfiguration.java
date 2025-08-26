@@ -18,8 +18,10 @@ package com.lsadf.core.infra.valkey.stream.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
+import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
 import com.lsadf.core.infra.valkey.stream.adapter.CharacteristicsEventPublisherAdapter;
+import com.lsadf.core.infra.valkey.stream.adapter.CurrencyEventPublisherAdapter;
 import com.lsadf.core.infra.valkey.stream.adapter.StageEventPublisherAdapter;
 import com.lsadf.core.infra.valkey.stream.config.properties.ValkeyStreamProperties;
 import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
@@ -45,5 +47,14 @@ public class ValkeyStreamAdapterConfiguration {
       ObjectMapper objectMapper) {
     return new StageEventPublisherAdapter(
         valkeyStreamProperties.getGameStreamKey(), streamProducer, objectMapper);
+  }
+
+  @Bean
+  public CurrencyEventPublisherPort currencyEventPublisherPort(
+      StreamProducer<GameSaveEvent> streamProducer,
+      ValkeyStreamProperties valkeyStreamProperties,
+      ObjectMapper objectMapper) {
+    return new CurrencyEventPublisherAdapter(
+        streamProducer, valkeyStreamProperties.getGameStreamKey(), objectMapper);
   }
 }

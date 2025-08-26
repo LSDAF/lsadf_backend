@@ -18,10 +18,12 @@ package com.lsadf.core.infra.valkey.stream.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandlerRegistry;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.CharacteristicsUpdateEventHandler;
+import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.CurrencyUpdateEventHandler;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.EventHandlerRegistryImpl;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.StageUpdateEventHandler;
 import org.springframework.context.annotation.Bean;
@@ -55,5 +57,17 @@ public class RecordHandlerConfiguration {
     eventHandlerRegistry.registerHandler(
         stageUpdateEventHandler.getEventType(), stageUpdateEventHandler);
     return stageUpdateEventHandler;
+  }
+
+  @Bean
+  public EventHandler currencyUpdateEventHandler(
+      ObjectMapper objectMapper,
+      CurrencyService currencyService,
+      EventHandlerRegistry eventHandlerRegistry) {
+    EventHandler currencyUpdateEventHandler =
+        new CurrencyUpdateEventHandler(currencyService, objectMapper);
+    eventHandlerRegistry.registerHandler(
+        currencyUpdateEventHandler.getEventType(), currencyUpdateEventHandler);
+    return currencyUpdateEventHandler;
   }
 }

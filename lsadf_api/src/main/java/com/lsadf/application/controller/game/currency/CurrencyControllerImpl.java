@@ -19,6 +19,7 @@ import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
@@ -29,6 +30,7 @@ import com.lsadf.core.infra.web.response.ApiResponse;
 import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponseMapper;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,23 +42,17 @@ import org.springframework.web.bind.annotation.RestController;
 /** Implementation of the Currency Controller */
 @RestController
 @Slf4j
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CurrencyControllerImpl extends BaseController implements CurrencyController {
 
   private final GameSaveService gameSaveService;
   private final CurrencyService currencyService;
+  private final CurrencyEventPublisherPort currencyEventPublisherPort;
   private final CacheManager cacheManager;
 
   private static final CurrencyRequestMapper requestModelMapper = CurrencyRequestMapper.INSTANCE;
   private static final CurrencyResponseMapper currencyResponseMapper =
       CurrencyResponseMapper.INSTANCE;
-
-  @Autowired
-  public CurrencyControllerImpl(
-      GameSaveService gameSaveService, CurrencyService currencyService, CacheManager cacheManager) {
-    this.gameSaveService = gameSaveService;
-    this.currencyService = currencyService;
-    this.cacheManager = cacheManager;
-  }
 
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCurrency(
@@ -66,7 +62,8 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
 
     Currency currency = requestModelMapper.map(currencyRequest);
-    currencyService.saveCurrency(gameSaveId, currency, cacheManager.isEnabled());
+
+    currencyEventPublisherPort.publishCurrencyUpdatedEvent(userEmail, gameSaveId, currency);
 
     return generateResponse(HttpStatus.OK);
   }
