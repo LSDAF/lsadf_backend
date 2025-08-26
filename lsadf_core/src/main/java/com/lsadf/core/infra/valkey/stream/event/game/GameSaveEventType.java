@@ -16,4 +16,24 @@
 
 package com.lsadf.core.infra.valkey.stream.event.game;
 
-public enum GameSaveEventType {}
+import com.lsadf.core.infra.valkey.stream.event.EventType;
+
+public enum GameSaveEventType implements EventType {
+  CHARACTERISTICS_UPDATE,
+  STAGE_UPDATE,
+  CURRENCY_UPDATE;
+
+  public static GameSaveEventType enumFromString(String value) {
+    for (var eventType : values()) {
+      if (eventType.name().equals(value)) {
+        return eventType;
+      }
+    }
+    throw new IllegalArgumentException("event type value not found: " + value);
+  }
+
+  @Override
+  public String getValue() {
+    return name();
+  }
+}

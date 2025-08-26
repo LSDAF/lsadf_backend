@@ -17,16 +17,38 @@
 package com.lsadf.core.infra.valkey.stream.event.game;
 
 import com.lsadf.core.infra.valkey.stream.event.Event;
+import com.lsadf.core.infra.valkey.stream.event.EventType;
+import java.util.Map;
 import java.util.UUID;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
-public interface GameSaveEvent<T> extends Event {
-  UUID getGameSaveId();
+@Builder
+public record GameSaveEvent(
+    UUID gameSaveId,
+    String userId,
+    GameSaveEventType eventType,
+    Long timestamp,
+    Map<String, String> payload)
+    implements Event {
 
-  String getUserId();
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class GameSaveEventAttributes {
+    public static final String EVENT_TYPE = "eventType";
+    public static final String GAME_SAVE_ID = "gameSaveId";
+    public static final String TIMESTAMP = "timestamp";
+    public static final String PAYLOAD = "payload";
+    public static final String USER_ID = "userId";
+  }
 
-  GameSaveEventType getEventType();
+  @Override
+  public EventType getEventType() {
+    return eventType;
+  }
 
-  Long getTimestamp();
-
-  T getPayload();
+  @Override
+  public Long getTimestamp() {
+    return timestamp;
+  }
 }
