@@ -37,6 +37,7 @@ import com.lsadf.core.infra.valkey.cache.impl.save.stage.StageHashMapper;
 import com.lsadf.core.infra.valkey.cache.listener.ValkeyRepositoryKeyExpirationListener;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -86,7 +87,7 @@ class ValkeyRepositoryKeyExpirationListenerTests {
 
   @Test
   void test_handleExpiredCurrencyHash() {
-    RedisKeyExpiredEvent<Hash<UUID>> redisKeyExpiredEvent =
+    RedisKeyExpiredEvent<Hash<@NonNull UUID>> redisKeyExpiredEvent =
         new RedisKeyExpiredEvent<>(
             (CURRENCY_HASH_KEY + ":" + UUID_STRING).getBytes(StandardCharsets.UTF_8),
             CURRENCY_HASH);
@@ -97,7 +98,7 @@ class ValkeyRepositoryKeyExpirationListenerTests {
 
   @Test
   void test_handleExpiredCharacteristicsHash() {
-    RedisKeyExpiredEvent<Hash<UUID>> redisKeyExpiredEvent =
+    RedisKeyExpiredEvent<Hash<@NonNull UUID>> redisKeyExpiredEvent =
         new RedisKeyExpiredEvent<>(
             (CHARACTERISTICS_HASH_KEY + ":" + UUID_STRING).getBytes(StandardCharsets.UTF_8),
             CHARACTERISTICS_HASH);
@@ -108,7 +109,7 @@ class ValkeyRepositoryKeyExpirationListenerTests {
 
   @Test
   void test_handleExpiredStageHash() {
-    RedisKeyExpiredEvent<Hash<UUID>> redisKeyExpiredEvent =
+    RedisKeyExpiredEvent<Hash<@NonNull UUID>> redisKeyExpiredEvent =
         new RedisKeyExpiredEvent<>(
             (STAGE_HASH_KEY + ":" + UUID_STRING).getBytes(StandardCharsets.UTF_8), STAGE_HASH);
 

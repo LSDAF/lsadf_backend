@@ -32,10 +32,19 @@
     <name>LSADF Build Parent</name>
 
     <modules>
+        <module>../lsadf_build_tools</module>
         <module>../lsadf_api</module>
         <module>../lsadf_core</module>
         <module>../lsadf_admin</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -52,6 +61,27 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <executions>
+                        <execution>
+                            <id>generate-package-info</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>java</goal>
+                            </goals>
+                            <configuration>
+                                <mainClass>com.lsadf.tools.PackageInfoGenerator</mainClass>
+                                <arguments>
+                                    <argument>${project.basedir}/src/main/java</argument>
+                                    <argument>${project.basedir}/src/main/java</argument>
+                                </arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
