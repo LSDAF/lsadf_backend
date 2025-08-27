@@ -22,7 +22,6 @@ import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageService;
-import com.lsadf.core.domain.game.inventory.Inventory;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
@@ -110,18 +109,6 @@ public class ValkeyCacheConfiguration {
     template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
     template.setHashKeySerializer(new StringRedisSerializer());
     template.setHashValueSerializer(new GenericToStringSerializer<>(Currency.class));
-    return template;
-  }
-
-  @Bean
-  public RedisTemplate<String, Inventory> inventoryRedisTemplate(
-      RedisConnectionFactory redisConnectionFactory) {
-    RedisTemplate<String, Inventory> template = new RedisTemplate<>();
-    template.setConnectionFactory(redisConnectionFactory);
-    template.setKeySerializer(new StringRedisSerializer());
-    template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-    template.setHashKeySerializer(new StringRedisSerializer());
-    template.setHashValueSerializer(new GenericToStringSerializer<>(Inventory.class));
     return template;
   }
 
