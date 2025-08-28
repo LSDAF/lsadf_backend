@@ -46,7 +46,7 @@ public class ValkeyGameStreamConsumer extends ValkeyStreamConsumer implements Ga
 
   @Override
   public void handleEvent(MapRecord<String, String, String> message) {
-    log.info("Message received from stream: {}", message.toString());
+    log.info("Message received from stream: {}", message);
     Map<String, String> eventData = message.getValue();
 
     GameSaveEvent event;
