@@ -59,9 +59,9 @@ public class ValkeyGameStreamConsumer extends ValkeyStreamConsumer implements Ga
 
     var optionalHandler = eventHandlerRegistry.getHandler(event.getEventType());
     if (optionalHandler.isEmpty()) {
-      log.error("No handler found for event type: {}", event.getEventType().toString());
+      log.error("No handler found for event type: {}", event.getEventType());
       throw new IllegalArgumentException(
-          "No handler found for event type: " + event.getEventType().toString());
+          "No handler found for event type: " + event.getEventType());
     }
     EventHandler handler = optionalHandler.get();
     try {
