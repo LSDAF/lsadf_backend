@@ -76,12 +76,6 @@ class InventoryServiceTests {
   }
 
   @Test
-  void test_getInventoryItems_throwsIllegalArgumentException_when_calledWithNullGameSaveId() {
-    // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> inventoryService.getInventoryItems(null));
-  }
-
-  @Test
   void test_getInventoryItems_throwsNotFoundException_when_gameSaveIdNotExists() {
     // Arrange
     when(gameMetadataService.existsById(gameSaveId)).thenReturn(false);
@@ -135,14 +129,6 @@ class InventoryServiceTests {
   }
 
   @Test
-  void test_createItemInInventory_throwsIllegalArgumentException_when_calledWithNullGameSaveId() {
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> inventoryService.createItemInInventory(null, itemRequest));
-  }
-
-  @Test
   void test_createItemInInventory_when_success() {
     // Arrange
     when(gameMetadataService.existsById(gameSaveId)).thenReturn(true);
@@ -169,14 +155,6 @@ class InventoryServiceTests {
         NotFoundException.class,
         () -> inventoryService.deleteItemFromInventory(gameSaveId, itemClientId));
     verify(gameMetadataService).existsById(gameSaveId);
-  }
-
-  @Test
-  void test_deleteItemFromInventory_throwsIllegalArgumentException_when_calledWithNullGameSaveId() {
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> inventoryService.deleteItemFromInventory(null, itemClientId));
   }
 
   @Test
@@ -221,14 +199,6 @@ class InventoryServiceTests {
   }
 
   @Test
-  void test_updateItemInInventory_throwsIllegalArgumentException_when_calledWithNullGameSaveId() {
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> inventoryService.updateItemInInventory(null, itemClientId, itemRequest));
-  }
-
-  @Test
   void test_updateItemInInventory_throwsNotFoundException_when_itemClientIdNotExists() {
     // Arrange
     when(gameMetadataService.existsById(gameSaveId)).thenReturn(true);
@@ -257,12 +227,6 @@ class InventoryServiceTests {
     verify(gameMetadataService).existsById(gameSaveId);
     verify(inventoryRepositoryPort).findItemByClientId(itemClientId);
     verify(inventoryRepositoryPort).updateItem(eq(gameSaveId), any(Item.class));
-  }
-
-  @Test
-  void test_clearInventory_throwsIllegalArgumentException_when_calledWithNullGameSaveId() {
-    // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> inventoryService.clearInventory(null));
   }
 
   @Test

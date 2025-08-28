@@ -42,10 +42,6 @@ public class InventoryServiceImpl implements InventoryService {
   @Override
   @Transactional(readOnly = true)
   public Set<Item> getInventoryItems(UUID gameSaveId) throws NotFoundException {
-    if (gameSaveId == null) {
-      throw new IllegalArgumentException("Game save id cannot be null");
-    }
-
     if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
@@ -57,10 +53,6 @@ public class InventoryServiceImpl implements InventoryService {
   @Transactional
   public Item createItemInInventory(UUID gameSaveId, ItemRequest itemRequest)
       throws NotFoundException, AlreadyExistingItemClientIdException {
-    if (gameSaveId == null) {
-      throw new IllegalArgumentException("Game save id cannot be null");
-    }
-
     if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Game save not found for id " + gameSaveId);
     }
@@ -93,10 +85,6 @@ public class InventoryServiceImpl implements InventoryService {
   @Transactional
   public void deleteItemFromInventory(UUID gameSaveId, String itemClientId)
       throws NotFoundException, ForbiddenException {
-    if (gameSaveId == null || itemClientId == null) {
-      throw new IllegalArgumentException("Game save id and item client id cannot be null");
-    }
-
     if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
@@ -114,11 +102,6 @@ public class InventoryServiceImpl implements InventoryService {
   @Transactional
   public Item updateItemInInventory(UUID gameSaveId, String itemClientId, ItemRequest itemRequest)
       throws NotFoundException, ForbiddenException {
-    if (gameSaveId == null || itemClientId == null || itemRequest == null) {
-      throw new IllegalArgumentException(
-          "Game save id, item client id and item request cannot be null");
-    }
-
     if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
@@ -153,10 +136,6 @@ public class InventoryServiceImpl implements InventoryService {
   @Override
   @Transactional
   public void clearInventory(UUID gameSaveId) throws NotFoundException {
-    if (gameSaveId == null) {
-      throw new IllegalArgumentException("Game save id cannot be null");
-    }
-
     if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
     }
