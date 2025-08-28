@@ -83,7 +83,7 @@ public class ValkeyStreamConsumerConfiguration {
     }
 
     Subscription subscription =
-        listenerContainer.receive(
+        listenerContainer.receiveAutoAck(
             Consumer.from(groupName, consumerName),
             StreamOffset.create(streamKey, ReadOffset.lastConsumed()),
             dataConsumer::handleEvent);
