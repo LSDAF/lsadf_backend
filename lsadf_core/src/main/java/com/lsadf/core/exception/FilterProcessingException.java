@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.exception.http;
+package com.lsadf.core.exception;
 
-/** Bad Request Exception */
-public class BadRequestException extends RuntimeException {
-  public BadRequestException(String message) {
+/** Exception for when there is an error processing a filter */
+public class FilterProcessingException extends RuntimeException {
+  public FilterProcessingException(String message) {
     super(message);
+  }
+
+  public FilterProcessingException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

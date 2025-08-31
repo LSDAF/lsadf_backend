@@ -16,9 +16,9 @@
 package com.lsadf.core.application.game.inventory;
 
 import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.infra.exception.AlreadyExistingItemClientIdException;
-import com.lsadf.core.infra.exception.http.ForbiddenException;
-import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.exception.AlreadyExistingItemClientIdException;
+import com.lsadf.core.exception.http.ForbiddenException;
+import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import java.util.Set;
 import java.util.UUID;

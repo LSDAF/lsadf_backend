@@ -23,7 +23,7 @@ import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.exception.http.NotFoundException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;

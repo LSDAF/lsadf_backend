@@ -13,11 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.exception.http;
+package com.lsadf.core.exception.http;
 
-/** Exception for when a user is not allowed to access a resource. */
-public class ForbiddenException extends RuntimeException {
-  public ForbiddenException(String message) {
+/** Exception for when a resource is not found. */
+public class NotFoundException extends RuntimeException {
+  public NotFoundException() {
+    super();
+  }
+
+  public NotFoundException(String message) {
     super(message);
+  }
+
+  public NotFoundException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

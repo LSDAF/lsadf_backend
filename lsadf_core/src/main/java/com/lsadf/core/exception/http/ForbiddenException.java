@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.exception;
+package com.lsadf.core.exception.http;
 
-/** Exception for when a nickname is already taken */
-public class AlreadyTakenNicknameException extends RuntimeException {
-  public AlreadyTakenNicknameException(String message) {
+/** Exception for when a user is not allowed to access a resource. */
+public class ForbiddenException extends RuntimeException {
+  public ForbiddenException(String message) {
     super(message);
   }
 }

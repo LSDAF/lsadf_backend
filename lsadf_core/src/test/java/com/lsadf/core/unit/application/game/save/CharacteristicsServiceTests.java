@@ -28,7 +28,7 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsServi
 import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsServiceImpl;
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.exception.http.NotFoundException;
 import java.util.Optional;
 import java.util.UUID;
 import org.jspecify.annotations.NonNull;

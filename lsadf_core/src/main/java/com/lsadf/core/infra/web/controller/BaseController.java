@@ -15,7 +15,8 @@
  */
 package com.lsadf.core.infra.web.controller;
 
-import com.lsadf.core.infra.exception.http.UnauthorizedException;
+import com.lsadf.core.exception.http.UnauthorizedException;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -28,7 +29,7 @@ public abstract class BaseController implements Controller {
    * @param jwt the jwt
    * @throws UnauthorizedException if the user is not valid
    */
-  public void validateUser(Jwt jwt) throws UnauthorizedException {
+  public void validateUser(@Nullable Jwt jwt) throws UnauthorizedException {
     if (jwt == null) {
       Logger logger = getLogger();
       logger.error("Unauthorized. Didn't manage to build UserInfo from token. Please login");

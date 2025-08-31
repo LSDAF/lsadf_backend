@@ -20,7 +20,7 @@ import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.exception.http.NotFoundException;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;

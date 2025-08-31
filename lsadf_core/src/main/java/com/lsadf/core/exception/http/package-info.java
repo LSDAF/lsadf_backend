@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 @org.jspecify.annotations.NullMarked
-package com.lsadf.core.infra.exception.http;
+package com.lsadf.core.exception.http;

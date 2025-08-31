@@ -25,7 +25,7 @@ import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;

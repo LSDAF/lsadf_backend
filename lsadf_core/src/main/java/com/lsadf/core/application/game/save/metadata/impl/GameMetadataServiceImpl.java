@@ -21,7 +21,7 @@ import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
-import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.exception.http.NotFoundException;
 import java.util.UUID;
 import org.jspecify.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;

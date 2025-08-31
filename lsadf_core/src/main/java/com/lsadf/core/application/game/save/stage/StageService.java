@@ -16,7 +16,7 @@
 package com.lsadf.core.application.game.save.stage;
 
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.exception.http.NotFoundException;
 import java.util.UUID;
 
 /** Service for managing stages. */

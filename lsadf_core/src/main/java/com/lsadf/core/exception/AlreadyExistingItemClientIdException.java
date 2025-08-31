@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.exception.http;
+package com.lsadf.core.exception;
 
-/** Internal Server Error Exception when something goes wrong on the server */
-public class InternalServerErrorException extends RuntimeException {
-  public InternalServerErrorException(String message) {
+/** Exception for when an item client id already exists */
+public class AlreadyExistingItemClientIdException extends RuntimeException {
+  public AlreadyExistingItemClientIdException(String message) {
     super(message);
-  }
-
-  public InternalServerErrorException(String message, Throwable cause) {
-    super(message, cause);
   }
 }
