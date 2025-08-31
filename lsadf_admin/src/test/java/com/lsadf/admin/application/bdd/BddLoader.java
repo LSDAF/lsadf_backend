@@ -87,6 +87,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -221,6 +222,8 @@ public class BddLoader {
   @Autowired protected Stack<Boolean> booleanStack;
 
   @Autowired protected Stack<JwtAuthenticationResponse> jwtAuthenticationResponseStack;
+
+  @Autowired protected RedisTemplate<String, String> stringRedisTemplate;
 
   // Properties
   @Autowired protected ValkeyCacheExpirationProperties valkeyCacheExpirationProperties;

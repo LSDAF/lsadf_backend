@@ -96,24 +96,27 @@ keycloak:
 shutdown:
   flush-cache-at-shutdown: false
 
-cache:
-  local:
-    invalidated-refresh-token-cache-max-size: ${INVALIDATED_REFRESH_TOKEN_CACHE_MAX_SIZE}
-    local-user-cache-max-size: ${LOCAL_USER_CACHE_MAX_SIZE}
-  redis:
+valkey:
+  config:
     host: localhost
     port: 6379
     password: JIOZHAUIHIAVAZHUSVFAZUSV
     database: 0
     enabled: true
     embedded: true
-  expiration:
-    local-user-expiration-seconds: -1
-    characteristics-expiration-seconds: -1
-    currency-expiration-seconds: -1
-    inventory-expiration-seconds: -1
-    stage-expiration-seconds: -1
-    game-metadata-expiration-seconds: -1
+  stream:
+    game:
+      persistence:
+        check-interval-seconds: 50
+        debounce-window-ms: 5000
+      consumer-group: game-stream-group
+      stream-key: game-stream-key
+  cache:
+    expiration:
+      characteristics-expiration-seconds: -1
+      currency-expiration-seconds: -1
+      stage-expiration-seconds: -1
+      game-metadata-expiration-seconds: -1
 
 
 mail:

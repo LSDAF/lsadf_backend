@@ -16,21 +16,27 @@ db:
 jdbc:
   enabled: false
 
-cache:
-  redis:
-    enabled: false
-    host: host
-    port: 5000
-    password: password
+
+valkey:
+  config:
     database: 0
+    host: host
+    password: password
+    port: 5000
     embedded: false
-  expiration:
-    local-user-expiration-seconds: -1
-    characteristics-expiration-seconds: -1
-    currency-expiration-seconds: -1
-    inventory-expiration-seconds: -1
-    stage-expiration-seconds: -1
-    game-metadata-expiration-seconds: -1
+    enabled: false
+  cache:
+    expiration:
+      characteristics-expiration-seconds: -1
+      currency-expiration-seconds: -1
+      stage-expiration-seconds: -1
+      game-metadata-expiration-seconds: -1
+  stream:
+    game:
+      persistence:
+        check-interval-seconds: 50
+        debounce-window-ms: 5000
+
 mail:
   host: test
   port: 9000
