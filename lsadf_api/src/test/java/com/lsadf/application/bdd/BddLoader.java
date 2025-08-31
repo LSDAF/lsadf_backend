@@ -56,9 +56,9 @@ import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyReposito
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
-import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -127,8 +127,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @EnableJdbcRepositories(basePackages = "com.lsadf.core.infra.persistence")
 @EnableRedisRepositories(
     basePackages = "com.lsadf.core.infra.valkey.cache",
-    shadowCopy = RedisKeyValueAdapter.ShadowCopy.ON,
-    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_DEMAND)
+    shadowCopy = RedisKeyValueAdapter.ShadowCopy.OFF,
+    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.OFF)
 @EnableAutoConfiguration(
     exclude = {
       SecurityAutoConfiguration.class,
@@ -219,7 +219,7 @@ public class BddLoader {
   @Autowired protected Stack<JwtAuthenticationResponse> jwtAuthenticationResponseStack;
 
   // Properties
-  @Autowired protected CacheExpirationProperties cacheExpirationProperties;
+  @Autowired protected ValkeyCacheExpirationProperties valkeyCacheExpirationProperties;
 
   @Autowired protected KeycloakProperties keycloakProperties;
 
