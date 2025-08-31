@@ -37,6 +37,8 @@ spring:
     redis:
       repositories:
         enabled: false
+      lettuce:
+        shutdown-timeout: 5s
   security:
     oauth2:
       client:
@@ -161,20 +163,6 @@ oauth2:
       token-uri: https://accounts.google.com/o/oauth2/token
       jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 
-cache:
-  redis:
-    enabled: ${CACHE_ENABLED}
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-    password: ${REDIS_PASSWORD}
-    database: ${REDIS_DATABASE}
-    embedded: false
-  expiration:
-    local-user-expiration-seconds: ${LOCAL_USER_EXPIRATION_SECONDS}
-    characteristics-expiration-seconds: ${CHARACTERISTICS_EXPIRATION_SECONDS}
-    currency-expiration-seconds: ${CURRENCY_EXPIRATION_SECONDS}
-    stage-expiration-seconds: ${STAGE_EXPIRATION_SECONDS}
-    game-metadata-expiration-seconds: ${GAME_METADATA_EXPIRATION_SECONDS}
 
 shutdown:
   flush-cache-at-shutdown: true
@@ -184,13 +172,29 @@ clock:
   time-zone: "Europe/Paris"
 
 configuration-display:
-  enabled: true
+  enabled: false
 
 jdbc:
   enabled: true
 
-
-stream:
-  valkey:
-    game-stream-key: game-stream
-    game-stream-consumer-group: gs-group
+valkey:
+  config:
+    enabled: true
+    embedded: false
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
+    database: ${REDIS_DATABASE}
+  stream:
+    game:
+      stream-key: game-stream
+      consumer-group: gs-group
+      persistence:
+        check-interval-seconds: ${GAME_STREAM_CHECK_INTERVAL_SECONDS}
+        debounce-window-ms: ${GAME_STREAM_DEBOUNCE_WINDOW_MS}
+  cache:
+    expiration:
+      characteristics-expiration-seconds: ${CHARACTERISTICS_EXPIRATION_SECONDS}
+      currency-expiration-seconds: ${CURRENCY_EXPIRATION_SECONDS}
+      stage-expiration-seconds: ${STAGE_EXPIRATION_SECONDS}
+      game-metadata-expiration-seconds: ${GAME_METADATA_EXPIRATION_SECONDS}
