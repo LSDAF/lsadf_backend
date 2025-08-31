@@ -31,10 +31,8 @@ import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.jspecify.annotations.NonNull;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -44,14 +42,21 @@ class CharacteristicsServiceTests {
 
   @Mock private CharacteristicsRepositoryPort characteristicsRepositoryPort;
   @Mock private CacheManager cacheManager;
-  @Mock private CachePort<Characteristics> characteristicsCache;
+  @Mock private CachePort<@NonNull Characteristics> characteristicsCache;
 
   private static final UUID UUID = java.util.UUID.randomUUID();
+
+  private AutoCloseable openMocks;
+
+  @AfterEach
+  void tearDown() throws Exception {
+    openMocks.close();
+  }
 
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
-    MockitoAnnotations.openMocks(this);
+    openMocks = MockitoAnnotations.openMocks(this);
 
     characteristicsService =
         new CharacteristicsServiceImpl(
@@ -124,54 +129,6 @@ class CharacteristicsServiceTests {
 
     // Assert
     assertThat(result).isEqualTo(characteristics);
-  }
-
-  @Test
-  void test_getCharacteristics_throwsIllegalArgumentException_when_nullGameSaveId() {
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> characteristicsService.getCharacteristics(null));
-  }
-
-  @Test
-  void test_saveCharacteristics_throwsIllegalArgumentException_when_nullGameSaveIdAndToCacheTrue() {
-    // Arrange
-    Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
-
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics(null, characteristics, true));
-  }
-
-  @Test
-  void
-      test_saveCharacteristics_throwsIllegalArgumentException_when_nullGameSaveIdAndToCacheFalse() {
-    // Arrange
-    Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
-
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics(null, characteristics, false));
-  }
-
-  @Test
-  void
-      test_saveCharacteristics_throwsIllegalArgumentException_when_nullCharacteristicsAndToCacheFalse() {
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics(UUID, null, false));
-  }
-
-  @Test
-  void
-      test_saveCharacteristics_throwsIllegalArgumentException_when_nullCharacteristicsAndToCacheTrue() {
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics(UUID, null, true));
   }
 
   @Test

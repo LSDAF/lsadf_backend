@@ -31,10 +31,7 @@ import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -47,10 +44,17 @@ class GameMetadataServiceTests {
 
   private GameMetadataService gameMetadataService;
 
+  private AutoCloseable openMocks;
+
+  @AfterEach
+  void tearDown() throws Exception {
+    openMocks.close();
+  }
+
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
-    MockitoAnnotations.openMocks(this);
+    openMocks = MockitoAnnotations.openMocks(this);
     gameMetadataService =
         new GameMetadataServiceImpl(
             cacheManager, gameMetadataRepositoryPort, gameMetadataCachePort);

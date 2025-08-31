@@ -71,7 +71,11 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
 
     Currency currency = requestModelMapper.map(currencyRequest);
 
-    currencyEventPublisherPort.publishCurrencyUpdatedEvent(userEmail, gameSaveId, currency);
+    if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
+      currencyEventPublisherPort.publishCurrencyUpdatedEvent(userEmail, gameSaveId, currency);
+    } else {
+      currencyService.saveCurrency(gameSaveId, currency, false);
+    }
 
     return generateResponse(HttpStatus.OK);
   }

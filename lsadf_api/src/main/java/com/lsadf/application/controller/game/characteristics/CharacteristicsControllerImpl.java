@@ -22,6 +22,7 @@ import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequestMapper;
@@ -40,6 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class CharacteristicsControllerImpl extends BaseController
     implements CharacteristicsController {
+  private final CacheManager cacheManager;
   private final GameSaveService gameSaveService;
   private final CharacteristicsService characteristicsService;
   private final CharacteristicsEventPublisherPort characteristicsEventPublisherPort;
@@ -50,9 +52,11 @@ public class CharacteristicsControllerImpl extends BaseController
       CharacteristicsResponseMapper.INSTANCE;
 
   public CharacteristicsControllerImpl(
+      CacheManager cacheManager,
       GameSaveService gameSaveService,
       CharacteristicsService characteristicsService,
       CharacteristicsEventPublisherPort characteristicsEventPublisherPort) {
+    this.cacheManager = cacheManager;
     this.gameSaveService = gameSaveService;
     this.characteristicsService = characteristicsService;
     this.characteristicsEventPublisherPort = characteristicsEventPublisherPort;
@@ -66,9 +70,13 @@ public class CharacteristicsControllerImpl extends BaseController
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
 
     Characteristics characteristics = requestMapper.map(characteristicsRequest);
-
-    characteristicsEventPublisherPort.publishCharacteristicsUpdatedEvent(
-        userEmail, gameSaveId, characteristics);
+    var enabled = cacheManager.isEnabled();
+    if (Boolean.TRUE.equals(enabled)) {
+      characteristicsEventPublisherPort.publishCharacteristicsUpdatedEvent(
+          userEmail, gameSaveId, characteristics);
+    } else {
+      characteristicsService.saveCharacteristics(gameSaveId, characteristics, false);
+    }
 
     return generateResponse(HttpStatus.OK);
   }

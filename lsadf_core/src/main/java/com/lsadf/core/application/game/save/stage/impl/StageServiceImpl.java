@@ -57,9 +57,6 @@ public class StageServiceImpl implements StageService {
   @Override
   @Transactional(readOnly = true)
   public Stage getStage(UUID gameSaveId) throws NotFoundException {
-    if (gameSaveId == null) {
-      throw new IllegalArgumentException("Game save id cannot be null");
-    }
     Stage stage;
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       String gameSaveIdString = gameSaveId.toString();
@@ -75,7 +72,6 @@ public class StageServiceImpl implements StageService {
         return stage;
       }
       stage = getStageFromDatabase(gameSaveId);
-      stageCache.set(gameSaveId.toString(), stage);
       return stage;
     }
     return getStageFromDatabase(gameSaveId);
@@ -90,10 +86,7 @@ public class StageServiceImpl implements StageService {
   @Override
   @Transactional
   public void saveStage(UUID gameSaveId, Stage stage, boolean toCache) throws NotFoundException {
-    if (gameSaveId == null) {
-      throw new IllegalArgumentException("Game save id cannot be null");
-    }
-    if (stage == null || isStageNull(stage)) {
+    if (isStageNull(stage)) {
       throw new IllegalArgumentException("Stage cannot be null");
     }
     if (toCache) {

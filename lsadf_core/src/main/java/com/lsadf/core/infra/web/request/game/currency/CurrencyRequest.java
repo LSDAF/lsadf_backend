@@ -23,22 +23,27 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.io.Serial;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 @Builder
 public record CurrencyRequest(
-    @Schema(description = "The amount of gold", example = "100")
+    @Nullable
+        @Schema(description = "The amount of gold", example = "100")
         @JsonProperty(value = GOLD)
         @PositiveOrZero
         Long gold,
-    @Schema(description = "The amount of diamond", example = "100")
+    @Nullable
+        @Schema(description = "The amount of diamond", example = "100")
         @JsonProperty(value = DIAMOND)
         @PositiveOrZero
         Long diamond,
-    @Schema(description = "The amount of emerald", example = "100")
+    @Nullable
+        @Schema(description = "The amount of emerald", example = "100")
         @JsonProperty(value = EMERALD)
         @PositiveOrZero
         Long emerald,
-    @Schema(description = "The amount of amethyst", example = "100")
+    @Nullable
+        @Schema(description = "The amount of amethyst", example = "100")
         @JsonProperty(value = AMETHYST)
         @PositiveOrZero
         Long amethyst)

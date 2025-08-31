@@ -63,9 +63,6 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
   @Override
   @Transactional(readOnly = true)
   public Characteristics getCharacteristics(UUID gameSaveId) throws NotFoundException {
-    if (gameSaveId == null) {
-      throw new IllegalArgumentException("Game save id cannot be null");
-    }
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       String gameSaveIdString = gameSaveId.toString();
       Optional<Characteristics> optionalCachedCharacteristics =
@@ -81,9 +78,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         return characteristics;
       }
     }
-    var characteristics = getCharacteristicsFromDatabase(gameSaveId);
-    characteristicsCache.set(gameSaveId.toString(), characteristics);
-    return characteristics;
+    return getCharacteristicsFromDatabase(gameSaveId);
   }
 
   /**
@@ -124,10 +119,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
   @Transactional
   public void saveCharacteristics(UUID gameSaveId, Characteristics characteristics, boolean toCache)
       throws NotFoundException {
-    if (gameSaveId == null) {
-      throw new IllegalArgumentException("Game save id cannot be null");
-    }
-    if (characteristics == null || isCharacteristicsNull(characteristics)) {
+    if (isCharacteristicsNull(characteristics)) {
       throw new IllegalArgumentException("Characteristics cannot be null");
     }
     if (toCache) {

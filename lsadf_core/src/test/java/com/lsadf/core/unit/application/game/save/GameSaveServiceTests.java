@@ -55,10 +55,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -125,9 +122,16 @@ class GameSaveServiceTests {
 
   private GameSave cachedGameSave;
 
+  private AutoCloseable openMocks;
+
+  @AfterEach
+  void tearDown() throws Exception {
+    openMocks.close();
+  }
+
   @BeforeEach
   void init() {
-    MockitoAnnotations.openMocks(this);
+    openMocks = MockitoAnnotations.openMocks(this);
     gameSave = new GameSave(DB_METADATA, DB_CHARACERISTICS, DB_CURRENCY, DB_STAGE);
     cachedGameSave =
         new GameSave(DB_METADATA, CACHED_CHARACERISTICS, CACHED_CURRENCY, CACHED_STAGE);
@@ -182,11 +186,6 @@ class GameSaveServiceTests {
     when(gameSaveRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(gameSave));
     var actual = gameSaveService.getGameSave(UUID);
     assertThat(actual).isEqualTo(gameSave);
-  }
-
-  @Test
-  void test_getGameSave_throwsIllegalArgumentException_when_nullGameSaveId() {
-    assertThrows(IllegalArgumentException.class, () -> gameSaveService.getGameSave(null));
   }
 
   @Test
@@ -295,12 +294,6 @@ class GameSaveServiceTests {
             gameMetadataRequest, characteristicsRequest, currencyRequest, stageRequest);
     var actual = gameSaveService.createGameSave(gameSaveCreationRequest);
     assertThat(actual).isEqualTo(gameSave);
-  }
-
-  @Test
-  void test_updateGameSave_throwsIllegalArgumentException_when_invalidRequestId() {
-    when(gameMetadataService.existsByNickname(DB_METADATA.nickname())).thenReturn(true);
-    assertThrows(IllegalArgumentException.class, () -> gameSaveService.updateGameSave(null, null));
   }
 
   @Test

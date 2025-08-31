@@ -31,10 +31,7 @@ import com.lsadf.core.infra.exception.http.NotFoundException;
 import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -49,10 +46,17 @@ class StageServiceTests {
 
   private static final UUID UUID = java.util.UUID.randomUUID();
 
+  private AutoCloseable openMocks;
+
+  @AfterEach
+  void tearDown() throws Exception {
+    openMocks.close();
+  }
+
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
-    MockitoAnnotations.openMocks(this);
+    openMocks = MockitoAnnotations.openMocks(this);
 
     stageService = new StageServiceImpl(cacheManager, stageRepositoryPort, stageCache);
   }
@@ -115,42 +119,6 @@ class StageServiceTests {
 
     // Assert
     assertThat(result).isEqualTo(stage);
-  }
-
-  @Test
-  void test_getStage_throwsIllegalArgumentException_when_gameSaveIdIsNull() {
-    // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> stageService.getStage(null));
-  }
-
-  @Test
-  void test_saveStage_throwsIllegalArgumentException_when_gameSaveIdIsNullAndCacheEnabled() {
-    // Arrange
-    Stage stage = new Stage(1L, 2L);
-
-    // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage(null, stage, true));
-  }
-
-  @Test
-  void test_saveStage_throwsIllegalArgumentException_when_gameSaveIdIsNullAndCacheDisabled() {
-    // Arrange
-    Stage stage = new Stage(1L, 2L);
-
-    // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage(null, stage, false));
-  }
-
-  @Test
-  void test_saveStage_throwsIllegalArgumentException_when_stageIsNullAndCacheDisabled() {
-    // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage(UUID, null, false));
-  }
-
-  @Test
-  void test_saveStage_throwsIllegalArgumentException_when_stageIsNullAndCacheEnabled() {
-    // Act & Assert
-    assertThrows(IllegalArgumentException.class, () -> stageService.saveStage(UUID, null, true));
   }
 
   @Test

@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
 import java.io.Serial;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a request for user characteristics with various attribute levels.
@@ -36,23 +37,28 @@ import lombok.Builder;
  */
 @Builder
 public record CharacteristicsRequest(
-    @Schema(description = "The attack level of the user", example = "100")
+    @Nullable
+        @Schema(description = "The attack level of the user", example = "100")
         @JsonProperty(value = ATTACK)
         @Positive
         Long attack,
-    @Schema(description = "The critical chance level of the user", example = "100")
+    @Nullable
+        @Schema(description = "The critical chance level of the user", example = "100")
         @JsonProperty(value = CRIT_CHANCE)
         @Positive
         Long critChance,
-    @Schema(description = "The critical damage level of the user", example = "100")
+    @Nullable
+        @Schema(description = "The critical damage level of the user", example = "100")
         @JsonProperty(value = CRIT_DAMAGE)
         @Positive
         Long critDamage,
-    @Schema(description = "The health level of the user", example = "100")
+    @Nullable
+        @Schema(description = "The health level of the user", example = "100")
         @JsonProperty(value = HEALTH)
         @Positive
         Long health,
-    @Schema(description = "The resistance level of the user", example = "100")
+    @Nullable
+        @Schema(description = "The resistance level of the user", example = "100")
         @JsonProperty(value = RESISTANCE)
         @Positive
         Long resistance)

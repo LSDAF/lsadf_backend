@@ -69,7 +69,11 @@ public class StageControllerImpl extends BaseController implements StageControll
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
 
     Stage stage = stageRequestMapper.map(stageRequest);
-    stageEventPublisherPort.publishStageUpdatedEvent(username, gameSaveId, stage);
+    if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
+      stageEventPublisherPort.publishStageUpdatedEvent(username, gameSaveId, stage);
+    } else {
+      stageService.saveStage(gameSaveId, stage, false);
+    }
 
     return generateResponse(HttpStatus.OK);
   }

@@ -17,22 +17,29 @@ package com.lsadf.core.domain.game.save.stage.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.BeanWrapperImpl;
 
 public class StageConsistencyValidator implements ConstraintValidator<StageConsistency, Object> {
 
-  private String firstField;
-  private String secondField;
+  @Nullable private String firstField;
+
+  @Nullable private String secondField;
 
   @Override
   public void initialize(StageConsistency constraintAnnotation) {
-    this.firstField = String.valueOf(constraintAnnotation.currentStageField());
-    this.secondField = String.valueOf(constraintAnnotation.maxStageField());
+    this.firstField = constraintAnnotation.currentStageField();
+    this.secondField = constraintAnnotation.maxStageField();
   }
 
   @Override
   public boolean isValid(Object value, ConstraintValidatorContext constraintValidatorContext) {
     try {
+
+      if (firstField == null || secondField == null) {
+        return true; // Null values can be considered valid or you can adjust the logic here
+      }
+
       Object firstFieldValue = new BeanWrapperImpl(value).getPropertyValue(firstField);
       Object secondFieldValue = new BeanWrapperImpl(value).getPropertyValue(secondField);
 
