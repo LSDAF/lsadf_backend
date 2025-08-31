@@ -22,13 +22,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.application.game.save.stage.impl.StageServiceImpl;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.*;

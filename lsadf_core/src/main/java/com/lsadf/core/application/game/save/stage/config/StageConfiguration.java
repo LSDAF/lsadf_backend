@@ -15,11 +15,11 @@
  */
 package com.lsadf.core.application.game.save.stage.config;
 
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.application.game.save.stage.impl.StageServiceImpl;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

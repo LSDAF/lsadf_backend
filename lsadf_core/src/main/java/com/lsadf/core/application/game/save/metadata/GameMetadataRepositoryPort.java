@@ -18,12 +18,13 @@ package com.lsadf.core.application.game.save.metadata;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public interface GameMetadataRepositoryPort {
 
   Optional<GameMetadata> findById(UUID id);
 
-  GameMetadata create(UUID id, String userEmail, String nickname);
+  GameMetadata create(@Nullable UUID id, String userEmail, @Nullable String nickname);
 
   GameMetadata updateNickname(UUID id, String nickname);
 

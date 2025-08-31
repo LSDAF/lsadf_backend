@@ -33,6 +33,7 @@ import com.lsadf.admin.application.search.AdminSearchControllerImpl;
 import com.lsadf.admin.application.user.AdminUserController;
 import com.lsadf.admin.application.user.AdminUserControllerImpl;
 import com.lsadf.admin.config.LsadfAdminConfiguration;
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
@@ -56,7 +57,6 @@ import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepo
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
 import com.lsadf.core.infra.persistence.impl.view.GameSaveViewRepository;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;

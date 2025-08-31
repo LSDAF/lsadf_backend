@@ -20,6 +20,7 @@ import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.web.request.Request;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a request for updating a game save. This interface provides methods to retrieve
@@ -35,21 +36,21 @@ public interface GameSaveUpdateRequest extends Request {
    * @return the characteristics object containing details such as attack, crit chance, crit damage,
    *     health, and resistance
    */
-  Characteristics getCharacteristics();
+  @Nullable Characteristics getCharacteristics();
 
   /**
    * Retrieves the currency information associated with the game save update request.
    *
    * @return the currency object containing details such as gold, diamond, emerald, and amethyst
    */
-  Currency getCurrency();
+  @Nullable Currency getCurrency();
 
   /**
    * Retrieves the stage object associated with the game save update request.
    *
    * @return the stage representing the player's game progress
    */
-  Stage getStage();
+  @Nullable Stage getStage();
 
   /**
    * Retrieves the getNickname associated with the game save update request.

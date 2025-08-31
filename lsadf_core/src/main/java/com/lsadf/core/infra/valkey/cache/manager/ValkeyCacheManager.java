@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.valkey.cache.manager.impl;
+package com.lsadf.core.infra.valkey.cache.manager;
 
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyProperties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ValkeyCacheManagerImpl implements CacheManager {
+public class ValkeyCacheManager implements CacheManager {
 
   private final GameMetadataCachePort gameMetadataCache;
   private final CharacteristicsCachePort characteristicsCache;
@@ -34,7 +34,7 @@ public class ValkeyCacheManagerImpl implements CacheManager {
 
   private final AtomicBoolean isEnabled;
 
-  public ValkeyCacheManagerImpl(
+  public ValkeyCacheManager(
       GameMetadataCachePort gameMetadataCache,
       CharacteristicsCachePort characteristicsCache,
       CurrencyCachePort currencyCache,

@@ -25,6 +25,7 @@ import com.lsadf.core.domain.user.validation.Nickname;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 @Builder
 public record GameSaveNicknameUpdateRequest(
@@ -37,16 +38,19 @@ public record GameSaveNicknameUpdateRequest(
   @Serial private static final long serialVersionUID = -6478222007381338108L;
 
   @Override
+  @Nullable
   public Characteristics getCharacteristics() {
     return null;
   }
 
   @Override
+  @Nullable
   public Currency getCurrency() {
     return null;
   }
 
   @Override
+  @Nullable
   public Stage getStage() {
     return null;
   }

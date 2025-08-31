@@ -15,11 +15,11 @@
  */
 package com.lsadf.core.application.game.save.currency.config;
 
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.currency.impl.CurrencyServiceImpl;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -13,29 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.valkey.cache.manager.impl;
-
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
-
-public class NoOpCacheManagerImpl implements CacheManager {
-
-  @Override
-  public Boolean isEnabled() {
-    return false;
-  }
-
-  @Override
-  public void toggleCacheEnabling() {
-    // Do nothing
-  }
-
-  @Override
-  public void clearCaches() {
-    // Do nothing
-  }
-
-  @Override
-  public void clearGameSaveValues(String key) {
-    // Do nothing
-  }
-}
+@org.jspecify.annotations.NullMarked
+package com.lsadf.core.application.cache;

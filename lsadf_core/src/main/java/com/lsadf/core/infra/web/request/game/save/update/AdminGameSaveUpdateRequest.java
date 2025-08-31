@@ -25,6 +25,7 @@ import com.lsadf.core.domain.user.validation.Nickname;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a request to update the game save in the admin context. This record implements the
@@ -43,21 +44,25 @@ import lombok.Builder;
  */
 @Builder
 public record AdminGameSaveUpdateRequest(
-    @JsonProperty(value = NICKNAME)
+    @Nullable
+        @JsonProperty(value = NICKNAME)
         @Nickname(nullable = true)
         @Schema(description = "Nickname of the user", example = "test")
         String nickname,
-    @JsonProperty(value = CHARACTERISTICS)
+    @Nullable
+        @JsonProperty(value = CHARACTERISTICS)
         @Schema(
             description = "Characteristics of the user",
             example = "{\"strength\":10,\"agility\":10,\"intelligence\":10,\"luck\":10}")
         Characteristics characteristics,
-    @JsonProperty(value = CURRENCY)
+    @Nullable
+        @JsonProperty(value = CURRENCY)
         @Schema(
             description = "Currency of the user",
             example = "{\"gold\":1000,\"silver\":1000,\"copper\":1000}")
         Currency currency,
-    @JsonProperty(value = STAGE)
+    @Nullable
+        @JsonProperty(value = STAGE)
         @Schema(
             description = "Stage of the user",
             example = "{\"stageId\":1,\"stageName\":\"test\"}")

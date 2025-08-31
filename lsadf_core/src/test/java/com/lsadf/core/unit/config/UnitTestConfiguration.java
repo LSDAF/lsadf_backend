@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.unit.config;
 
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
@@ -28,7 +29,6 @@ import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
 import javax.sql.DataSource;
 import org.springframework.boot.test.context.TestConfiguration;

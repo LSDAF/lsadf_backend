@@ -21,6 +21,7 @@ import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequ
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
 import com.lsadf.core.infra.web.request.game.stage.StageRequest;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a game save creation request that encapsulates multiple components of a game save,
@@ -54,7 +55,7 @@ public interface GameSaveCreationRequest extends Request {
    *
    * @return a {@code CharacteristicsRequest} object containing the user's in-game attribute levels.
    */
-  CharacteristicsRequest getCharacteristicsRequest();
+  @Nullable CharacteristicsRequest getCharacteristicsRequest();
 
   /**
    * Retrieves the currency request associated with the game save. This request contains detailed
@@ -62,7 +63,7 @@ public interface GameSaveCreationRequest extends Request {
    *
    * @return a {@code CurrencyRequest} object containing the user's in-game currency details.
    */
-  CurrencyRequest getCurrencyRequest();
+  @Nullable CurrencyRequest getCurrencyRequest();
 
   /**
    * Retrieves the stage request associated with the game save. The stage request contains detailed
@@ -72,5 +73,5 @@ public interface GameSaveCreationRequest extends Request {
    * @return a {@code StageRequest} object representing the user's current and maximum stage
    *     progress details.
    */
-  StageRequest getStageRequest();
+  @Nullable StageRequest getStageRequest();
 }
