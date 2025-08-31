@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.stream.config;
+package com.lsadf.core.infra.valkey.config.stream;
 
 import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
 import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;

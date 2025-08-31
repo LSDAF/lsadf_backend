@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.cache.config;
+package com.lsadf.core.infra.valkey.config.cache;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
@@ -24,11 +24,11 @@ import com.lsadf.core.infra.valkey.cache.adapter.game.save.characteristics.Chara
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.currency.CurrencyCacheRepositoryAdapter;
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.metadata.GameMetadataCacheRepositoryAdapter;
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.stage.StageCacheRepositoryAdapter;
-import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsHashRepository;
 import com.lsadf.core.infra.valkey.cache.impl.save.currency.CurrencyHashRepository;
 import com.lsadf.core.infra.valkey.cache.impl.save.metadata.GameMetadataHashRepository;
 import com.lsadf.core.infra.valkey.cache.impl.save.stage.StageHashRepository;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
@@ -37,36 +37,37 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @Configuration
 @EnableRedisRepositories(
     basePackages = "com.lsadf.core.infra.valkey.cache",
-    shadowCopy = RedisKeyValueAdapter.ShadowCopy.ON,
-    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP)
+    shadowCopy = RedisKeyValueAdapter.ShadowCopy.OFF,
+    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.OFF)
 public class ValkeyCacheRepositoryConfiguration {
   @Bean
   public CharacteristicsCachePort characteristicsCachePort(
       CharacteristicsHashRepository characteristicsHashRepository,
-      CacheExpirationProperties cacheExpirationProperties) {
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
     return new CharacteristicsCacheRepositoryAdapter(
-        characteristicsHashRepository, cacheExpirationProperties);
+        characteristicsHashRepository, valkeyCacheExpirationProperties);
   }
 
   @Bean
   public CurrencyCachePort currencyCachePort(
       CurrencyHashRepository currencyHashRepository,
-      CacheExpirationProperties cacheExpirationProperties) {
-    return new CurrencyCacheRepositoryAdapter(currencyHashRepository, cacheExpirationProperties);
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
+    return new CurrencyCacheRepositoryAdapter(
+        currencyHashRepository, valkeyCacheExpirationProperties);
   }
 
   @Bean
   public GameMetadataCachePort gameMetadataCachePort(
       GameMetadataHashRepository gameMetadataHashRepository,
-      CacheExpirationProperties cacheExpirationProperties) {
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
     return new GameMetadataCacheRepositoryAdapter(
-        gameMetadataHashRepository, cacheExpirationProperties);
+        gameMetadataHashRepository, valkeyCacheExpirationProperties);
   }
 
   @Bean
   public StageCachePort stageCachePort(
       StageHashRepository stageHashRepository,
-      CacheExpirationProperties cacheExpirationProperties) {
-    return new StageCacheRepositoryAdapter(stageHashRepository, cacheExpirationProperties);
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
+    return new StageCacheRepositoryAdapter(stageHashRepository, valkeyCacheExpirationProperties);
   }
 }

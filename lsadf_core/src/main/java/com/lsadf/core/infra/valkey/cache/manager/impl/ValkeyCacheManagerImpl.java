@@ -19,8 +19,8 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsCache
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.infra.valkey.cache.config.properties.ValkeyProperties;
 import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyProperties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.slf4j.Slf4j;
 

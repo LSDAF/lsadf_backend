@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.valkey.cache.config.properties;
+package com.lsadf.core.infra.valkey.config.properties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-public class ValkeyProperties {
-  private boolean enabled;
-  private String host;
-  private int port;
-  private int database;
-  private String password;
-  private boolean embedded;
+@AllArgsConstructor
+@NoArgsConstructor
+public class ValkeyCacheExpirationProperties {
+  private Integer characteristicsExpirationSeconds;
+  private Integer currencyExpirationSeconds;
+  private Integer stageExpirationSeconds;
+  private Integer gameMetadataExpirationSeconds;
 }

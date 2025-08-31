@@ -21,9 +21,9 @@ import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.valkey.cache.HashModelMapper;
 import com.lsadf.core.infra.valkey.cache.HashRepository;
 import com.lsadf.core.infra.valkey.cache.adapter.ValkeyCacheRepositoryAdapter;
-import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.valkey.cache.impl.save.stage.StageHash;
 import com.lsadf.core.infra.valkey.cache.impl.save.stage.StageHashMapper;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,10 +33,10 @@ public class StageCacheRepositoryAdapter
 
   public StageCacheRepositoryAdapter(
       HashRepository<StageHash, UUID> repository,
-      CacheExpirationProperties cacheExpirationProperties) {
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
     super(repository);
     this.hashMapper = HASH_MAPPER;
-    this.expirationSeconds = cacheExpirationProperties.getStageExpirationSeconds();
+    this.expirationSeconds = valkeyCacheExpirationProperties.getStageExpirationSeconds();
   }
 
   @Override

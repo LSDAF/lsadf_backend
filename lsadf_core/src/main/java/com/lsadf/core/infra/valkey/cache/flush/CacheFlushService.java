@@ -15,16 +15,21 @@
  */
 package com.lsadf.core.infra.valkey.cache.flush;
 
+import java.util.UUID;
+
 public interface CacheFlushService {
+
   /**
-   * Flush the characteristics cache, and persists the characteristics of every entries in the
-   * database
+   * Flush all data for a specific game save
+   *
+   * @param gameSaveId the game save ID to flush
    */
-  void flushCharacteristics();
+  void flushGameSave(UUID gameSaveId);
 
-  /** Flush the currency cache, and persists the currency of every entries in the database */
-  void flushCurrencies();
-
-  /** Flush the stage cache, and persists the stage of every entries in the database */
-  void flushStages();
+  /**
+   * Flushes all cached data for all game saves in the system. This operation removes any temporary
+   * or cached state associated with game saves to ensure a clean state or reflect the most
+   * up-to-date data.
+   */
+  void flushGameSaves();
 }

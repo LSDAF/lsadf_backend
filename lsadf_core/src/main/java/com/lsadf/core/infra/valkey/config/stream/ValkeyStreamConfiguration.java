@@ -14,30 +14,40 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.stream.config;
+package com.lsadf.core.infra.valkey.config.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamProperties;
+import com.lsadf.core.infra.valkey.stream.consumer.StreamConsumer;
 import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
 import com.lsadf.core.infra.valkey.stream.serializer.EventSerializer;
 import com.lsadf.core.infra.valkey.stream.serializer.impl.GameEventSerializer;
 import java.time.Duration;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.stream.Consumer;
 import org.springframework.data.redis.connection.stream.MapRecord;
+import org.springframework.data.redis.connection.stream.ReadOffset;
+import org.springframework.data.redis.connection.stream.StreamOffset;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
+import org.springframework.data.redis.stream.Subscription;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Slf4j
 @Configuration
 @Import({
   ValkeyStreamProducerConfiguration.class,
-  ValkeyStreamConsumerConfiguration.class,
-  ValkeyStreamAdapterConfiguration.class
+  ValkeyStreamAdapterConfiguration.class,
+  ValkeyStreamRecordHandlerConfiguration.class,
 })
+@ConditionalOnProperty(prefix = "valkey.config", name = "enabled", havingValue = "true")
 public class ValkeyStreamConfiguration {
 
   @Bean
@@ -48,8 +58,8 @@ public class ValkeyStreamConfiguration {
   @Bean(name = "streamListenerExecutor")
   public TaskExecutor streamListenerExecutor() {
     ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-    executor.setCorePoolSize(4);
-    executor.setMaxPoolSize(10);
+    executor.setCorePoolSize(3);
+    executor.setMaxPoolSize(5);
     executor.setQueueCapacity(100);
     executor.setThreadNamePrefix("streamListenerExecutor-");
     executor.setWaitForTasksToCompleteOnShutdown(true);
@@ -63,19 +73,69 @@ public class ValkeyStreamConfiguration {
           String, MapRecord<String, String, String>>
       streamMessageListenerContainerOptions(TaskExecutor streamListenerExecutor) {
     return StreamMessageListenerContainer.StreamMessageListenerContainerOptions.builder()
-        .pollTimeout(Duration.ofSeconds(1))
+        .pollTimeout(Duration.ofMillis(100))
         .executor(streamListenerExecutor)
         .build();
   }
 
-  @Bean
+  @Bean(destroyMethod = "stop")
   public StreamMessageListenerContainer<String, MapRecord<String, String, String>>
       streamMessageListenerContainer(
           RedisConnectionFactory connectionFactory,
           StreamMessageListenerContainer.StreamMessageListenerContainerOptions<
                   String, MapRecord<String, String, String>>
               options) {
-
     return StreamMessageListenerContainer.create(connectionFactory, options);
+  }
+
+  @Bean
+  public Subscription gameConsumerSubscription(
+      ValkeyGameStreamProperties valkeyGameStreamProperties,
+      StreamMessageListenerContainer<String, MapRecord<String, String, String>> listenerContainer,
+      StreamConsumer dataConsumer,
+      RedisTemplate<String, String> redisTemplate) {
+
+    String streamKey = valkeyGameStreamProperties.getStreamKey();
+    String groupName = valkeyGameStreamProperties.getConsumerGroup();
+    String consumerName = dataConsumer.getId();
+
+    try {
+      redisTemplate.opsForStream().createGroup(streamKey, ReadOffset.from("$"), groupName);
+      log.info("Consumer group '{}' created for stream '{}'", groupName, streamKey);
+    } catch (RedisSystemException e) {
+      if (e.getRootCause() != null
+          && e.getRootCause().getMessage() != null
+          && e.getRootCause().getMessage().contains("BUSYGROUP")) {
+        log.warn("Consumer group '{}' already exists for stream '{}'", groupName, streamKey);
+      } else {
+        log.error(
+            "Error creating consumer group '{}' for stream '{}': {}",
+            groupName,
+            streamKey,
+            e.getMessage());
+      }
+    } catch (Exception e) {
+      log.error(
+          "Unexpected error creating consumer group '{}' for stream '{}': {}",
+          groupName,
+          streamKey,
+          e.getMessage(),
+          e);
+    }
+
+    Subscription subscription =
+        listenerContainer.receiveAutoAck(
+            Consumer.from(groupName, consumerName),
+            StreamOffset.create(streamKey, ReadOffset.lastConsumed()),
+            dataConsumer::handleEvent);
+
+    log.info(
+        "Subscription created for consumer '{}' on group '{}', stream '{}'",
+        consumerName,
+        groupName,
+        streamKey);
+
+    listenerContainer.start();
+    return subscription;
   }
 }

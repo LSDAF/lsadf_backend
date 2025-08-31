@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.stream.config;
+package com.lsadf.core.infra.valkey.config.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamProperties;
 import com.lsadf.core.infra.valkey.stream.adapter.CharacteristicsEventPublisherAdapter;
 import com.lsadf.core.infra.valkey.stream.adapter.CurrencyEventPublisherAdapter;
 import com.lsadf.core.infra.valkey.stream.adapter.StageEventPublisherAdapter;
-import com.lsadf.core.infra.valkey.stream.config.properties.ValkeyStreamProperties;
 import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
 import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;
 import org.springframework.context.annotation.Bean;
@@ -34,27 +34,27 @@ public class ValkeyStreamAdapterConfiguration {
   @Bean
   public CharacteristicsEventPublisherPort characteristicsEventPublisherPort(
       StreamProducer<GameSaveEvent> streamProducer,
-      ValkeyStreamProperties valkeyStreamProperties,
+      ValkeyGameStreamProperties valkeyGameStreamProperties,
       ObjectMapper objectMapper) {
     return new CharacteristicsEventPublisherAdapter(
-        streamProducer, valkeyStreamProperties.getGameStreamKey(), objectMapper);
+        streamProducer, valkeyGameStreamProperties.getStreamKey(), objectMapper);
   }
 
   @Bean
   public StageEventPublisherPort stageEventPublisherPort(
       StreamProducer<GameSaveEvent> streamProducer,
-      ValkeyStreamProperties valkeyStreamProperties,
+      ValkeyGameStreamProperties valkeyGameStreamProperties,
       ObjectMapper objectMapper) {
     return new StageEventPublisherAdapter(
-        valkeyStreamProperties.getGameStreamKey(), streamProducer, objectMapper);
+        valkeyGameStreamProperties.getStreamKey(), streamProducer, objectMapper);
   }
 
   @Bean
   public CurrencyEventPublisherPort currencyEventPublisherPort(
       StreamProducer<GameSaveEvent> streamProducer,
-      ValkeyStreamProperties valkeyStreamProperties,
+      ValkeyGameStreamProperties valkeyGameStreamProperties,
       ObjectMapper objectMapper) {
     return new CurrencyEventPublisherAdapter(
-        streamProducer, valkeyStreamProperties.getGameStreamKey(), objectMapper);
+        streamProducer, valkeyGameStreamProperties.getStreamKey(), objectMapper);
   }
 }

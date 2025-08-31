@@ -26,6 +26,7 @@ import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -65,7 +66,7 @@ public class ValkeyKeyExpirationListener implements MessageListener {
    * @param pattern pattern matching the channel (if specified) - can be {@literal null}.
    */
   @Override
-  public void onMessage(Message message, byte[] pattern) {
+  public void onMessage(Message message, byte @Nullable [] pattern) {
     String expiredKey = message.toString();
     log.info("Redis cache entry expired -> {}", expiredKey);
     if (expiredKey.startsWith(CHARACTERISTICS)) {

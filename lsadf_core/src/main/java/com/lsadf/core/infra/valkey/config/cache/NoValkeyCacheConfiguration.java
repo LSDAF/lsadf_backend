@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.valkey.cache.config;
+package com.lsadf.core.infra.valkey.config.cache;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(prefix = "cache.redis", name = "enabled", havingValue = "false")
+@ConditionalOnProperty(prefix = "valkey.config", name = "enabled", havingValue = "false")
 public class NoValkeyCacheConfiguration {
 
   @Bean

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.valkey.cache.config;
+package com.lsadf.core.infra.valkey.config.cache;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
@@ -31,13 +31,13 @@ import com.lsadf.core.infra.valkey.cache.adapter.game.save.characteristics.Chara
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.currency.CurrencyCacheAdapter;
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.metadata.GameMetadataCacheAdapter;
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.stage.StageCacheAdapter;
-import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.valkey.cache.config.properties.ValkeyProperties;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.cache.flush.impl.RedisCacheFlushServiceImpl;
 import com.lsadf.core.infra.valkey.cache.listener.ValkeyRepositoryKeyExpirationListener;
 import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.valkey.cache.manager.impl.ValkeyCacheManagerImpl;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -54,8 +54,8 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
-@ConditionalOnProperty(prefix = "cache.redis", name = "enabled", havingValue = "true")
-@Import(ValkeyCacheRepositoryConfiguration.class)
+@ConditionalOnProperty(prefix = "valkey.config", name = "enabled", havingValue = "true")
+@Import({ValkeyCacheRepositoryConfiguration.class, ValkeyEmbeddedCacheConfiguration.class})
 public class ValkeyCacheConfiguration {
 
   @Bean
@@ -150,42 +150,13 @@ public class ValkeyCacheConfiguration {
       RedisConnectionFactory connectionFactory) {
     RedisMessageListenerContainer container = new RedisMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
-    // container.addMessageListener(
-    //  valkeyKeyExpirationListener, new PatternTopic("__keyevent@0__:expired"));
     return container;
   }
 
   @Bean
-  public ValkeyRepositoryKeyExpirationListener valkeyRepositoryKeyExpirationListener(
-      CurrencyService currencyService,
-      CharacteristicsService characteristicsService,
-      StageService stageService) {
-    return new ValkeyRepositoryKeyExpirationListener(
-        stageService, characteristicsService, currencyService);
+  public ValkeyRepositoryKeyExpirationListener valkeyRepositoryKeyExpirationListener() {
+    return new ValkeyRepositoryKeyExpirationListener();
   }
-
-  //  @Bean
-  //  MessageListenerAdapter messageListener(ValkeyKeyExpirationListener
-  // valkeyKeyExpirationListener) {
-  //    return new MessageListenerAdapter(valkeyKeyExpirationListener);
-  //  }
-
-  //  @Bean
-  //  public ValkeyKeyExpirationListener redisKeyExpirationListener(
-  //      CharacteristicsService characteristicsService,
-  //      CurrencyService currencyService,
-  //      StageService stageService,
-  //      RedisTemplate<String, Characteristics> characteristicsRedisTemplate,
-  //      RedisTemplate<String, Currency> currencyRedisTemplate,
-  //      RedisTemplate<String, Stage> stageRedisTemplate) {
-  //    return new ValkeyKeyExpirationListener(
-  //        characteristicsService,
-  //        currencyService,
-  //        stageService,
-  //        characteristicsRedisTemplate,
-  //        currencyRedisTemplate,
-  //        stageRedisTemplate);
-  //  }
 
   @Bean
   public CacheFlushService cacheFlushService(
@@ -194,57 +165,59 @@ public class ValkeyCacheConfiguration {
       StageService stageService,
       CharacteristicsCachePort characteristicsCachePort,
       CurrencyCachePort currencyCachePort,
-      StageCachePort stageCachePort) {
+      StageCachePort stageCachePort,
+      RedisTemplate<String, String> redisTemplate) {
     return new RedisCacheFlushServiceImpl(
         characteristicsService,
         currencyService,
         stageService,
         characteristicsCachePort,
         currencyCachePort,
-        stageCachePort);
+        stageCachePort,
+        redisTemplate);
   }
 
   @Bean
   @ConditionalOnMissingBean
   public CharacteristicsCachePort characteristicsCachePort(
       RedisTemplate<String, Characteristics> characteristicsRedisTemplate,
-      CacheExpirationProperties cacheExpirationProperties) {
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
     return new CharacteristicsCacheAdapter(
         characteristicsRedisTemplate,
         ValkeyConstants.CHARACTERISTICS,
-        cacheExpirationProperties.getCharacteristicsExpirationSeconds());
+        valkeyCacheExpirationProperties.getCharacteristicsExpirationSeconds());
   }
 
   @Bean
   @ConditionalOnMissingBean
   public CurrencyCachePort currencyCachePort(
       RedisTemplate<String, Currency> currencyRedisTemplate,
-      CacheExpirationProperties cacheExpirationProperties) {
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
     return new CurrencyCacheAdapter(
         currencyRedisTemplate,
         ValkeyConstants.CURRENCY,
-        cacheExpirationProperties.getCurrencyExpirationSeconds());
+        valkeyCacheExpirationProperties.getCurrencyExpirationSeconds());
   }
 
   @Bean
   @ConditionalOnMissingBean
   public StageCachePort stageCachePort(
       RedisTemplate<String, Stage> stageRedisTemplate,
-      CacheExpirationProperties cacheExpirationProperties) {
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
     return new StageCacheAdapter(
         stageRedisTemplate,
         ValkeyConstants.STAGE,
-        cacheExpirationProperties.getStageExpirationSeconds());
+        valkeyCacheExpirationProperties.getStageExpirationSeconds());
   }
 
   @Bean
   @ConditionalOnMissingBean
   public GameMetadataCachePort gameMetadataCachePort(
       RedisTemplate<String, GameMetadata> gameMetadataRedisTemplate,
-      CacheExpirationProperties cacheExpirationProperties) {
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
     return new GameMetadataCacheAdapter(
         gameMetadataRedisTemplate,
         ValkeyConstants.GAME_METADATA,
-        cacheExpirationProperties.getGameMetadataExpirationSeconds());
+        valkeyCacheExpirationProperties.getGameMetadataExpirationSeconds());
   }
 }

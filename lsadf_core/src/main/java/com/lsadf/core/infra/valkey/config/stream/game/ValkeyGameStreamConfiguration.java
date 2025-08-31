@@ -27,6 +27,7 @@ import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
 import com.lsadf.core.infra.valkey.stream.serializer.EventSerializer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,6 +38,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  * persistence.
  */
 @Configuration
+@ConditionalOnProperty(prefix = "valkey.config", value = "enabled", havingValue = "true")
 public class ValkeyGameStreamConfiguration {
 
   /**

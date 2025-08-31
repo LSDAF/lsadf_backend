@@ -16,21 +16,16 @@
 package com.lsadf.core.infra.valkey.cache.flush.impl;
 
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
+import java.util.UUID;
 
 public class NoOpFlushServiceImpl implements CacheFlushService {
-
   @Override
-  public void flushCharacteristics() {
-    // Do nothing
+  public void flushGameSave(UUID gameSaveId) {
+    // do nothing
   }
 
   @Override
-  public void flushCurrencies() {
-    // Do nothing
-  }
-
-  @Override
-  public void flushStages() {
-    // Do nothing
+  public void flushGameSaves() {
+    // do nothing
   }
 }

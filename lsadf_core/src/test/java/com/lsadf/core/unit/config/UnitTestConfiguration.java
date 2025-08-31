@@ -27,7 +27,6 @@ import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.infra.config.ShutdownListener;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
@@ -44,8 +43,6 @@ import org.springframework.data.redis.stream.Subscription;
 public class UnitTestConfiguration {
 
   @MockBean private KeycloakClient keycloakClient;
-
-  @MockBean private ShutdownListener shutdownListener;
 
   @MockBean private RedisMessageListenerContainer redisMessageListenerContainer;
 

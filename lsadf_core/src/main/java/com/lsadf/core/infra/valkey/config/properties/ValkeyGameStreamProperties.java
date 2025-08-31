@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.stream.config.properties;
+package com.lsadf.core.infra.valkey.config.properties;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ValkeyStreamProperties {
-  private String gameStreamKey;
-  private String gameStreamConsumerGroup;
+public class ValkeyGameStreamProperties {
+  @NotEmpty private String streamKey;
+  @NotEmpty private String consumerGroup;
 }

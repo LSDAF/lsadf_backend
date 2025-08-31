@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.stream.config;
+package com.lsadf.core.infra.valkey.config.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RecordHandlerConfiguration {
+public class ValkeyStreamRecordHandlerConfiguration {
   @Bean
   public EventHandlerRegistry recordHandlerRegistry() {
     return new EventHandlerRegistryImpl();

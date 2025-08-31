@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.valkey.cache.config;
+package com.lsadf.core.infra.valkey.config.cache;
 
-import com.lsadf.core.infra.valkey.cache.config.properties.ValkeyProperties;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyProperties;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.jspecify.annotations.Nullable;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import redis.embedded.RedisServer;
 
 @Configuration
-@ConditionalOnProperty(prefix = "cache.redis", name = "embedded", havingValue = "true")
+@ConditionalOnProperty(prefix = "valkey.config", name = "embedded", havingValue = "true")
 public class ValkeyEmbeddedCacheConfiguration {
 
-  private RedisServer redisServer;
+  @Nullable private RedisServer redisServer;
 
   public ValkeyEmbeddedCacheConfiguration(ValkeyProperties valkeyProperties) throws IOException {
     if (valkeyProperties.isEnabled() && valkeyProperties.isEmbedded()) {
@@ -55,11 +56,11 @@ public class ValkeyEmbeddedCacheConfiguration {
 
   @PreDestroy
   public void preDestroy() throws IOException {
-    this.redisServer.stop();
+    if (redisServer != null) this.redisServer.stop();
   }
 
   @PostConstruct
   public void postConstruct() throws IOException {
-    this.redisServer.start();
+    if (redisServer != null) this.redisServer.start();
   }
 }

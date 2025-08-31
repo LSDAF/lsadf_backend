@@ -20,10 +20,10 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsCache
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.valkey.cache.HashModelMapper;
 import com.lsadf.core.infra.valkey.cache.adapter.ValkeyCacheRepositoryAdapter;
-import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
 import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsHash;
 import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsHashMapper;
 import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsHashRepository;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,10 +35,10 @@ public class CharacteristicsCacheRepositoryAdapter
 
   public CharacteristicsCacheRepositoryAdapter(
       CharacteristicsHashRepository characteristicsHashRepository,
-      CacheExpirationProperties cacheExpirationProperties) {
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
     super(characteristicsHashRepository);
     this.hashMapper = CHARACTERISTICS_HASH_MAPPER;
-    this.expirationSeconds = cacheExpirationProperties.getCharacteristicsExpirationSeconds();
+    this.expirationSeconds = valkeyCacheExpirationProperties.getCharacteristicsExpirationSeconds();
   }
 
   @Override
