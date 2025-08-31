@@ -45,7 +45,6 @@ public class PackageInfoGenerator {
        * See the License for the specific language governing permissions and
        * limitations under the License.
        */
-
       """;
 
   private static final String PACKAGE_INFO_JAVA = "package-info.java";
