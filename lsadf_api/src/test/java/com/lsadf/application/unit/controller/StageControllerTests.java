@@ -195,7 +195,7 @@ class StageControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void test_saveStage_returns200_when_oneStageRequestFieldIsNull() {
+  void test_saveStage_returns400_when_oneStageRequestFieldIsNull() {
     // given
     StageRequest stageRequest1 = new StageRequest(125L, null);
     // when
@@ -205,6 +205,6 @@ class StageControllerTests {
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(stageRequest1)))
         // then
-        .andExpect(status().isOk());
+        .andExpect(status().isBadRequest());
   }
 }

@@ -26,16 +26,18 @@ import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.valkey.cache.flush.RedisCacheFlushServiceImpl;
-import java.util.Collections;
-import java.util.Map;
+import com.lsadf.core.infra.valkey.cache.flush.FlushStatus;
+import com.lsadf.core.infra.valkey.cache.flush.impl.RedisCacheFlushServiceImpl;
+import com.lsadf.core.infra.valkey.cache.util.ValkeyFlushUtils;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
+import org.mockito.Answers;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class ValkeyCacheFlushServiceTests {
@@ -54,12 +56,22 @@ class ValkeyCacheFlushServiceTests {
 
   @Mock StageService stageService;
 
+  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+  RedisTemplate<String, String> redisTemplate;
+
+  private AutoCloseable openMocks;
+
   private static final UUID UUID_1 = java.util.UUID.randomUUID();
   private static final UUID UUID_2 = java.util.UUID.randomUUID();
 
+  @AfterEach
+  void tearDown() throws Exception {
+    openMocks.close();
+  }
+
   @BeforeEach
   void init() {
-    MockitoAnnotations.openMocks(this);
+    openMocks = MockitoAnnotations.openMocks(this);
     this.redisCacheFlushService =
         new RedisCacheFlushServiceImpl(
             characteristicsService,
@@ -67,74 +79,84 @@ class ValkeyCacheFlushServiceTests {
             stageService,
             characteristicsCache,
             currencyCache,
-            stageCache);
+            stageCache,
+            redisTemplate);
   }
 
   @Test
-  void test_flushCache_flushesCorrectly_when_characteristicsCache() {
-    Map<String, Characteristics> characteristicsEntries =
-        Map.of(
-            UUID_1.toString(), new Characteristics(1L, null, null, null, null),
-            UUID_2.toString(), new Characteristics(2L, null, null, null, null));
-    when(characteristicsCache.getAll()).thenReturn(characteristicsEntries);
+  void test_flushGameSave() {
+    Stage stage = Stage.builder().currentStage(1L).maxStage(2L).build();
+    Characteristics characteristics =
+        Characteristics.builder()
+            .attack(1L)
+            .critChance(2L)
+            .critDamage(3L)
+            .health(4L)
+            .resistance(5L)
+            .build();
+    Currency currency = Currency.builder().gold(1L).amethyst(2L).diamond(3L).emerald(4L).build();
+    when(characteristicsCache.get(UUID_1.toString())).thenReturn(Optional.of(characteristics));
+    when(currencyCache.get(UUID_1.toString())).thenReturn(Optional.of(currency));
+    when(stageCache.get(UUID_1.toString())).thenReturn(Optional.of(stage));
 
-    redisCacheFlushService.flushCharacteristics();
-    verify(characteristicsService, times(1))
-        .saveCharacteristics(UUID_1, new Characteristics(1L, null, null, null, null), false);
-    verify(characteristicsService, times(1))
-        .saveCharacteristics(UUID_2, new Characteristics(2L, null, null, null, null), false);
+    redisCacheFlushService.flushGameSave(UUID_1);
+    verify(characteristicsService).saveCharacteristics(UUID_1, characteristics, false);
+    verify(currencyService).saveCurrency(UUID_1, currency, false);
+    verify(stageService).saveStage(UUID_1, stage, false);
   }
 
   @Test
-  void test_flushCache_flushesCorrectly_when_currenciesCache() {
-    Map<String, Currency> currencyEntries =
-        Map.of(
-            UUID_1.toString(), new Currency(1L, 2L, null, 3L),
-            UUID_2.toString(), new Currency(2L, 4L, null, 8L));
-    when(currencyCache.getAll()).thenReturn(currencyEntries);
+  void test_flushGameSaves() {
+    Stage stage1 = Stage.builder().currentStage(1L).maxStage(2L).build();
+    Characteristics characteristics1 =
+        Characteristics.builder()
+            .attack(1L)
+            .critChance(2L)
+            .critDamage(3L)
+            .health(4L)
+            .resistance(5L)
+            .build();
+    Currency currency1 = Currency.builder().gold(1L).amethyst(2L).diamond(3L).emerald(4L).build();
+    Stage stage2 = Stage.builder().currentStage(10L).maxStage(20L).build();
+    Characteristics characteristics2 =
+        Characteristics.builder()
+            .attack(10L)
+            .critChance(20L)
+            .critDamage(30L)
+            .health(40L)
+            .resistance(50L)
+            .build();
+    Currency currency2 =
+        Currency.builder().gold(10L).amethyst(20L).diamond(30L).emerald(40L).build();
 
-    redisCacheFlushService.flushCurrencies();
-    verify(currencyService, times(1)).saveCurrency(UUID_1, new Currency(1L, 2L, null, 3L), false);
-    verify(currencyService, times(1)).saveCurrency(UUID_2, new Currency(2L, 4L, null, 8L), false);
-  }
+    when(characteristicsCache.get(UUID_1.toString())).thenReturn(Optional.of(characteristics1));
+    when(currencyCache.get(UUID_1.toString())).thenReturn(Optional.of(currency1));
+    when(stageCache.get(UUID_1.toString())).thenReturn(Optional.of(stage1));
+    when(characteristicsCache.get(UUID_2.toString())).thenReturn(Optional.of(characteristics2));
+    when(currencyCache.get(UUID_2.toString())).thenReturn(Optional.of(currency2));
+    when(stageCache.get(UUID_2.toString())).thenReturn(Optional.of(stage2));
 
-  @Test
-  void test_flushCache_flushesCorrectly_when_stagesCache() {
-    Map<String, Stage> stageEntries =
-        Map.of(
-            UUID_1.toString(), new Stage(10L, 20L),
-            UUID_2.toString(), new Stage(30L, 40L));
-    when(stageCache.getAll()).thenReturn(stageEntries);
+    when(redisTemplate.opsForZSet().rangeByScore(FlushStatus.PENDING.getKey(), 0, -1))
+        .thenReturn(Set.of(UUID_1.toString()));
+    when(redisTemplate.opsForSet().members(FlushStatus.PROCESSING.getKey()))
+        .thenReturn(Set.of(UUID_2.toString()));
 
-    redisCacheFlushService.flushStages();
-    verify(stageService, times(1)).saveStage(UUID_1, new Stage(10L, 20L), false);
-    verify(stageService, times(1)).saveStage(UUID_2, new Stage(30L, 40L), false);
-  }
+    try (MockedStatic<ValkeyFlushUtils> mockedFlushUtils = mockStatic(ValkeyFlushUtils.class)) {
 
-  @Test
-  void test_flushCache_doesNothing_when_flushingEmptyCharacteristicsCache() {
-    Map<String, Characteristics> characteristicsEntries = Collections.emptyMap();
-    when(characteristicsCache.getAll()).thenReturn(characteristicsEntries);
+      mockedFlushUtils
+          .when(
+              () ->
+                  ValkeyFlushUtils.moveToProcessingWithTransaction(
+                      eq(redisTemplate), any(), anyLong()))
+          .thenReturn(true);
 
-    redisCacheFlushService.flushCharacteristics();
-    verifyNoInteractions(characteristicsService);
-  }
-
-  @Test
-  void test_flushCache_doesNothing_when_flushingEmptyCurrencyCache() {
-    Map<String, Currency> currencyEntries = Collections.emptyMap();
-    when(currencyCache.getAll()).thenReturn(currencyEntries);
-
-    redisCacheFlushService.flushCurrencies();
-    verifyNoInteractions(currencyService);
-  }
-
-  @Test
-  void test_flushCache_doesNothing_when_flushingEmptyStageCache() {
-    Map<String, Stage> stageEntries = Collections.emptyMap();
-    when(stageCache.getAll()).thenReturn(stageEntries);
-
-    redisCacheFlushService.flushStages();
-    verifyNoInteractions(stageService);
+      redisCacheFlushService.flushGameSaves();
+      verify(characteristicsService).saveCharacteristics(UUID_1, characteristics1, false);
+      verify(currencyService).saveCurrency(UUID_1, currency1, false);
+      verify(stageService).saveStage(UUID_1, stage1, false);
+      verify(characteristicsService).saveCharacteristics(UUID_2, characteristics2, false);
+      verify(currencyService).saveCurrency(UUID_2, currency2, false);
+      verify(stageService).saveStage(UUID_2, stage2, false);
+    }
   }
 }

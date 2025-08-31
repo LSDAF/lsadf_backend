@@ -20,7 +20,7 @@ import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.application.game.save.metadata.impl.GameMetadataServiceImpl;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,10 +28,10 @@ import org.springframework.context.annotation.Configuration;
 public class GameMetadataConfiguration {
   @Bean
   public GameMetadataService gameMetadataService(
-      CacheService cacheService,
+      CacheManager cacheManager,
       GameMetadataRepositoryPort gameMetadataRepositoryPort,
       GameMetadataCachePort gameMetadataCachePort) {
     return new GameMetadataServiceImpl(
-        cacheService, gameMetadataRepositoryPort, gameMetadataCachePort);
+        cacheManager, gameMetadataRepositoryPort, gameMetadataCachePort);
   }
 }

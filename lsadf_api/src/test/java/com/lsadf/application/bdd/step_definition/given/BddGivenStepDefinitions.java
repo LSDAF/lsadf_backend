@@ -26,10 +26,10 @@ import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
-import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity;
+import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.impl.game.save.stage.StageEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import java.time.Clock;
@@ -61,11 +61,11 @@ public class BddGivenStepDefinitions extends BddLoader {
   @Given("^the cache is enabled$")
   public void givenCacheIsEnabled() {
     log.info("Checking cache status...");
-    boolean cacheEnabled = redisCacheService.isEnabled();
+    boolean cacheEnabled = redisCacheManager.isEnabled();
     if (!cacheEnabled) {
       log.info("Cache is disabled. Enabling cache...");
-      redisCacheService.toggleCacheEnabling();
-      assertThat(redisCacheService.isEnabled()).isTrue();
+      redisCacheManager.toggleCacheEnabling();
+      assertThat(redisCacheManager.isEnabled()).isTrue();
       log.info("Cache enabled");
     } else {
       log.info("Cache is already enabled");
@@ -75,11 +75,11 @@ public class BddGivenStepDefinitions extends BddLoader {
   @Given("^the cache is disabled$")
   public void givenCacheIsDisabled() {
     log.info("Checking cache status...");
-    boolean cacheEnabled = redisCacheService.isEnabled();
+    boolean cacheEnabled = redisCacheManager.isEnabled();
     if (cacheEnabled) {
       log.info("Cache is enabled. Disabling cache...");
-      redisCacheService.toggleCacheEnabling();
-      assertThat(redisCacheService.isEnabled()).isFalse();
+      redisCacheManager.toggleCacheEnabling();
+      assertThat(redisCacheManager.isEnabled()).isFalse();
       log.info("Cache disabled");
     } else {
       log.info("Cache is already disabled");
@@ -101,8 +101,8 @@ public class BddGivenStepDefinitions extends BddLoader {
     assertThat(gameMetadataRepository.count()).isZero();
 
     // Clear caches
-    redisCacheService.clearCaches();
-    localCacheService.clearCaches();
+    redisCacheManager.clearCaches();
+    localCacheManager.clearCaches();
 
     assertThat(characteristicsCache.getAll()).isEmpty();
     assertThat(currencyCache.getAll()).isEmpty();

@@ -19,9 +19,10 @@ import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequestMapper;
@@ -31,7 +32,6 @@ import com.lsadf.core.infra.web.response.game.save.characteristics.Characteristi
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -41,23 +41,25 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class CharacteristicsControllerImpl extends BaseController
     implements CharacteristicsController {
+  private final CacheManager cacheManager;
   private final GameSaveService gameSaveService;
   private final CharacteristicsService characteristicsService;
-  private final CacheService cacheService;
+  private final CharacteristicsEventPublisherPort characteristicsEventPublisherPort;
 
   private static final CharacteristicsRequestMapper requestMapper =
       CharacteristicsRequestMapper.INSTANCE;
   private static final CharacteristicsResponseMapper responseMapper =
       CharacteristicsResponseMapper.INSTANCE;
 
-  @Autowired
   public CharacteristicsControllerImpl(
+      CacheManager cacheManager,
       GameSaveService gameSaveService,
       CharacteristicsService characteristicsService,
-      CacheService cacheService) {
+      CharacteristicsEventPublisherPort characteristicsEventPublisherPort) {
+    this.cacheManager = cacheManager;
     this.gameSaveService = gameSaveService;
     this.characteristicsService = characteristicsService;
-    this.cacheService = cacheService;
+    this.characteristicsEventPublisherPort = characteristicsEventPublisherPort;
   }
 
   @Override
@@ -68,8 +70,13 @@ public class CharacteristicsControllerImpl extends BaseController
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
 
     Characteristics characteristics = requestMapper.map(characteristicsRequest);
-    characteristicsService.saveCharacteristics(
-        gameSaveId, characteristics, cacheService.isEnabled());
+    var enabled = cacheManager.isEnabled();
+    if (Boolean.TRUE.equals(enabled)) {
+      characteristicsEventPublisherPort.publishCharacteristicsUpdatedEvent(
+          userEmail, gameSaveId, characteristics);
+    } else {
+      characteristicsService.saveCharacteristics(gameSaveId, characteristics, false);
+    }
 
     return generateResponse(HttpStatus.OK);
   }

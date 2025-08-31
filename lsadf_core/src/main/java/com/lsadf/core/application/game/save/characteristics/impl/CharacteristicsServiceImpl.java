@@ -20,23 +20,23 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsServi
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
 public class CharacteristicsServiceImpl implements CharacteristicsService {
 
-  private final CacheService cacheService;
+  private final CacheManager cacheManager;
 
   private final CharacteristicsRepositoryPort characteristicsRepositoryPort;
   private final CachePort<Characteristics> characteristicsCache;
 
   public CharacteristicsServiceImpl(
-      CacheService cacheService,
+      CacheManager cacheManager,
       CharacteristicsRepositoryPort characteristicsRepositoryPort,
       CachePort<Characteristics> characteristicsCache) {
-    this.cacheService = cacheService;
+    this.cacheManager = cacheManager;
     this.characteristicsRepositoryPort = characteristicsRepositoryPort;
     this.characteristicsCache = characteristicsCache;
   }
@@ -63,10 +63,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
   @Override
   @Transactional(readOnly = true)
   public Characteristics getCharacteristics(UUID gameSaveId) throws NotFoundException {
-    if (gameSaveId == null) {
-      throw new IllegalArgumentException("Game save id cannot be null");
-    }
-    if (Boolean.TRUE.equals(cacheService.isEnabled())) {
+    if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       String gameSaveIdString = gameSaveId.toString();
       Optional<Characteristics> optionalCachedCharacteristics =
           characteristicsCache.get(gameSaveIdString);
@@ -81,9 +78,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         return characteristics;
       }
     }
-    var characteristics = getCharacteristicsFromDatabase(gameSaveId);
-    characteristicsCache.set(gameSaveId.toString(), characteristics);
-    return characteristics;
+    return getCharacteristicsFromDatabase(gameSaveId);
   }
 
   /**
@@ -124,14 +119,18 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
   @Transactional
   public void saveCharacteristics(UUID gameSaveId, Characteristics characteristics, boolean toCache)
       throws NotFoundException {
-    if (gameSaveId == null) {
-      throw new IllegalArgumentException("Game save id cannot be null");
-    }
-    if (characteristics == null || isCharacteristicsNull(characteristics)) {
+    if (isCharacteristicsNull(characteristics)) {
       throw new IllegalArgumentException("Characteristics cannot be null");
     }
     if (toCache) {
       String gameSaveIdString = gameSaveId.toString();
+      if (isCharacteristicsPartial(characteristics)) {
+        Characteristics existingCharacteristics =
+            characteristicsCache
+                .get(gameSaveIdString)
+                .orElseGet(() -> this.getCharacteristicsFromDatabase(gameSaveId));
+        characteristics = mergeCharacteristics(characteristics, existingCharacteristics);
+      }
       characteristicsCache.set(gameSaveIdString, characteristics);
     } else {
       saveCharacteristicsToDatabase(gameSaveId, characteristics);

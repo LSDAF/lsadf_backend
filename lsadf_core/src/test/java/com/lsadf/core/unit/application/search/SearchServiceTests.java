@@ -30,7 +30,7 @@ import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntityMapper;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntityMapper;
 import com.lsadf.core.infra.web.request.common.Filter;
 import com.lsadf.core.infra.web.request.search.SearchRequest;
 import com.lsadf.core.infra.web.request.user.UserSortingParameter;

@@ -15,7 +15,6 @@
  */
 package com.lsadf.core.infra.valkey.cache.util;
 
-import com.lsadf.core.infra.valkey.cache.KeyValueConsumer;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.experimental.UtilityClass;

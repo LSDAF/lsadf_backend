@@ -25,11 +25,11 @@ import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.persistence.table.game.inventory.ItemEntity;
-import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsEntity;
-import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyEntity;
-import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataEntity;
-import com.lsadf.core.infra.persistence.table.game.save.stage.StageEntity;
+import com.lsadf.core.infra.persistence.impl.game.inventory.ItemEntity;
+import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsEntity;
+import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyEntity;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
+import com.lsadf.core.infra.persistence.impl.game.save.stage.StageEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import java.time.Clock;
@@ -128,11 +128,11 @@ public class BddGivenStepDefinitions extends BddLoader {
   @Given("^the cache is enabled$")
   public void givenTheCacheIsEnabled() {
     log.info("Checking cache status...");
-    boolean cacheEnabled = redisCacheService.isEnabled();
+    boolean cacheEnabled = redisCacheManager.isEnabled();
     if (!cacheEnabled) {
       log.info("Cache is disabled. Enabling cache...");
-      redisCacheService.toggleCacheEnabling();
-      assertThat(redisCacheService.isEnabled()).isTrue();
+      redisCacheManager.toggleCacheEnabling();
+      assertThat(redisCacheManager.isEnabled()).isTrue();
       log.info("Cache enabled");
     } else {
       log.info("Cache is already enabled");
@@ -154,8 +154,8 @@ public class BddGivenStepDefinitions extends BddLoader {
     assertThat(gameMetadataRepository.count()).isZero();
 
     // Clear caches
-    redisCacheService.clearCaches();
-    localCacheService.clearCaches();
+    redisCacheManager.clearCaches();
+    localCacheManager.clearCaches();
 
     assertThat(characteristicsCache.getAll()).isEmpty();
     assertThat(characteristicsCache.getAllHisto()).isEmpty();

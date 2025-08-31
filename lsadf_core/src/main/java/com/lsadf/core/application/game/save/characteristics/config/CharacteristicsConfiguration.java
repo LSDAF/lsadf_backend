@@ -19,7 +19,7 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsCache
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsServiceImpl;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,10 +36,10 @@ public class CharacteristicsConfiguration {
 
   @Bean
   public CharacteristicsService characteristicsService(
-      CacheService cacheService,
+      CacheManager cacheManager,
       CharacteristicsRepositoryPort characteristicsRepositoryPort,
       CharacteristicsCachePort characteristicsCache) {
     return new CharacteristicsServiceImpl(
-        cacheService, characteristicsRepositoryPort, characteristicsCache);
+        cacheManager, characteristicsRepositoryPort, characteristicsCache);
   }
 }

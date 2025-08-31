@@ -19,9 +19,9 @@ import static com.lsadf.core.bdd.BddFieldConstants.Item.CLIENT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
-import com.lsadf.admin.application.bdd.CacheEntryType;
 import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.infra.valkey.cache.flush.FlushStatus;
 import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
@@ -36,19 +36,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j(topic = "[THEN STEP DEFINITIONS]")
 public class BddThenStepDefinitions extends BddLoader {
 
-  @Then("^the (.*) cache should be empty$")
-  public void thenTheCacheShouldBeEmpty(String cacheType) {
-    log.info("Checking {} if cache is empty...", cacheType);
-    CacheEntryType cacheEntryType = CacheEntryType.fromString(cacheType);
-    switch (cacheEntryType) {
-      case CHARACTERISTICS -> assertThat(characteristicsCache.getAll()).isEmpty();
-      case CHARACTERISTICS_HISTO -> assertThat(characteristicsCache.getAllHisto()).isEmpty();
-      case CURRENCY -> assertThat(currencyCache.getAll()).isEmpty();
-      case CURRENCY_HISTO -> assertThat(currencyCache.getAllHisto()).isEmpty();
-      case GAME_METADATA -> assertThat(gameMetadataCache.getAll()).isEmpty();
-      case STAGE -> assertThat(stageCache.getAll()).isEmpty();
-      case STAGE_HISTO -> assertThat(stageCache.getAllHisto()).isEmpty();
-    }
+  @Then("^the zset flush pending cache should be empty$")
+  public void thenTheZsetFlushPendingCacheShouldBeEmpty() {
+    log.info("Checking if flush pending zset is empty...");
+    var results =
+        stringRedisTemplate.opsForZSet().rangeByScore(FlushStatus.PENDING.getKey(), 0, -1);
+    assertThat(results).isEmpty();
+  }
+
+  @Then("^the set flush processing cache should be empty$")
+  public void thenTheSetFlushProcessingCacheShouldBeEmpty() {
+    log.info("Checking if flush processing set is empty...");
+    var results = stringRedisTemplate.opsForSet().members(FlushStatus.PROCESSING.getKey());
+    assertThat(results).isEmpty();
   }
 
   @Then("^the number of game saves should be (.*)$")

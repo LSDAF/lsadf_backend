@@ -2,6 +2,7 @@
 FROM maven:3.9.9-eclipse-temurin-17-focal AS compiler
 COPY env env/
 COPY build_parent build_parent/
+COPY lsadf_build_tools lsadf_build_tools/
 COPY lsadf_bom/ lsadf_bom/
 COPY lsadf_dependencies/ lsadf_dependencies/
 COPY lsadf_core/ lsadf_core/

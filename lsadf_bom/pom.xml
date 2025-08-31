@@ -54,6 +54,11 @@
                 <type>test-jar</type>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>com.lsdaf</groupId>
+                <artifactId>lsadf-build-tools</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

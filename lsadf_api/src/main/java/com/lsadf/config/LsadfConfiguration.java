@@ -22,9 +22,10 @@ import com.lsadf.core.infra.config.PropertiesConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
 import com.lsadf.core.infra.persistence.config.JdbcConfiguration;
-import com.lsadf.core.infra.valkey.cache.config.NoValkeyCacheConfiguration;
-import com.lsadf.core.infra.valkey.cache.config.ValkeyCacheConfiguration;
-import com.lsadf.core.infra.valkey.cache.config.ValkeyEmbeddedCacheConfiguration;
+import com.lsadf.core.infra.valkey.config.cache.NoValkeyCacheConfiguration;
+import com.lsadf.core.infra.valkey.config.cache.ValkeyCacheConfiguration;
+import com.lsadf.core.infra.valkey.config.stream.ValkeyStreamConfiguration;
+import com.lsadf.core.infra.valkey.config.stream.game.ValkeyGameStreamConfiguration;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakConfiguration;
 import com.lsadf.core.infra.web.config.security.CorsConfiguration;
 import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
@@ -53,12 +54,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   LoggingConfiguration.class,
   ValkeyCacheConfiguration.class,
   ApplicationListenerConfiguration.class,
-  ValkeyEmbeddedCacheConfiguration.class,
   ValkeyCacheConfiguration.class,
   NoValkeyCacheConfiguration.class,
   ClockConfiguration.class,
   KeycloakConfiguration.class,
   JdbcConfiguration.class,
   LsadfSecurityConfiguration.class,
+  ValkeyStreamConfiguration.class,
+  ValkeyGameStreamConfiguration.class
 })
 public class LsadfConfiguration {}

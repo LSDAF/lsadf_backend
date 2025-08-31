@@ -48,16 +48,16 @@ import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.persistence.table.game.inventory.AdditionalItemStatsRepository;
-import com.lsadf.core.infra.persistence.table.game.inventory.ItemRepository;
-import com.lsadf.core.infra.persistence.table.game.save.characteristics.CharacteristicsRepository;
-import com.lsadf.core.infra.persistence.table.game.save.currency.CurrencyRepository;
-import com.lsadf.core.infra.persistence.table.game.save.metadata.GameMetadataRepository;
-import com.lsadf.core.infra.persistence.table.game.save.stage.StageRepository;
-import com.lsadf.core.infra.persistence.view.GameSaveViewRepository;
-import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
+import com.lsadf.core.infra.persistence.impl.game.inventory.AdditionalItemStatsRepository;
+import com.lsadf.core.infra.persistence.impl.game.inventory.ItemRepository;
+import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsRepository;
+import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyRepository;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
+import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
+import com.lsadf.core.infra.persistence.impl.view.GameSaveViewRepository;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.response.ApiResponse;
@@ -87,6 +87,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -128,8 +129,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @CucumberContextConfiguration
 @EnableRedisRepositories(
     basePackages = "com.lsadf.core.infra.valkey.cache",
-    shadowCopy = RedisKeyValueAdapter.ShadowCopy.ON,
-    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_DEMAND)
+    shadowCopy = RedisKeyValueAdapter.ShadowCopy.OFF,
+    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.OFF)
 @EnableJdbcRepositories(basePackages = "com.lsadf.core.infra.persistence")
 @EnableAutoConfiguration(
     exclude = {
@@ -184,9 +185,9 @@ public class BddLoader {
 
   @Autowired protected StageService stageService;
 
-  @Autowired protected CacheService redisCacheService;
+  @Autowired protected CacheManager redisCacheManager;
 
-  @Autowired protected CacheService localCacheService;
+  @Autowired protected CacheManager localCacheManager;
 
   @Autowired protected CacheFlushService cacheFlushService;
 
@@ -222,8 +223,10 @@ public class BddLoader {
 
   @Autowired protected Stack<JwtAuthenticationResponse> jwtAuthenticationResponseStack;
 
+  @Autowired protected RedisTemplate<String, String> stringRedisTemplate;
+
   // Properties
-  @Autowired protected CacheExpirationProperties cacheExpirationProperties;
+  @Autowired protected ValkeyCacheExpirationProperties valkeyCacheExpirationProperties;
 
   @Autowired protected KeycloakProperties keycloakProperties;
 

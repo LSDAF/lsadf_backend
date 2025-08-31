@@ -20,8 +20,10 @@ import com.lsadf.core.infra.logging.properties.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.properties.HttpLogProperties;
 import com.lsadf.core.infra.persistence.config.JdbcProperties;
 import com.lsadf.core.infra.persistence.config.properties.DataSourceProperties;
-import com.lsadf.core.infra.valkey.cache.config.properties.CacheExpirationProperties;
-import com.lsadf.core.infra.valkey.cache.config.properties.ValkeyProperties;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamPersistenceProperties;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamProperties;
+import com.lsadf.core.infra.valkey.config.properties.ValkeyProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakAdminProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.config.security.OAuth2Properties;
@@ -46,6 +48,18 @@ public class PropertiesConfiguration {
   @ConfigurationProperties(prefix = "configuration-display")
   public ConfigurationDisplayProperties configurationDisplayProperties() {
     return new ConfigurationDisplayProperties();
+  }
+
+  @Bean
+  @ConfigurationProperties(prefix = "valkey.stream.game")
+  public ValkeyGameStreamProperties streamGameValkeyProperties() {
+    return new ValkeyGameStreamProperties();
+  }
+
+  @Bean
+  @ConfigurationProperties(prefix = "valkey.stream.game.persistence")
+  public ValkeyGameStreamPersistenceProperties valkeyGameStreamPersistenceProperties() {
+    return new ValkeyGameStreamPersistenceProperties();
   }
 
   @Bean
@@ -79,14 +93,14 @@ public class PropertiesConfiguration {
   }
 
   @Bean
-  @ConfigurationProperties(prefix = "cache.expiration")
-  public CacheExpirationProperties cacheExpirationProperties() {
-    return new CacheExpirationProperties();
+  @ConfigurationProperties(prefix = "valkey.cache.expiration")
+  public ValkeyCacheExpirationProperties cacheExpirationProperties() {
+    return new ValkeyCacheExpirationProperties();
   }
 
   @Bean
-  @ConfigurationProperties(prefix = "cache.redis")
-  public ValkeyProperties redisProperties() {
+  @ConfigurationProperties(prefix = "valkey.config")
+  public ValkeyProperties valkeyProperties() {
     return new ValkeyProperties();
   }
 

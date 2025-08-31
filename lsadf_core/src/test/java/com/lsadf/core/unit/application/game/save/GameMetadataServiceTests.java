@@ -27,33 +27,37 @@ import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.application.game.save.metadata.impl.GameMetadataServiceImpl;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class GameMetadataServiceTests {
   @Mock private UserService userService;
-  @Mock private CacheService cacheService;
+  @Mock private CacheManager cacheManager;
   @Mock private GameMetadataRepositoryPort gameMetadataRepositoryPort;
   @Mock private GameMetadataCachePort gameMetadataCachePort;
 
   private GameMetadataService gameMetadataService;
 
+  private AutoCloseable openMocks;
+
+  @AfterEach
+  void tearDown() throws Exception {
+    openMocks.close();
+  }
+
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
-    MockitoAnnotations.openMocks(this);
+    openMocks = MockitoAnnotations.openMocks(this);
     gameMetadataService =
         new GameMetadataServiceImpl(
-            cacheService, gameMetadataRepositoryPort, gameMetadataCachePort);
+            cacheManager, gameMetadataRepositoryPort, gameMetadataCachePort);
   }
 
   @Test

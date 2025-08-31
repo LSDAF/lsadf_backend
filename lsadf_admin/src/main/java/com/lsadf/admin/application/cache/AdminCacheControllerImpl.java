@@ -18,7 +18,7 @@ package com.lsadf.admin.application.cache;
 import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -34,13 +34,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AdminCacheControllerImpl extends BaseController implements AdminCacheController {
 
-  private final CacheService redisCacheService;
+  private final CacheManager redisCacheManager;
   private final CacheFlushService cacheFlushService;
 
   @Autowired
   public AdminCacheControllerImpl(
-      CacheService redisCacheService, CacheFlushService cacheFlushService) {
-    this.redisCacheService = redisCacheService;
+      CacheManager redisCacheManager, CacheFlushService cacheFlushService) {
+    this.redisCacheManager = redisCacheManager;
     this.cacheFlushService = cacheFlushService;
   }
 
@@ -52,15 +52,15 @@ public class AdminCacheControllerImpl extends BaseController implements AdminCac
   @Override
   public ResponseEntity<ApiResponse<Boolean>> isCacheEnabled(Jwt jwt) {
     validateUser(jwt);
-    boolean cacheEnabled = redisCacheService.isEnabled();
+    boolean cacheEnabled = redisCacheManager.isEnabled();
     return generateResponse(HttpStatus.OK, cacheEnabled);
   }
 
   @Override
   public ResponseEntity<ApiResponse<Boolean>> toggleRedisCacheEnabling(Jwt jwt) {
     validateUser(jwt);
-    redisCacheService.toggleCacheEnabling();
-    Boolean cacheEnabled = redisCacheService.isEnabled();
+    redisCacheManager.toggleCacheEnabling();
+    Boolean cacheEnabled = redisCacheManager.isEnabled();
     return generateResponse(HttpStatus.OK, cacheEnabled);
   }
 
@@ -69,11 +69,7 @@ public class AdminCacheControllerImpl extends BaseController implements AdminCac
     validateUser(jwt);
 
     log.info("Clearing all caches");
-    cacheFlushService.flushCharacteristics();
-    cacheFlushService.flushCurrencies();
-    cacheFlushService.flushStages();
-    redisCacheService.clearCaches();
-
+    cacheFlushService.flushGameSaves();
     return generateResponse(HttpStatus.OK);
   }
 }

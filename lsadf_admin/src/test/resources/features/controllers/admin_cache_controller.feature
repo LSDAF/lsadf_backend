@@ -66,7 +66,5 @@ Feature: Admin Cache Controller BDD tests
 
     Then the response status code should be 200
 
-    And the characteristics cache should be empty
-    And the currency cache should be empty
-    And the stage cache should be empty
-    And the game_metadata cache should be empty
+    And the zset flush pending cache should be empty
+    And the set flush processing cache should be empty

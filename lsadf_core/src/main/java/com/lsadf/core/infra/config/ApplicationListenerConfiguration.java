@@ -18,24 +18,29 @@ package com.lsadf.core.infra.config;
 import com.lsadf.core.infra.logging.ConfigurationLogger;
 import com.lsadf.core.infra.logging.properties.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
+import com.lsadf.core.infra.valkey.cache.flush.FlushRecoveryService;
+import com.lsadf.core.infra.valkey.cache.flush.impl.FlushRecoveryServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /** Configuration class for the application listeners. */
 @Configuration
+@Slf4j
 public class ApplicationListenerConfiguration {
-
-  @Bean
-  public ShutdownListener shutdownListener(
-      CacheFlushService cacheFlushService, ShutdownProperties shutdownProperties) {
-    return new ShutdownListener(cacheFlushService, shutdownProperties);
-  }
 
   @Bean
   public ConfigurationLogger configurationLogger(
       ConfigurableEnvironment environment,
       ConfigurationDisplayProperties configurationDisplayProperties) {
     return new ConfigurationLogger(environment, configurationDisplayProperties);
+  }
+
+  @Bean
+  public FlushRecoveryService flushRecoveryService(
+      RedisTemplate<String, String> redisTemplate, CacheFlushService cacheFlushService) {
+    return new FlushRecoveryServiceImpl(redisTemplate, cacheFlushService);
   }
 }

@@ -28,13 +28,11 @@ import com.lsadf.core.application.game.save.characteristics.impl.Characteristics
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.valkey.cache.service.CacheService;
+import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.jspecify.annotations.NonNull;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -43,26 +41,33 @@ class CharacteristicsServiceTests {
   private CharacteristicsService characteristicsService;
 
   @Mock private CharacteristicsRepositoryPort characteristicsRepositoryPort;
-  @Mock private CacheService cacheService;
-  @Mock private CachePort<Characteristics> characteristicsCache;
+  @Mock private CacheManager cacheManager;
+  @Mock private CachePort<@NonNull Characteristics> characteristicsCache;
 
   private static final UUID UUID = java.util.UUID.randomUUID();
+
+  private AutoCloseable openMocks;
+
+  @AfterEach
+  void tearDown() throws Exception {
+    openMocks.close();
+  }
 
   @BeforeEach
   void init() {
     // Create all mocks and inject them into the service
-    MockitoAnnotations.openMocks(this);
+    openMocks = MockitoAnnotations.openMocks(this);
 
     characteristicsService =
         new CharacteristicsServiceImpl(
-            cacheService, characteristicsRepositoryPort, characteristicsCache);
+            cacheManager, characteristicsRepositoryPort, characteristicsCache);
   }
 
   @Test
   void test_getCharacteristics_throwsNotFoundException_when_nonExistingGameSaveId() {
     // Arrange
     when(characteristicsRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.empty());
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
 
     // Assert
     assertThrows(NotFoundException.class, () -> characteristicsService.getCharacteristics(UUID));
@@ -92,7 +97,7 @@ class CharacteristicsServiceTests {
 
     when(characteristicsRepositoryPort.findById(any(UUID.class)))
         .thenReturn(Optional.of(characteristics));
-    when(cacheService.isEnabled()).thenReturn(true);
+    when(cacheManager.isEnabled()).thenReturn(true);
     when(characteristicsCache.get(anyString())).thenReturn(Optional.of(cachedCharacteristics));
 
     // Act
@@ -116,7 +121,7 @@ class CharacteristicsServiceTests {
 
     when(characteristicsRepositoryPort.findById(any(UUID.class)))
         .thenReturn(Optional.of(characteristics));
-    when(cacheService.isEnabled()).thenReturn(false);
+    when(cacheManager.isEnabled()).thenReturn(false);
     when(characteristicsCache.get(anyString())).thenReturn(Optional.empty());
 
     // Act
@@ -124,54 +129,6 @@ class CharacteristicsServiceTests {
 
     // Assert
     assertThat(result).isEqualTo(characteristics);
-  }
-
-  @Test
-  void test_getCharacteristics_throwsIllegalArgumentException_when_nullGameSaveId() {
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class, () -> characteristicsService.getCharacteristics(null));
-  }
-
-  @Test
-  void test_saveCharacteristics_throwsIllegalArgumentException_when_nullGameSaveIdAndToCacheTrue() {
-    // Arrange
-    Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
-
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics(null, characteristics, true));
-  }
-
-  @Test
-  void
-      test_saveCharacteristics_throwsIllegalArgumentException_when_nullGameSaveIdAndToCacheFalse() {
-    // Arrange
-    Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
-
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics(null, characteristics, false));
-  }
-
-  @Test
-  void
-      test_saveCharacteristics_throwsIllegalArgumentException_when_nullCharacteristicsAndToCacheFalse() {
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics(UUID, null, false));
-  }
-
-  @Test
-  void
-      test_saveCharacteristics_throwsIllegalArgumentException_when_nullCharacteristicsAndToCacheTrue() {
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics(UUID, null, true));
   }
 
   @Test

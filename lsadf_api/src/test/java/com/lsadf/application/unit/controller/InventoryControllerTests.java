@@ -131,6 +131,19 @@ class InventoryControllerTests {
 
   @Test
   @SneakyThrows
+  @WithMockJwtUser
+  void test_createItemInInventory_returns400_when_null_payload() {
+    // when
+    mockMvc
+        .perform(
+            post("/api/v1/inventory/{gameSaveId}/items", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_createItemInInventory_returns400_when_invalidObject() {
     // when
@@ -263,6 +276,21 @@ class InventoryControllerTests {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(invalidItemRequest)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
+  void test_updateItemInInventory_returns400_when_null_object() {
+    mockMvc
+        .perform(
+            put(
+                    "/api/v1/inventory/{gameSaveId}/items/{clientId}",
+                    "36f27c2a-06e8-4bdb-bf59-56999116f5ef",
+                    "7a22d36c-b2b1-4b70-bce1-a7a8573a557b")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isBadRequest());
   }
 
