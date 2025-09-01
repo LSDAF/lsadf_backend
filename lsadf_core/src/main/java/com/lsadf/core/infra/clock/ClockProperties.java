@@ -18,10 +18,11 @@ package com.lsadf.core.infra.clock;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jspecify.annotations.Nullable;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClockProperties {
-  private String timeZone;
+  @Nullable private String timeZone;
 }

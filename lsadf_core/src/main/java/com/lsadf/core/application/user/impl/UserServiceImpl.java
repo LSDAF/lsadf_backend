@@ -15,12 +15,12 @@
  */
 package com.lsadf.core.application.user.impl;
 
+import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.exception.AlreadyExistingUserException;
 import com.lsadf.core.exception.http.InternalServerErrorException;
 import com.lsadf.core.exception.http.NotFoundException;
-import com.lsadf.core.infra.clock.ClockService;
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserToUserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;

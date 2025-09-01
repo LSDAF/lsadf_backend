@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.clock;
+package com.lsadf.core.application.clock;
 
 import com.lsadf.core.infra.util.DateUtils;
 import java.time.Clock;

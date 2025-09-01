@@ -16,11 +16,11 @@
 
 package com.lsadf.core.application.info.config;
 
+import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.info.impl.GlobalInfoServiceImpl;
 import com.lsadf.core.application.user.UserService;
-import com.lsadf.core.infra.clock.ClockService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

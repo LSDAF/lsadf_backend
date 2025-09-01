@@ -13,22 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.logging;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.jspecify.annotations.Nullable;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class RequestLog {
-  @Nullable String username;
-  int status;
-  String now;
-  String method;
-  String requestUri;
-}
+@org.jspecify.annotations.NullMarked
+package com.lsadf.core.application.clock;
