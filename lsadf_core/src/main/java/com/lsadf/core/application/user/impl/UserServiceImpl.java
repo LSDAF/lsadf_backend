@@ -15,12 +15,12 @@
  */
 package com.lsadf.core.application.user.impl;
 
+import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.clock.ClockService;
-import com.lsadf.core.infra.exception.AlreadyExistingUserException;
-import com.lsadf.core.infra.exception.http.InternalServerErrorException;
-import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.exception.AlreadyExistingUserException;
+import com.lsadf.core.exception.http.InternalServerErrorException;
+import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.mapper.UserToUserRepresentationMapper;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
@@ -198,9 +198,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void resetUserPassword(UUID id) {
-    if (id == null) {
-      throw new IllegalArgumentException("Id cannot be null");
-    }
     String updatePasswordAction = "UPDATE_PASSWORD";
     List<String> actions = List.of(updatePasswordAction);
     String idString = id.toString();
@@ -210,9 +207,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void deleteUser(UUID id) {
-    if (id == null) {
-      throw new IllegalArgumentException("Id cannot be null");
-    }
     if (!checkIdExists(id)) {
       throw new NotFoundException("User with id " + id + " not found");
     }
@@ -271,9 +265,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public boolean checkUsernameExists(String username) {
-    if (username == null) {
-      throw new IllegalArgumentException("Username cannot be null");
-    }
     try {
       getUserByUsername(username);
       return true;
@@ -286,9 +277,6 @@ public class UserServiceImpl implements UserService {
   public boolean checkIdExists(UUID id) {
     // We assert that the null check is done in the calling method to avoid multiple checks
     // id can be null, then we return false
-    if (id == null) {
-      return false;
-    }
     try {
       getUserById(id);
       return true;

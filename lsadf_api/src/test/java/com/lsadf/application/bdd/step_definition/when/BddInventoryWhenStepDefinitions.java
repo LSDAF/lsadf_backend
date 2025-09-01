@@ -24,7 +24,7 @@ import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.impl.game.inventory.ItemEntity;
 import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.response.ApiResponse;

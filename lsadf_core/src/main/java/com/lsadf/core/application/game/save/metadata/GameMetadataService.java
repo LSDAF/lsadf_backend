@@ -18,6 +18,7 @@ package com.lsadf.core.application.game.save.metadata;
 
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Service interface for managing game metadata operations. This interface provides methods for
@@ -84,5 +85,6 @@ public interface GameMetadataService {
    * @param nickname the nickname to be assigned to the game metadata
    * @return the newly created {@link GameMetadata} object containing game and user metadata
    */
-  GameMetadata createNewGameMetadata(UUID gameSaveId, String username, String nickname);
+  GameMetadata createNewGameMetadata(
+      @Nullable UUID gameSaveId, String username, @Nullable String nickname);
 }

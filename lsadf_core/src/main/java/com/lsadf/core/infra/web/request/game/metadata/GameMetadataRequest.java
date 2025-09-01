@@ -27,10 +27,12 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.util.UUID;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 @Builder
 public record GameMetadataRequest(
-    @Schema(description = "Game Save ID", example = "123e4567-e89b-12d3-a456-426655440000")
+    @Nullable
+        @Schema(description = "Game Save ID", example = "123e4567-e89b-12d3-a456-426655440000")
         @JsonProperty(value = ID)
         UUID id,
     @Schema(description = "User Email", example = "toto@toto.com")
@@ -38,7 +40,8 @@ public record GameMetadataRequest(
         @Email
         @NotNull
         String userEmail,
-    @Schema(description = "The nickname of the game save", example = "Hero2340")
+    @Nullable
+        @Schema(description = "The nickname of the game save", example = "Hero2340")
         @JsonProperty(value = NICKNAME)
         @Nickname
         String nickname)

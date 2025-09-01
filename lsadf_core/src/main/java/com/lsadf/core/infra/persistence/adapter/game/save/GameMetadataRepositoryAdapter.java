@@ -22,6 +22,7 @@ import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEnti
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public class GameMetadataRepositoryAdapter implements GameMetadataRepositoryPort {
 
@@ -35,12 +36,12 @@ public class GameMetadataRepositoryAdapter implements GameMetadataRepositoryPort
 
   @Override
   public Optional<GameMetadata> findById(UUID id) {
-    var entity = gameMetadataRepository.findGameSaveEntityById(id);
-    return entity != null ? Optional.of(gameMetadataEntityMapper.map(entity)) : Optional.empty();
+    Optional<GameMetadataEntity> optional = gameMetadataRepository.findGameSaveEntityById(id);
+    return optional.map(gameMetadataEntityMapper::map);
   }
 
   @Override
-  public GameMetadata create(UUID id, String userEmail, String nickname) {
+  public GameMetadata create(@Nullable UUID id, String userEmail, @Nullable String nickname) {
     GameMetadataEntity entity;
     if (id != null && nickname != null) {
       entity = gameMetadataRepository.createNewGameSaveEntity(id, userEmail, nickname);

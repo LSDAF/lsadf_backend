@@ -17,7 +17,7 @@ package com.lsadf.core.infra.logging.interceptor;
 
 import static com.lsadf.core.infra.logging.LogColor.*;
 
-import com.lsadf.core.infra.clock.ClockService;
+import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.infra.logging.ColorUtils;
 import com.lsadf.core.infra.logging.LogColor;
 import com.lsadf.core.infra.logging.RequestLog;
@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.http.HttpMethod;
@@ -61,7 +62,10 @@ public class RequestLoggerInterceptor implements HandlerInterceptor {
 
   @Override
   public void afterCompletion(
-      HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+      HttpServletRequest request,
+      HttpServletResponse response,
+      Object handler,
+      @Nullable Exception ex) {
     if (loggedMethods.contains(request.getMethod())) {
       Date now = clockService.nowDate();
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

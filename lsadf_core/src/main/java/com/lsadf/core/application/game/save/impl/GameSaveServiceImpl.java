@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.application.game.save.impl;
 
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
@@ -31,12 +32,11 @@ import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.exception.AlreadyExistingGameSaveException;
-import com.lsadf.core.infra.exception.AlreadyTakenNicknameException;
-import com.lsadf.core.infra.exception.http.ForbiddenException;
-import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.exception.http.UnauthorizedException;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
+import com.lsadf.core.exception.AlreadyExistingGameSaveException;
+import com.lsadf.core.exception.AlreadyTakenNicknameException;
+import com.lsadf.core.exception.http.ForbiddenException;
+import com.lsadf.core.exception.http.NotFoundException;
+import com.lsadf.core.exception.http.UnauthorizedException;
 import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
@@ -95,9 +95,6 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Override
   @Transactional(readOnly = true)
   public GameSave getGameSave(UUID saveId) throws NotFoundException {
-    if (saveId == null) {
-      throw new IllegalArgumentException("Game Save ID cannot be null");
-    }
     GameSave gameSave =
         gameSaveRepositoryPort
             .findById(saveId)
@@ -174,10 +171,6 @@ public class GameSaveServiceImpl implements GameSaveService {
           NotFoundException,
           UnauthorizedException,
           AlreadyTakenNicknameException {
-    if (saveId == null) {
-      throw new IllegalArgumentException("Game save id is null");
-    }
-
     if (gameMetadataService.existsByNickname(gameSaveUpdateRequest.getNickname())) {
       throw new AlreadyTakenNicknameException(
           "Nickname " + gameSaveUpdateRequest.getNickname() + " is already taken");
@@ -215,9 +208,6 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Override
   @Transactional
   public void deleteGameSave(UUID saveId) {
-    if (saveId == null) {
-      throw new NotFoundException("Game save id is null");
-    }
     if (!gameMetadataService.existsById(saveId)) {
       log.error("Game save with id {} not found", saveId);
       throw new NotFoundException("Game save with id " + saveId + " not found");

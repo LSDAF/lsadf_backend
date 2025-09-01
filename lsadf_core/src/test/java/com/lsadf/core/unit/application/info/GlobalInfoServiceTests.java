@@ -19,12 +19,12 @@ package com.lsadf.core.unit.application.info;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.info.impl.GlobalInfoServiceImpl;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.info.GlobalInfo;
-import com.lsadf.core.infra.clock.ClockService;
 import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;

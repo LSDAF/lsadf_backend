@@ -19,13 +19,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jspecify.annotations.Nullable;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class RequestLog {
-  String username;
+  @Nullable String username;
   int status;
   String now;
   String method;

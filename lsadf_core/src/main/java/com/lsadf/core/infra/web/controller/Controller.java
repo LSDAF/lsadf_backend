@@ -15,7 +15,8 @@
  */
 package com.lsadf.core.infra.web.controller;
 
-import com.lsadf.core.infra.exception.http.UnauthorizedException;
+import com.lsadf.core.exception.http.UnauthorizedException;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -34,5 +35,5 @@ public interface Controller {
    * @param jwt the jwt
    * @throws UnauthorizedException if the user is not valid
    */
-  void validateUser(Jwt jwt) throws UnauthorizedException;
+  void validateUser(@Nullable Jwt jwt) throws UnauthorizedException;
 }

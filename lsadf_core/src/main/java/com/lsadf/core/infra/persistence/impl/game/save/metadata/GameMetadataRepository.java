@@ -20,6 +20,7 @@ import static com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetad
 import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.query.Param;
@@ -55,7 +56,7 @@ public interface GameMetadataRepository extends JdbcRepository<GameMetadataEntit
   GameMetadataEntity createNewGameSaveEntity(
       @Param(GAME_METADATA_ID) UUID id,
       @Param(GAME_METADATA_USER_EMAIL) String userEmail,
-      @Param(GAME_METADATA_NICKNAME) String nickname);
+      @Nullable @Param(GAME_METADATA_NICKNAME) String nickname);
 
   @Modifying
   @Query("delete from t_game_metadata_tgme where tgme_id=:tgme_id")
@@ -75,7 +76,7 @@ public interface GameMetadataRepository extends JdbcRepository<GameMetadataEntit
   Long count();
 
   @Query("select * from t_game_metadata_tgme where tgme_id=:tgme_id")
-  GameMetadataEntity findGameSaveEntityById(@Param(GAME_METADATA_ID) UUID id);
+  Optional<GameMetadataEntity> findGameSaveEntityById(@Param(GAME_METADATA_ID) UUID id);
 
   @Query("select tgme_user_email from t_game_metadata_tgme where tgme_id=:tgme_id")
   Optional<String> findUserEmailById(@Param(GAME_METADATA_ID) UUID id);

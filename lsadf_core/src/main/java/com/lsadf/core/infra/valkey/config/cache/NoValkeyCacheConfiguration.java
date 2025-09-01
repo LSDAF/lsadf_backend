@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.infra.valkey.config.cache;
 
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
@@ -25,8 +26,7 @@ import com.lsadf.core.infra.valkey.cache.adapter.game.save.metadata.NoOpGameMeta
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.stage.NoOpStageCacheAdapter;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.cache.flush.impl.NoOpFlushServiceImpl;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
-import com.lsadf.core.infra.valkey.cache.manager.impl.NoOpCacheManagerImpl;
+import com.lsadf.core.infra.valkey.cache.manager.NoOpCacheManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +37,7 @@ public class NoValkeyCacheConfiguration {
 
   @Bean
   public CacheManager noOpCacheService() {
-    return new NoOpCacheManagerImpl();
+    return new NoOpCacheManager();
   }
 
   @Bean

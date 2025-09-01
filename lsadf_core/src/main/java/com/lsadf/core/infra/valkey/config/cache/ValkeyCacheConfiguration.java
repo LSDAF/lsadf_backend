@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.infra.valkey.config.cache;
 
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
@@ -34,8 +35,7 @@ import com.lsadf.core.infra.valkey.cache.adapter.game.save.stage.StageCacheAdapt
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.cache.flush.impl.RedisCacheFlushServiceImpl;
 import com.lsadf.core.infra.valkey.cache.listener.ValkeyRepositoryKeyExpirationListener;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
-import com.lsadf.core.infra.valkey.cache.manager.impl.ValkeyCacheManagerImpl;
+import com.lsadf.core.infra.valkey.cache.manager.ValkeyCacheManager;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -131,7 +131,7 @@ public class ValkeyCacheConfiguration {
       CurrencyCachePort currencyCache,
       StageCachePort stageCache,
       ValkeyProperties valkeyProperties) {
-    return new ValkeyCacheManagerImpl(
+    return new ValkeyCacheManager(
         gameMetadataCache, characteristicsCache, currencyCache, stageCache, valkeyProperties);
   }
 

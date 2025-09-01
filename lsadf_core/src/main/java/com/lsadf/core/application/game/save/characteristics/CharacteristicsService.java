@@ -16,7 +16,7 @@
 package com.lsadf.core.application.game.save.characteristics;
 
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import com.lsadf.core.infra.exception.http.NotFoundException;
+import com.lsadf.core.exception.http.NotFoundException;
 import java.util.UUID;
 
 public interface CharacteristicsService {

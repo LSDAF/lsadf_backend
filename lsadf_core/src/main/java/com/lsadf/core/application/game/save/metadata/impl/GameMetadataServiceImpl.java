@@ -16,13 +16,14 @@
 
 package com.lsadf.core.application.game.save.metadata.impl;
 
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
-import com.lsadf.core.infra.exception.http.NotFoundException;
-import com.lsadf.core.infra.valkey.cache.manager.CacheManager;
+import com.lsadf.core.exception.http.NotFoundException;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 public class GameMetadataServiceImpl implements GameMetadataService {
@@ -93,7 +94,8 @@ public class GameMetadataServiceImpl implements GameMetadataService {
 
   @Override
   @Transactional
-  public GameMetadata createNewGameMetadata(UUID gameSaveId, String username, String nickname) {
+  public GameMetadata createNewGameMetadata(
+      @Nullable UUID gameSaveId, String username, @Nullable String nickname) {
     if (gameSaveId != null && nickname != null) {
       return gameMetadataRepositoryPort.create(gameSaveId, username, nickname);
     } else if (nickname != null) {
