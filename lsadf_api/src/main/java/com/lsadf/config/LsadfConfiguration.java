@@ -15,9 +15,9 @@
  */
 package com.lsadf.config;
 
-import com.lsadf.core.application.ApplicationServiceConfiguration;
 import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.config.ApplicationListenerConfiguration;
+import com.lsadf.core.infra.config.ApplicationServiceConfiguration;
 import com.lsadf.core.infra.config.PropertiesConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;

@@ -16,6 +16,7 @@
 package com.lsadf.core.application.game.save.characteristics.impl;
 
 import com.lsadf.core.application.cache.CacheManager;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
 import com.lsadf.core.application.shared.CachePort;
@@ -35,7 +36,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
   public CharacteristicsServiceImpl(
       CacheManager cacheManager,
       CharacteristicsRepositoryPort characteristicsRepositoryPort,
-      CachePort<Characteristics> characteristicsCache) {
+      CharacteristicsCachePort characteristicsCache) {
     this.cacheManager = cacheManager;
     this.characteristicsRepositoryPort = characteristicsRepositoryPort;
     this.characteristicsCache = characteristicsCache;
