@@ -56,7 +56,8 @@ public class ValkeyFlushUtils {
             @SuppressWarnings("unchecked")
             public Boolean execute(RedisOperations operations) throws DataAccessException {
               // First check the score to see if this entry should be processed
-              Double score = operations.opsForZSet().score(FlushStatus.PENDING, gameSaveId);
+              Double score =
+                  operations.opsForZSet().score(FlushStatus.PENDING.getKey(), gameSaveId);
               if (score == null || score > currentTime) {
                 return false;
               }
@@ -65,8 +66,8 @@ public class ValkeyFlushUtils {
               operations.multi();
 
               // Remove from sorted set and add to processing set
-              operations.opsForZSet().remove(FlushStatus.PENDING, gameSaveId);
-              operations.opsForSet().add(FlushStatus.PROCESSING, gameSaveId);
+              operations.opsForZSet().remove(FlushStatus.PENDING.getKey(), gameSaveId);
+              operations.opsForSet().add(FlushStatus.PROCESSING.getKey(), gameSaveId);
 
               // Execute transaction
               List<Object> results = operations.exec();
