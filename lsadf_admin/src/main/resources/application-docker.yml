@@ -7,8 +7,8 @@ db:
 logging:
   config: file:logback-docker.xml
 
-cache:
-  redis:
+valkey:
+  config:
     host: ${REDIS_HOST_DOCKER}
 
 keycloak:
