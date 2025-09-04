@@ -1,8 +1,8 @@
 db:
   url: ${DB_URL_LOCALHOST}
 
-cache:
-  redis:
+valkey:
+  config:
     host: ${REDIS_HOST}
 
 keycloak:
