@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.io.Serial;
 import lombok.Builder;
 import org.jspecify.annotations.Nullable;
@@ -45,12 +46,12 @@ public record CharacteristicsRequest(
     @Nullable
         @Schema(description = "The critical chance level of the user", example = "100")
         @JsonProperty(value = CRIT_CHANCE)
-        @Positive
+        @PositiveOrZero
         Long critChance,
     @Nullable
         @Schema(description = "The critical damage level of the user", example = "100")
         @JsonProperty(value = CRIT_DAMAGE)
-        @Positive
+        @PositiveOrZero
         Long critDamage,
     @Nullable
         @Schema(description = "The health level of the user", example = "100")
@@ -60,7 +61,7 @@ public record CharacteristicsRequest(
     @Nullable
         @Schema(description = "The resistance level of the user", example = "100")
         @JsonProperty(value = RESISTANCE)
-        @Positive
+        @PositiveOrZero
         Long resistance)
     implements Request {
   @Serial private static final long serialVersionUID = 1865696066274976174L;

@@ -165,9 +165,9 @@ class CharacteristicsControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void test_saveCharacteristics_returns400_when_oneCharacteristicsRequestFieldIsZero() {
+  void test_saveCharacteristics_returns400_when_oneCharacteristicsRequestAttackIsZero() {
     // given
-    CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 0L, 1L, 1L, 1L);
+    CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(0L, 0L, 1L, 1L, 1L);
     // when
     mockMvc
         .perform(
