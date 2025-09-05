@@ -33,6 +33,6 @@ public class EventHandlerRegistryImpl implements EventHandlerRegistry {
 
   @Override
   public Optional<EventHandler> getHandler(EventType eventType) {
-    return Optional.of(handlers.get(eventType));
+    return Optional.ofNullable(handlers.get(eventType));
   }
 }
