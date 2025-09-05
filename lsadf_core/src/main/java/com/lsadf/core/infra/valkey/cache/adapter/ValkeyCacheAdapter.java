@@ -51,15 +51,6 @@ public abstract class ValkeyCacheAdapter<T> implements CachePort<T> {
   }
 
   @Override
-  public void set(String key, T value, int expirationSeconds) {
-    try {
-      redisTemplate.opsForValue().set(keyType + key, value, expirationSeconds, TimeUnit.SECONDS);
-    } catch (DataAccessException e) {
-      log.warn("Error while setting entry in redis cache", e);
-    }
-  }
-
-  @Override
   public void set(String key, T value) {
     try {
       if (expirationSeconds > 0) {

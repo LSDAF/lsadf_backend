@@ -63,20 +63,6 @@ public class GameMetadataCacheRepositoryAdapter
   }
 
   @Override
-  public void set(String key, GameMetadata value, int expirationSeconds) {
-    UUID uuid = UUID.fromString(key);
-    Long expiration = (long) expirationSeconds;
-    GameMetadataHash hash =
-        GameMetadataHash.builder()
-            .id(uuid)
-            .nickname(value.nickname())
-            .userEmail(value.userEmail())
-            .expiration(expiration)
-            .build();
-    repository.save(hash);
-  }
-
-  @Override
   public void unset(String key) {
     UUID uuid = UUID.fromString(key);
     repository.deleteById(uuid);

@@ -29,11 +29,6 @@ public class NoOpCacheAdapter<T> implements CachePort<T> {
   }
 
   @Override
-  public void set(String key, T value, int expirationSeconds) {
-    // Do nothing
-  }
-
-  @Override
   public void set(String key, T value) {
     // Do nothing
   }
