@@ -63,12 +63,6 @@ public class StageServiceImpl implements StageService {
       Optional<Stage> optionalCachedStage = stageCache.get(gameSaveIdString);
       if (optionalCachedStage.isPresent()) {
         stage = optionalCachedStage.get();
-        if (isStagePartial(stage)) {
-          Stage dbStage = getStageFromDatabase(gameSaveId);
-          stage = mergeStages(stage, dbStage);
-          stageCache.set(gameSaveIdString, stage);
-          return stage;
-        }
         return stage;
       }
       stage = getStageFromDatabase(gameSaveId);

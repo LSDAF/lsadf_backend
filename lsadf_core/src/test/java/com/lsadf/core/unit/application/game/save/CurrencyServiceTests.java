@@ -34,6 +34,7 @@ import java.util.UUID;
 import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -58,6 +59,7 @@ class CurrencyServiceTests {
   void init() {
     // Create all mocks and inject them into the service
     openMocks = MockitoAnnotations.openMocks(this);
+    Mockito.reset(currencyRepositoryPort, currencyCache, cacheManager);
 
     currencyService = new CurrencyServiceImpl(cacheManager, currencyRepositoryPort, currencyCache);
   }
@@ -105,25 +107,6 @@ class CurrencyServiceTests {
   }
 
   @Test
-  void test_getCurrency_returnsCompleteCurrencyFromRepository_when_partiallyCached() {
-    // Arrange
-
-    Currency currencyCached = Currency.builder().gold(1L).build();
-
-    Currency currency = Currency.builder().gold(1L).diamond(2L).emerald(3L).amethyst(4L).build();
-
-    when(currencyRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(currency));
-    when(cacheManager.isEnabled()).thenReturn(true);
-    when(currencyCache.get(anyString())).thenReturn(Optional.of(currencyCached));
-
-    // Act
-    Currency result = currencyService.getCurrency(UUID);
-
-    // Assert
-    assertThat(result).isEqualTo(currency);
-  }
-
-  @Test
   void
       test_saveCurrency_throwsIllegalArgumentException_when_allCurrencyPropertiesNullAndCacheEnabled() {
     // Arrange
@@ -132,6 +115,18 @@ class CurrencyServiceTests {
     // Act & Assert
     assertThrows(
         IllegalArgumentException.class, () -> currencyService.saveCurrency(UUID, currency, true));
+  }
+
+  @Test
+  void test_saveCurrency_succeeds_when_partialCurrency_is_set() {
+    // Arrange
+    Currency currency = new Currency(1L, 2L, 3L, null);
+    Currency cachedCurrency =
+        Currency.builder().gold(10L).emerald(20L).diamond(30L).amethyst(40L).build();
+    when(cacheManager.isEnabled()).thenReturn(true);
+    when(currencyCache.get(UUID.toString())).thenReturn(Optional.of(cachedCurrency));
+
+    assertDoesNotThrow(() -> currencyService.saveCurrency(UUID, currency, true));
   }
 
   @Test
