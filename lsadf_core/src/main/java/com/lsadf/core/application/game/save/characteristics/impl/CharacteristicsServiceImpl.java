@@ -69,14 +69,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
       Optional<Characteristics> optionalCachedCharacteristics =
           characteristicsCache.get(gameSaveIdString);
       if (optionalCachedCharacteristics.isPresent()) {
-        Characteristics characteristics = optionalCachedCharacteristics.get();
-        if (isCharacteristicsPartial(characteristics)) {
-          Characteristics dbCharacteristics = getCharacteristicsFromDatabase(gameSaveId);
-          characteristics = mergeCharacteristics(characteristics, dbCharacteristics);
-          characteristicsCache.set(gameSaveIdString, characteristics);
-          return characteristics;
-        }
-        return characteristics;
+        return optionalCachedCharacteristics.get();
       }
     }
     return getCharacteristicsFromDatabase(gameSaveId);

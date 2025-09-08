@@ -104,24 +104,6 @@ class StageServiceTests {
   }
 
   @Test
-  void test_getStage_returnsCompleteStageFromRepository_when_cachedStageIsPartial() {
-    // Arrange
-    Stage stageCached = Stage.builder().maxStage(200L).build();
-
-    Stage stage = Stage.builder().currentStage(1L).maxStage(200L).build();
-
-    when(stageRepositoryPort.findById(any(UUID.class))).thenReturn(Optional.of(stage));
-    when(cacheManager.isEnabled()).thenReturn(true);
-    when(stageCache.get(anyString())).thenReturn(Optional.of(stageCached));
-
-    // Act
-    Stage result = stageService.getStage(UUID);
-
-    // Assert
-    assertThat(result).isEqualTo(stage);
-  }
-
-  @Test
   void test_saveStage_throwsIllegalArgumentException_when_stagePropertiesAreNullAndCacheEnabled() {
     // Arrange
     Stage stage = new Stage(null, null);
@@ -145,6 +127,17 @@ class StageServiceTests {
     Stage stage = new Stage(1L, 2L);
 
     // Act + Assert
+    assertDoesNotThrow(() -> stageService.saveStage(UUID, stage, true));
+  }
+
+  @Test
+  void test_saveStage_succeeds_when_partial_stage() {
+    // Arrange
+    Stage stage = new Stage(1L, null);
+    Stage cachedStage = Stage.builder().currentStage(1L).maxStage(2L).build();
+    when(stageCache.get(UUID.toString())).thenReturn(Optional.of(cachedStage));
+    when(cacheManager.isEnabled()).thenReturn(true);
+
     assertDoesNotThrow(() -> stageService.saveStage(UUID, stage, true));
   }
 }

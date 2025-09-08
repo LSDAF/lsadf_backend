@@ -50,12 +50,6 @@ public class CurrencyServiceImpl implements CurrencyService {
       Optional<Currency> optionalCachedCurrency = currencyCache.get(gameSaveIdString);
       if (optionalCachedCurrency.isPresent()) {
         currency = optionalCachedCurrency.get();
-        if (isCurrencyPartial(currency)) {
-          Currency dbCurrency = getCurrencyFromDatabase(gameSaveId);
-          currency = mergeCurrencies(currency, dbCurrency);
-          currencyCache.set(gameSaveIdString, currency);
-          return currency;
-        }
         return currency;
       }
     }

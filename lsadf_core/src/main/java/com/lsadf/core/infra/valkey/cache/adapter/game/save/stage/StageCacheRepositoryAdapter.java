@@ -60,19 +60,6 @@ public class StageCacheRepositoryAdapter
   }
 
   @Override
-  public void set(String key, Stage value, int expirationSeconds) {
-    UUID uuid = UUID.fromString(key);
-    StageHash hash =
-        StageHash.builder()
-            .id(uuid)
-            .maxStage(value.maxStage())
-            .currentStage(value.currentStage())
-            .expiration((long) expirationSeconds)
-            .build();
-    repository.save(hash);
-  }
-
-  @Override
   public void unset(String key) {
     UUID uuid = UUID.fromString(key);
     repository.deleteById(uuid);

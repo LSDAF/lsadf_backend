@@ -53,24 +53,6 @@ public class CharacteristicsCacheRepositoryAdapter
   }
 
   @Override
-  public void set(String key, Characteristics value, int expirationSeconds) {
-    UUID uuid = UUID.fromString(key);
-    Long expiration = (long) expirationSeconds;
-    CharacteristicsHash hash =
-        CharacteristicsHash.builder()
-            .attack(value.attack())
-            .id(uuid)
-            .resistance(value.resistance())
-            .critChance(value.critChance())
-            .expiration(expiration)
-            .critDamage(value.critDamage())
-            .health(value.health())
-            .build();
-
-    this.repository.save(hash);
-  }
-
-  @Override
   public void set(String key, Characteristics value) {
     UUID uuid = UUID.fromString(key);
     CharacteristicsHash hash =

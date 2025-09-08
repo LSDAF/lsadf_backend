@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -56,6 +57,7 @@ class CharacteristicsServiceTests {
   void init() {
     // Create all mocks and inject them into the service
     openMocks = MockitoAnnotations.openMocks(this);
+    Mockito.reset(characteristicsRepositoryPort, cacheManager, characteristicsCache);
 
     characteristicsService =
         new CharacteristicsServiceImpl(
@@ -143,15 +145,14 @@ class CharacteristicsServiceTests {
   }
 
   @Test
-  void
-      test_saveCharacteristics_throwsIllegalArgumentException_when_allPropertiesNullAndCacheFalse() {
+  void test_saveCharacteristics_savesSuccessfully_when_partialCharacteristics() {
     // Arrange
-    Characteristics characteristics = new Characteristics(null, null, null, null, null);
-
+    Characteristics characteristics = new Characteristics(10L, 25L, null, null, null);
+    Characteristics cachedCharacteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
+    when(characteristicsCache.get(UUID.toString())).thenReturn(Optional.of(cachedCharacteristics));
     // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics(UUID, characteristics, false));
+    assertDoesNotThrow(
+        () -> characteristicsService.saveCharacteristics(UUID, characteristics, true));
   }
 
   @Test

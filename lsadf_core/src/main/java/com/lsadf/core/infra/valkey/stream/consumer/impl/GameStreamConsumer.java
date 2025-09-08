@@ -17,6 +17,7 @@
 package com.lsadf.core.infra.valkey.stream.consumer.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.lsadf.core.infra.valkey.cache.flush.FlushStatus;
 import com.lsadf.core.infra.valkey.stream.consumer.StreamConsumer;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandlerRegistry;
@@ -39,8 +40,6 @@ public class GameStreamConsumer extends ValkeyStreamConsumer implements StreamCo
   private final EventSerializer<GameSaveEvent> gameEventSerializer;
   private final long debounceWindowMs;
   private final EventHandlerRegistry handlerRegistry;
-
-  private static final String PENDING_FLUSH_ZSET = "game:pending_flush";
 
   public GameStreamConsumer(
       String id,
@@ -99,7 +98,7 @@ public class GameStreamConsumer extends ValkeyStreamConsumer implements StreamCo
     String gameSaveId = event.gameSaveId().toString();
     long currentTimestamp = System.currentTimeMillis();
     long flushTimestamp = currentTimestamp + debounceWindowMs;
-    redisTemplate.opsForZSet().add(PENDING_FLUSH_ZSET, gameSaveId, flushTimestamp);
+    redisTemplate.opsForZSet().add(FlushStatus.PENDING.getKey(), gameSaveId, flushTimestamp);
     log.debug(
         "Updated flush timestamp for game save {} to {} (debounce window: {}ms)",
         gameSaveId,

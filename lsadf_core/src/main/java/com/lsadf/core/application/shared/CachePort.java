@@ -37,15 +37,6 @@ public interface CachePort<T> {
   void set(String key, T value);
 
   /**
-   * Set the value for the key with an expiration time
-   *
-   * @param key The key to set the value for
-   * @param value The value to set
-   * @param expirationSeconds The expiration time in seconds
-   */
-  void set(String key, T value, int expirationSeconds);
-
-  /**
    * Unset the value for the key
    *
    * @param key The key to unset the value for

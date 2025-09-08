@@ -69,22 +69,6 @@ public class CurrencyCacheRepositoryAdapter
   }
 
   @Override
-  public void set(String key, Currency value, int expirationSeconds) {
-    UUID uuid = UUID.fromString(key);
-    Long expiration = (long) expirationSeconds;
-    CurrencyHash hash =
-        CurrencyHash.builder()
-            .id(uuid)
-            .gold(value.gold())
-            .emerald(value.emerald())
-            .diamond(value.diamond())
-            .amethyst(value.amethyst())
-            .expiration(expiration)
-            .build();
-    repository.save(hash);
-  }
-
-  @Override
   public void unset(String key) {
     UUID uuid = UUID.fromString(key);
     repository.deleteById(uuid);
