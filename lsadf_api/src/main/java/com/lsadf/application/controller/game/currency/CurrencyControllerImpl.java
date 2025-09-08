@@ -16,7 +16,7 @@
 package com.lsadf.application.controller.game.currency;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
-import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.GameSaveService;
@@ -24,11 +24,11 @@ import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.request.game.currency.CurrencyRequestMapper;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
-import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponseMapper;
+import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequestMapper;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponseMapper;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

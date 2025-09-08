@@ -15,18 +15,18 @@
  */
 package com.lsadf.admin.application.user;
 
-import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.util.StreamUtils;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.request.user.UserSortingParameter;
-import com.lsadf.core.infra.web.request.user.creation.AdminUserCreationRequest;
-import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.user.UserResponse;
-import com.lsadf.core.infra.web.response.user.UserResponseMapper;
+import com.lsadf.core.infra.web.dto.request.user.UserSortingParameter;
+import com.lsadf.core.infra.web.dto.request.user.creation.AdminUserCreationRequest;
+import com.lsadf.core.infra.web.dto.request.user.update.AdminUserUpdateRequest;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.user.UserResponse;
+import com.lsadf.core.infra.web.dto.response.user.UserResponseMapper;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;

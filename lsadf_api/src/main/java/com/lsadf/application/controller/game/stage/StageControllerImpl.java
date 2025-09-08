@@ -16,7 +16,7 @@
 package com.lsadf.application.controller.game.stage;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
-import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.GameSaveService;
@@ -24,11 +24,11 @@ import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.request.game.stage.StageRequest;
-import com.lsadf.core.infra.web.request.game.stage.StageRequestMapper;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
-import com.lsadf.core.infra.web.response.game.save.stage.StageResponseMapper;
+import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
+import com.lsadf.core.infra.web.dto.request.game.stage.StageRequestMapper;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponseMapper;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

@@ -15,16 +15,16 @@
  */
 package com.lsadf.core.bdd;
 
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
-import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
-import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
-import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
-import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
-import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.response.user.UserInfoResponse;
-import com.lsadf.core.infra.web.response.user.UserResponse;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponse;
+import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.dto.response.user.UserInfoResponse;
+import com.lsadf.core.infra.web.dto.response.user.UserResponse;
 import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;

@@ -15,12 +15,12 @@
  */
 package com.lsadf.admin.application.cache;
 
-import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

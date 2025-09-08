@@ -27,7 +27,8 @@ import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.domain.game.inventory.item.*;
 import com.lsadf.core.exception.AlreadyExistingItemClientIdException;
 import com.lsadf.core.exception.http.NotFoundException;
-import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
+import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +61,7 @@ class InventoryServiceTests {
             .blueprintId("blueprint-123")
             .additionalStats(new ArrayList<>())
             .isEquipped(false)
-            .mainStat(new ItemStat(ItemStatistic.ATTACK_ADD, 125.4f))
+            .mainStat(new ItemStatDto(ItemStatistic.ATTACK_ADD, 125.4f))
             .itemRarity(ItemRarity.MYTHIC.getRarity())
             .level(5)
             .build();

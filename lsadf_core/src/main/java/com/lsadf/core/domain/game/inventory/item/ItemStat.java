@@ -15,29 +15,16 @@
  */
 package com.lsadf.core.domain.game.inventory.item;
 
-import static com.lsadf.core.infra.web.JsonAttributes.BASE_VALUE;
-import static com.lsadf.core.infra.web.JsonAttributes.STATISTIC;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.shared.model.Model;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Valid
 public class ItemStat implements Model {
-  @JsonProperty(value = STATISTIC)
-  @Schema(description = "Item stat statistic", example = "ATTACK_ADD")
-  private ItemStatistic statistic;
-
-  @JsonProperty(value = BASE_VALUE)
-  @Schema(description = "Item stat base value", example = "100.0")
-  @Positive
-  private Float baseValue;
+  private final ItemStatistic statistic;
+  private final Float baseValue;
 }

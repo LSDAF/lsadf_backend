@@ -20,12 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.core.bdd.BddUtils;
-import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.infra.valkey.cache.flush.FlushStatus;
-import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
-import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
-import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
-import com.lsadf.core.infra.web.response.user.UserResponse;
+import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
+import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.dto.response.user.UserResponse;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import java.util.*;
@@ -96,7 +96,7 @@ public class BddThenStepDefinitions extends BddLoader {
           .isEqualTo(expected);
 
       assertThat(actual.additionalStats())
-          .contains(expected.additionalStats().toArray(new ItemStat[0]));
+          .contains(expected.additionalStats().toArray(new ItemStatDto[0]));
     }
   }
 

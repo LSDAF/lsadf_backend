@@ -18,8 +18,8 @@ package com.lsadf.admin.application.auth;
 import static com.lsadf.admin.application.constant.AdminSwaggerConstants.OAUTH_2_CONTROLLER;
 
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;

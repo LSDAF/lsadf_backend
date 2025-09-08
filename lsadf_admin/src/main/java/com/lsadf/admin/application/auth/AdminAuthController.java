@@ -17,11 +17,11 @@ package com.lsadf.admin.application.auth;
 
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.constant.AdminSwaggerConstants;
-import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
-import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.ResponseMessages;
-import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.dto.request.user.login.UserLoginRequest;
+import com.lsadf.core.infra.web.dto.request.user.login.UserRefreshLoginRequest;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.ResponseMessages;
+import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;

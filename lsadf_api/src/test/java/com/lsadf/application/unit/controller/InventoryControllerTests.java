@@ -22,11 +22,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.application.controller.game.inventory.InventoryControllerImpl;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
-import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
+import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
@@ -71,7 +71,7 @@ class InventoryControllerTests {
               .isEquipped(false)
               .clientId(UUID)
               .additionalStats(Collections.emptyList())
-              .mainStat(new ItemStat(ItemStatistic.ATTACK_ADD, 500f))
+              .mainStat(new ItemStatDto(ItemStatistic.ATTACK_ADD, 500f))
               .build();
 
   @Test

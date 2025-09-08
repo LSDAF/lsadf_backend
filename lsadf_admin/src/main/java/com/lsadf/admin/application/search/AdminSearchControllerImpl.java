@@ -15,20 +15,20 @@
  */
 package com.lsadf.admin.application.search;
 
-import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.request.game.save.GameSaveSortingParameter;
-import com.lsadf.core.infra.web.request.search.SearchRequest;
-import com.lsadf.core.infra.web.request.user.UserSortingParameter;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
-import com.lsadf.core.infra.web.response.game.save.GameSaveResponseMapper;
-import com.lsadf.core.infra.web.response.user.UserResponse;
-import com.lsadf.core.infra.web.response.user.UserResponseMapper;
+import com.lsadf.core.infra.web.dto.request.game.save.GameSaveSortingParameter;
+import com.lsadf.core.infra.web.dto.request.search.SearchRequest;
+import com.lsadf.core.infra.web.dto.request.user.UserSortingParameter;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponseMapper;
+import com.lsadf.core.infra.web.dto.response.user.UserResponse;
+import com.lsadf.core.infra.web.dto.response.user.UserResponseMapper;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
