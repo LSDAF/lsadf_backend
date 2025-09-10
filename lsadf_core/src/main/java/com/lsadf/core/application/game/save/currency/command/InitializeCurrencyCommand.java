@@ -17,6 +17,11 @@
 package com.lsadf.core.application.game.save.currency.command;
 
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public record InitializeCurrencyCommand(
-    UUID gameSaveId, Long gold, Long diamond, Long emerald, Long amethyst) {}
+    UUID gameSaveId,
+    @Nullable Long gold,
+    @Nullable Long diamond,
+    @Nullable Long emerald,
+    @Nullable Long amethyst) {}

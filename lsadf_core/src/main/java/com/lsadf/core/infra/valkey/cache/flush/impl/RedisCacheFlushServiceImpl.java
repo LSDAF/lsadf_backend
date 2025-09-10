@@ -19,9 +19,11 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsCache
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
+import com.lsadf.core.application.game.save.currency.command.PersistCurrencyCommand;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.command.PersistStageCommand;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
@@ -41,18 +43,18 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
   private final CharacteristicsCommandService characteristicsService;
   private final CharacteristicsCachePort characteristicsCache;
 
-  private final CurrencyService currencyService;
+  private final CurrencyCommandService currencyService;
   private final CurrencyCachePort currencyCache;
 
-  private final StageService stageService;
+  private final StageCommandService stageService;
   private final StageCachePort stageCache;
 
   private final RedisTemplate<String, String> redisTemplate;
 
   public RedisCacheFlushServiceImpl(
       CharacteristicsCommandService characteristicsService,
-      CurrencyService currencyService,
-      StageService stageService,
+      CurrencyCommandService currencyService,
+      StageCommandService stageService,
       CharacteristicsCachePort characteristicsCache,
       CurrencyCachePort currencyCache,
       StageCachePort stageCache,
@@ -89,7 +91,8 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
       Optional<Currency> currencyOpt = currencyCache.get(gameSaveId.toString());
       if (currencyOpt.isPresent()) {
         Currency currency = currencyOpt.get();
-        currencyService.saveCurrency(gameSaveId, currency, false);
+        var command = PersistCurrencyCommand.fromCurrency(gameSaveId, currency);
+        currencyService.persistCurrency(command);
         currencyCache.unset(gameSaveId.toString());
         log.debug("Successfully flushed currency for game save {}", gameSaveId);
       }
@@ -104,7 +107,8 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
       Optional<Stage> stageOpt = stageCache.get(gameSaveId.toString());
       if (stageOpt.isPresent()) {
         Stage stage = stageOpt.get();
-        stageService.saveStage(gameSaveId, stage, false);
+        var command = PersistStageCommand.fromStage(gameSaveId, stage);
+        stageService.persistStage(command);
         stageCache.unset(gameSaveId.toString());
         log.debug("Successfully flushed stage for game save {}", gameSaveId);
       }

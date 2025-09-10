@@ -21,6 +21,7 @@ import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyEntityMa
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyRepository;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public class CurrencyRepositoryAdapter implements CurrencyRepositoryPort {
 
@@ -49,14 +50,13 @@ public class CurrencyRepositoryAdapter implements CurrencyRepositoryPort {
   }
 
   @Override
-  public Currency update(UUID gameSaveId, Currency currency) {
-    var entity =
-        currencyRepository.updateCurrency(
-            gameSaveId,
-            currency.gold(),
-            currency.diamond(),
-            currency.emerald(),
-            currency.amethyst());
+  public Currency update(
+      UUID gameSaveId,
+      @Nullable Long gold,
+      @Nullable Long diamond,
+      @Nullable Long emerald,
+      @Nullable Long amethyst) {
+    var entity = currencyRepository.updateCurrency(gameSaveId, gold, diamond, emerald, amethyst);
     return currencyEntityMapper.map(entity);
   }
 

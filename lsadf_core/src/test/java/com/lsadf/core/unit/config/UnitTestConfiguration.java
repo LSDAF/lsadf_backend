@@ -21,11 +21,13 @@ import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsQueryService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.CurrencyQueryService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageQueryService;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
@@ -49,9 +51,15 @@ public class UnitTestConfiguration {
 
   @MockBean private LettuceConnectionFactory lettuceConnectionFactory;
 
-  @MockBean private StageService stageService;
-
   @MockBean private UserService userService;
+
+  @MockBean private CurrencyCommandService currencyCommandService;
+
+  @MockBean private CurrencyQueryService currencyQueryService;
+
+  @MockBean private StageQueryService stageQueryService;
+
+  @MockBean private StageCommandService stageCommandService;
 
   @MockBean private SearchService searchService;
 
@@ -64,8 +72,6 @@ public class UnitTestConfiguration {
   @MockBean private CharacteristicsCommandService characteristicsCommandService;
 
   @MockBean private GameMetadataService gameMetadataService;
-
-  @MockBean private CurrencyService currencyService;
 
   @MockBean private InventoryService inventoryService;
 

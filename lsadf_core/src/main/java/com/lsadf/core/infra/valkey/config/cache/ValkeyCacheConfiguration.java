@@ -19,10 +19,10 @@ import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
@@ -161,8 +161,8 @@ public class ValkeyCacheConfiguration {
   @Bean
   public CacheFlushService cacheFlushService(
       CharacteristicsCommandService characteristicsService,
-      CurrencyService currencyService,
-      StageService stageService,
+      CurrencyCommandService currencyService,
+      StageCommandService stageService,
       CharacteristicsCachePort characteristicsCachePort,
       CurrencyCachePort currencyCachePort,
       StageCachePort stageCachePort,

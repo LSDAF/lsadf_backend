@@ -16,6 +16,13 @@
 
 package com.lsadf.core.application.game.save.stage.command;
 
+import com.lsadf.core.domain.game.save.stage.Stage;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
-public record UpdateCacheStageCommand(UUID gameSaveId, Long currentStage, Long maxStage) {}
+public record UpdateCacheStageCommand(
+    UUID gameSaveId, @Nullable Long currentStage, @Nullable Long maxStage) {
+  public static UpdateCacheStageCommand fromStage(UUID gameSaveId, Stage stage) {
+    return new UpdateCacheStageCommand(gameSaveId, stage.currentStage(), stage.maxStage());
+  }
+}

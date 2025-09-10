@@ -16,7 +16,18 @@
 
 package com.lsadf.core.application.game.save.currency.command;
 
+import com.lsadf.core.domain.game.save.currency.Currency;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public record UpdateCacheCurrencyCommand(
-    UUID gameSaveId, Long gold, Long diamond, Long emerald, Long amethyst) {}
+    UUID gameSaveId,
+    @Nullable Long gold,
+    @Nullable Long diamond,
+    @Nullable Long emerald,
+    @Nullable Long amethyst) {
+  public static UpdateCacheCurrencyCommand fromCurrency(UUID gameSaveId, Currency currency) {
+    return new UpdateCacheCurrencyCommand(
+        gameSaveId, currency.gold(), currency.diamond(), currency.emerald(), currency.amethyst());
+  }
+}

@@ -28,19 +28,20 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsQuery
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
 import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsCommandServiceImpl;
 import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsQueryServiceImpl;
-import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
-import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
-import com.lsadf.core.application.game.save.currency.impl.CurrencyServiceImpl;
+import com.lsadf.core.application.game.save.currency.*;
+import com.lsadf.core.application.game.save.currency.impl.CurrencyCommandServiceImpl;
+import com.lsadf.core.application.game.save.currency.impl.CurrencyQueryServiceImpl;
 import com.lsadf.core.application.game.save.impl.GameSaveServiceImpl;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.application.game.save.metadata.impl.GameMetadataServiceImpl;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.StageQueryService;
 import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
-import com.lsadf.core.application.game.save.stage.StageService;
-import com.lsadf.core.application.game.save.stage.impl.StageServiceImpl;
+import com.lsadf.core.application.game.save.stage.impl.StageCommandServiceImpl;
+import com.lsadf.core.application.game.save.stage.impl.StageQueryServiceImpl;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.info.impl.GlobalInfoServiceImpl;
 import com.lsadf.core.application.search.SearchService;
@@ -62,8 +63,8 @@ public class ApplicationServiceConfiguration {
   public GameSaveService gameSaveService(
       GameMetadataService gameMetadataService,
       CharacteristicsCommandService characteristicsService,
-      StageService stageService,
-      CurrencyService currencyService,
+      StageCommandService stageService,
+      CurrencyCommandService currencyService,
       UserService userService,
       GameSaveRepositoryPort gameSaveRepositoryPort,
       CacheManager cacheManager,
@@ -108,6 +109,42 @@ public class ApplicationServiceConfiguration {
   }
 
   @Bean
+  public StageQueryService stageQueryService(
+      CacheManager cacheManager,
+      StageRepositoryPort stageRepositoryPort,
+      CachePort<com.lsadf.core.domain.game.save.stage.Stage> stageCache) {
+    return new StageQueryServiceImpl(cacheManager, stageRepositoryPort, stageCache);
+  }
+
+  @Bean
+  public StageCommandService stageCommandService(
+      CacheManager cacheManager,
+      StageRepositoryPort stageRepositoryPort,
+      CachePort<com.lsadf.core.domain.game.save.stage.Stage> stageCache,
+      StageQueryService stageQueryService) {
+    return new StageCommandServiceImpl(
+        cacheManager, stageRepositoryPort, stageCache, stageQueryService);
+  }
+
+  @Bean
+  public CurrencyQueryService currencyQueryService(
+      CacheManager cacheManager,
+      CurrencyRepositoryPort currencyRepositoryPort,
+      CachePort<com.lsadf.core.domain.game.save.currency.Currency> currencyCache) {
+    return new CurrencyQueryServiceImpl(cacheManager, currencyRepositoryPort, currencyCache);
+  }
+
+  @Bean
+  public CurrencyCommandService currencyCommandService(
+      CacheManager cacheManager,
+      CurrencyRepositoryPort currencyRepositoryPort,
+      CachePort<com.lsadf.core.domain.game.save.currency.Currency> currencyCache,
+      CurrencyQueryService currencyQueryService) {
+    return new CurrencyCommandServiceImpl(
+        cacheManager, currencyRepositoryPort, currencyCache, currencyQueryService);
+  }
+
+  @Bean
   public InventoryService inventoryService(
       InventoryRepositoryPort inventoryRepositoryPort, GameMetadataService gameMetadataService) {
     return new InventoryServiceImpl(inventoryRepositoryPort, gameMetadataService);
@@ -137,21 +174,5 @@ public class ApplicationServiceConfiguration {
       GameMetadataCachePort gameMetadataCachePort) {
     return new GameMetadataServiceImpl(
         cacheManager, gameMetadataRepositoryPort, gameMetadataCachePort);
-  }
-
-  @Bean
-  public StageService stageService(
-      CacheManager cacheManager,
-      StageRepositoryPort stageRepositoryPort,
-      StageCachePort stageCache) {
-    return new StageServiceImpl(cacheManager, stageRepositoryPort, stageCache);
-  }
-
-  @Bean
-  public CurrencyService currencyService(
-      CacheManager cacheManager,
-      CurrencyRepositoryPort currencyRepositoryPort,
-      CurrencyCachePort currencyCache) {
-    return new CurrencyServiceImpl(cacheManager, currencyRepositoryPort, currencyCache);
   }
 }

@@ -20,8 +20,10 @@ import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateRespon
 
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.CurrencyQueryService;
+import com.lsadf.core.application.game.save.currency.command.PersistCurrencyCommand;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
@@ -43,8 +45,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class CurrencyControllerImpl extends BaseController implements CurrencyController {
 
   private final GameSaveService gameSaveService;
-  private final CurrencyService currencyService;
   private final CurrencyEventPublisherPort currencyEventPublisherPort;
+  private final CurrencyCommandService currencyCommandService;
+  private final CurrencyQueryService currencyQueryService;
   private final CacheManager cacheManager;
 
   private static final CurrencyRequestMapper requestModelMapper = CurrencyRequestMapper.INSTANCE;
@@ -53,11 +56,13 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
 
   public CurrencyControllerImpl(
       GameSaveService gameSaveService,
-      CurrencyService currencyService,
+      CurrencyCommandService currencyCommandService,
+      CurrencyQueryService currencyQueryService,
       CurrencyEventPublisherPort currencyEventPublisherPort,
       CacheManager cacheManager) {
     this.gameSaveService = gameSaveService;
-    this.currencyService = currencyService;
+    this.currencyCommandService = currencyCommandService;
+    this.currencyQueryService = currencyQueryService;
     this.currencyEventPublisherPort = currencyEventPublisherPort;
     this.cacheManager = cacheManager;
   }
@@ -74,7 +79,8 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       currencyEventPublisherPort.publishCurrencyUpdatedEvent(userEmail, gameSaveId, currency);
     } else {
-      currencyService.saveCurrency(gameSaveId, currency, false);
+      var command = PersistCurrencyCommand.fromCurrency(gameSaveId, currency);
+      currencyCommandService.persistCurrency(command);
     }
 
     return generateResponse(HttpStatus.OK);
@@ -85,7 +91,7 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
-    Currency currency = currencyService.getCurrency(gameSaveId);
+    Currency currency = currencyQueryService.retrieveCurrency(gameSaveId);
     CurrencyResponse currencyResponse = currencyResponseMapper.map(currency);
     return generateResponse(HttpStatus.OK, currencyResponse);
   }

@@ -20,7 +20,8 @@ import static com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType.ST
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.command.UpdateCacheStageCommand;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.event.Event;
@@ -29,10 +30,10 @@ import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
 
 public class StageUpdateEventHandler implements EventHandler {
 
-  private final StageService stageService;
+  private final StageCommandService stageService;
   private final ObjectMapper objectMapper;
 
-  public StageUpdateEventHandler(StageService stageService, ObjectMapper objectMapper) {
+  public StageUpdateEventHandler(StageCommandService stageService, ObjectMapper objectMapper) {
     this.stageService = stageService;
     this.objectMapper = objectMapper;
   }
@@ -46,6 +47,8 @@ public class StageUpdateEventHandler implements EventHandler {
   public void handleEvent(Event event) throws JsonProcessingException {
     GameSaveEvent gameSaveEvent = (GameSaveEvent) event;
     Stage stage = objectMapper.convertValue(gameSaveEvent.payload(), Stage.class);
-    stageService.saveStage(gameSaveEvent.gameSaveId(), stage, true);
+    UpdateCacheStageCommand command =
+        UpdateCacheStageCommand.fromStage(gameSaveEvent.gameSaveId(), stage);
+    stageService.updateCacheStage(command);
   }
 }

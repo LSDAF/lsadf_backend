@@ -13,14 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+@org.jspecify.annotations.NullMarked
 package com.lsadf.core.application.game.save.stage.command;
-
-import com.lsadf.core.domain.game.save.stage.Stage;
-import java.util.UUID;
-
-public record PersistStageCommand(UUID gameSaveId, Long currentStage, Long maxStage) {
-  public static PersistStageCommand fromStage(UUID gameSaveId, Stage stage) {
-    return new PersistStageCommand(gameSaveId, stage.currentStage(), stage.maxStage());
-  }
-}

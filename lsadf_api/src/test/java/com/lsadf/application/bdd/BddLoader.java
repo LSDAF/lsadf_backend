@@ -39,8 +39,10 @@ import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsQueryService;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
+import com.lsadf.core.application.game.save.currency.CurrencyQueryService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.StageQueryService;
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.application.shared.HistoCachePort;
 import com.lsadf.core.application.user.UserService;
@@ -177,11 +179,15 @@ public class BddLoader {
 
   @Autowired protected CharacteristicsCommandService characteristicsCommandService;
 
-  @Autowired protected CurrencyService currencyService;
+  @Autowired protected CurrencyCommandService currencyCommandService;
+
+  @Autowired protected CurrencyQueryService currencyQueryService;
 
   @Autowired protected InventoryService inventoryService;
 
-  @Autowired protected StageService stageService;
+  @Autowired protected StageCommandService stageCommandService;
+
+  @Autowired protected StageQueryService stageQueryService;
 
   @Autowired protected CacheManager redisCacheManager;
 

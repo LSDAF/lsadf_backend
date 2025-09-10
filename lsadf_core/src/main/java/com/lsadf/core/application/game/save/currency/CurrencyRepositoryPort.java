@@ -18,6 +18,7 @@ package com.lsadf.core.application.game.save.currency;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public interface CurrencyRepositoryPort {
 
@@ -27,7 +28,12 @@ public interface CurrencyRepositoryPort {
 
   Currency create(UUID id);
 
-  Currency update(UUID id, Currency currency);
+  Currency update(
+      UUID id,
+      @Nullable Long gold,
+      @Nullable Long diamond,
+      @Nullable Long emerald,
+      @Nullable Long amethyst);
 
   boolean existsById(UUID id);
 

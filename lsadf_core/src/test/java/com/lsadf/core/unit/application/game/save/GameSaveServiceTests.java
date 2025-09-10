@@ -31,12 +31,16 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsComma
 import com.lsadf.core.application.game.save.characteristics.command.InitializeCharacteristicsCommand;
 import com.lsadf.core.application.game.save.characteristics.command.InitializeDefaultCharacteristicsCommand;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
+import com.lsadf.core.application.game.save.currency.command.InitializeCurrencyCommand;
+import com.lsadf.core.application.game.save.currency.command.InitializeDefaultCurrencyCommand;
 import com.lsadf.core.application.game.save.impl.GameSaveServiceImpl;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.command.InitializeDefaultStageCommand;
+import com.lsadf.core.application.game.save.stage.command.InitializeStageCommand;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
@@ -69,9 +73,9 @@ class GameSaveServiceTests {
   @Mock private CacheManager cacheManager;
   @Mock private UserService userService;
   @Mock private GameMetadataService gameMetadataService;
-  @Mock private StageService stageService;
+  @Mock private StageCommandService stageService;
   @Mock private CharacteristicsCommandService characteristicsService;
-  @Mock private CurrencyService currencyService;
+  @Mock private CurrencyCommandService currencyService;
   @Mock private CharacteristicsCachePort characteristicsCache;
   @Mock private CurrencyCachePort currencyCache;
   @Mock private StageCachePort stageCache;
@@ -253,8 +257,10 @@ class GameSaveServiceTests {
     when(characteristicsService.initializeDefaultCharacteristics(command))
         .thenReturn(DB_CHARACERISTICS);
 
-    when(stageService.createNewStage(UUID)).thenReturn(DB_STAGE);
-    when(currencyService.createNewCurrency(UUID)).thenReturn(DB_CURRENCY);
+    var stageCommand = new InitializeDefaultStageCommand(UUID);
+    var currencyCommand = new InitializeDefaultCurrencyCommand(UUID);
+    when(stageService.initializeDefaultStage(stageCommand)).thenReturn(DB_STAGE);
+    when(currencyService.initializeDefaultCurrency(currencyCommand)).thenReturn(DB_CURRENCY);
     GameSaveCreationRequest gameSaveCreationRequest = new SimpleGameSaveCreationRequest(USER_EMAIL);
     GameSave actual = gameSaveService.createGameSave(gameSaveCreationRequest);
     assertThat(actual).isEqualTo(gameSave);
@@ -269,10 +275,8 @@ class GameSaveServiceTests {
     when(characteristicsService.initializeCharacteristics(
             any(InitializeCharacteristicsCommand.class)))
         .thenReturn(DB_CHARACERISTICS);
-    when(stageService.createNewStage(any(UUID.class), any(Long.class), any(Long.class)))
-        .thenReturn(DB_STAGE);
-    when(currencyService.createNewCurrency(
-            any(UUID.class), any(Long.class), any(Long.class), any(Long.class), any(Long.class)))
+    when(stageService.initializeStage(any(InitializeStageCommand.class))).thenReturn(DB_STAGE);
+    when(currencyService.initializeCurrency(any(InitializeCurrencyCommand.class)))
         .thenReturn(DB_CURRENCY);
     GameMetadataRequest gameMetadataRequest =
         new GameMetadataRequest(DB_METADATA.id(), DB_METADATA.userEmail(), DB_METADATA.nickname());

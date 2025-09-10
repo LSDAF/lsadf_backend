@@ -18,11 +18,8 @@ package com.lsadf.core.domain.game.save.currency;
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
 import lombok.*;
-import org.jspecify.annotations.Nullable;
 
 @Builder
-public record Currency(
-    @Nullable Long gold, @Nullable Long diamond, @Nullable Long emerald, @Nullable Long amethyst)
-    implements Model {
+public record Currency(Long gold, Long diamond, Long emerald, Long amethyst) implements Model {
   @Serial private static final long serialVersionUID = 3614717300669193588L;
 }

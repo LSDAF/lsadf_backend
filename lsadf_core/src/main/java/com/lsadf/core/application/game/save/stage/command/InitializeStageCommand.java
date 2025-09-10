@@ -17,5 +17,7 @@
 package com.lsadf.core.application.game.save.stage.command;
 
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
-public record InitializeStageCommand(UUID gameSaveId, Long currentStage, Long maxStage) {}
+public record InitializeStageCommand(
+    UUID gameSaveId, @Nullable Long currentStage, @Nullable Long maxStage) {}

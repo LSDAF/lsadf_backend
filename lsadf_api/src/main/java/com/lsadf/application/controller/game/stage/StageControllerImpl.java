@@ -20,8 +20,10 @@ import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateRespon
 
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageQueryService;
+import com.lsadf.core.application.game.save.stage.command.PersistStageCommand;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
@@ -44,7 +46,8 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   private final GameSaveService gameSaveService;
   private final CacheManager cacheManager;
-  private final StageService stageService;
+  private final StageQueryService stageQueryService;
+  private final StageCommandService stageCommandService;
   private final StageEventPublisherPort stageEventPublisherPort;
 
   private static final StageRequestMapper stageRequestMapper = StageRequestMapper.INSTANCE;
@@ -52,12 +55,14 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   public StageControllerImpl(
       GameSaveService gameSaveService,
+      StageQueryService stageQueryService,
+      StageCommandService stageCommandService,
       CacheManager cacheManager,
-      StageService stageService,
       StageEventPublisherPort stageEventPublisherPort) {
     this.gameSaveService = gameSaveService;
+    this.stageQueryService = stageQueryService;
+    this.stageCommandService = stageCommandService;
     this.cacheManager = cacheManager;
-    this.stageService = stageService;
     this.stageEventPublisherPort = stageEventPublisherPort;
   }
 
@@ -72,7 +77,8 @@ public class StageControllerImpl extends BaseController implements StageControll
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       stageEventPublisherPort.publishStageUpdatedEvent(username, gameSaveId, stage);
     } else {
-      stageService.saveStage(gameSaveId, stage, false);
+      var command = PersistStageCommand.fromStage(gameSaveId, stage);
+      stageCommandService.persistStage(command);
     }
 
     return generateResponse(HttpStatus.OK);
@@ -83,7 +89,7 @@ public class StageControllerImpl extends BaseController implements StageControll
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
-    Stage stage = stageService.getStage(gameSaveId);
+    Stage stage = stageQueryService.retrieveStage(gameSaveId);
     StageResponse stageResponse = stageResponseMapper.map(stage);
     return generateResponse(HttpStatus.OK, stageResponse);
   }
