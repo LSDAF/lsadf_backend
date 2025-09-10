@@ -20,6 +20,7 @@ import static com.lsadf.core.infra.web.JsonAttributes.BASE_VALUE;
 import static com.lsadf.core.infra.web.JsonAttributes.STATISTIC;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lsadf.core.application.game.inventory.ItemStatCommand;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.infra.web.dto.Dto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,4 +36,16 @@ public record ItemStatDto(
         @Schema(description = "Item stat base value", example = "100.0")
         @Positive
         Float baseValue)
-    implements Dto {}
+    implements Dto, ItemStatCommand {
+
+  // Interface implementation methods
+  @Override
+  public ItemStatistic getStatistic() {
+    return statistic;
+  }
+
+  @Override
+  public Float getBaseValue() {
+    return baseValue;
+  }
+}

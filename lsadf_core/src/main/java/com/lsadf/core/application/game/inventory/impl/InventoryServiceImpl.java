@@ -17,6 +17,7 @@ package com.lsadf.core.application.game.inventory.impl;
 
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.inventory.ItemCommand;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
@@ -25,7 +26,6 @@ import com.lsadf.core.domain.game.inventory.item.ItemType;
 import com.lsadf.core.exception.AlreadyExistingItemClientIdException;
 import com.lsadf.core.exception.http.ForbiddenException;
 import com.lsadf.core.exception.http.NotFoundException;
-import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import java.util.*;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,34 +52,35 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional
-  public Item createItemInInventory(UUID gameSaveId, ItemRequest itemRequest)
+  public Item createItemInInventory(UUID gameSaveId, ItemCommand itemRequest)
       throws NotFoundException, AlreadyExistingItemClientIdException {
     if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Game save not found for id " + gameSaveId);
     }
 
-    if (inventoryRepositoryPort.existsByClientId(itemRequest.clientId())) {
+    if (inventoryRepositoryPort.existsByClientId(itemRequest.getClientId())) {
       throw new AlreadyExistingItemClientIdException(
-          "Item with client id " + itemRequest.clientId() + " already exists");
+          "Item with client id " + itemRequest.getClientId() + " already exists");
     }
 
-    ItemType itemType = ItemType.fromString(itemRequest.itemType());
-    ItemRarity itemRarity = ItemRarity.fromString(itemRequest.itemRarity());
+    ItemType itemType = ItemType.fromString(itemRequest.getItemType());
+    ItemRarity itemRarity = ItemRarity.fromString(itemRequest.getItemRarity());
     ItemStat mainStat =
-        new ItemStat(itemRequest.mainStat().statistic(), itemRequest.mainStat().baseValue());
+        new ItemStat(
+            itemRequest.getMainStat().getStatistic(), itemRequest.getMainStat().getBaseValue());
     List<ItemStat> additionalStats =
-        itemRequest.additionalStats().stream()
-            .map(stat -> new ItemStat(stat.statistic(), stat.baseValue()))
+        itemRequest.getAdditionalStats().stream()
+            .map(stat -> new ItemStat(stat.getStatistic(), stat.getBaseValue()))
             .toList();
     Item item =
         Item.builder()
             .gameSaveId(gameSaveId)
-            .clientId(itemRequest.clientId())
-            .blueprintId(itemRequest.blueprintId())
+            .clientId(itemRequest.getClientId())
+            .blueprintId(itemRequest.getBlueprintId())
             .itemType(itemType)
             .itemRarity(itemRarity)
-            .isEquipped(itemRequest.isEquipped())
-            .level(itemRequest.level())
+            .isEquipped(itemRequest.getIsEquipped())
+            .level(itemRequest.getLevel())
             .mainStat(mainStat)
             .additionalStats(additionalStats)
             .build();
@@ -106,7 +107,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional
-  public Item updateItemInInventory(UUID gameSaveId, String itemClientId, ItemRequest itemRequest)
+  public Item updateItemInInventory(UUID gameSaveId, String itemClientId, ItemCommand itemRequest)
       throws NotFoundException, ForbiddenException {
     if (!gameMetadataService.existsById(gameSaveId)) {
       throw new NotFoundException("Inventory not found for game save id " + gameSaveId);
@@ -119,13 +120,14 @@ public class InventoryServiceImpl implements InventoryService {
 
     Item existingItem = optionalItem.get();
 
-    ItemType itemType = ItemType.fromString(itemRequest.itemType());
-    ItemRarity itemRarity = ItemRarity.fromString(itemRequest.itemRarity());
+    ItemType itemType = ItemType.fromString(itemRequest.getItemType());
+    ItemRarity itemRarity = ItemRarity.fromString(itemRequest.getItemRarity());
     ItemStat mainStat =
-        new ItemStat(itemRequest.mainStat().statistic(), itemRequest.mainStat().baseValue());
+        new ItemStat(
+            itemRequest.getMainStat().getStatistic(), itemRequest.getMainStat().getBaseValue());
     List<ItemStat> additionalStats =
-        itemRequest.additionalStats().stream()
-            .map(stat -> new ItemStat(stat.statistic(), stat.baseValue()))
+        itemRequest.getAdditionalStats().stream()
+            .map(stat -> new ItemStat(stat.getStatistic(), stat.getBaseValue()))
             .toList();
 
     Item updatedItem =
@@ -133,11 +135,11 @@ public class InventoryServiceImpl implements InventoryService {
             .id(existingItem.getId())
             .gameSaveId(gameSaveId)
             .clientId(itemClientId)
-            .blueprintId(itemRequest.blueprintId())
+            .blueprintId(itemRequest.getBlueprintId())
             .itemType(itemType)
             .itemRarity(itemRarity)
-            .isEquipped(itemRequest.isEquipped())
-            .level(itemRequest.level())
+            .isEquipped(itemRequest.getIsEquipped())
+            .level(itemRequest.getLevel())
             .mainStat(mainStat)
             .additionalStats(additionalStats)
             .build();

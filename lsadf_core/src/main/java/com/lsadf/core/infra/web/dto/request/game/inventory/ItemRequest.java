@@ -18,6 +18,8 @@ package com.lsadf.core.infra.web.dto.request.game.inventory;
 import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lsadf.core.application.game.inventory.ItemCommand;
+import com.lsadf.core.application.game.inventory.ItemStatCommand;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -60,7 +62,48 @@ public record ItemRequest(
         @JsonProperty(value = ADDITIONAL_STATS)
         @NotNull
         List<ItemStatDto> additionalStats)
-    implements Request {
+    implements Request, ItemCommand {
 
   @Serial private static final long serialVersionUID = -1116418739363127022L;
+
+  // Interface implementation methods
+  @Override
+  public String getClientId() {
+    return clientId;
+  }
+
+  @Override
+  public String getItemType() {
+    return itemType;
+  }
+
+  @Override
+  public String getBlueprintId() {
+    return blueprintId;
+  }
+
+  @Override
+  public String getItemRarity() {
+    return itemRarity;
+  }
+
+  @Override
+  public Boolean getIsEquipped() {
+    return isEquipped;
+  }
+
+  @Override
+  public Integer getLevel() {
+    return level;
+  }
+
+  @Override
+  public ItemStatCommand getMainStat() {
+    return mainStat; // No casting needed!
+  }
+
+  @Override
+  public List<ItemStatCommand> getAdditionalStats() {
+    return List.copyOf(additionalStats); // No casting needed!
+  }
 }
