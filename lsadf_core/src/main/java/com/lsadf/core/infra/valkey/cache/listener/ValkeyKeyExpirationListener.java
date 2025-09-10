@@ -17,7 +17,8 @@ package com.lsadf.core.infra.valkey.cache.listener;
 
 import static com.lsadf.core.infra.valkey.ValkeyConstants.*;
 
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
@@ -36,7 +37,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Slf4j
 public class ValkeyKeyExpirationListener implements MessageListener {
 
-  private final CharacteristicsService characteristicsService;
+  private final CharacteristicsCommandService characteristicsService;
   private final CurrencyService currencyService;
   private final StageService stageService;
 
@@ -45,7 +46,7 @@ public class ValkeyKeyExpirationListener implements MessageListener {
   private final RedisTemplate<String, Stage> stageRedisTemplate;
 
   public ValkeyKeyExpirationListener(
-      CharacteristicsService characteristicsService,
+      CharacteristicsCommandService characteristicsService,
       CurrencyService currencyService,
       StageService stageService,
       RedisTemplate<String, Characteristics> characteristicsRedisTemplate,
@@ -118,7 +119,9 @@ public class ValkeyKeyExpirationListener implements MessageListener {
         throw new NotFoundException("Characteristics not found in cache");
       }
       UUID uuid = UUID.fromString(gameSaveId);
-      characteristicsService.saveCharacteristics(uuid, characteristics, false);
+      PersistCharacteristicsCommand command =
+          PersistCharacteristicsCommand.fromCharacteristics(uuid, characteristics);
+      characteristicsService.persistCharacteristics(command);
       Boolean result = characteristicsRedisTemplate.delete(CHARACTERISTICS_HISTO + gameSaveId);
       if (Boolean.TRUE.equals(result)) {
         log.info("Deleted entry {}", CHARACTERISTICS_HISTO + gameSaveId);

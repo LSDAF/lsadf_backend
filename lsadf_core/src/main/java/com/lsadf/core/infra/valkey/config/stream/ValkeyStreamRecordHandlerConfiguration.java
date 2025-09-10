@@ -17,7 +17,7 @@
 package com.lsadf.core.infra.valkey.config.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
@@ -39,7 +39,7 @@ public class ValkeyStreamRecordHandlerConfiguration {
   @Bean
   public EventHandler characteristicsUpdateEventHandler(
       ObjectMapper objectMapper,
-      CharacteristicsService characteristicsService,
+      CharacteristicsCommandService characteristicsService,
       EventHandlerRegistry eventHandlerRegistry) {
     EventHandler characteristicsUpdateEventHandler =
         new CharacteristicsUpdateEventHandler(characteristicsService, objectMapper);

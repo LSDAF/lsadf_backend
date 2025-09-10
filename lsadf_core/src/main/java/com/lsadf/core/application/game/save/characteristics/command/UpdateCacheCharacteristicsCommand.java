@@ -13,31 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.application.game.save.characteristics;
+
+package com.lsadf.core.application.game.save.characteristics.command;
 
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
-import java.util.Optional;
 import java.util.UUID;
 import org.jspecify.annotations.Nullable;
 
-public interface CharacteristicsRepositoryPort {
-
-  Optional<Characteristics> findById(UUID id);
-
-  Characteristics create(
-      UUID id, Long attack, Long critChance, Long critDamage, Long health, Long resistance);
-
-  Characteristics create(UUID id);
-
-  Characteristics update(
-      UUID id,
-      @Nullable Long attack,
-      @Nullable Long critChance,
-      @Nullable Long critDamage,
-      @Nullable Long health,
-      @Nullable Long resistance);
-
-  boolean existsById(UUID id);
-
-  Long count();
+public record UpdateCacheCharacteristicsCommand(
+    UUID gameSaveId,
+    @Nullable Long attack,
+    @Nullable Long critChance,
+    @Nullable Long critDamage,
+    @Nullable Long health,
+    @Nullable Long resistance) {
+  public static UpdateCacheCharacteristicsCommand fromCharacteristics(
+      UUID gameSaveId, Characteristics characteristics) {
+    return new UpdateCacheCharacteristicsCommand(
+        gameSaveId,
+        characteristics.attack(),
+        characteristics.critChance(),
+        characteristics.critDamage(),
+        characteristics.health(),
+        characteristics.resistance());
+  }
 }

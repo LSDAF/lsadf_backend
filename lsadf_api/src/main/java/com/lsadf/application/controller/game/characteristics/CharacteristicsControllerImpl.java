@@ -20,8 +20,10 @@ import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateRespon
 
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsQueryService;
+import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
@@ -43,7 +45,8 @@ public class CharacteristicsControllerImpl extends BaseController
     implements CharacteristicsController {
   private final CacheManager cacheManager;
   private final GameSaveService gameSaveService;
-  private final CharacteristicsService characteristicsService;
+  private final CharacteristicsCommandService characteristicsCommandService;
+  private final CharacteristicsQueryService characteristicsQueryService;
   private final CharacteristicsEventPublisherPort characteristicsEventPublisherPort;
 
   private static final CharacteristicsRequestMapper requestMapper =
@@ -54,11 +57,13 @@ public class CharacteristicsControllerImpl extends BaseController
   public CharacteristicsControllerImpl(
       CacheManager cacheManager,
       GameSaveService gameSaveService,
-      CharacteristicsService characteristicsService,
+      CharacteristicsQueryService characteristicsQueryService,
+      CharacteristicsCommandService characteristicsCommandService,
       CharacteristicsEventPublisherPort characteristicsEventPublisherPort) {
     this.cacheManager = cacheManager;
     this.gameSaveService = gameSaveService;
-    this.characteristicsService = characteristicsService;
+    this.characteristicsCommandService = characteristicsCommandService;
+    this.characteristicsQueryService = characteristicsQueryService;
     this.characteristicsEventPublisherPort = characteristicsEventPublisherPort;
   }
 
@@ -75,7 +80,9 @@ public class CharacteristicsControllerImpl extends BaseController
       characteristicsEventPublisherPort.publishCharacteristicsUpdatedEvent(
           userEmail, gameSaveId, characteristics);
     } else {
-      characteristicsService.saveCharacteristics(gameSaveId, characteristics, false);
+      PersistCharacteristicsCommand command =
+          PersistCharacteristicsCommand.fromCharacteristics(gameSaveId, characteristics);
+      characteristicsCommandService.persistCharacteristics(command);
     }
 
     return generateResponse(HttpStatus.OK);
@@ -87,7 +94,8 @@ public class CharacteristicsControllerImpl extends BaseController
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
-    Characteristics characteristics = characteristicsService.getCharacteristics(gameSaveId);
+    Characteristics characteristics =
+        characteristicsQueryService.retrieveCharacteristics(gameSaveId);
     CharacteristicsResponse characteristicsResponse = responseMapper.map(characteristics);
     return generateResponse(HttpStatus.OK, characteristicsResponse);
   }

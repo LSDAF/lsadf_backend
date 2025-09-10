@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.lsadf.core.unit.application.game.save;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -24,21 +24,23 @@ import static org.mockito.Mockito.when;
 
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsQueryService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsServiceImpl;
+import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsQueryServiceImpl;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.exception.http.NotFoundException;
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-@TestMethodOrder(MethodOrderer.MethodName.class)
-class CharacteristicsServiceTests {
-  private CharacteristicsService characteristicsService;
+class CharacteristicsQueryServiceTests {
+
+  private CharacteristicsQueryService characteristicsService;
 
   @Mock private CharacteristicsRepositoryPort characteristicsRepositoryPort;
   @Mock private CacheManager cacheManager;
@@ -60,7 +62,7 @@ class CharacteristicsServiceTests {
     Mockito.reset(characteristicsRepositoryPort, cacheManager, characteristicsCache);
 
     characteristicsService =
-        new CharacteristicsServiceImpl(
+        new CharacteristicsQueryServiceImpl(
             cacheManager, characteristicsRepositoryPort, characteristicsCache);
   }
 
@@ -71,7 +73,8 @@ class CharacteristicsServiceTests {
     when(cacheManager.isEnabled()).thenReturn(true);
 
     // Assert
-    assertThrows(NotFoundException.class, () -> characteristicsService.getCharacteristics(UUID));
+    assertThrows(
+        NotFoundException.class, () -> characteristicsService.retrieveCharacteristics(UUID));
   }
 
   @Test
@@ -102,7 +105,7 @@ class CharacteristicsServiceTests {
     when(characteristicsCache.get(anyString())).thenReturn(Optional.of(cachedCharacteristics));
 
     // Act
-    Characteristics result = characteristicsService.getCharacteristics(UUID);
+    Characteristics result = characteristicsService.retrieveCharacteristics(UUID);
 
     // Assert
     assertThat(result).isEqualTo(cachedCharacteristics);
@@ -126,42 +129,9 @@ class CharacteristicsServiceTests {
     when(characteristicsCache.get(anyString())).thenReturn(Optional.empty());
 
     // Act
-    Characteristics result = characteristicsService.getCharacteristics(UUID);
+    Characteristics result = characteristicsService.retrieveCharacteristics(UUID);
 
     // Assert
     assertThat(result).isEqualTo(characteristics);
-  }
-
-  @Test
-  void
-      test_saveCharacteristics_throwsIllegalArgumentException_when_allPropertiesNullAndCacheTrue() {
-    // Arrange
-    Characteristics characteristics = new Characteristics(null, null, null, null, null);
-
-    // Act & Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> characteristicsService.saveCharacteristics(UUID, characteristics, true));
-  }
-
-  @Test
-  void test_saveCharacteristics_savesSuccessfully_when_partialCharacteristics() {
-    // Arrange
-    Characteristics characteristics = new Characteristics(10L, 25L, null, null, null);
-    Characteristics cachedCharacteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
-    when(characteristicsCache.get(UUID.toString())).thenReturn(Optional.of(cachedCharacteristics));
-    // Act & Assert
-    assertDoesNotThrow(
-        () -> characteristicsService.saveCharacteristics(UUID, characteristics, true));
-  }
-
-  @Test
-  void test_saveCharacteristics_savesSuccessfully_when_existingGameSaveAndValidCharacteristics() {
-    // Arrange
-    Characteristics characteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
-
-    // Act + Assert
-    assertDoesNotThrow(
-        () -> characteristicsService.saveCharacteristics(UUID, characteristics, true));
   }
 }

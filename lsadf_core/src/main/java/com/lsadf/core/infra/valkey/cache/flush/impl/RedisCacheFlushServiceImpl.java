@@ -16,7 +16,8 @@
 package com.lsadf.core.infra.valkey.cache.flush.impl;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
@@ -37,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class RedisCacheFlushServiceImpl implements CacheFlushService {
 
-  private final CharacteristicsService characteristicsService;
+  private final CharacteristicsCommandService characteristicsService;
   private final CharacteristicsCachePort characteristicsCache;
 
   private final CurrencyService currencyService;
@@ -49,7 +50,7 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
   private final RedisTemplate<String, String> redisTemplate;
 
   public RedisCacheFlushServiceImpl(
-      CharacteristicsService characteristicsService,
+      CharacteristicsCommandService characteristicsService,
       CurrencyService currencyService,
       StageService stageService,
       CharacteristicsCachePort characteristicsCache,
@@ -71,7 +72,9 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
           characteristicsCache.get(gameSaveId.toString());
       if (characteristicsOpt.isPresent()) {
         Characteristics characteristics = characteristicsOpt.get();
-        characteristicsService.saveCharacteristics(gameSaveId, characteristics, false);
+        PersistCharacteristicsCommand command =
+            PersistCharacteristicsCommand.fromCharacteristics(gameSaveId, characteristics);
+        characteristicsService.persistCharacteristics(command);
         characteristicsCache.unset(gameSaveId.toString());
         log.debug("Successfully flushed characteristics for game save {}", gameSaveId);
       }

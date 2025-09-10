@@ -19,7 +19,10 @@ import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.InitializeCharacteristicsCommand;
+import com.lsadf.core.application.game.save.characteristics.command.InitializeDefaultCharacteristicsCommand;
+import com.lsadf.core.application.game.save.characteristics.command.UpdateCacheCharacteristicsCommand;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
@@ -53,7 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class GameSaveServiceImpl implements GameSaveService {
   private final UserService userService;
   private final GameMetadataService gameMetadataService;
-  private final CharacteristicsService characteristicsService;
+  private final CharacteristicsCommandService characteristicsService;
   private final StageService stageService;
   private final CurrencyService currencyService;
 
@@ -69,7 +72,7 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Autowired
   public GameSaveServiceImpl(
       GameMetadataService gameMetadataService,
-      CharacteristicsService characteristicsService,
+      CharacteristicsCommandService characteristicsService,
       StageService stageService,
       CurrencyService currencyService,
       UserService userService,
@@ -128,16 +131,21 @@ public class GameSaveServiceImpl implements GameSaveService {
     gameSaveBuilder.metadata(newGameMetadata);
 
     CharacteristicsRequest characteristicsRequest = creationRequest.getCharacteristicsRequest();
-    Characteristics newCharacteristics =
-        (characteristicsRequest != null)
-            ? characteristicsService.createNewCharacteristics(
-                newGameMetadata.id(),
-                characteristicsRequest.attack(),
-                characteristicsRequest.critChance(),
-                characteristicsRequest.critDamage(),
-                characteristicsRequest.health(),
-                characteristicsRequest.resistance())
-            : characteristicsService.createNewCharacteristics(newGameMetadata.id());
+    Characteristics newCharacteristics;
+    if (characteristicsRequest == null) {
+      var command = new InitializeDefaultCharacteristicsCommand(newGameMetadata.id());
+      newCharacteristics = characteristicsService.initializeDefaultCharacteristics(command);
+    } else {
+      var command =
+          new InitializeCharacteristicsCommand(
+              newGameMetadata.id(),
+              characteristicsRequest.attack(),
+              characteristicsRequest.critChance(),
+              characteristicsRequest.critDamage(),
+              characteristicsRequest.health(),
+              characteristicsRequest.resistance());
+      newCharacteristics = characteristicsService.initializeCharacteristics(command);
+    }
 
     gameSaveBuilder.characteristics(newCharacteristics);
 
@@ -178,8 +186,9 @@ public class GameSaveServiceImpl implements GameSaveService {
 
     if (gameSaveUpdateRequest.getCharacteristics() != null) {
       Characteristics characteristicsUpdate = gameSaveUpdateRequest.getCharacteristics();
-      characteristicsService.saveCharacteristics(
-          saveId, characteristicsUpdate, cacheManager.isEnabled());
+      UpdateCacheCharacteristicsCommand command =
+          UpdateCacheCharacteristicsCommand.fromCharacteristics(saveId, characteristicsUpdate);
+      characteristicsService.updateCacheCharacteristics(command);
     }
     if (gameSaveUpdateRequest.getCurrency() != null) {
       Currency currencyUpdate = gameSaveUpdateRequest.getCurrency();

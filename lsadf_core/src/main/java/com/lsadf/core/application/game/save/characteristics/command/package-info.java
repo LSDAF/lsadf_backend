@@ -13,14 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.game.save.characteristics;
-
-import com.lsadf.core.shared.model.Model;
-import java.io.Serial;
-import lombok.*;
-
-@Builder
-public record Characteristics(
-    Long attack, Long critChance, Long critDamage, Long health, Long resistance) implements Model {
-  @Serial private static final long serialVersionUID = 5623465292659597625L;
-}
+@org.jspecify.annotations.NullMarked
+package com.lsadf.core.application.game.save.characteristics.command;

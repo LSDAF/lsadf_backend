@@ -20,7 +20,8 @@ import static com.lsadf.core.infra.valkey.ValkeyConstants.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.stage.StageService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
@@ -39,7 +40,7 @@ import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.core.RedisTemplate;
 
 class ValkeyKeyExpirationListenerTests {
-  @Mock CharacteristicsService characteristicsService;
+  @Mock CharacteristicsCommandService characteristicsService;
   @Mock CurrencyService currencyService;
   @Mock StageService stageService;
 
@@ -93,7 +94,8 @@ class ValkeyKeyExpirationListenerTests {
         .thenReturn(CHARACTERISTICS);
 
     valkeyKeyExpirationListener.onMessage(message, null);
-    verify(characteristicsService).saveCharacteristics(UUID, CHARACTERISTICS, false);
+    var persistCommand = PersistCharacteristicsCommand.fromCharacteristics(UUID, CHARACTERISTICS);
+    verify(characteristicsService).persistCharacteristics(persistCommand);
     verify(characteristicsRedisTemplate).delete(CHARACTERISTICS_HISTO + UUID_STRING);
   }
 

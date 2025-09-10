@@ -23,9 +23,11 @@ import com.lsadf.core.application.game.inventory.impl.InventoryServiceImpl;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsQueryService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsServiceImpl;
+import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsCommandServiceImpl;
+import com.lsadf.core.application.game.save.characteristics.impl.CharacteristicsQueryServiceImpl;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
@@ -43,8 +45,10 @@ import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.info.impl.GlobalInfoServiceImpl;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.search.impl.SearchServiceImpl;
+import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.application.user.impl.UserServiceImpl;
+import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import org.keycloak.admin.client.Keycloak;
 import org.springframework.context.annotation.Bean;
@@ -57,7 +61,7 @@ public class ApplicationServiceConfiguration {
   @Bean
   public GameSaveService gameSaveService(
       GameMetadataService gameMetadataService,
-      CharacteristicsService characteristicsService,
+      CharacteristicsCommandService characteristicsService,
       StageService stageService,
       CurrencyService currencyService,
       UserService userService,
@@ -79,6 +83,28 @@ public class ApplicationServiceConfiguration {
         stageCache,
         currencyCache,
         characteristicsCache);
+  }
+
+  @Bean
+  public CharacteristicsQueryService characteristicsQueryService(
+      CacheManager cacheManager,
+      CharacteristicsRepositoryPort characteristicsRepositoryPort,
+      CachePort<Characteristics> characteristicsCache) {
+    return new CharacteristicsQueryServiceImpl(
+        cacheManager, characteristicsRepositoryPort, characteristicsCache);
+  }
+
+  @Bean
+  public CharacteristicsCommandService characteristicsCommandService(
+      CacheManager cacheManager,
+      CharacteristicsRepositoryPort characteristicsRepositoryPort,
+      CachePort<Characteristics> characteristicsCache,
+      CharacteristicsQueryService characteristicsQueryService) {
+    return new CharacteristicsCommandServiceImpl(
+        cacheManager,
+        characteristicsRepositoryPort,
+        characteristicsCache,
+        characteristicsQueryService);
   }
 
   @Bean
@@ -119,15 +145,6 @@ public class ApplicationServiceConfiguration {
       StageRepositoryPort stageRepositoryPort,
       StageCachePort stageCache) {
     return new StageServiceImpl(cacheManager, stageRepositoryPort, stageCache);
-  }
-
-  @Bean
-  public CharacteristicsService characteristicsService(
-      CacheManager cacheManager,
-      CharacteristicsRepositoryPort characteristicsRepositoryPort,
-      CharacteristicsCachePort characteristicsCachePort) {
-    return new CharacteristicsServiceImpl(
-        cacheManager, characteristicsRepositoryPort, characteristicsCachePort);
   }
 
   @Bean

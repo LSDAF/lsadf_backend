@@ -17,7 +17,7 @@ package com.lsadf.core.infra.valkey.config.cache;
 
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
@@ -160,7 +160,7 @@ public class ValkeyCacheConfiguration {
 
   @Bean
   public CacheFlushService cacheFlushService(
-      CharacteristicsService characteristicsService,
+      CharacteristicsCommandService characteristicsService,
       CurrencyService currencyService,
       StageService stageService,
       CharacteristicsCachePort characteristicsCachePort,

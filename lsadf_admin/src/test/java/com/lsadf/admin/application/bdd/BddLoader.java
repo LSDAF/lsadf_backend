@@ -38,7 +38,8 @@ import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsQueryService;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
@@ -177,7 +178,9 @@ public class BddLoader {
 
   @Autowired protected ClockService clockService;
 
-  @Autowired protected CharacteristicsService characteristicsService;
+  @Autowired protected CharacteristicsQueryService characteristicsQueryService;
+
+  @Autowired protected CharacteristicsCommandService characteristicsCommandService;
 
   @Autowired protected CurrencyService currencyService;
 

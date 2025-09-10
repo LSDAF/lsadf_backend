@@ -18,7 +18,8 @@ package com.lsadf.core.unit.infra.valkey.cache.flush;
 import static org.mockito.Mockito.*;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.currency.CurrencyService;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
@@ -50,7 +51,7 @@ class ValkeyCacheFlushServiceTests {
 
   @Mock private StageCachePort stageCache;
 
-  @Mock private CharacteristicsService characteristicsService;
+  @Mock private CharacteristicsCommandService characteristicsService;
 
   @Mock CurrencyService currencyService;
 
@@ -100,7 +101,8 @@ class ValkeyCacheFlushServiceTests {
     when(stageCache.get(UUID_1.toString())).thenReturn(Optional.of(stage));
 
     redisCacheFlushService.flushGameSave(UUID_1);
-    verify(characteristicsService).saveCharacteristics(UUID_1, characteristics, false);
+    var command = PersistCharacteristicsCommand.fromCharacteristics(UUID_1, characteristics);
+    verify(characteristicsService).persistCharacteristics(command);
     verify(currencyService).saveCurrency(UUID_1, currency, false);
     verify(stageService).saveStage(UUID_1, stage, false);
   }
@@ -151,10 +153,12 @@ class ValkeyCacheFlushServiceTests {
           .thenReturn(true);
 
       redisCacheFlushService.flushGameSaves();
-      verify(characteristicsService).saveCharacteristics(UUID_1, characteristics1, false);
+      var command1 = PersistCharacteristicsCommand.fromCharacteristics(UUID_1, characteristics1);
+      var command2 = PersistCharacteristicsCommand.fromCharacteristics(UUID_2, characteristics2);
+      verify(characteristicsService).persistCharacteristics(command1);
       verify(currencyService).saveCurrency(UUID_1, currency1, false);
       verify(stageService).saveStage(UUID_1, stage1, false);
-      verify(characteristicsService).saveCharacteristics(UUID_2, characteristics2, false);
+      verify(characteristicsService).persistCharacteristics(command2);
       verify(currencyService).saveCurrency(UUID_2, currency2, false);
       verify(stageService).saveStage(UUID_2, stage2, false);
     }
