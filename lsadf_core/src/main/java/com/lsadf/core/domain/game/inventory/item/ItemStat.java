@@ -15,7 +15,6 @@
  */
 package com.lsadf.core.domain.game.inventory.item;
 
-
 import com.lsadf.core.shared.model.Model;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
