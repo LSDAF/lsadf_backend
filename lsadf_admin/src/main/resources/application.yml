@@ -161,20 +161,28 @@ oauth2:
       token-uri: https://accounts.google.com/o/oauth2/token
       jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 
-cache:
-  redis:
-    enabled: ${CACHE_ENABLED}
+valkey:
+  config:
+    enabled: true
+    embedded: false
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
     password: ${REDIS_PASSWORD}
     database: ${REDIS_DATABASE}
-    embedded: false
-  expiration:
-    local-user-expiration-seconds: ${LOCAL_USER_EXPIRATION_SECONDS}
-    characteristics-expiration-seconds: ${CHARACTERISTICS_EXPIRATION_SECONDS}
-    currency-expiration-seconds: ${CURRENCY_EXPIRATION_SECONDS}
-    stage-expiration-seconds: ${STAGE_EXPIRATION_SECONDS}
-    game-metadata-expiration-seconds: ${GAME_METADATA_EXPIRATION_SECONDS}
+  stream:
+    game:
+      stream-key: game-stream
+      consumer-group: gs-group-admin
+      persistence:
+        debounce-window-ms: ${GAME_STREAM_DEBOUNCE_WINDOW_MS}
+        check-interval-seconds: ${GAME_STREAM_CHECK_INTERVAL_SECONDS}
+  cache:
+    expiration:
+      game-session-expiration-seconds: ${GAME_SESSION_EXPIRATION_SECONDS}
+      game-metadata-expiration-seconds: ${GAME_METADATA_EXPIRATION_SECONDS}
+      stage-expiration-seconds: ${STAGE_EXPIRATION_SECONDS}
+      currency-expiration-seconds: ${CURRENCY_EXPIRATION_SECONDS}
+      characteristics-expiration-seconds: ${CHARACTERISTICS_EXPIRATION_SECONDS}
 
 shutdown:
   flush-cache-at-shutdown: true
