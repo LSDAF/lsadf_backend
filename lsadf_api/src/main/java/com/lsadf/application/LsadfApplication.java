@@ -15,6 +15,8 @@
  */
 package com.lsadf.application;
 
+import com.lsadf.config.ApplicationMode;
+import com.lsadf.config.ApplicationModeDetector;
 import com.lsadf.config.LsadfConfiguration;
 import com.lsadf.core.infra.config.ApplicationUtils;
 import java.net.UnknownHostException;
@@ -34,5 +36,8 @@ public class LsadfApplication {
     SpringApplication application = new SpringApplication(LsadfApplication.class);
     ConfigurableApplicationContext context = application.run(args);
     ApplicationUtils.printAccessUrl(context, log);
+    ApplicationMode applicationMode =
+        ApplicationModeDetector.detectApplicationMode(context.getEnvironment());
+    log.info("Running LSADF app in {} mode", applicationMode.name());
   }
 }

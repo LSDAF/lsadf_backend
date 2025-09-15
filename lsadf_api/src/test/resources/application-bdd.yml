@@ -16,6 +16,7 @@ http-log:
     - PUT
     - DELETE
 
+
 cors:
   allowed-origins:
     - "*"
@@ -140,3 +141,7 @@ mail:
 
 configuration-display:
   enabled: false
+
+api:
+  enabled: true
+  swagger-enabled: false

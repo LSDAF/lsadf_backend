@@ -80,6 +80,8 @@ spring:
             url: ${keycloak.admin-url}
   flyway:
     baseline-on-migrate: true
+  main:
+    web-application-type: SERVLET
 
 
 keycloak:

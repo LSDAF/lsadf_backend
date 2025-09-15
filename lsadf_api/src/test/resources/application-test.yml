@@ -11,6 +11,7 @@ keycloak:
 jdbc:
   enabled: false
 
+
 db:
   password: password
   url: jdbc:url
@@ -36,11 +37,13 @@ valkey:
         check-interval-seconds: 50
         debounce-window-ms: 5000
 
+
 mail:
   host: test
   port: 9000
   username: username
   password: password
 
-configuration-display:
-  enabled: false
+api:
+  enabled: true
+  swagger-enabled: false

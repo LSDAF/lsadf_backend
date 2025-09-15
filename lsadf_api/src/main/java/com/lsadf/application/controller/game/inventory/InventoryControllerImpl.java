@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -39,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Implementation of the Inventory Controller */
 @RestController
+@ConditionalOnProperty(prefix = "api", name = "enabled", havingValue = "true")
 @Slf4j
 public class InventoryControllerImpl extends BaseController implements InventoryController {
 
