@@ -9,4 +9,14 @@ if [ "$SLEEP_ENABLED" = "true" ]
     echo "Running application..."
 fi
 
-java -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Dspring.profiles.active=docker org.springframework.boot.loader.launch.JarLauncher
+java \
+  -XX:+UseContainerSupport \
+  -XX:MaxRAMPercentage=75.0 \
+  -XX:+UseG1GC \
+  -XX:MaxGCPauseMillis=200 \
+  -Xss256k \
+  -XX:-HeapDumpOnOutOfMemoryError \
+  -XX:+UseStringDeduplication \
+  -XX:MaxMetaspaceSize=128m \
+  -Dspring.profiles.active=docker \
+  org.springframework.boot.loader.launch.JarLauncher
