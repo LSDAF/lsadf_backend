@@ -200,3 +200,4 @@ valkey:
       currency-expiration-seconds: ${CURRENCY_EXPIRATION_SECONDS}
       stage-expiration-seconds: ${STAGE_EXPIRATION_SECONDS}
       game-metadata-expiration-seconds: ${GAME_METADATA_EXPIRATION_SECONDS}
+      game-session-expiration-seconds: ${GAME_SESSION_EXPIRATION_SECONDS}
