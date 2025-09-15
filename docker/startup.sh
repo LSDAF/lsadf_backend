@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Set default profile if not provided
-APP_PROFILE=${1:-APP_PROFILE:-standalone}
+echo "APP_PROFILE=$APP_PROFILE";
 
 # Validate profile parameter
 case "$APP_PROFILE" in
