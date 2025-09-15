@@ -20,10 +20,13 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsCache
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.characteristics.CharacteristicsCacheRepositoryAdapter;
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.currency.CurrencyCacheRepositoryAdapter;
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.metadata.GameMetadataCacheRepositoryAdapter;
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.stage.StageCacheRepositoryAdapter;
+import com.lsadf.core.infra.valkey.cache.adapter.game.session.GameSessionCacheRepositoryAdapter;
+import com.lsadf.core.infra.valkey.cache.game.session.GameSessionHashRepository;
 import com.lsadf.core.infra.valkey.cache.impl.save.characteristics.CharacteristicsHashRepository;
 import com.lsadf.core.infra.valkey.cache.impl.save.currency.CurrencyHashRepository;
 import com.lsadf.core.infra.valkey.cache.impl.save.metadata.GameMetadataHashRepository;
@@ -54,6 +57,13 @@ public class ValkeyCacheRepositoryConfiguration {
       ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
     return new CurrencyCacheRepositoryAdapter(
         currencyHashRepository, valkeyCacheExpirationProperties);
+  }
+
+  @Bean
+  public GameSessionCachePort gameSessionCachePort(
+      GameSessionHashRepository hashRepository,
+      ValkeyCacheExpirationProperties valkeyCacheExpirationProperties) {
+    return new GameSessionCacheRepositoryAdapter(hashRepository, valkeyCacheExpirationProperties);
   }
 
   @Bean

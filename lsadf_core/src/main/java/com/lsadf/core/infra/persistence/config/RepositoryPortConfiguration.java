@@ -21,19 +21,18 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepos
 import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
+import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.infra.persistence.adapter.game.inventory.InventoryRepositoryAdapter;
-import com.lsadf.core.infra.persistence.adapter.game.save.CharacteristicsRepositoryAdapter;
-import com.lsadf.core.infra.persistence.adapter.game.save.CurrencyRepositoryAdapter;
-import com.lsadf.core.infra.persistence.adapter.game.save.GameMetadataRepositoryAdapter;
-import com.lsadf.core.infra.persistence.adapter.game.save.GameSaveViewRepositoryAdapter;
-import com.lsadf.core.infra.persistence.adapter.game.save.StageRepositoryAdapter;
+import com.lsadf.core.infra.persistence.adapter.game.save.*;
 import com.lsadf.core.infra.persistence.impl.game.inventory.AdditionalItemStatsRepository;
 import com.lsadf.core.infra.persistence.impl.game.inventory.ItemRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
+import com.lsadf.core.infra.persistence.impl.game.session.GameSessionRepository;
 import com.lsadf.core.infra.persistence.impl.view.GameSaveViewRepository;
+import com.lsadf.core.infra.persistence.impl.view.GameSessionViewRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -63,6 +62,13 @@ public class RepositoryPortConfiguration {
   public CharacteristicsRepositoryPort characteristicsRepositoryAdapter(
       CharacteristicsRepository characteristicsRepository) {
     return new CharacteristicsRepositoryAdapter(characteristicsRepository);
+  }
+
+  @Bean
+  public GameSessionRepositoryPort gameSessionRepositoryAdapter(
+      GameSessionViewRepository gameSessionViewRepository,
+      GameSessionRepository gameSessionRepository) {
+    return new GameSessionRepositoryAdapter(gameSessionRepository, gameSessionViewRepository);
   }
 
   @Bean
