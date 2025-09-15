@@ -27,4 +27,5 @@ public class ValkeyCacheExpirationProperties {
   private Integer currencyExpirationSeconds;
   private Integer stageExpirationSeconds;
   private Integer gameMetadataExpirationSeconds;
+  private Integer gameSessionExpirationSeconds;
 }

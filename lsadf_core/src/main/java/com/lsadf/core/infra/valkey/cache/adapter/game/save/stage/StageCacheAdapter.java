@@ -22,6 +22,12 @@ import com.lsadf.core.infra.valkey.ValkeyConstants;
 import com.lsadf.core.infra.valkey.cache.adapter.ValkeyHistoCacheAdapter;
 import org.springframework.data.redis.core.RedisTemplate;
 
+/**
+ * This class is deprecated, use {@link StageCacheRepositoryAdapter} instead.
+ *
+ * @deprecated
+ */
+@Deprecated(forRemoval = true)
 public class StageCacheAdapter extends ValkeyHistoCacheAdapter<Stage> implements StageCachePort {
   private static final String HISTO_KEY_TYPE = ValkeyConstants.STAGE_HISTO;
 
