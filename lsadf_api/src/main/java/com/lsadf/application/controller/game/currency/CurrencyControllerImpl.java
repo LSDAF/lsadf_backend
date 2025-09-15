@@ -34,12 +34,14 @@ import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
 
 /** Implementation of the Currency Controller */
+@ConditionalOnProperty(prefix = "api", name = "enabled", havingValue = "true")
 @RestController
 @Slf4j
 public class CurrencyControllerImpl extends BaseController implements CurrencyController {

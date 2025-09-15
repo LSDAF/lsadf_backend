@@ -27,6 +27,7 @@ import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@ConditionalOnProperty(prefix = "api", name = "enabled", havingValue = "true")
 public class OAuth2ControllerImpl extends BaseController implements OAuth2Controller {
 
   private final KeycloakClient keycloakClient;

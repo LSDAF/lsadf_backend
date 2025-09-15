@@ -1,0 +1,49 @@
+# Example configuration scenarios for API controller toggle
+
+# Scenario 1: Standalone Application (API + workers)
+# application-standalone.yml
+api:
+  enabled: true
+  swagger-enabled: true
+
+# Other configurations for both API and workers
+valkey:
+  stream:
+    game:
+      enabled: true
+
+---
+
+# Scenario 2: API-Only Application 
+# application-api.yml
+api:
+  enabled: true
+  swagger-enabled: true
+
+# Disable worker-specific features
+valkey:
+  stream:
+    game:
+      consumer-enabled: false
+
+---
+
+# Scenario 3: Worker-Only Application
+# application-worker.yml
+api:
+  enabled: false
+  swagger-enabled: false
+
+# Enable worker-specific features
+valkey:
+  stream:
+    game:
+      consumer-enabled: true
+
+---
+
+# Scenario 4: API enabled but Swagger disabled
+# application-api-no-swagger.yml
+api:
+  enabled: true
+  swagger-enabled: false

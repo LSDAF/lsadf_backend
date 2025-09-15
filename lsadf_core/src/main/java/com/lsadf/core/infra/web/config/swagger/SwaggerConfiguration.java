@@ -27,6 +27,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.*;
 import java.util.Arrays;
 import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -34,6 +35,7 @@ import org.springframework.context.annotation.Import;
 /** Configuration class for the Swagger. */
 @Configuration
 @Import({SwaggerContactProperties.class, SwaggerProperties.class})
+@ConditionalOnExpression("${api.enabled:true} && ${api.swagger-enabled:true}")
 public class SwaggerConfiguration {
 
   private static final String BEARER = "bearer";

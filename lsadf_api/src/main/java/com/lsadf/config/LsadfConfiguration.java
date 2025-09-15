@@ -61,6 +61,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   JdbcConfiguration.class,
   LsadfSecurityConfiguration.class,
   ValkeyStreamConfiguration.class,
-  ValkeyGameStreamConfiguration.class
+  ValkeyGameStreamConfiguration.class,
 })
 public class LsadfConfiguration {}

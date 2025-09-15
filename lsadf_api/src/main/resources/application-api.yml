@@ -1,0 +1,20 @@
+# Configuration for API-only mode
+# This profile enables API controllers but disables worker functionality
+
+api:
+  enabled: true
+  swagger-enabled: true
+
+# Optional: Reduce connection pool size for API-only mode
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 3
+
+# Optional: Disable management endpoints that are not needed for API-only
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics

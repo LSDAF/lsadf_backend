@@ -24,6 +24,7 @@ import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProper
 import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamPersistenceProperties;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamProperties;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyProperties;
+import com.lsadf.core.infra.web.config.api.properties.ApiConfigurationProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakAdminProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.config.security.OAuth2Properties;
@@ -138,5 +139,11 @@ public class PropertiesConfiguration {
   @ConfigurationProperties(prefix = "oauth2")
   public OAuth2Properties oAuth2Properties() {
     return new OAuth2Properties();
+  }
+
+  @Bean
+  @ConfigurationProperties(prefix = "api")
+  public ApiConfigurationProperties apiConfigurationProperties() {
+    return new ApiConfigurationProperties();
   }
 }

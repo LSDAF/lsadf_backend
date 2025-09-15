@@ -1,0 +1,17 @@
+# Configuration for worker-only mode
+# This profile disables API controllers and enables only worker functionality
+
+api:
+  enabled: false
+  swagger-enabled: false
+
+# Optimized connection pool settings for worker-only mode
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+
+# Optional: Different server port for worker instances to avoid conflicts
+server:
+  port: 8081

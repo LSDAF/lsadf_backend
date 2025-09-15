@@ -32,6 +32,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Implementation of the Auth Controller */
 @RestController
+@ConditionalOnProperty(prefix = "api", name = "enabled", havingValue = "true")
 @Slf4j
 public class AuthControllerImpl extends BaseController implements AuthController {
 

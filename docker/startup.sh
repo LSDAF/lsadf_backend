@@ -1,4 +1,19 @@
 #!/bin/sh
+
+# Set default profile if not provided
+APP_PROFILE=${APP_PROFILE:-standalone}
+
+# Validate profile parameter
+case "$APP_PROFILE" in
+  api|standalone|worker)
+    echo "Starting application with profiles: docker,$APP_PROFILE"
+    ;;
+  *)
+    echo "Invalid profile: $APP_PROFILE. Valid profiles are: api, standalone, worker"
+    exit 1
+    ;;
+esac
+
 if [ "$SLEEP_ENABLED" = "true" ]
   then
     echo "SLEEP_ENABLED: true";
@@ -18,5 +33,5 @@ java \
   -XX:-HeapDumpOnOutOfMemoryError \
   -XX:+UseStringDeduplication \
   -XX:MaxMetaspaceSize=128m \
-  -Dspring.profiles.active=docker \
+  -Dspring.profiles.active=docker,${APP_PROFILE} \
   org.springframework.boot.loader.launch.JarLauncher

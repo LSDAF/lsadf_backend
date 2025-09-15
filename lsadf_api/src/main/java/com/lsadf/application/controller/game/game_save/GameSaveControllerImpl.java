@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** Implementation of the GameSaveController. */
 @RestController
+@ConditionalOnProperty(prefix = "api", name = "enabled", havingValue = "true")
 @Slf4j
 public class GameSaveControllerImpl extends BaseController implements GameSaveController {
 
