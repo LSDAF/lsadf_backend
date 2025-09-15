@@ -28,6 +28,8 @@ import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
 import com.lsadf.core.application.game.save.stage.StageQueryService;
+import com.lsadf.core.application.game.session.GameSessionCommandService;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
@@ -52,6 +54,10 @@ public class UnitTestConfiguration {
   @MockBean private LettuceConnectionFactory lettuceConnectionFactory;
 
   @MockBean private UserService userService;
+
+  @MockBean private GameSessionQueryService gameSessionQueryService;
+
+  @MockBean private GameSessionCommandService gameSessionCommandService;
 
   @MockBean private CurrencyCommandService currencyCommandService;
 
