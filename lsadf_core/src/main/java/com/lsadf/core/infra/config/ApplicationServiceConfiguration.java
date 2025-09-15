@@ -42,6 +42,12 @@ import com.lsadf.core.application.game.save.stage.StageQueryService;
 import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
 import com.lsadf.core.application.game.save.stage.impl.StageCommandServiceImpl;
 import com.lsadf.core.application.game.save.stage.impl.StageQueryServiceImpl;
+import com.lsadf.core.application.game.session.GameSessionCachePort;
+import com.lsadf.core.application.game.session.GameSessionCommandService;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
+import com.lsadf.core.application.game.session.impl.GameSessionCommandServiceImpl;
+import com.lsadf.core.application.game.session.impl.GameSessionQueryServiceImpl;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.info.impl.GlobalInfoServiceImpl;
 import com.lsadf.core.application.search.SearchService;
@@ -174,5 +180,24 @@ public class ApplicationServiceConfiguration {
       GameMetadataCachePort gameMetadataCachePort) {
     return new GameMetadataServiceImpl(
         cacheManager, gameMetadataRepositoryPort, gameMetadataCachePort);
+  }
+
+  @Bean
+  public GameSessionCommandService gameSessionCommandService(
+      GameSessionRepositoryPort gameSessionRepositoryPort,
+      CacheManager cacheManager,
+      GameSessionCachePort gameSessionCachePort,
+      ClockService clockService) {
+    return new GameSessionCommandServiceImpl(
+        gameSessionRepositoryPort, cacheManager, gameSessionCachePort, clockService);
+  }
+
+  @Bean
+  public GameSessionQueryService gameSessionQueryService(
+      GameSessionRepositoryPort gameSessionRepositoryPort,
+      GameSessionCachePort gameSessionCachePort,
+      CacheManager cacheManager) {
+    return new GameSessionQueryServiceImpl(
+        gameSessionRepositoryPort, gameSessionCachePort, cacheManager);
   }
 }
