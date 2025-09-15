@@ -19,7 +19,6 @@ import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.exception.AlreadyExistingItemClientIdException;
 import com.lsadf.core.exception.http.ForbiddenException;
 import com.lsadf.core.exception.http.NotFoundException;
-import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,7 +39,7 @@ public interface InventoryService {
    * @param itemRequest the item to add
    * @throws NotFoundException
    */
-  Item createItemInInventory(UUID gameSaveId, ItemRequest itemRequest)
+  Item createItemInInventory(UUID gameSaveId, ItemCommand itemRequest)
       throws NotFoundException, AlreadyExistingItemClientIdException;
 
   /**
@@ -61,7 +60,7 @@ public interface InventoryService {
    * @param itemRequest the item to update
    * @throws NotFoundException, ForbiddenException
    */
-  Item updateItemInInventory(UUID gameSaveId, String itemClientId, ItemRequest itemRequest)
+  Item updateItemInInventory(UUID gameSaveId, String itemClientId, ItemCommand itemRequest)
       throws NotFoundException, ForbiddenException;
 
   /**

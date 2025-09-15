@@ -21,6 +21,7 @@ import static com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetad
 import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -50,11 +51,11 @@ public interface CurrencyRepository extends JdbcRepository<CurrencyEntity> {
               returning *
               """)
   CurrencyEntity updateCurrency(
-      @Param(GAME_METADATA_ID) UUID id,
-      @Param(CURRENCY_GOLD_AMOUNT) Long goldAmount,
-      @Param(CURRENCY_DIAMOND_AMOUNT) Long diamondAmount,
-      @Param(CURRENCY_EMERALD_AMOUNT) Long emeraldAmount,
-      @Param(CURRENCY_AMETHYST_AMOUNT) Long amethystAmount);
+      @Nullable @Param(GAME_METADATA_ID) UUID id,
+      @Nullable @Param(CURRENCY_GOLD_AMOUNT) Long goldAmount,
+      @Nullable @Param(CURRENCY_DIAMOND_AMOUNT) Long diamondAmount,
+      @Nullable @Param(CURRENCY_EMERALD_AMOUNT) Long emeraldAmount,
+      @Nullable @Param(CURRENCY_AMETHYST_AMOUNT) Long amethystAmount);
 
   @Query("select * from t_currency_tgcu where tgme_id=:tgme_id")
   Optional<CurrencyEntity> findCurrencyEntityById(@Param(GAME_METADATA_ID) UUID id);

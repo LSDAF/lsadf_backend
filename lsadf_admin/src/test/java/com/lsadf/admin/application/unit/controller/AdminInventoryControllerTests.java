@@ -18,10 +18,10 @@ package com.lsadf.admin.application.unit.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.game.inventory.AdminInventoryController;
 import com.lsadf.admin.application.game.inventory.AdminInventoryControllerImpl;
-import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
+import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
@@ -61,7 +61,7 @@ class AdminInventoryControllerTests {
   private static final String ITEM_CLIENT_ID = UUID.randomUUID() + "__" + UUID.randomUUID();
 
   private ItemRequest createTestItemRequest() {
-    ItemStat mainStat = new ItemStat(ItemStatistic.ATTACK_ADD, 100.0f);
+    ItemStatDto mainStat = new ItemStatDto(ItemStatistic.ATTACK_ADD, 100.0f);
     return ItemRequest.builder()
         .clientId(ITEM_CLIENT_ID)
         .itemType("weapon")

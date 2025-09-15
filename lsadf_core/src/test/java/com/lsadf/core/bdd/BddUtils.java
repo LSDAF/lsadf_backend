@@ -36,29 +36,30 @@ import com.lsadf.core.infra.persistence.impl.game.save.characteristics.Character
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageEntity;
-import com.lsadf.core.infra.web.request.common.Filter;
-import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
-import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
-import com.lsadf.core.infra.web.request.game.save.creation.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.save.update.AdminGameSaveUpdateRequest;
-import com.lsadf.core.infra.web.request.game.save.update.GameSaveNicknameUpdateRequest;
-import com.lsadf.core.infra.web.request.game.stage.StageRequest;
-import com.lsadf.core.infra.web.request.user.creation.AdminUserCreationRequest;
-import com.lsadf.core.infra.web.request.user.creation.SimpleUserCreationRequest;
-import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
-import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
-import com.lsadf.core.infra.web.request.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.infra.web.request.user.update.SimpleUserUpdateRequest;
-import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
-import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
-import com.lsadf.core.infra.web.response.game.save.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.response.game.save.currency.CurrencyResponse;
-import com.lsadf.core.infra.web.response.game.save.metadata.GameMetadataResponse;
-import com.lsadf.core.infra.web.response.game.save.stage.StageResponse;
-import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
-import com.lsadf.core.infra.web.response.user.UserResponse;
+import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
+import com.lsadf.core.infra.web.dto.request.common.Filter;
+import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.dto.request.game.metadata.GameMetadataRequest;
+import com.lsadf.core.infra.web.dto.request.game.save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.dto.request.game.save.update.AdminGameSaveUpdateRequest;
+import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveNicknameUpdateRequest;
+import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
+import com.lsadf.core.infra.web.dto.request.user.creation.AdminUserCreationRequest;
+import com.lsadf.core.infra.web.dto.request.user.creation.SimpleUserCreationRequest;
+import com.lsadf.core.infra.web.dto.request.user.login.UserLoginRequest;
+import com.lsadf.core.infra.web.dto.request.user.login.UserRefreshLoginRequest;
+import com.lsadf.core.infra.web.dto.request.user.update.AdminUserUpdateRequest;
+import com.lsadf.core.infra.web.dto.request.user.update.SimpleUserUpdateRequest;
+import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.metadata.GameMetadataResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponse;
+import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.dto.response.user.UserResponse;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
@@ -613,7 +614,11 @@ public class BddUtils {
             row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_STATISTIC),
             row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_BASE_VALUE));
 
-    List<ItemStat> additionalStats = List.of(additionalStat1, additionalStat2, additionalStat3);
+    List<ItemStatDto> additionalStats =
+        List.of(additionalStat1, additionalStat2, additionalStat3).stream()
+            .map(itemStat -> new ItemStatDto(itemStat.getStatistic(), itemStat.getBaseValue()))
+            .toList();
+    ItemStatDto mainStatDto = new ItemStatDto(mainStat.getStatistic(), mainStat.getBaseValue());
 
     return ItemResponse.builder()
         .id(id)
@@ -623,7 +628,7 @@ public class BddUtils {
         .itemRarity(itemRarity)
         .isEquipped(isEquipped)
         .level(level)
-        .mainStat(mainStat)
+        .mainStat(mainStatDto)
         .additionalStats(additionalStats)
         .build();
   }
@@ -764,10 +769,21 @@ public class BddUtils {
             row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_STATISTIC),
             row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_BASE_VALUE));
 
-    List<ItemStat> additionalStats = List.of(additionalStat1, additionalStat2, additionalStat3);
+    List<ItemStatDto> additionalStats =
+        List.of(additionalStat1, additionalStat2, additionalStat3).stream()
+            .map(itemStat -> new ItemStatDto(itemStat.getStatistic(), itemStat.getBaseValue()))
+            .toList();
+    ItemStatDto mainStatDto = new ItemStatDto(mainStat.getStatistic(), mainStat.getBaseValue());
 
     return new ItemRequest(
-        clientId, itemType, blueprintId, itemRarity, isEquipped, level, mainStat, additionalStats);
+        clientId,
+        itemType,
+        blueprintId,
+        itemRarity,
+        isEquipped,
+        level,
+        mainStatDto,
+        additionalStats);
   }
 
   /**

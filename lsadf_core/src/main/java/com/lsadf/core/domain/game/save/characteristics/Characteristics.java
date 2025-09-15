@@ -18,15 +18,9 @@ package com.lsadf.core.domain.game.save.characteristics;
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
 import lombok.*;
-import org.jspecify.annotations.Nullable;
 
 @Builder
 public record Characteristics(
-    @Nullable Long attack,
-    @Nullable Long critChance,
-    @Nullable Long critDamage,
-    @Nullable Long health,
-    @Nullable Long resistance)
-    implements Model {
+    Long attack, Long critChance, Long critDamage, Long health, Long resistance) implements Model {
   @Serial private static final long serialVersionUID = 5623465292659597625L;
 }

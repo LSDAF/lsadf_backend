@@ -22,9 +22,9 @@ import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_I
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
-import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

@@ -17,8 +17,8 @@ package com.lsadf.core.infra.util;
 
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.user.User;
-import com.lsadf.core.infra.web.request.game.save.GameSaveSortingParameter;
-import com.lsadf.core.infra.web.request.user.UserSortingParameter;
+import com.lsadf.core.infra.web.dto.request.game.save.GameSaveSortingParameter;
+import com.lsadf.core.infra.web.dto.request.user.UserSortingParameter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;

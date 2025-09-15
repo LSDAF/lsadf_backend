@@ -16,16 +16,16 @@
 package com.lsadf.application.controller.game.inventory;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
-import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.request.game.inventory.ItemRequest;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
-import com.lsadf.core.infra.web.response.game.inventory.ItemResponseMapper;
+import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponseMapper;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;

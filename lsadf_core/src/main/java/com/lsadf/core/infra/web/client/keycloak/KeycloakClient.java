@@ -17,7 +17,7 @@ package com.lsadf.core.infra.web.client.keycloak;
 
 import com.lsadf.core.infra.web.client.CommonFeignConfiguration;
 import com.lsadf.core.infra.web.client.HttpClientTypes;
-import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

@@ -18,9 +18,8 @@ package com.lsadf.core.domain.game.save.stage;
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
 import lombok.*;
-import org.jspecify.annotations.Nullable;
 
 @Builder
-public record Stage(@Nullable Long currentStage, @Nullable Long maxStage) implements Model {
+public record Stage(Long currentStage, Long maxStage) implements Model {
   @Serial private static final long serialVersionUID = -7126306428235414817L;
 }

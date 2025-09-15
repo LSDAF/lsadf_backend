@@ -17,10 +17,12 @@ package com.lsadf.core.infra.persistence.adapter.game.save;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsEntityMapper;
 import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsRepository;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public class CharacteristicsRepositoryAdapter implements CharacteristicsRepositoryPort {
 
@@ -55,15 +57,16 @@ public class CharacteristicsRepositoryAdapter implements CharacteristicsReposito
   }
 
   @Override
-  public Characteristics update(UUID gameSaveId, Characteristics characteristics) {
-    var entity =
+  public Characteristics update(
+      UUID id,
+      @Nullable Long attack,
+      @Nullable Long critChance,
+      @Nullable Long critDamage,
+      @Nullable Long health,
+      @Nullable Long resistance) {
+    CharacteristicsEntity entity =
         characteristicsRepository.updateCharacteristics(
-            gameSaveId,
-            characteristics.attack(),
-            characteristics.critChance(),
-            characteristics.critDamage(),
-            characteristics.health(),
-            characteristics.resistance());
+            id, attack, critChance, critDamage, health, resistance);
     return characteristicsEntityMapper.map(entity);
   }
 

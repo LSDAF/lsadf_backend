@@ -16,13 +16,13 @@
 package com.lsadf.application.controller.user;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUserInfoFromJwt;
-import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.user.UserInfoResponse;
-import com.lsadf.core.infra.web.response.user.UserInfoResponseMapper;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.user.UserInfoResponse;
+import com.lsadf.core.infra.web.dto.response.user.UserInfoResponseMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;

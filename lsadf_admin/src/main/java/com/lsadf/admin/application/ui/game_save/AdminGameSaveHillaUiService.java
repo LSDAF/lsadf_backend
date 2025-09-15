@@ -19,7 +19,7 @@ import com.lsadf.admin.util.FilterUtils;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.infra.util.StreamUtils;
-import com.lsadf.core.infra.web.request.game.save.GameSaveSortingParameter;
+import com.lsadf.core.infra.web.dto.request.game.save.GameSaveSortingParameter;
 import com.vaadin.hilla.BrowserCallable;
 import com.vaadin.hilla.Nonnull;
 import com.vaadin.hilla.Nullable;

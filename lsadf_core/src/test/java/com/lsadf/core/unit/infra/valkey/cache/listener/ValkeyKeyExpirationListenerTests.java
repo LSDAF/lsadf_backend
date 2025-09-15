@@ -20,9 +20,12 @@ import static com.lsadf.core.infra.valkey.ValkeyConstants.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
+import com.lsadf.core.application.game.save.currency.command.PersistCurrencyCommand;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.command.PersistStageCommand;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
@@ -39,9 +42,9 @@ import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.core.RedisTemplate;
 
 class ValkeyKeyExpirationListenerTests {
-  @Mock CharacteristicsService characteristicsService;
-  @Mock CurrencyService currencyService;
-  @Mock StageService stageService;
+  @Mock CharacteristicsCommandService characteristicsService;
+  @Mock CurrencyCommandService currencyService;
+  @Mock StageCommandService stageService;
 
   @Mock(answer = Answers.RETURNS_DEEP_STUBS)
   RedisTemplate<String, Characteristics> characteristicsRedisTemplate;
@@ -93,7 +96,8 @@ class ValkeyKeyExpirationListenerTests {
         .thenReturn(CHARACTERISTICS);
 
     valkeyKeyExpirationListener.onMessage(message, null);
-    verify(characteristicsService).saveCharacteristics(UUID, CHARACTERISTICS, false);
+    var persistCommand = PersistCharacteristicsCommand.fromCharacteristics(UUID, CHARACTERISTICS);
+    verify(characteristicsService).persistCharacteristics(persistCommand);
     verify(characteristicsRedisTemplate).delete(CHARACTERISTICS_HISTO + UUID_STRING);
   }
 
@@ -105,7 +109,8 @@ class ValkeyKeyExpirationListenerTests {
     when(currencyRedisTemplate.opsForValue().get(CURRENCY_HISTO + UUID_STRING))
         .thenReturn(CURRENCY);
     valkeyKeyExpirationListener.onMessage(message, null);
-    verify(currencyService).saveCurrency(UUID, CURRENCY, false);
+    var persistCommand = PersistCurrencyCommand.fromCurrency(UUID, CURRENCY);
+    verify(currencyService).persistCurrency(persistCommand);
     verify(currencyRedisTemplate).delete(ValkeyConstants.CURRENCY_HISTO + UUID_STRING);
   }
 
@@ -115,7 +120,8 @@ class ValkeyKeyExpirationListenerTests {
         new DefaultMessage("CHANNEL".getBytes(), (ValkeyConstants.STAGE + UUID_STRING).getBytes());
     when(stageRedisTemplate.opsForValue().get(STAGE_HISTO + UUID_STRING)).thenReturn(STAGE);
     valkeyKeyExpirationListener.onMessage(message, null);
-    verify(stageService).saveStage(UUID, STAGE, false);
+    var persistCommand = PersistStageCommand.fromStage(UUID, STAGE);
+    verify(stageService).persistStage(persistCommand);
     verify(stageRedisTemplate).delete(STAGE_HISTO + UUID_STRING);
   }
 }

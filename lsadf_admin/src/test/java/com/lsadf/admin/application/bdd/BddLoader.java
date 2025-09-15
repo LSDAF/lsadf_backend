@@ -38,12 +38,15 @@ import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsQueryService;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
+import com.lsadf.core.application.game.save.currency.CurrencyQueryService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.StageQueryService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
@@ -60,12 +63,12 @@ import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.inventory.ItemResponse;
-import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
-import com.lsadf.core.infra.web.response.info.GlobalInfoResponse;
-import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
-import com.lsadf.core.infra.web.response.user.UserResponse;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
+import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.dto.response.user.UserResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import jakarta.mail.internet.MimeMessage;
@@ -177,13 +180,19 @@ public class BddLoader {
 
   @Autowired protected ClockService clockService;
 
-  @Autowired protected CharacteristicsService characteristicsService;
+  @Autowired protected CharacteristicsQueryService characteristicsQueryService;
 
-  @Autowired protected CurrencyService currencyService;
+  @Autowired protected CharacteristicsCommandService characteristicsCommandService;
+
+  @Autowired protected CurrencyCommandService currencyCommandService;
+
+  @Autowired protected CurrencyQueryService currencyQueryService;
 
   @Autowired protected InventoryService inventoryService;
 
-  @Autowired protected StageService stageService;
+  @Autowired protected StageCommandService stageCommandService;
+
+  @Autowired protected StageQueryService stageQueryService;
 
   @Autowired protected CacheManager redisCacheManager;
 

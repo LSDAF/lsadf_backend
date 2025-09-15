@@ -19,7 +19,7 @@ import com.lsadf.admin.util.FilterUtils;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.util.StreamUtils;
-import com.lsadf.core.infra.web.request.user.UserSortingParameter;
+import com.lsadf.core.infra.web.dto.request.user.UserSortingParameter;
 import com.vaadin.hilla.BrowserCallable;
 import com.vaadin.hilla.Nonnull;
 import com.vaadin.hilla.Nullable;

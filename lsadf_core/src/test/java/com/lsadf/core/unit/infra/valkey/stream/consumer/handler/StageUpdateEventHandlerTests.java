@@ -21,7 +21,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.command.UpdateCacheStageCommand;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.StageUpdateEventHandler;
 import com.lsadf.core.infra.valkey.stream.event.EventType;
@@ -38,7 +39,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class StageUpdateEventHandlerTests {
 
-  @Mock private StageService stageService;
+  @Mock private StageCommandService stageService;
 
   @Mock private ObjectMapper objectMapper;
 
@@ -80,6 +81,7 @@ class StageUpdateEventHandlerTests {
     handler.handleEvent(event);
 
     verify(objectMapper).convertValue(payload, Stage.class);
-    verify(stageService).saveStage(gameSaveId, stage, true);
+    UpdateCacheStageCommand command = UpdateCacheStageCommand.fromStage(gameSaveId, stage);
+    verify(stageService).updateCacheStage(command);
   }
 }

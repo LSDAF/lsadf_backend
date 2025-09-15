@@ -27,14 +27,20 @@ import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.InitializeCharacteristicsCommand;
+import com.lsadf.core.application.game.save.characteristics.command.InitializeDefaultCharacteristicsCommand;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
+import com.lsadf.core.application.game.save.currency.command.InitializeCurrencyCommand;
+import com.lsadf.core.application.game.save.currency.command.InitializeDefaultCurrencyCommand;
 import com.lsadf.core.application.game.save.impl.GameSaveServiceImpl;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.command.InitializeDefaultStageCommand;
+import com.lsadf.core.application.game.save.stage.command.InitializeStageCommand;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
@@ -44,13 +50,13 @@ import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.exception.AlreadyExistingGameSaveException;
 import com.lsadf.core.exception.http.ForbiddenException;
 import com.lsadf.core.exception.http.NotFoundException;
-import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
-import com.lsadf.core.infra.web.request.game.save.creation.AdminGameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.save.creation.GameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.save.creation.SimpleGameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.stage.StageRequest;
+import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.dto.request.game.metadata.GameMetadataRequest;
+import com.lsadf.core.infra.web.dto.request.game.save.creation.AdminGameSaveCreationRequest;
+import com.lsadf.core.infra.web.dto.request.game.save.creation.GameSaveCreationRequest;
+import com.lsadf.core.infra.web.dto.request.game.save.creation.SimpleGameSaveCreationRequest;
+import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -67,9 +73,9 @@ class GameSaveServiceTests {
   @Mock private CacheManager cacheManager;
   @Mock private UserService userService;
   @Mock private GameMetadataService gameMetadataService;
-  @Mock private StageService stageService;
-  @Mock private CharacteristicsService characteristicsService;
-  @Mock private CurrencyService currencyService;
+  @Mock private StageCommandService stageService;
+  @Mock private CharacteristicsCommandService characteristicsService;
+  @Mock private CurrencyCommandService currencyService;
   @Mock private CharacteristicsCachePort characteristicsCache;
   @Mock private CurrencyCachePort currencyCache;
   @Mock private StageCachePort stageCache;
@@ -246,10 +252,15 @@ class GameSaveServiceTests {
     when(gameMetadataService.createNewGameMetadata(
             nullable(UUID.class), any(String.class), nullable(String.class)))
         .thenReturn(DB_METADATA);
-    when(characteristicsService.createNewCharacteristics(UUID)).thenReturn(DB_CHARACERISTICS);
+    InitializeDefaultCharacteristicsCommand command =
+        new InitializeDefaultCharacteristicsCommand(UUID);
+    when(characteristicsService.initializeDefaultCharacteristics(command))
+        .thenReturn(DB_CHARACERISTICS);
 
-    when(stageService.createNewStage(UUID)).thenReturn(DB_STAGE);
-    when(currencyService.createNewCurrency(UUID)).thenReturn(DB_CURRENCY);
+    var stageCommand = new InitializeDefaultStageCommand(UUID);
+    var currencyCommand = new InitializeDefaultCurrencyCommand(UUID);
+    when(stageService.initializeDefaultStage(stageCommand)).thenReturn(DB_STAGE);
+    when(currencyService.initializeDefaultCurrency(currencyCommand)).thenReturn(DB_CURRENCY);
     GameSaveCreationRequest gameSaveCreationRequest = new SimpleGameSaveCreationRequest(USER_EMAIL);
     GameSave actual = gameSaveService.createGameSave(gameSaveCreationRequest);
     assertThat(actual).isEqualTo(gameSave);
@@ -261,18 +272,11 @@ class GameSaveServiceTests {
     when(gameMetadataService.createNewGameMetadata(
             any(UUID.class), any(String.class), any(String.class)))
         .thenReturn(DB_METADATA);
-    when(characteristicsService.createNewCharacteristics(
-            any(UUID.class),
-            any(Long.class),
-            any(Long.class),
-            any(Long.class),
-            any(Long.class),
-            any(Long.class)))
+    when(characteristicsService.initializeCharacteristics(
+            any(InitializeCharacteristicsCommand.class)))
         .thenReturn(DB_CHARACERISTICS);
-    when(stageService.createNewStage(any(UUID.class), any(Long.class), any(Long.class)))
-        .thenReturn(DB_STAGE);
-    when(currencyService.createNewCurrency(
-            any(UUID.class), any(Long.class), any(Long.class), any(Long.class), any(Long.class)))
+    when(stageService.initializeStage(any(InitializeStageCommand.class))).thenReturn(DB_STAGE);
+    when(currencyService.initializeCurrency(any(InitializeCurrencyCommand.class)))
         .thenReturn(DB_CURRENCY);
     GameMetadataRequest gameMetadataRequest =
         new GameMetadataRequest(DB_METADATA.id(), DB_METADATA.userEmail(), DB_METADATA.nickname());

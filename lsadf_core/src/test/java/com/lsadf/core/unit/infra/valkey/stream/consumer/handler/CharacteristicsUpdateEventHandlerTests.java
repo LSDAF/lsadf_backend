@@ -22,7 +22,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.UpdateCacheCharacteristicsCommand;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.CharacteristicsUpdateEventHandler;
 import com.lsadf.core.infra.valkey.stream.event.EventType;
@@ -40,7 +41,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class CharacteristicsUpdateEventHandlerTests {
 
   @Mock(strictness = LENIENT)
-  private CharacteristicsService characteristicsService;
+  private CharacteristicsCommandService characteristicsService;
 
   @Mock(strictness = LENIENT)
   private ObjectMapper objectMapper;
@@ -104,6 +105,8 @@ class CharacteristicsUpdateEventHandlerTests {
     handler.handleEvent(event);
 
     verify(objectMapper).convertValue(payload, Characteristics.class);
-    verify(characteristicsService).saveCharacteristics(gameSaveId, characteristics, true);
+    var command =
+        UpdateCacheCharacteristicsCommand.fromCharacteristics(gameSaveId, characteristics);
+    verify(characteristicsService).updateCacheCharacteristics(command);
   }
 }

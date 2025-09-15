@@ -16,17 +16,17 @@
 package com.lsadf.application.controller.game.game_save;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
-import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.request.game.save.creation.GameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.save.creation.SimpleGameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.save.update.GameSaveNicknameUpdateRequest;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.game.save.GameSaveResponse;
-import com.lsadf.core.infra.web.response.game.save.GameSaveResponseMapper;
+import com.lsadf.core.infra.web.dto.request.game.save.creation.GameSaveCreationRequest;
+import com.lsadf.core.infra.web.dto.request.game.save.creation.SimpleGameSaveCreationRequest;
+import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveNicknameUpdateRequest;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponseMapper;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;

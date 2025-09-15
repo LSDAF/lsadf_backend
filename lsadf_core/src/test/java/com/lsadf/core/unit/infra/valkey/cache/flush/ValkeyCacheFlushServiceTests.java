@@ -18,11 +18,14 @@ package com.lsadf.core.unit.infra.valkey.cache.flush;
 import static org.mockito.Mockito.*;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
+import com.lsadf.core.application.game.save.currency.command.PersistCurrencyCommand;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.command.PersistStageCommand;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
@@ -50,11 +53,11 @@ class ValkeyCacheFlushServiceTests {
 
   @Mock private StageCachePort stageCache;
 
-  @Mock private CharacteristicsService characteristicsService;
+  @Mock private CharacteristicsCommandService characteristicsService;
 
-  @Mock CurrencyService currencyService;
+  @Mock CurrencyCommandService currencyService;
 
-  @Mock StageService stageService;
+  @Mock StageCommandService stageService;
 
   @Mock(answer = Answers.RETURNS_DEEP_STUBS)
   RedisTemplate<String, String> redisTemplate;
@@ -100,9 +103,13 @@ class ValkeyCacheFlushServiceTests {
     when(stageCache.get(UUID_1.toString())).thenReturn(Optional.of(stage));
 
     redisCacheFlushService.flushGameSave(UUID_1);
-    verify(characteristicsService).saveCharacteristics(UUID_1, characteristics, false);
-    verify(currencyService).saveCurrency(UUID_1, currency, false);
-    verify(stageService).saveStage(UUID_1, stage, false);
+    var characteristicsCommand =
+        PersistCharacteristicsCommand.fromCharacteristics(UUID_1, characteristics);
+    var currencyCommand = PersistCurrencyCommand.fromCurrency(UUID_1, currency);
+    var stageCommand = PersistStageCommand.fromStage(UUID_1, stage);
+    verify(characteristicsService).persistCharacteristics(characteristicsCommand);
+    verify(currencyService).persistCurrency(currencyCommand);
+    verify(stageService).persistStage(stageCommand);
   }
 
   @Test
@@ -151,12 +158,23 @@ class ValkeyCacheFlushServiceTests {
           .thenReturn(true);
 
       redisCacheFlushService.flushGameSaves();
-      verify(characteristicsService).saveCharacteristics(UUID_1, characteristics1, false);
-      verify(currencyService).saveCurrency(UUID_1, currency1, false);
-      verify(stageService).saveStage(UUID_1, stage1, false);
-      verify(characteristicsService).saveCharacteristics(UUID_2, characteristics2, false);
-      verify(currencyService).saveCurrency(UUID_2, currency2, false);
-      verify(stageService).saveStage(UUID_2, stage2, false);
+      var characteristicsCommand1 =
+          PersistCharacteristicsCommand.fromCharacteristics(UUID_1, characteristics1);
+      var characteristicsCommand2 =
+          PersistCharacteristicsCommand.fromCharacteristics(UUID_2, characteristics2);
+
+      var currencyCommand1 = PersistCurrencyCommand.fromCurrency(UUID_1, currency1);
+      var currencyCommand2 = PersistCurrencyCommand.fromCurrency(UUID_2, currency2);
+
+      var stageCommand1 = PersistStageCommand.fromStage(UUID_1, stage1);
+      var stageCommand2 = PersistStageCommand.fromStage(UUID_2, stage2);
+
+      verify(characteristicsService).persistCharacteristics(characteristicsCommand1);
+      verify(currencyService).persistCurrency(currencyCommand1);
+      verify(stageService).persistStage(stageCommand1);
+      verify(characteristicsService).persistCharacteristics(characteristicsCommand2);
+      verify(currencyService).persistCurrency(currencyCommand2);
+      verify(stageService).persistStage(stageCommand2);
     }
   }
 }

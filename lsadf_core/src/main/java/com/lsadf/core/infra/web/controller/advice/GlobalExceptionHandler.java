@@ -15,14 +15,14 @@
  */
 package com.lsadf.core.infra.web.controller.advice;
 
-import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.exception.AlreadyExistingGameSaveException;
 import com.lsadf.core.exception.AlreadyExistingItemClientIdException;
 import com.lsadf.core.exception.AlreadyExistingUserException;
 import com.lsadf.core.exception.AlreadyTakenNicknameException;
 import com.lsadf.core.exception.http.*;
-import com.lsadf.core.infra.web.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

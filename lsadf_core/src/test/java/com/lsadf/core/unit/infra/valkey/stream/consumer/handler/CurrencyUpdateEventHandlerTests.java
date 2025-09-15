@@ -21,7 +21,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
+import com.lsadf.core.application.game.save.currency.command.UpdateCacheCurrencyCommand;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.CurrencyUpdateEventHandler;
 import com.lsadf.core.infra.valkey.stream.event.EventType;
@@ -38,7 +39,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CurrencyUpdateEventHandlerTests {
 
-  @Mock private CurrencyService currencyService;
+  @Mock private CurrencyCommandService currencyService;
 
   @Mock private ObjectMapper objectMapper;
 
@@ -82,6 +83,7 @@ class CurrencyUpdateEventHandlerTests {
     handler.handleEvent(event);
 
     verify(objectMapper).convertValue(payload, Currency.class);
-    verify(currencyService).saveCurrency(gameSaveId, currency, true);
+    var command = new UpdateCacheCurrencyCommand(gameSaveId, gold, diamond, emerald, amethyst);
+    verify(currencyService).updateCacheCurrency(command);
   }
 }

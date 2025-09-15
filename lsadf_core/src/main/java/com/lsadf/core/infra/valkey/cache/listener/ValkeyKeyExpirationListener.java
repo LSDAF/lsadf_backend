@@ -17,9 +17,12 @@ package com.lsadf.core.infra.valkey.cache.listener;
 
 import static com.lsadf.core.infra.valkey.ValkeyConstants.*;
 
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
+import com.lsadf.core.application.game.save.currency.command.PersistCurrencyCommand;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.command.PersistStageCommand;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
@@ -36,18 +39,18 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Slf4j
 public class ValkeyKeyExpirationListener implements MessageListener {
 
-  private final CharacteristicsService characteristicsService;
-  private final CurrencyService currencyService;
-  private final StageService stageService;
+  private final CharacteristicsCommandService characteristicsService;
+  private final CurrencyCommandService currencyService;
+  private final StageCommandService stageService;
 
   private final RedisTemplate<String, Characteristics> characteristicsRedisTemplate;
   private final RedisTemplate<String, Currency> currencyRedisTemplate;
   private final RedisTemplate<String, Stage> stageRedisTemplate;
 
   public ValkeyKeyExpirationListener(
-      CharacteristicsService characteristicsService,
-      CurrencyService currencyService,
-      StageService stageService,
+      CharacteristicsCommandService characteristicsService,
+      CurrencyCommandService currencyService,
+      StageCommandService stageService,
       RedisTemplate<String, Characteristics> characteristicsRedisTemplate,
       RedisTemplate<String, Currency> currencyRedisTemplate,
       RedisTemplate<String, Stage> stageRedisTemplate) {
@@ -93,7 +96,8 @@ public class ValkeyKeyExpirationListener implements MessageListener {
         throw new NotFoundException("Stage not found in cache");
       }
       UUID uuid = UUID.fromString(gameSaveId);
-      stageService.saveStage(uuid, stage, false);
+      PersistStageCommand command = PersistStageCommand.fromStage(uuid, stage);
+      stageService.persistStage(command);
       Boolean result = stageRedisTemplate.delete(STAGE_HISTO + gameSaveId);
       if (Boolean.TRUE.equals(result)) {
         log.info("Deleted entry {}", STAGE_HISTO + gameSaveId);
@@ -118,7 +122,9 @@ public class ValkeyKeyExpirationListener implements MessageListener {
         throw new NotFoundException("Characteristics not found in cache");
       }
       UUID uuid = UUID.fromString(gameSaveId);
-      characteristicsService.saveCharacteristics(uuid, characteristics, false);
+      PersistCharacteristicsCommand command =
+          PersistCharacteristicsCommand.fromCharacteristics(uuid, characteristics);
+      characteristicsService.persistCharacteristics(command);
       Boolean result = characteristicsRedisTemplate.delete(CHARACTERISTICS_HISTO + gameSaveId);
       if (Boolean.TRUE.equals(result)) {
         log.info("Deleted entry {}", CHARACTERISTICS_HISTO + gameSaveId);
@@ -142,7 +148,8 @@ public class ValkeyKeyExpirationListener implements MessageListener {
         throw new NotFoundException("Currency not found in cache");
       }
       UUID uuid = UUID.fromString(gameSaveId);
-      currencyService.saveCurrency(uuid, currency, false);
+      var command = PersistCurrencyCommand.fromCurrency(uuid, currency);
+      currencyService.persistCurrency(command);
       Boolean result = currencyRedisTemplate.delete(CURRENCY_HISTO + gameSaveId);
       if (Boolean.TRUE.equals(result)) {
         log.info("Deleted entry {}", CURRENCY_HISTO + gameSaveId);

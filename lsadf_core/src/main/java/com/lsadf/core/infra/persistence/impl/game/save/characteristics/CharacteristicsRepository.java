@@ -21,6 +21,7 @@ import static com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetad
 import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -67,12 +68,12 @@ public interface CharacteristicsRepository extends JdbcRepository<Characteristic
               returning *
               """)
   CharacteristicsEntity updateCharacteristics(
-      @Param(GAME_METADATA_ID) UUID id,
-      @Param(CHARACTERISTICS_ATTACK) Long attack,
-      @Param(CHARACTERISTICS_CRIT_CHANCE) Long critChance,
-      @Param(CHARACTERISTICS_CRIT_DAMAGE) Long critDamage,
-      @Param(CHARACTERISTICS_HEALTH) Long health,
-      @Param(CHARACTERISTICS_RESISTANCE) Long resistance);
+      @Nullable @Param(GAME_METADATA_ID) UUID id,
+      @Nullable @Param(CHARACTERISTICS_ATTACK) Long attack,
+      @Nullable @Param(CHARACTERISTICS_CRIT_CHANCE) Long critChance,
+      @Nullable @Param(CHARACTERISTICS_CRIT_DAMAGE) Long critDamage,
+      @Nullable @Param(CHARACTERISTICS_HEALTH) Long health,
+      @Nullable @Param(CHARACTERISTICS_RESISTANCE) Long resistance);
 
   @Query("select * from t_characteristics_tgch where tgme_id=:tgme_id")
   Optional<CharacteristicsEntity> findCharacteristicsEntityById(@Param(GAME_METADATA_ID) UUID id);

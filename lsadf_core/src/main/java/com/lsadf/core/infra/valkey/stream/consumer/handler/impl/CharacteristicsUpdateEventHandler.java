@@ -20,7 +20,8 @@ import static com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType.CH
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.UpdateCacheCharacteristicsCommand;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.event.Event;
@@ -29,11 +30,11 @@ import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
 
 public class CharacteristicsUpdateEventHandler implements EventHandler {
 
-  private final CharacteristicsService characteristicsService;
+  private final CharacteristicsCommandService characteristicsService;
   private final ObjectMapper objectMapper;
 
   public CharacteristicsUpdateEventHandler(
-      CharacteristicsService characteristicsService, ObjectMapper objectMapper) {
+      CharacteristicsCommandService characteristicsService, ObjectMapper objectMapper) {
     this.characteristicsService = characteristicsService;
     this.objectMapper = objectMapper;
   }
@@ -46,9 +47,13 @@ public class CharacteristicsUpdateEventHandler implements EventHandler {
   @Override
   public void handleEvent(Event event) throws JsonProcessingException {
     // string to map
+
     GameSaveEvent gameSaveEvent = (GameSaveEvent) event;
     Characteristics characteristics =
         objectMapper.convertValue(gameSaveEvent.payload(), Characteristics.class);
-    characteristicsService.saveCharacteristics(gameSaveEvent.gameSaveId(), characteristics, true);
+    var command =
+        UpdateCacheCharacteristicsCommand.fromCharacteristics(
+            gameSaveEvent.gameSaveId(), characteristics);
+    characteristicsService.updateCacheCharacteristics(command);
   }
 }

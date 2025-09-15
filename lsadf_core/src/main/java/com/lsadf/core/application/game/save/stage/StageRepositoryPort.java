@@ -18,12 +18,13 @@ package com.lsadf.core.application.game.save.stage;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public interface StageRepositoryPort {
 
   Optional<Stage> findById(UUID id);
 
-  Stage create(UUID id, Long currentStage, Long maxStage);
+  Stage create(UUID id, @Nullable Long currentStage, @Nullable Long maxStage);
 
   Stage create(UUID id);
 

@@ -16,17 +16,17 @@
 package com.lsadf.admin.application.auth;
 
 import static com.lsadf.admin.application.auth.OAuth2Controller.Constants.ApiPaths.CALLBACK;
-import static com.lsadf.core.infra.web.response.ResponseUtils.generateResponse;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.core.infra.config.ServerProperties;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.BaseController;
-import com.lsadf.core.infra.web.request.user.login.UserLoginRequest;
-import com.lsadf.core.infra.web.request.user.login.UserRefreshLoginRequest;
-import com.lsadf.core.infra.web.response.ApiResponse;
-import com.lsadf.core.infra.web.response.jwt.JwtAuthenticationResponse;
+import com.lsadf.core.infra.web.dto.request.user.login.UserLoginRequest;
+import com.lsadf.core.infra.web.dto.request.user.login.UserRefreshLoginRequest;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.net.URLEncoder;

@@ -18,6 +18,7 @@ package com.lsadf.core.application.game.save.characteristics;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public interface CharacteristicsRepositoryPort {
 
@@ -28,7 +29,13 @@ public interface CharacteristicsRepositoryPort {
 
   Characteristics create(UUID id);
 
-  Characteristics update(UUID id, Characteristics characteristics);
+  Characteristics update(
+      UUID id,
+      @Nullable Long attack,
+      @Nullable Long critChance,
+      @Nullable Long critDamage,
+      @Nullable Long health,
+      @Nullable Long resistance);
 
   boolean existsById(UUID id);
 

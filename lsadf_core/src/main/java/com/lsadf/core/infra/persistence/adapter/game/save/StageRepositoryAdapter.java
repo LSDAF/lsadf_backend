@@ -17,10 +17,13 @@ package com.lsadf.core.infra.persistence.adapter.game.save;
 
 import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
 import com.lsadf.core.domain.game.save.stage.Stage;
+import com.lsadf.core.infra.persistence.impl.game.save.stage.StageEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageEntityMapper;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
+import com.lsadf.core.infra.util.ObjectUtils;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public class StageRepositoryAdapter implements StageRepositoryPort {
 
@@ -37,20 +40,24 @@ public class StageRepositoryAdapter implements StageRepositoryPort {
   }
 
   @Override
-  public Stage create(UUID id, Long currentStage, Long maxStage) {
-    var entity = stageRepository.createNewStageEntity(id, currentStage, maxStage);
+  public Stage create(
+      UUID id, @Nullable Long nullableCurrentStage, @Nullable Long nullableMaxStage) {
+    Long currentStage = ObjectUtils.getOrDefault(nullableCurrentStage, 1L);
+    Long maxStage = ObjectUtils.getOrDefault(nullableMaxStage, Math.max(currentStage, 1L));
+    StageEntity entity = stageRepository.createNewStageEntity(id, currentStage, maxStage);
     return stageEntityMapper.map(entity);
   }
 
   @Override
   public Stage create(UUID id) {
-    var entity = stageRepository.createNewStageEntity(id);
+    StageEntity entity = stageRepository.createNewStageEntity(id);
     return stageEntityMapper.map(entity);
   }
 
   @Override
   public Stage update(UUID gameSaveId, Stage stage) {
-    var entity = stageRepository.updateStage(gameSaveId, stage.currentStage(), stage.maxStage());
+    StageEntity entity =
+        stageRepository.updateStage(gameSaveId, stage.currentStage(), stage.maxStage());
     return stageEntityMapper.map(entity);
   }
 

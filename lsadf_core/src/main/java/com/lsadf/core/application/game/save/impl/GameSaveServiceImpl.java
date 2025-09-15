@@ -19,13 +19,25 @@ import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.command.InitializeCharacteristicsCommand;
+import com.lsadf.core.application.game.save.characteristics.command.InitializeDefaultCharacteristicsCommand;
+import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
+import com.lsadf.core.application.game.save.characteristics.command.UpdateCacheCharacteristicsCommand;
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
-import com.lsadf.core.application.game.save.currency.CurrencyService;
+import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
+import com.lsadf.core.application.game.save.currency.command.InitializeCurrencyCommand;
+import com.lsadf.core.application.game.save.currency.command.InitializeDefaultCurrencyCommand;
+import com.lsadf.core.application.game.save.currency.command.PersistCurrencyCommand;
+import com.lsadf.core.application.game.save.currency.command.UpdateCacheCurrencyCommand;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
-import com.lsadf.core.application.game.save.stage.StageService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.command.InitializeDefaultStageCommand;
+import com.lsadf.core.application.game.save.stage.command.InitializeStageCommand;
+import com.lsadf.core.application.game.save.stage.command.PersistStageCommand;
+import com.lsadf.core.application.game.save.stage.command.UpdateCacheStageCommand;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
@@ -37,12 +49,12 @@ import com.lsadf.core.exception.AlreadyTakenNicknameException;
 import com.lsadf.core.exception.http.ForbiddenException;
 import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.exception.http.UnauthorizedException;
-import com.lsadf.core.infra.web.request.game.characteristics.CharacteristicsRequest;
-import com.lsadf.core.infra.web.request.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.request.game.metadata.GameMetadataRequest;
-import com.lsadf.core.infra.web.request.game.save.creation.GameSaveCreationRequest;
-import com.lsadf.core.infra.web.request.game.save.update.GameSaveUpdateRequest;
-import com.lsadf.core.infra.web.request.game.stage.StageRequest;
+import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.dto.request.game.metadata.GameMetadataRequest;
+import com.lsadf.core.infra.web.dto.request.game.save.creation.GameSaveCreationRequest;
+import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveUpdateRequest;
+import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +65,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class GameSaveServiceImpl implements GameSaveService {
   private final UserService userService;
   private final GameMetadataService gameMetadataService;
-  private final CharacteristicsService characteristicsService;
-  private final StageService stageService;
-  private final CurrencyService currencyService;
+  private final CharacteristicsCommandService characteristicsService;
+  private final StageCommandService stageService;
+  private final CurrencyCommandService currencyService;
 
   // Repository port to access game save data
   private final GameSaveRepositoryPort gameSaveRepositoryPort;
@@ -69,9 +81,9 @@ public class GameSaveServiceImpl implements GameSaveService {
   @Autowired
   public GameSaveServiceImpl(
       GameMetadataService gameMetadataService,
-      CharacteristicsService characteristicsService,
-      StageService stageService,
-      CurrencyService currencyService,
+      CharacteristicsCommandService characteristicsService,
+      StageCommandService stageService,
+      CurrencyCommandService currencyService,
       UserService userService,
       GameSaveRepositoryPort gameSaveRepositoryPort,
       CacheManager cacheManager,
@@ -128,37 +140,53 @@ public class GameSaveServiceImpl implements GameSaveService {
     gameSaveBuilder.metadata(newGameMetadata);
 
     CharacteristicsRequest characteristicsRequest = creationRequest.getCharacteristicsRequest();
-    Characteristics newCharacteristics =
-        (characteristicsRequest != null)
-            ? characteristicsService.createNewCharacteristics(
-                newGameMetadata.id(),
-                characteristicsRequest.attack(),
-                characteristicsRequest.critChance(),
-                characteristicsRequest.critDamage(),
-                characteristicsRequest.health(),
-                characteristicsRequest.resistance())
-            : characteristicsService.createNewCharacteristics(newGameMetadata.id());
+    Characteristics newCharacteristics;
+    if (characteristicsRequest == null) {
+      var command = new InitializeDefaultCharacteristicsCommand(newGameMetadata.id());
+      newCharacteristics = characteristicsService.initializeDefaultCharacteristics(command);
+    } else {
+      var command =
+          new InitializeCharacteristicsCommand(
+              newGameMetadata.id(),
+              characteristicsRequest.attack(),
+              characteristicsRequest.critChance(),
+              characteristicsRequest.critDamage(),
+              characteristicsRequest.health(),
+              characteristicsRequest.resistance());
+      newCharacteristics = characteristicsService.initializeCharacteristics(command);
+    }
 
     gameSaveBuilder.characteristics(newCharacteristics);
 
     CurrencyRequest currencyRequest = creationRequest.getCurrencyRequest();
-    Currency newCurrency =
-        (currencyRequest != null)
-            ? currencyService.createNewCurrency(
-                newGameMetadata.id(),
-                currencyRequest.gold(),
-                currencyRequest.diamond(),
-                currencyRequest.emerald(),
-                currencyRequest.amethyst())
-            : currencyService.createNewCurrency(newGameMetadata.id());
+    Currency newCurrency;
+    if (currencyRequest == null) {
+      var command = new InitializeDefaultCurrencyCommand(newGameMetadata.id());
+      newCurrency = currencyService.initializeDefaultCurrency(command);
+    } else {
+      var command =
+          new InitializeCurrencyCommand(
+              newGameMetadata.id(),
+              currencyRequest.gold(),
+              currencyRequest.diamond(),
+              currencyRequest.emerald(),
+              currencyRequest.amethyst());
+      newCurrency = currencyService.initializeCurrency(command);
+    }
     gameSaveBuilder.currency(newCurrency);
 
     StageRequest stageRequest = creationRequest.getStageRequest();
-    Stage newStage =
-        (stageRequest != null)
-            ? stageService.createNewStage(
-                newGameMetadata.id(), stageRequest.currentStage(), stageRequest.maxStage())
-            : stageService.createNewStage(newGameMetadata.id());
+
+    Stage newStage;
+    if (stageRequest == null) {
+      var command = new InitializeDefaultStageCommand(newGameMetadata.id());
+      newStage = stageService.initializeDefaultStage(command);
+    } else {
+      var command =
+          new InitializeStageCommand(
+              newGameMetadata.id(), stageRequest.currentStage(), stageRequest.maxStage());
+      newStage = stageService.initializeStage(command);
+    }
     gameSaveBuilder.stage(newStage);
 
     return gameSaveBuilder.build();
@@ -178,16 +206,37 @@ public class GameSaveServiceImpl implements GameSaveService {
 
     if (gameSaveUpdateRequest.getCharacteristics() != null) {
       Characteristics characteristicsUpdate = gameSaveUpdateRequest.getCharacteristics();
-      characteristicsService.saveCharacteristics(
-          saveId, characteristicsUpdate, cacheManager.isEnabled());
+      if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
+        UpdateCacheCharacteristicsCommand command =
+            UpdateCacheCharacteristicsCommand.fromCharacteristics(saveId, characteristicsUpdate);
+        characteristicsService.updateCacheCharacteristics(command);
+      } else {
+        PersistCharacteristicsCommand command =
+            PersistCharacteristicsCommand.fromCharacteristics(saveId, characteristicsUpdate);
+        characteristicsService.persistCharacteristics(command);
+      }
     }
     if (gameSaveUpdateRequest.getCurrency() != null) {
       Currency currencyUpdate = gameSaveUpdateRequest.getCurrency();
-      currencyService.saveCurrency(saveId, currencyUpdate, cacheManager.isEnabled());
+      if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
+        UpdateCacheCurrencyCommand command =
+            UpdateCacheCurrencyCommand.fromCurrency(saveId, currencyUpdate);
+        currencyService.updateCacheCurrency(command);
+      } else {
+        PersistCurrencyCommand command =
+            PersistCurrencyCommand.fromCurrency(saveId, currencyUpdate);
+        currencyService.persistCurrency(command);
+      }
     }
     if (gameSaveUpdateRequest.getStage() != null) {
       Stage stageUpdate = gameSaveUpdateRequest.getStage();
-      stageService.saveStage(saveId, stageUpdate, cacheManager.isEnabled());
+      if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
+        UpdateCacheStageCommand command = UpdateCacheStageCommand.fromStage(saveId, stageUpdate);
+        stageService.updateCacheStage(command);
+      } else {
+        PersistStageCommand command = PersistStageCommand.fromStage(saveId, stageUpdate);
+        stageService.persistStage(command);
+      }
     }
 
     gameMetadataService.updateNickname(saveId, gameSaveUpdateRequest.getNickname());
