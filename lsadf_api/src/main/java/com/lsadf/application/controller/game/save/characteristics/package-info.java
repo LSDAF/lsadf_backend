@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 @org.jspecify.annotations.NullMarked
-package com.lsadf.application.controller.game.currency;
+package com.lsadf.application.controller.game.save.characteristics;
