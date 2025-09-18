@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.application.controller.game.stage;
+package com.lsadf.application.controller.game.save.characteristics;
 
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
-import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
+import com.lsadf.application.controller.constant.SwaggerConstants;
+import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
-import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -35,66 +36,59 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-/** Controller for stage related operations. */
-@RequestMapping(value = ApiPathConstants.STAGE)
-@Tag(name = StageController.Constants.Swagger.STAGE_CONTROLLER)
+/** Controller for characteristics operations */
+@RequestMapping(value = ApiPathConstants.CHARACTERISTICS)
+@Tag(name = SwaggerConstants.CHARACTERISTICS_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
-public interface StageController {
-
+public interface CharacteristicsController {
   /**
-   * Saves the current stage for a specified game save.
+   * Updates the characteristics of a game save
    *
-   * <p>This method allows authenticated users to save the game stage data for a specific game save
-   * ID. The stage details must be provided within a valid {@link StageRequest} object.
-   *
-   * @param jwt the authentication principal containing user details.
-   * @param gameSaveId the unique identifier of the game save.
-   * @param stageRequest the request body containing stage details, including current stage and
-   *     maximum stage.
-   * @return a {@link ResponseEntity} containing an {@link ApiResponse} with no data. The response
-   *     status code indicates the result of the operation.
+   * @param jwt Jwt
+   * @param gameSaveId the game save id
+   * @param characteristicsRequest the characteristics request
+   * @return the characteristics
    */
   @PostMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
-  @Operation(summary = "Saves the stage for a game save")
+  @Operation(summary = "Updates the characteristics of a game save")
   @ApiResponses(
       value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "Characteristics updated"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "401",
             description = "Unauthorized"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "400",
-            description = "Bad Request"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "403",
             description = "Forbidden"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200",
-            description = "OK"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "404",
-            description = "Not Found"),
+            description = "Not found"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "500",
-            description = "Internal Server Error")
+            description = "Internal server error")
       })
-  ResponseEntity<ApiResponse<Void>> saveStage(
+  ResponseEntity<ApiResponse<Void>> saveCharacteristics(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
-      @Valid @RequestBody StageRequest stageRequest);
+      @RequestBody @Valid CharacteristicsRequest characteristicsRequest);
 
   /**
-   * Retrieves the current and maximum stage details for a specified game save.
+   * Gets the characteristics of a game save
    *
-   * @param jwt the authentication principal containing user details.
-   * @param gameSaveId the unique identifier of the game save.
-   * @return a {@link ResponseEntity} containing an {@link ApiResponse} with a {@link StageResponse}
-   *     object that holds the current and maximum stage details. The response status code indicates
-   *     the result of the operation.
+   * @param jwt Jwt
+   * @param gameSaveId the game save id
+   * @return the characteristics
    */
   @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
-  @Operation(summary = "Gets the stage for a game save")
+  @Operation(summary = "Gets the characteristics of a game save")
   @ApiResponses(
       value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -113,19 +107,14 @@ public interface StageController {
             responseCode = "500",
             description = "Internal Server Error")
       })
-  ResponseEntity<ApiResponse<StageResponse>> getStage(
+  ResponseEntity<ApiResponse<CharacteristicsResponse>> getCharacteristics(
       @AuthenticationPrincipal Jwt jwt, @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId);
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   class Constants {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class ApiPaths {
+    public static final class ApiPaths {
       public static final String GAME_SAVE_ID = "/{game_save_id}";
-    }
-
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Swagger {
-      public static final String STAGE_CONTROLLER = "Stage Controller";
     }
   }
 }
