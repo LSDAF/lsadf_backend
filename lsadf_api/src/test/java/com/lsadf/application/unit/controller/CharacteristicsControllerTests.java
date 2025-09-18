@@ -21,8 +21,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.application.controller.game.characteristics.CharacteristicsController;
-import com.lsadf.application.controller.game.characteristics.CharacteristicsControllerImpl;
+import com.lsadf.application.controller.game.save.characteristics.CharacteristicsController;
+import com.lsadf.application.controller.game.save.characteristics.CharacteristicsControllerImpl;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
