@@ -20,16 +20,18 @@ import com.lsadf.application.controller.auth.AuthController;
 import com.lsadf.application.controller.auth.AuthControllerImpl;
 import com.lsadf.application.controller.auth.OAuth2Controller;
 import com.lsadf.application.controller.auth.OAuth2ControllerImpl;
-import com.lsadf.application.controller.game.characteristics.CharacteristicsController;
-import com.lsadf.application.controller.game.characteristics.CharacteristicsControllerImpl;
-import com.lsadf.application.controller.game.currency.CurrencyController;
-import com.lsadf.application.controller.game.currency.CurrencyControllerImpl;
-import com.lsadf.application.controller.game.game_save.GameSaveController;
-import com.lsadf.application.controller.game.game_save.GameSaveControllerImpl;
 import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.application.controller.game.inventory.InventoryControllerImpl;
-import com.lsadf.application.controller.game.stage.StageController;
-import com.lsadf.application.controller.game.stage.StageControllerImpl;
+import com.lsadf.application.controller.game.save.characteristics.CharacteristicsController;
+import com.lsadf.application.controller.game.save.characteristics.CharacteristicsControllerImpl;
+import com.lsadf.application.controller.game.save.currency.CurrencyController;
+import com.lsadf.application.controller.game.save.currency.CurrencyControllerImpl;
+import com.lsadf.application.controller.game.save.game_save.GameSaveController;
+import com.lsadf.application.controller.game.save.game_save.GameSaveControllerImpl;
+import com.lsadf.application.controller.game.save.stage.StageController;
+import com.lsadf.application.controller.game.save.stage.StageControllerImpl;
+import com.lsadf.application.controller.game.session.GameSessionController;
+import com.lsadf.application.controller.game.session.GameSessionControllerImpl;
 import com.lsadf.application.controller.user.UserController;
 import com.lsadf.application.controller.user.UserControllerImpl;
 import com.lsadf.config.LsadfConfiguration;
@@ -123,6 +125,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
       StageControllerImpl.class,
       OAuth2Controller.class,
       OAuth2ControllerImpl.class,
+      GameSessionController.class,
+      GameSessionControllerImpl.class,
     })
 @ExtendWith(MockitoExtension.class)
 @EnableConfigurationProperties
