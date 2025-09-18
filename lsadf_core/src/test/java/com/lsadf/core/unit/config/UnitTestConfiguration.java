@@ -34,6 +34,7 @@ import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
+import com.lsadf.core.infra.valkey.cache.flush.FlushRecoveryService;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
 import javax.sql.DataSource;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -58,6 +59,8 @@ public class UnitTestConfiguration {
   @MockBean private GameSessionQueryService gameSessionQueryService;
 
   @MockBean private GameSessionCommandService gameSessionCommandService;
+
+  @MockBean private FlushRecoveryService flushRecoveryService;
 
   @MockBean private CurrencyCommandService currencyCommandService;
 
