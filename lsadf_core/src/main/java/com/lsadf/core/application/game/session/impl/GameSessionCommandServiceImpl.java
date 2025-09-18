@@ -38,7 +38,7 @@ public class GameSessionCommandServiceImpl implements GameSessionCommandService 
 
   @Override
   public GameSession initializeGameSession(InitializeSessionCommand command) {
-    Instant instant = clockService.getClock().instant();
+    Instant instant = clockService.nowInstant();
     Instant added = instant.plus(15, ChronoUnit.MINUTES);
     GameSession gameSession =
         gameSessionRepositoryPort.createNewGameSession(command.gameSaveId(), added);
@@ -53,7 +53,7 @@ public class GameSessionCommandServiceImpl implements GameSessionCommandService 
     Instant instant = clockService.getClock().instant();
     Instant added = instant.plus(15, ChronoUnit.MINUTES);
     GameSession updated =
-        gameSessionRepositoryPort.updateGameSessionEndTime(command.gameSaveId(), added);
+        gameSessionRepositoryPort.updateGameSessionEndTime(command.gameSessionId(), added);
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       gameSessionCachePort.set(updated.getId().toString(), updated);
     }

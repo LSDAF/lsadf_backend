@@ -18,4 +18,4 @@ package com.lsadf.core.application.game.session.command;
 
 import java.util.UUID;
 
-public record UpdateSessionEndTimeCommand(UUID gameSaveId, long endTime) {}
+public record UpdateSessionEndTimeCommand(UUID gameSessionId) {}
