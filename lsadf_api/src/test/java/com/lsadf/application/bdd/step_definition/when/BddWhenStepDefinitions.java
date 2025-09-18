@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.controller.constant.ApiPathConstants;
-import com.lsadf.application.controller.game.game_save.GameSaveController;
+import com.lsadf.application.controller.game.save.game_save.GameSaveController;
 import com.lsadf.application.controller.user.UserController;
 import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveNicknameUpdateRequest;

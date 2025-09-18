@@ -21,8 +21,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.application.controller.game.stage.StageController;
-import com.lsadf.application.controller.game.stage.StageControllerImpl;
+import com.lsadf.application.controller.game.save.stage.StageController;
+import com.lsadf.application.controller.game.save.stage.StageControllerImpl;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;

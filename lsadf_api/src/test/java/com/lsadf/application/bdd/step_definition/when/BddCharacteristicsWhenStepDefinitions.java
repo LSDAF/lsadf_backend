@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.controller.constant.ApiPathConstants;
-import com.lsadf.application.controller.game.characteristics.CharacteristicsController;
+import com.lsadf.application.controller.game.save.characteristics.CharacteristicsController;
 import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
