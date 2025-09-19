@@ -17,7 +17,7 @@ package com.lsadf.application.controller.game.save.characteristics;
 
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
@@ -78,7 +78,8 @@ public interface CharacteristicsController {
   ResponseEntity<ApiResponse<Void>> saveCharacteristics(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
-      @RequestBody @Valid CharacteristicsRequest characteristicsRequest);
+      @RequestBody @Valid CharacteristicsRequest characteristicsRequest,
+      @RequestHeader(X_GAME_SESSION_ID) UUID sessionId);
 
   /**
    * Gets the characteristics of a game save

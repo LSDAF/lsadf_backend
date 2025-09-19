@@ -70,14 +70,14 @@ public class StageControllerImpl extends BaseController implements StageControll
 
   @Override
   public ResponseEntity<ApiResponse<Void>> saveStage(
-      Jwt jwt, UUID gameSaveId, StageRequest stageRequest) {
+      Jwt jwt, UUID gameSaveId, StageRequest stageRequest, UUID sessionId) {
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
 
     Stage stage = stageRequestMapper.map(stageRequest);
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
-      stageEventPublisherPort.publishStageUpdatedEvent(username, gameSaveId, stage);
+      stageEventPublisherPort.publishStageUpdatedEvent(username, gameSaveId, stage, sessionId);
     } else {
       var command = PersistStageCommand.fromStage(gameSaveId, stage);
       stageCommandService.persistStage(command);

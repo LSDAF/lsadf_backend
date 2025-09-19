@@ -17,6 +17,7 @@ package com.lsadf.application.bdd.step_definition.when;
 
 import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedStageResponse;
 import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
@@ -40,8 +41,9 @@ import org.springframework.http.ResponseEntity;
 public class BddStageWhenStepDefinitions extends BddLoader {
 
   @When(
-      "^the user requests the endpoint to set the stages with the following StageRequest for the game save with id (.*)$")
-  public void whenUserRequestsEndpointToSetStages(String gameSaveId, DataTable dataTable) {
+      "^the user requests the endpoint to set the stages with the following StageRequest for the game save with id (.*) and session id (.*)$")
+  public void whenUserRequestsEndpointToSetStages(
+      String gameSaveId, String sessionId, DataTable dataTable) {
     var data = dataTable.asMaps(String.class, String.class);
     assertThat(data).hasSize(1);
 
@@ -56,6 +58,7 @@ public class BddStageWhenStepDefinitions extends BddLoader {
       String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
+      headers.set(X_GAME_SESSION_ID, sessionId);
 
       HttpEntity<StageRequest> httpRequest = new HttpEntity<>(request, headers);
       ResponseEntity<ApiResponse<Void>> result =

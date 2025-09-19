@@ -15,6 +15,7 @@
  */
 package com.lsadf.application.unit.controller;
 
+import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,6 +28,7 @@ import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.UUID;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -119,7 +121,8 @@ class CurrencyControllerTests {
         .perform(
             post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(null)))
+                .content(objectMapper.writeValueAsString(null))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
         // then
         .andExpect(status().isBadRequest());
   }
@@ -135,7 +138,8 @@ class CurrencyControllerTests {
         .perform(
             post("/api/v1/currency/{gameSaveId}", "testtesttest")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(currencyRequest)))
+                .content(objectMapper.writeValueAsString(currencyRequest))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
         // then
         .andExpect(status().isBadRequest());
   }
@@ -151,7 +155,8 @@ class CurrencyControllerTests {
         .perform(
             post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(currencyRequest)))
+                .content(objectMapper.writeValueAsString(currencyRequest))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
         // then
         .andExpect(status().isBadRequest());
   }
@@ -167,7 +172,8 @@ class CurrencyControllerTests {
         .perform(
             post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(currencyRequest)))
+                .content(objectMapper.writeValueAsString(currencyRequest))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
         // then
         .andExpect(status().isOk());
   }
@@ -183,8 +189,25 @@ class CurrencyControllerTests {
         .perform(
             post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(currencyRequest)))
+                .content(objectMapper.writeValueAsString(currencyRequest))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
         // then
         .andExpect(status().isOk());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
+  void test_saveCurrency_returns400_when_noGameSessionIdHeader() {
+    // given
+    CurrencyRequest currencyRequest = new CurrencyRequest(1L, 1L, 1L, 1L);
+    // when
+    mockMvc
+        .perform(
+            post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(currencyRequest)))
+        // then
+        .andExpect(status().isBadRequest());
   }
 }

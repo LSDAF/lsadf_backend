@@ -18,6 +18,7 @@ package com.lsadf.application.controller.game.save.currency;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
@@ -70,7 +71,8 @@ public interface CurrencyController {
   ResponseEntity<ApiResponse<Void>> saveCurrency(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
-      @RequestBody @Valid CurrencyRequest currencyRequest);
+      @RequestBody @Valid CurrencyRequest currencyRequest,
+      @RequestHeader(X_GAME_SESSION_ID) UUID sessionId);
 
   @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Gets the currency amounts for a game save")
