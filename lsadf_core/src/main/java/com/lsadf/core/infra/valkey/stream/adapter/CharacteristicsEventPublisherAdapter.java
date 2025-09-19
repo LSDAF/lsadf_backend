@@ -37,13 +37,18 @@ public class CharacteristicsEventPublisherAdapter implements CharacteristicsEven
 
   @Override
   public void publishCharacteristicsUpdatedEvent(
-      String userEmail, UUID gameSaveId, Characteristics characteristics) {
+      String userEmail, UUID gameSaveId, Characteristics characteristics, UUID gameSessionId) {
     Long timestamp = System.currentTimeMillis();
     Map<String, String> characteristicsMap =
         objectMapper.convertValue(characteristics, new TypeReference<>() {});
     GameSaveEvent gameSaveEvent =
         new GameSaveEvent(
-            gameSaveId, userEmail, CHARACTERISTICS_UPDATE, timestamp, characteristicsMap);
+            gameSaveId,
+            userEmail,
+            CHARACTERISTICS_UPDATE,
+            gameSessionId,
+            timestamp,
+            characteristicsMap);
 
     streamProducer.publishEvent(streamKey, gameSaveEvent);
   }
