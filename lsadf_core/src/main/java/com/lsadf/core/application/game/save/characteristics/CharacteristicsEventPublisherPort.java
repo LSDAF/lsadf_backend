@@ -22,5 +22,5 @@ import java.util.UUID;
 
 public interface CharacteristicsEventPublisherPort extends EventPublisherPort {
   void publishCharacteristicsUpdatedEvent(
-      String userEmail, UUID gameSaveId, Characteristics characteristics);
+      String userEmail, UUID gameSaveId, Characteristics characteristics, UUID gameSessionId);
 }

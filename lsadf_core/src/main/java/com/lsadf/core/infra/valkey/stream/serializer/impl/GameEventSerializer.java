@@ -39,6 +39,8 @@ public class GameEventSerializer implements EventSerializer<GameSaveEvent> {
     map.put(GameSaveEvent.GameSaveEventAttributes.GAME_SAVE_ID, event.gameSaveId().toString());
     map.put(GameSaveEvent.GameSaveEventAttributes.USER_ID, event.userId());
     map.put(GameSaveEvent.GameSaveEventAttributes.TIMESTAMP, event.timestamp().toString());
+    map.put(
+        GameSaveEvent.GameSaveEventAttributes.GAME_SESSION_ID, event.gameSessionId().toString());
     String mapString = objectMapper.writeValueAsString(event.payload());
     map.put(GameSaveEvent.GameSaveEventAttributes.PAYLOAD, mapString);
 

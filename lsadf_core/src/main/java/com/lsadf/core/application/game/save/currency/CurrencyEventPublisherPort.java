@@ -21,5 +21,6 @@ import com.lsadf.core.domain.game.save.currency.Currency;
 import java.util.UUID;
 
 public interface CurrencyEventPublisherPort extends EventPublisherPort {
-  void publishCurrencyUpdatedEvent(String userEmail, UUID gameSaveId, Currency currency);
+  void publishCurrencyUpdatedEvent(
+      String userEmail, UUID gameSaveId, Currency currency, UUID gameSessionId);
 }

@@ -21,5 +21,5 @@ import com.lsadf.core.domain.game.save.stage.Stage;
 import java.util.UUID;
 
 public interface StageEventPublisherPort extends EventPublisherPort {
-  void publishStageUpdatedEvent(String userEmail, UUID gameSaveId, Stage stage);
+  void publishStageUpdatedEvent(String userEmail, UUID gameSaveId, Stage stage, UUID gameSessionId);
 }
