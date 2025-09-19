@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.bdd.CacheEntryType;
+import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.bdd.BddFieldConstants;
 import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
@@ -30,6 +31,7 @@ import com.lsadf.core.infra.persistence.impl.game.save.characteristics.Character
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageEntity;
+import com.lsadf.core.infra.persistence.impl.game.session.GameSessionEntity;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import java.time.Clock;
@@ -38,11 +40,14 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Step definitions for the given steps in the BDD scenarios */
 @Slf4j(topic = "[GIVEN STEP DEFINITIONS]")
 public class BddGivenStepDefinitions extends BddLoader {
+
+  @Autowired List<CachePort<?>> cachePorts;
 
   @Given("^the BDD engine is ready$")
   public void givenBddEngineIsReady() {
@@ -91,7 +96,15 @@ public class BddGivenStepDefinitions extends BddLoader {
   public void givenCleanDatabase() throws NotFoundException {
     log.info("Cleaning database repositories...");
 
+    // Clear caches
+    cacheFlushService.flushGameSaves();
+    redisCacheManager.clearCaches();
+
+    // delete game saves
     this.gameMetadataRepository.deleteAllGameSaveEntities();
+
+    // clean game sessions
+    this.gameSessionRepository.deleteAllGameSessions();
 
     assertThat(characteristicsRepository.count()).isZero();
     assertThat(currencyRepository.count()).isZero();
@@ -99,18 +112,35 @@ public class BddGivenStepDefinitions extends BddLoader {
     assertThat(itemRepository.count()).isZero();
     assertThat(additionalItemStatsRepository.count()).isZero();
     assertThat(gameMetadataRepository.count()).isZero();
-
-    // Clear caches
-    redisCacheManager.clearCaches();
-    localCacheManager.clearCaches();
+    assertThat(gameSessionRepository.count()).isZero();
 
     assertThat(characteristicsCache.getAll()).isEmpty();
     assertThat(currencyCache.getAll()).isEmpty();
     assertThat(stageCache.getAll()).isEmpty();
     assertThat(gameMetadataCache.getAll()).isEmpty();
+    assertThat(gameSessionCache.getAll()).isEmpty();
 
     log.info("Database repositories + caches cleaned");
     log.info("Mocks initialized");
+  }
+
+  @Given("^the following game sessions$")
+  @Transactional
+  public void givenFollowingGameSessions(DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+    log.info("Creating game sessions...");
+
+    rows.forEach(
+        row -> {
+          GameSessionEntity gameSessionEntity = BddUtils.mapToGameSaveSessionEntity(row);
+          gameSessionRepository.createNewGameSession(
+              gameSessionEntity.getId(),
+              gameSessionEntity.getGameSaveId(),
+              gameSessionEntity.getEndTime(),
+              gameSessionEntity.isCancelled());
+        });
+
+    log.info("Game sessions created");
   }
 
   @Given("^the following game saves$")
