@@ -92,11 +92,17 @@ Feature: Stage Controller BDD tests
     And the following stage entries in cache
       | gameSaveId                           | currentStage | maxStage |
       | f81b710d-3e02-4871-a86f-390377798dd1 | 666          | 667      |
+
+    And the following game sessions
+      | id                                   | gameSaveId                           | cancelled | version |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       |
+
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to set the stages with the following StageRequest for the game save with id f81b710d-3e02-4871-a86f-390377798dd1
+
+    And the user requests the endpoint to set the stages with the following StageRequest for the game save with id f81b710d-3e02-4871-a86f-390377798dd1 and session id 6025d3de-49ee-4ca1-98c0-28cb49f85e87
       | currentStage | maxStage |
       | 700          | 600      |
 
@@ -109,11 +115,15 @@ Feature: Stage Controller BDD tests
     And the following stage entries in cache
       | gameSaveId                           | currentStage | maxStage |
       | f81b710d-3e02-4871-a86f-390377798dd1 | 666          | 667      |
+    And the following game sessions
+      | id                                   | gameSaveId                           | cancelled | version |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       |
+
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to set the stages with the following StageRequest for the game save with id f81b710d-3e02-4871-a86f-390377798dd1
+    And the user requests the endpoint to set the stages with the following StageRequest for the game save with id f81b710d-3e02-4871-a86f-390377798dd1 and session id 6025d3de-49ee-4ca1-98c0-28cb49f85e87
       | currentStage | maxStage |
       | 700          | 700      |
 
@@ -127,6 +137,10 @@ Feature: Stage Controller BDD tests
     Given the following game saves
       | id                                   | userEmail           | gold    | maxStage | currentStage | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
       | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
+    And the following game sessions
+      | id                                   | gameSaveId                           | cancelled | version |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       |
+
 
     And the cache is disabled
 
@@ -134,7 +148,7 @@ Feature: Stage Controller BDD tests
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to set the stages with the following StageRequest for the game save with id f81b710d-3e02-4871-a86f-390377798dd1
+    And the user requests the endpoint to set the stages with the following StageRequest for the game save with id f81b710d-3e02-4871-a86f-390377798dd1 and session id 6025d3de-49ee-4ca1-98c0-28cb49f85e87
       | gameSaveId                           | currentStage | maxStage |
       | f81b710d-3e02-4871-a86f-390377798dd1 | 667          | 700      |
 
@@ -144,12 +158,16 @@ Feature: Stage Controller BDD tests
     Given the following game saves
       | id                                   | userEmail            | gold    | maxStage | currentStage | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
       | f81b710d-3e02-4871-a86f-390377798dd1 | paul.itesse@test.com | 5630280 | 10       | 10           | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
+    And the following game sessions
+      | id                                   | gameSaveId                           | cancelled | version |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       |
+
 
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to set the stages with the following StageRequest for the game save with id f81b710d-3e02-4871-a86f-390377798dd1
+    And the user requests the endpoint to set the stages with the following StageRequest for the game save with id f81b710d-3e02-4871-a86f-390377798dd1 and session id 6025d3de-49ee-4ca1-98c0-28cb49f85e87
       | gameSaveId                           | currentStage | maxStage |
       | f81b710d-3e02-4871-a86f-390377798dd1 | 667          | 700      |
 
@@ -159,12 +177,16 @@ Feature: Stage Controller BDD tests
     Given the following game saves
       | id                                   | userEmail           | gold    | maxStage | currentStage | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
       | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
+    And the following game sessions
+      | id                                   | gameSaveId                           | cancelled | version |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       |
+
 
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to set the stages with the following StageRequest for the game save with id 7545eed0-237c-4182-849f-f9d4e1d112b5
+    And the user requests the endpoint to set the stages with the following StageRequest for the game save with id 7545eed0-237c-4182-849f-f9d4e1d112b5 and session id 6025d3de-49ee-4ca1-98c0-28cb49f85e87
       | gameSaveId                           | currentStage | maxStage |
       | 7545eed0-237c-4182-849f-f9d4e1d112b5 | 667          | 700      |
 

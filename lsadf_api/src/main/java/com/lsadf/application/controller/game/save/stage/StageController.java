@@ -19,6 +19,7 @@ import static com.lsadf.application.controller.constant.SwaggerConstants.STAGE_C
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
@@ -83,7 +84,8 @@ public interface StageController {
   ResponseEntity<ApiResponse<Void>> saveStage(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
-      @Valid @RequestBody StageRequest stageRequest);
+      @Valid @RequestBody StageRequest stageRequest,
+      @RequestHeader(value = X_GAME_SESSION_ID) UUID gameSessionId);
 
   /**
    * Retrieves the current and maximum stage details for a specified game save.

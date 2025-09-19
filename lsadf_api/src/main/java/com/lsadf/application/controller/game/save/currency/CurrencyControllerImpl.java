@@ -71,7 +71,7 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
 
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCurrency(
-      Jwt jwt, UUID gameSaveId, CurrencyRequest currencyRequest) {
+      Jwt jwt, UUID gameSaveId, CurrencyRequest currencyRequest, UUID sessionId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -79,7 +79,8 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     Currency currency = requestModelMapper.map(currencyRequest);
 
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
-      currencyEventPublisherPort.publishCurrencyUpdatedEvent(userEmail, gameSaveId, currency);
+      currencyEventPublisherPort.publishCurrencyUpdatedEvent(
+          userEmail, gameSaveId, currency, sessionId);
     } else {
       var command = PersistCurrencyCommand.fromCurrency(gameSaveId, currency);
       currencyCommandService.persistCurrency(command);

@@ -71,7 +71,7 @@ public class CharacteristicsControllerImpl extends BaseController
 
   @Override
   public ResponseEntity<ApiResponse<Void>> saveCharacteristics(
-      Jwt jwt, UUID gameSaveId, CharacteristicsRequest characteristicsRequest) {
+      Jwt jwt, UUID gameSaveId, CharacteristicsRequest characteristicsRequest, UUID sessionId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -80,7 +80,7 @@ public class CharacteristicsControllerImpl extends BaseController
     var enabled = cacheManager.isEnabled();
     if (Boolean.TRUE.equals(enabled)) {
       characteristicsEventPublisherPort.publishCharacteristicsUpdatedEvent(
-          userEmail, gameSaveId, characteristics);
+          userEmail, gameSaveId, characteristics, sessionId);
     } else {
       PersistCharacteristicsCommand command =
           PersistCharacteristicsCommand.fromCharacteristics(gameSaveId, characteristics);
