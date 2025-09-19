@@ -16,6 +16,7 @@
 package com.lsadf.core.infra.web.dto.response;
 
 import lombok.experimental.UtilityClass;
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -32,7 +33,7 @@ public class ResponseUtils {
    * @return ResponseEntity of ApiResponse containing all inputs
    */
   public static <T> ResponseEntity<ApiResponse<T>> generateResponse(
-      HttpStatus status, String message, Object responseObj) {
+      HttpStatus status, @Nullable String message, @Nullable Object responseObj) {
     ApiResponse response = generateGenericResponse(status, message, responseObj);
     return new ResponseEntity<>(response, status);
   }
@@ -46,7 +47,7 @@ public class ResponseUtils {
    * @return ResponseEntity of ApiResponse containing all inputs
    */
   public static <T> ResponseEntity<ApiResponse<T>> generateResponse(
-      HttpStatus status, Object responseObj) {
+      HttpStatus status, @Nullable Object responseObj) {
     return generateResponse(status, null, responseObj);
   }
 
@@ -71,7 +72,7 @@ public class ResponseUtils {
    * @return ApiResponse containing all inputs
    */
   private static <T> ApiResponse<T> generateGenericResponse(
-      HttpStatus status, String message, T responseObj) {
+      HttpStatus status, @Nullable String message, @Nullable T responseObj) {
     return ApiResponse.<T>builder()
         .status(status.value())
         .message(message)
