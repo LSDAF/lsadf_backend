@@ -202,8 +202,6 @@ public class BddLoader {
 
   @Autowired protected CacheManager redisCacheManager;
 
-  @Autowired protected CacheManager localCacheManager;
-
   @Autowired protected CacheFlushService cacheFlushService;
 
   @Autowired protected GameSaveService gameSaveService;

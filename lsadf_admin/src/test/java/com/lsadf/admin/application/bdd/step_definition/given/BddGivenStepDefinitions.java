@@ -155,7 +155,6 @@ public class BddGivenStepDefinitions extends BddLoader {
 
     // Clear caches
     redisCacheManager.clearCaches();
-    localCacheManager.clearCaches();
 
     assertThat(characteristicsCache.getAll()).isEmpty();
     assertThat(characteristicsCache.getAllHisto()).isEmpty();
