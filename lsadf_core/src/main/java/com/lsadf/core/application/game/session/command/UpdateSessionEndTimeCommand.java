@@ -16,6 +16,7 @@
 
 package com.lsadf.core.application.game.session.command;
 
+import java.time.Instant;
 import java.util.UUID;
 
-public record UpdateSessionEndTimeCommand(UUID gameSessionId) {}
+public record UpdateSessionEndTimeCommand(UUID gameSessionId, Instant endTime) {}

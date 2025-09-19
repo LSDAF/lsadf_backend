@@ -20,6 +20,7 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsCache
 import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyProperties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class ValkeyCacheManager implements CacheManager {
   private final CharacteristicsCachePort characteristicsCache;
   private final CurrencyCachePort currencyCache;
   private final StageCachePort stageCache;
+  private final GameSessionCachePort gameSessionCache;
 
   private final AtomicBoolean isEnabled;
 
@@ -39,11 +41,13 @@ public class ValkeyCacheManager implements CacheManager {
       CharacteristicsCachePort characteristicsCache,
       CurrencyCachePort currencyCache,
       StageCachePort stageCache,
-      ValkeyProperties valkeyProperties) {
+      ValkeyProperties valkeyProperties,
+      GameSessionCachePort gameSessionCache) {
     this.characteristicsCache = characteristicsCache;
     this.currencyCache = currencyCache;
     this.stageCache = stageCache;
     this.gameMetadataCache = gameMetadataCache;
+    this.gameSessionCache = gameSessionCache;
     this.isEnabled = new AtomicBoolean(valkeyProperties.isEnabled());
   }
 
@@ -67,6 +71,8 @@ public class ValkeyCacheManager implements CacheManager {
     currencyCache.clear();
     stageCache.clear();
     gameMetadataCache.clear();
+    gameSessionCache.clear();
+    // clean
     log.info("Caches cleared");
   }
 

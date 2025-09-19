@@ -60,11 +60,28 @@ public class GameSessionRepositoryAdapter implements GameSessionRepositoryPort {
 
   @Override
   @Transactional
-  public GameSession createNewGameSession(UUID gameSaveId, Instant endTime) {
+  public GameSession createNewGameSession(UUID id, UUID gameSaveId, Instant endTime) {
     Optional<GameSessionViewEntity> optional =
         gameSessionViewRepository.findLatestActiveGameSessionByGameSaveId(gameSaveId);
     optional.ifPresent(gameSession -> cancelGameSession(gameSession.getId()));
-    gameSessionRepository.createNewGameSession(gameSaveId, endTime);
+    gameSessionRepository.createNewGameSession(id, gameSaveId, endTime);
+    return gameSessionViewRepository
+        .findLatestActiveGameSessionByGameSaveId(gameSaveId)
+        .map(gameSessionViewMapper::map)
+        .orElseThrow(
+            () ->
+                new NotFoundException(
+                    "Didn't find any active game session for gameSaveId " + gameSaveId));
+  }
+
+  @Override
+  @Transactional
+  public GameSession createNewGameSession(
+      UUID id, UUID gameSaveId, Instant endTime, boolean cancelled) {
+    Optional<GameSessionViewEntity> optional =
+        gameSessionViewRepository.findLatestActiveGameSessionByGameSaveId(gameSaveId);
+    optional.ifPresent(gameSession -> cancelGameSession(gameSession.getId()));
+    gameSessionRepository.createNewGameSession(id, gameSaveId, endTime, cancelled);
     return gameSessionViewRepository
         .findLatestActiveGameSessionByGameSaveId(gameSaveId)
         .map(gameSessionViewMapper::map)

@@ -20,10 +20,9 @@ import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.valkey.ValkeyConstants;
 import com.lsadf.core.infra.valkey.cache.adapter.ValkeyHistoCacheAdapter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 
-@Slf4j
+@Deprecated(forRemoval = true)
 public class CurrencyCacheAdapter extends ValkeyHistoCacheAdapter<Currency>
     implements CurrencyCachePort {
   private static final String HISTO_KEY_TYPE = ValkeyConstants.CURRENCY_HISTO;

@@ -16,21 +16,49 @@
 
 package com.lsadf.core.infra.persistence.impl.game.session;
 
+import static com.lsadf.core.infra.persistence.impl.game.session.GameSessionEntity.GameSessionEntityAttributes.*;
+
 import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.time.Instant;
 import java.util.UUID;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GameSessionRepository extends JdbcRepository<GameSessionEntity> {
+
+  @Modifying
   @Query(
-      "insert into t_game_session_tgse (tgme_id, tgse_end_time) values (:tgme_id, :tgse_end_time)")
-  void createNewGameSession(UUID gameSaveId, Instant endTime);
+      "insert into t_game_session_tgse (tgse_id, tgme_id, tgse_end_time) values (:tgse_id, :tgme_id, :tgse_end_time)")
+  void createNewGameSession(
+      @Param(GAME_SESSION_ID) UUID id,
+      @Param(GAME_SESSION_GAME_METADATA_ID) UUID gameSaveId,
+      @Param(GAME_SESSION_END_TIME) Instant endTime);
 
-  @Query("update t_game_session_tgse set tgse_end_time=:tgse_end_time where tgme_id=:tgme_id")
-  void updateGameSessionEndTime(UUID sessionId, Instant endTime);
+  @Modifying
+  @Query(
+      "insert into t_game_session_tgse (tgse_id, tgme_id, tgse_end_time, tgse_cancelled) values (:tgse_id, :tgme_id, :tgse_end_time, :tgse_cancelled)")
+  void createNewGameSession(
+      @Param(GAME_SESSION_ID) UUID id,
+      @Param(GAME_SESSION_GAME_METADATA_ID) UUID gameSaveId,
+      @Param(GAME_SESSION_END_TIME) Instant endTime,
+      @Param(GAME_SESSION_CANCELLED) boolean cancelled);
 
+  @Modifying
+  @Query("update t_game_session_tgse set tgse_end_time=:tgse_end_time where tgse_id=:tgse_id")
+  void updateGameSessionEndTime(
+      @Param(GAME_SESSION_ID) UUID sessionId, @Param(GAME_SESSION_END_TIME) Instant endTime);
+
+  @Modifying
   @Query("update t_game_session_tgse set tgse_cancelled=TRUE where tgse_id=:tgse_id")
-  void cancelGameSession(UUID sessionId);
+  void cancelGameSession(@Param(GAME_SESSION_ID) UUID sessionId);
+
+  @Modifying
+  @Query("delete from t_game_session_tgse")
+  void deleteAllGameSessions();
+
+  @Query("select count(tgse_id) from t_game_session_tgse")
+  long count();
 }

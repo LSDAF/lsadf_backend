@@ -37,6 +37,7 @@ import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.cache.flush.FlushRecoveryService;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
 import javax.sql.DataSource;
+import org.mockito.Answers;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -56,7 +57,8 @@ public class UnitTestConfiguration {
 
   @MockBean private UserService userService;
 
-  @MockBean private GameSessionQueryService gameSessionQueryService;
+  @MockBean(answer = Answers.RETURNS_MOCKS)
+  private GameSessionQueryService gameSessionQueryService;
 
   @MockBean private GameSessionCommandService gameSessionCommandService;
 

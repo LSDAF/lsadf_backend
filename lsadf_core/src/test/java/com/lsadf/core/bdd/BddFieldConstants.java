@@ -77,6 +77,15 @@ public class BddFieldConstants {
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class GameSession {
+    public static final String GAME_SAVE_ID = "gameSaveId";
+    public static final String ID = "id";
+    public static final String END_TIME = "endTime";
+    public static final String CANCELLED = "cancelled";
+    public static final String VERSION = "version";
+  }
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class GameSave {
     public static final String ID = BddFieldConstants.ID;
     public static final String USER_EMAIL = "userEmail";

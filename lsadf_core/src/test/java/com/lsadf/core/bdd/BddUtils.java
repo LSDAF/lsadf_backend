@@ -36,6 +36,7 @@ import com.lsadf.core.infra.persistence.impl.game.save.characteristics.Character
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageEntity;
+import com.lsadf.core.infra.persistence.impl.game.session.GameSessionEntity;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.request.common.Filter;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
@@ -62,6 +63,7 @@ import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.dto.response.user.UserResponse;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
@@ -153,6 +155,31 @@ public class BddUtils {
     String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
     String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
     return GameMetadataEntity.builder().userEmail(userEmail).nickname(nickname).id(uuid).build();
+  }
+
+  /**
+   * Maps a row from a BDD table to a GameSessionEntity
+   *
+   * @param row row from BDD table
+   * @return GameMetadataEntity
+   */
+  public static GameSessionEntity mapToGameSaveSessionEntity(Map<String, String> row) {
+    var builder = GameSessionEntity.builder();
+    UUID id = UUID.fromString(row.get(BddFieldConstants.GameSession.ID));
+    UUID gameSaveId = UUID.fromString(row.get(BddFieldConstants.GameSession.GAME_SAVE_ID));
+    String endTimeString = row.get(BddFieldConstants.GameSession.END_TIME);
+    String cancelledString = row.get(BddFieldConstants.GameSession.CANCELLED);
+    boolean cancelled = Boolean.parseBoolean(cancelledString);
+    var versionString = row.get(BddFieldConstants.GameSession.VERSION);
+    Optional<Integer> version =
+        versionString == null ? Optional.empty() : Optional.of(Integer.parseInt(versionString));
+    version.ifPresent(builder::version);
+    Instant endTime =
+        endTimeString != null
+            ? Instant.parse(endTimeString)
+            // ensuring end date is far
+            : Instant.now().plus(10, ChronoUnit.HOURS);
+    return builder.id(id).gameSaveId(gameSaveId).cancelled(cancelled).endTime(endTime).build();
   }
 
   /**
