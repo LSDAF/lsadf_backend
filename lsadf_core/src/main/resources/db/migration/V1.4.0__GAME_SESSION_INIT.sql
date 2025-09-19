@@ -29,8 +29,13 @@ CREATE TABLE t_game_session_tgse
 ALTER TABLE t_game_session_tgse
     ADD CONSTRAINT fk_t_game_session_on_tgme FOREIGN KEY (tgme_id) REFERENCES t_game_metadata_tgme (tgme_id) ON DELETE CASCADE;
 
+-- Only active (not cancelled) game sessions, ordered by end_time
+CREATE INDEX idx_active_sessions
+    ON t_game_session_tgse (tgse_end_time DESC)
+    WHERE tgse_cancelled = FALSE;
+
 CREATE VIEW v_game_session_vgse AS
-SELECT tgse.tgse_id         AS "vgme_id",
+SELECT tgse.tgse_id AS "vgse_id",
        tgse.tgme_id         AS "vgse_game_save_id",
        tgse.tgse_end_time   AS "vgse_end_time",
        tgse.tgse_cancelled  AS "vgse_cancelled",

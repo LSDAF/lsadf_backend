@@ -23,6 +23,7 @@ import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
 import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
@@ -130,9 +131,15 @@ public class ValkeyCacheConfiguration {
       CharacteristicsCachePort characteristicsCache,
       CurrencyCachePort currencyCache,
       StageCachePort stageCache,
+      GameSessionCachePort gameSessionCache,
       ValkeyProperties valkeyProperties) {
     return new ValkeyCacheManager(
-        gameMetadataCache, characteristicsCache, currencyCache, stageCache, valkeyProperties);
+        gameMetadataCache,
+        characteristicsCache,
+        currencyCache,
+        stageCache,
+        valkeyProperties,
+        gameSessionCache);
   }
 
   @Bean

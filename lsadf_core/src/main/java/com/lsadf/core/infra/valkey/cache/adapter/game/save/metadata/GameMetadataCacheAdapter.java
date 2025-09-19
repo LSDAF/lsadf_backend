@@ -21,6 +21,7 @@ import com.lsadf.core.domain.game.save.metadata.GameMetadata;
 import com.lsadf.core.infra.valkey.cache.adapter.ValkeyCacheAdapter;
 import org.springframework.data.redis.core.RedisTemplate;
 
+@Deprecated(forRemoval = true)
 public class GameMetadataCacheAdapter extends ValkeyCacheAdapter<GameMetadata>
     implements GameMetadataCachePort {
   public GameMetadataCacheAdapter(

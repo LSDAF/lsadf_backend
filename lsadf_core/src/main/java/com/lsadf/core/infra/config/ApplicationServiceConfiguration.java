@@ -187,9 +187,9 @@ public class ApplicationServiceConfiguration {
       GameSessionRepositoryPort gameSessionRepositoryPort,
       CacheManager cacheManager,
       GameSessionCachePort gameSessionCachePort,
-      ClockService clockService) {
+      GameSaveService gameSaveService) {
     return new GameSessionCommandServiceImpl(
-        gameSessionRepositoryPort, cacheManager, gameSessionCachePort, clockService);
+        gameSessionRepositoryPort, cacheManager, gameSessionCachePort, gameSaveService);
   }
 
   @Bean

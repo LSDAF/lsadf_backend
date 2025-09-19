@@ -36,25 +36,25 @@ import org.springframework.data.relational.core.mapping.Table;
 public class GameSessionEntity implements Identifiable, Dateable {
   @Id
   @Column(GAME_SESSION_ID)
-  private final UUID id;
+  private UUID id;
 
   @Column(GAME_SESSION_GAME_METADATA_ID)
-  private final UUID gameSaveId;
+  private UUID gameSaveId;
 
   @Column(GAME_SESSION_END_TIME)
-  private final Instant endTime;
+  private Instant endTime;
 
   @Column(GAME_SESSION_CANCELLED)
-  private final boolean cancelled;
+  private boolean cancelled;
 
   @Column(GAME_SESSION_CREATED_AT)
-  private final Date createdAt;
+  private Date createdAt;
 
   @Column(GAME_SESSION_UPDATED_AT)
-  private final Date updatedAt;
+  private Date updatedAt;
 
   @Column(GAME_SESSION_VERSION)
-  private final Integer version;
+  private Integer version;
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class GameSessionEntityAttributes {

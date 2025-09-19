@@ -17,15 +17,15 @@
 package com.lsadf.core.application.game.session.impl;
 
 import com.lsadf.core.application.cache.CacheManager;
-import com.lsadf.core.application.clock.ClockService;
+import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.game.session.GameSessionCommandService;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.application.game.session.command.InitializeSessionCommand;
 import com.lsadf.core.application.game.session.command.UpdateSessionEndTimeCommand;
 import com.lsadf.core.domain.game.session.GameSession;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import com.lsadf.core.exception.http.NotFoundException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -34,14 +34,19 @@ public class GameSessionCommandServiceImpl implements GameSessionCommandService 
   private final GameSessionRepositoryPort gameSessionRepositoryPort;
   private final CacheManager cacheManager;
   private final GameSessionCachePort gameSessionCachePort;
-  private final ClockService clockService;
+  private final GameSaveService gameSaveService;
 
   @Override
   public GameSession initializeGameSession(InitializeSessionCommand command) {
-    Instant instant = clockService.nowInstant();
-    Instant added = instant.plus(15, ChronoUnit.MINUTES);
+    UUID gameSaveId = command.gameSaveId();
+    if (!gameSaveService.existsById(gameSaveId)) {
+      throw new NotFoundException("Game save with id " + gameSaveId + " not found");
+    }
+
+    UUID uuid = UUID.randomUUID();
     GameSession gameSession =
-        gameSessionRepositoryPort.createNewGameSession(command.gameSaveId(), added);
+        gameSessionRepositoryPort.createNewGameSession(
+            uuid, command.gameSaveId(), command.endTime());
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       gameSessionCachePort.set(gameSession.getId().toString(), gameSession);
     }
@@ -50,10 +55,9 @@ public class GameSessionCommandServiceImpl implements GameSessionCommandService 
 
   @Override
   public GameSession updateGameSessionEndTime(UpdateSessionEndTimeCommand command) {
-    Instant instant = clockService.getClock().instant();
-    Instant added = instant.plus(15, ChronoUnit.MINUTES);
     GameSession updated =
-        gameSessionRepositoryPort.updateGameSessionEndTime(command.gameSessionId(), added);
+        gameSessionRepositoryPort.updateGameSessionEndTime(
+            command.gameSessionId(), command.endTime());
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       gameSessionCachePort.set(updated.getId().toString(), updated);
     }
