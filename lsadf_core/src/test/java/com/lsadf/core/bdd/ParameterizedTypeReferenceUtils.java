@@ -21,6 +21,7 @@ import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponse;
+import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
 import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.dto.response.user.UserInfoResponse;
@@ -95,6 +96,16 @@ public class ParameterizedTypeReferenceUtils {
    */
   public static ParameterizedTypeReference<ApiResponse<Set<ItemResponse>>>
       buildParameterizedItemSetResponse() {
+    return new ParameterizedTypeReference<>() {};
+  }
+
+  /**
+   * Builds a ParameterizedTypeReference for a ApiResponse containing a GameSessionResponse object.
+   *
+   * @return ParameterizedTypeReference representing a response with a GameSessionResponse object.
+   */
+  public static ParameterizedTypeReference<ApiResponse<GameSessionResponse>>
+      buildParameterizedGameSessionResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 

@@ -165,6 +165,7 @@ public class RedisCacheFlushServiceImpl implements CacheFlushService {
     }
   }
 
+
   private void flush(UUID gameSaveId) {
     log.debug("Flushing all data for game save {}", gameSaveId);
     try {

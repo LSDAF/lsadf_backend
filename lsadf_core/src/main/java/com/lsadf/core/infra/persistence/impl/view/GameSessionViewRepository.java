@@ -16,20 +16,25 @@
 
 package com.lsadf.core.infra.persistence.impl.view;
 
+import static com.lsadf.core.infra.persistence.impl.view.GameSessionViewEntity.GameSessionViewAttributes.GAME_SESSION_GAME_METADATA_ID;
+import static com.lsadf.core.infra.persistence.impl.view.GameSessionViewEntity.GameSessionViewAttributes.GAME_SESSION_ID;
+
 import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jdbc.repository.query.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GameSessionViewRepository extends JdbcRepository<GameSessionViewEntity> {
   @Query("select * from v_game_session_vgse where vgse_id=:vgse_id")
-  Optional<GameSessionViewEntity> findBySessionId(UUID sessionId);
+  Optional<GameSessionViewEntity> findBySessionId(@Param(GAME_SESSION_ID) UUID sessionId);
 
   @Query("select * from v_game_session_vgse where vgse_game_save_id=:vgse_game_save_id")
-  List<GameSessionViewEntity> findByGameSaveId(UUID gameSaveId);
+  List<GameSessionViewEntity> findByGameSaveId(
+      @Param(GAME_SESSION_GAME_METADATA_ID) UUID gameSaveId);
 
   @Query(
       "SELECT * FROM v_game_session_vgse "
@@ -37,5 +42,6 @@ public interface GameSessionViewRepository extends JdbcRepository<GameSessionVie
           + "AND vgse_cancelled = FALSE "
           + "ORDER BY vgse_end_time DESC "
           + "LIMIT 1")
-  Optional<GameSessionViewEntity> findLatestActiveGameSessionByGameSaveId(UUID gameSaveId);
+  Optional<GameSessionViewEntity> findLatestActiveGameSessionByGameSaveId(
+      @Param(GAME_SESSION_GAME_METADATA_ID) UUID gameSaveId);
 }
