@@ -31,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
@@ -241,6 +242,14 @@ public class GlobalExceptionHandler {
     log.error("AlreadyTakenNicknameException: ", e);
     return generateResponse(
         HttpStatus.BAD_REQUEST, "Nickname already taken: " + e.getMessage(), null);
+  }
+
+  @ExceptionHandler(MissingRequestHeaderException.class)
+  public ResponseEntity<ApiResponse<Void>> handleMissingRequestHeaderException(
+      MissingRequestHeaderException e) {
+    log.error("MissingRequestHeaderException: ", e);
+    return generateResponse(
+        HttpStatus.BAD_REQUEST, "Missing request header: " + e.getMessage(), null);
   }
 
   /**
