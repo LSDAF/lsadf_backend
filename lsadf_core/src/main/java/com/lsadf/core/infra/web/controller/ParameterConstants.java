@@ -73,4 +73,6 @@ public final class ParameterConstants {
    * request handling within controllers.
    */
   public static final String CODE = "code";
+
+  public static final String X_GAME_SESSION_ID = "X-GameSession-ID";
 }
