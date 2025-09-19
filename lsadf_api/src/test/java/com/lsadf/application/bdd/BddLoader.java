@@ -45,6 +45,7 @@ import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.currency.CurrencyQueryService;
 import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.application.game.save.stage.StageQueryService;
+import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.application.shared.HistoCachePort;
 import com.lsadf.core.application.user.UserService;
@@ -62,6 +63,7 @@ import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyReposito
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
+import com.lsadf.core.infra.persistence.impl.game.session.GameSessionRepository;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
@@ -69,6 +71,7 @@ import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
@@ -148,6 +151,8 @@ public class BddLoader {
 
   // Caches
 
+  @Autowired protected GameSessionCachePort gameSessionCache;
+
   @Autowired protected CachePort<GameMetadata> gameMetadataCache;
 
   @Autowired protected HistoCachePort<Characteristics> characteristicsCache;
@@ -157,6 +162,9 @@ public class BddLoader {
   @Autowired protected HistoCachePort<Stage> stageCache;
 
   // Repositories
+
+  @Autowired protected GameSessionRepository gameSessionRepository;
+
   @Autowired protected CharacteristicsRepository characteristicsRepository;
 
   @Autowired protected CurrencyRepository currencyRepository;
@@ -195,8 +203,6 @@ public class BddLoader {
 
   @Autowired protected CacheManager redisCacheManager;
 
-  @Autowired protected CacheManager localCacheManager;
-
   @Autowired protected CacheFlushService cacheFlushService;
 
   @Autowired protected GameSaveService gameSaveService;
@@ -210,6 +216,8 @@ public class BddLoader {
   @Autowired protected Stack<List<GameMetadataEntity>> gameSaveEntityListStack;
 
   @Autowired protected Stack<List<User>> userListStack;
+
+  @Autowired protected Stack<GameSessionResponse> gameSessionResponseStack;
 
   @Autowired protected Stack<Characteristics> characteristicsStack;
 
