@@ -82,6 +82,7 @@ spring:
     baseline-on-migrate: true
   main:
     web-application-type: SERVLET
+    lazy-initialization: true
 
 
 keycloak:

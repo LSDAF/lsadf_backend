@@ -41,6 +41,7 @@ spring:
       enabled: always
   main:
     allow-bean-definition-overriding: true
+    lazy-initialization: false
     banner-mode: off
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss.SSS
