@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.application.game.session;
+package com.lsadf.core.exception;
 
-import com.lsadf.core.domain.game.session.GameSession;
-import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
-
-public interface GameSessionQueryService {
-  GameSession findGameSessionById(UUID id);
-
-  List<GameSession> findGameSessionByGameSaveId(UUID gameSaveId);
-
-  void checkGameSessionValidity(UUID sessionId, UUID gameSaveId, Instant now);
+public class InvalidGameSessionException extends RuntimeException {
+  public InvalidGameSessionException(String message) {
+    super(message);
+  }
 }
