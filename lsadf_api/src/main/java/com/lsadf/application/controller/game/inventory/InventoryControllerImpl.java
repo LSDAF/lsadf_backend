@@ -18,8 +18,10 @@ package com.lsadf.application.controller.game.inventory;
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
 import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
+import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
@@ -46,18 +48,25 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   private final GameSaveService gameSaveService;
   private final InventoryService inventoryService;
+  private final GameSessionQueryService gameSessionService;
+  private final ClockService clockService;
   private static final ItemResponseMapper itemResponseMapper = ItemResponseMapper.INSTANCE;
 
   @Autowired
   public InventoryControllerImpl(
-      GameSaveService gameSaveService, InventoryService inventoryService) {
+      GameSaveService gameSaveService,
+      InventoryService inventoryService,
+      GameSessionQueryService gameSessionService,
+      ClockService clockService) {
     this.gameSaveService = gameSaveService;
     this.inventoryService = inventoryService;
+    this.gameSessionService = gameSessionService;
+    this.clockService = clockService;
   }
 
   @Override
   public ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventoryItems(
-      Jwt jwt, UUID gameSaveId) {
+      Jwt jwt, UUID gameSaveId, UUID gameSessionId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
@@ -69,10 +78,12 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   @Override
   public ResponseEntity<ApiResponse<ItemResponse>> createItemInInventory(
-      Jwt jwt, UUID gameSaveId, ItemRequest itemRequest) {
+      Jwt jwt, UUID gameSaveId, ItemRequest itemRequest, UUID gameSessionId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
+    gameSessionService.checkGameSessionValidity(
+        gameSessionId, gameSaveId, clockService.nowInstant());
     Item item = inventoryService.createItemInInventory(gameSaveId, itemRequest);
     ItemResponse itemResponse = itemResponseMapper.map(item);
     return generateResponse(HttpStatus.OK, itemResponse);
@@ -80,20 +91,24 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   @Override
   public ResponseEntity<ApiResponse<Void>> deleteItemFromInventory(
-      Jwt jwt, UUID gameSaveId, String itemClientId) {
+      Jwt jwt, UUID gameSaveId, String itemClientId, UUID gameSessionId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
+    gameSessionService.checkGameSessionValidity(
+        gameSessionId, gameSaveId, clockService.nowInstant());
     inventoryService.deleteItemFromInventory(gameSaveId, itemClientId);
     return generateResponse(HttpStatus.OK);
   }
 
   @Override
   public ResponseEntity<ApiResponse<ItemResponse>> updateItemInInventory(
-      Jwt jwt, UUID gameSaveId, String itemClientId, ItemRequest itemRequest) {
+      Jwt jwt, UUID gameSaveId, String itemClientId, ItemRequest itemRequest, UUID gameSessionId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
+    gameSessionService.checkGameSessionValidity(
+        gameSessionId, gameSaveId, clockService.nowInstant());
     Item item = inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemRequest);
     ItemResponse itemResponse = itemResponseMapper.map(item);
     return generateResponse(HttpStatus.OK, itemResponse);

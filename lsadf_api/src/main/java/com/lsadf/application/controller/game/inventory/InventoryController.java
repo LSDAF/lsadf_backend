@@ -17,8 +17,7 @@ package com.lsadf.application.controller.game.inventory;
 
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
-import static com.lsadf.core.infra.web.controller.ParameterConstants.CLIENT_ID;
-import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
@@ -54,6 +53,7 @@ public interface InventoryController {
    *
    * @param jwt The JWT token of the authenticated user
    * @param gameSaveId The UUID of the game save to retrieve the inventory from
+   * @param gameSessionId The current game session id
    * @return ResponseEntity containing the inventory data
    */
   @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
@@ -77,7 +77,9 @@ public interface InventoryController {
             description = "Internal Server Error")
       })
   ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventoryItems(
-      @AuthenticationPrincipal Jwt jwt, @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId);
+      @AuthenticationPrincipal Jwt jwt,
+      @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
+      @RequestHeader(X_GAME_SESSION_ID) UUID gameSessionId);
 
   /**
    * Creates an item in the inventory of a specific game save.
@@ -85,6 +87,7 @@ public interface InventoryController {
    * @param jwt The JWT token of the authenticated user.
    * @param gameSaveId The UUID of the game save to add the item to.
    * @param itemRequest The request containing the item details.
+   * @param gameSessionId The current game session id
    * @return ResponseEntity containing the updated inventory data.
    */
   @PostMapping(value = Constants.ApiPaths.ITEMS)
@@ -110,7 +113,8 @@ public interface InventoryController {
   ResponseEntity<ApiResponse<ItemResponse>> createItemInInventory(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
-      @RequestBody @Valid ItemRequest itemRequest);
+      @RequestBody @Valid ItemRequest itemRequest,
+      @RequestHeader(X_GAME_SESSION_ID) UUID gameSessionId);
 
   /**
    * Deletes an item from the inventory of a specific game save.
@@ -118,6 +122,7 @@ public interface InventoryController {
    * @param jwt The JWT token of the authenticated user
    * @param gameSaveId The UUID of the game save to remove the item from
    * @param itemClientId The client-side identifier of the item to delete
+   * @param gameSessionId The current game session id
    * @return ResponseEntity containing the updated inventory data
    */
   @DeleteMapping(value = Constants.ApiPaths.CLIENT_ID)
@@ -143,7 +148,8 @@ public interface InventoryController {
   ResponseEntity<ApiResponse<Void>> deleteItemFromInventory(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
-      @PathVariable(value = CLIENT_ID) String itemClientId);
+      @PathVariable(value = CLIENT_ID) String itemClientId,
+      @RequestHeader(X_GAME_SESSION_ID) UUID gameSessionId);
 
   /**
    * Updates an item in the inventory of a specific game save.
@@ -152,6 +158,7 @@ public interface InventoryController {
    * @param gameSaveId The UUID of the game save containing the inventory to update.
    * @param itemClientId The client-side identi fier of the item to update.
    * @param itemRequest The request containing the updated item details.
+   * @param gameSessionId The current game session id
    * @return ResponseEntity containing the updated item data.
    */
   @PutMapping(value = Constants.ApiPaths.CLIENT_ID)
@@ -178,7 +185,8 @@ public interface InventoryController {
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
       @PathVariable(value = CLIENT_ID) String itemClientId,
-      @RequestBody @Valid ItemRequest itemRequest);
+      @RequestBody @Valid ItemRequest itemRequest,
+      @RequestHeader(X_GAME_SESSION_ID) UUID gameSessionId);
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   class Constants {
