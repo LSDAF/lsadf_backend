@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-
+-- TABLE T_GAME_SESSION_TGSE
 CREATE TABLE t_game_session_tgse
 (
     tgse_id         UUID PRIMARY KEY,
@@ -30,18 +30,42 @@ ALTER TABLE t_game_session_tgse
     ADD CONSTRAINT fk_t_game_session_on_tgme FOREIGN KEY (tgme_id) REFERENCES t_game_metadata_tgme (tgme_id) ON DELETE CASCADE;
 
 -- Only active (not cancelled) game sessions, ordered by end_time
-CREATE INDEX idx_active_sessions
+CREATE INDEX idx_tgse_active_sessions
     ON t_game_session_tgse (tgse_end_time DESC)
     WHERE tgse_cancelled = FALSE;
 
+CREATE INDEX idx_tgse_version
+    ON t_game_session_tgse (tgse_version DESC);
+
+
+-- TRIGGER TRG_GAME_SESSION_UPDATE
+CREATE OR REPLACE FUNCTION update_game_session_timestamp()
+    RETURNS trigger AS
+$$
+BEGIN
+    -- Set the timestamp to the instant the command is executed
+    NEW.tgse_updated_at := now(); -- or CURRENT_TIMESTAMP
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_game_session_update
+    AFTER UPDATE
+    ON t_game_session_tgse
+    FOR EACH ROW
+EXECUTE FUNCTION update_game_session_timestamp();
+
+
+-- VIEW V_GAME_SESSION_VGSE
 CREATE VIEW v_game_session_vgse AS
-SELECT tgse.tgse_id AS "vgse_id",
+SELECT tgse.tgse_id         AS "vgse_id",
        tgse.tgme_id         AS "vgse_game_save_id",
        tgse.tgse_end_time   AS "vgse_end_time",
        tgse.tgse_cancelled  AS "vgse_cancelled",
        tgse.tgse_created_at AS "vgse_created_at",
        tgse.tgse_updated_at AS "vgse_updated_at",
-       tgme.tgme_user_email AS "vgse_user_email"
+       tgme.tgme_user_email AS "vgse_user_email",
+       tgse.tgse_version    AS "vgse_version"
 
 FROM t_game_session_tgse tgse
          LEFT JOIN t_game_metadata_tgme tgme on tgme.tgme_id = tgse.tgme_id;

@@ -102,6 +102,7 @@ public final class JsonAttributes {
   public static final String REFRESH_EXPIRES_IN = "refresh_expires_in";
   public static final String EXPIRES_IN = "expires_in";
   public static final String END_TIME = "end_time";
+  public static final String VERSION = "version";
   public static final String GAME_SAVE_ID = "game_save_id";
   public static final String CANCELLED = "cancelled";
 }

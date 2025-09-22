@@ -42,7 +42,7 @@ public class GameSessionRepositoryAdapter implements GameSessionRepositoryPort {
   @Transactional(readOnly = true)
   public Optional<GameSession> getGameSessionById(UUID id) {
     Optional<GameSessionViewEntity> gameSessionEntity =
-        gameSessionViewRepository.findBySessionId(id);
+        gameSessionViewRepository.findLatestBySessionId(id);
     if (gameSessionEntity.isPresent()) {
       GameSession result = gameSessionViewMapper.map(gameSessionEntity.get());
       return Optional.of(result);
@@ -94,9 +94,9 @@ public class GameSessionRepositoryAdapter implements GameSessionRepositoryPort {
   @Override
   @Transactional
   public GameSession updateGameSessionEndTime(UUID sessionId, Instant endTime) {
-    gameSessionRepository.updateGameSessionEndTime(sessionId, endTime);
+    gameSessionRepository.updateGameSession(sessionId, endTime);
     return gameSessionViewRepository
-        .findBySessionId(sessionId)
+        .findLatestBySessionId(sessionId)
         .map(gameSessionViewMapper::map)
         .orElseThrow(
             () -> new NotFoundException("Didn't find any game session with id " + sessionId));
