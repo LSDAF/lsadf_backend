@@ -25,6 +25,9 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record GameSessionResponse(
-    @JsonProperty(ID) UUID id, @JsonProperty(END_TIME) Instant endTime) implements Response {
+    @JsonProperty(ID) UUID id,
+    @JsonProperty(END_TIME) Instant endTime,
+    @JsonProperty(VERSION) int version)
+    implements Response {
   @Serial private static final long serialVersionUID = 8978198279370168906L;
 }

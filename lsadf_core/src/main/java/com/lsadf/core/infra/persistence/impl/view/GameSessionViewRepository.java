@@ -29,8 +29,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GameSessionViewRepository extends JdbcRepository<GameSessionViewEntity> {
-  @Query("select * from v_game_session_vgse where vgse_id=:vgse_id")
-  Optional<GameSessionViewEntity> findBySessionId(@Param(GAME_SESSION_ID) UUID sessionId);
+  @Query(
+      """
+              select * from v_game_session_vgse
+                       where vgse_id=:vgse_id
+                       order by vgse_version desc
+                       limit 1
+              """)
+  Optional<GameSessionViewEntity> findLatestBySessionId(@Param(GAME_SESSION_ID) UUID sessionId);
 
   @Query("select * from v_game_session_vgse where vgse_game_save_id=:vgse_game_save_id")
   List<GameSessionViewEntity> findByGameSaveId(
@@ -39,6 +45,7 @@ public interface GameSessionViewRepository extends JdbcRepository<GameSessionVie
   @Query(
       "SELECT * FROM v_game_session_vgse "
           + "WHERE vgse_end_time > NOW() "
+          + "AND vgse_game_save_id = :vgse_game_save_id "
           + "AND vgse_cancelled = FALSE "
           + "ORDER BY vgse_end_time DESC "
           + "LIMIT 1")
