@@ -17,11 +17,14 @@
 package com.lsadf.core.application.game.session.impl;
 
 import com.lsadf.core.application.cache.CacheManager;
+import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.domain.game.session.GameSession;
+import com.lsadf.core.exception.InvalidGameSessionException;
 import com.lsadf.core.exception.http.NotFoundException;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,8 @@ public class GameSessionQueryServiceImpl implements GameSessionQueryService {
   private final GameSessionCachePort gameSessionCachePort;
 
   private final CacheManager cacheManager;
+
+  private final ClockService clockService;
 
   @Override
   public GameSession findGameSessionById(UUID id) {
@@ -58,5 +63,19 @@ public class GameSessionQueryServiceImpl implements GameSessionQueryService {
     return gameSessionRepositoryPort
         .getGameSessionById(id)
         .orElseThrow(() -> new NotFoundException("Didn't find any game session with id " + id));
+  }
+
+  @Override
+  public void checkGameSessionValidity(UUID sessionId, UUID gameSaveId, Instant now) {
+    GameSession gameSession = findGameSessionById(sessionId);
+    if (!gameSession.getGameSaveId().equals(gameSaveId)) {
+      throw new InvalidGameSessionException("Game session is not associated with this game save");
+    }
+    if (gameSession.isCancelled()) {
+      throw new InvalidGameSessionException("Game session cancelled");
+    }
+    if (gameSession.getEndTime().isBefore(now)) {
+      throw new InvalidGameSessionException("Game session expired");
+    }
   }
 }
