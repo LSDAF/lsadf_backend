@@ -59,7 +59,7 @@ public interface GameSessionRepository extends JdbcRepository<GameSessionEntity>
                   tgme_id,
                   :tgse_end_time,
                   tgse_version + 1
-              from t_game_session_tgme
+              from t_game_session_tgse
                   where tgse_id=:tgse_id
               """)
   void updateGameSession(
