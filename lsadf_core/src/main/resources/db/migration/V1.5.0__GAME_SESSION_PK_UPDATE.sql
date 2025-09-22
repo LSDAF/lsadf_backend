@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.web.dto.response.game.session;
+-- 1- Drop the current PK constraint
+ALTER TABLE t_game_session_tgse
+    DROP CONSTRAINT t_game_session_tgse_pkey;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.infra.web.dto.response.Response;
-import java.io.Serial;
-import java.time.Instant;
-import java.util.UUID;
-import lombok.Builder;
-
-@Builder
-public record GameSessionResponse(
-    @JsonProperty(ID) UUID id,
-    @JsonProperty(END_TIME) Instant endTime,
-    @JsonProperty(VERSION) int version)
-    implements Response {
-  @Serial private static final long serialVersionUID = 8978198279370168906L;
-}
+-- 2- Add the new composite PK
+ALTER TABLE t_game_session_tgse
+    ADD CONSTRAINT t_game_session_tgse_pkey
+        PRIMARY KEY (tgse_id, tgse_version);

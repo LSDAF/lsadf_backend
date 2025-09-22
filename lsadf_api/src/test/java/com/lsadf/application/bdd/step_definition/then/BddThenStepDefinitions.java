@@ -26,10 +26,12 @@ import com.lsadf.core.infra.web.dto.response.game.save.characteristics.Character
 import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponseMapper;
 import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponse;
+import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
 import com.lsadf.core.infra.web.dto.response.user.UserInfoResponse;
 import com.lsadf.core.infra.web.dto.response.user.UserInfoResponseMapper;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -158,5 +160,22 @@ public class BddThenStepDefinitions extends BddLoader {
           .ignoringFields("id", "metadata.createdAt", "metadata.updatedAt")
           .isEqualTo(expected);
     }
+  }
+
+  @Then("^the response should have the following GameSessionResponse$")
+  public void thenResponseShouldHaveFollowingGameSessionResponse(DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+    if (rows.size() > 1) {
+      throw new IllegalArgumentException("Expected only one row in the DataTable");
+    }
+
+    Map<String, String> row = rows.get(0);
+    GameSessionResponse actual = (GameSessionResponse) responseStack.peek().data();
+    GameSessionResponse expected = BddUtils.mapToGameSessionResponse(row);
+
+    assertThat(actual).usingRecursiveComparison().ignoringFields("endTime").isEqualTo(expected);
+
+    Instant now = clockService.nowInstant();
+    assertThat(actual.endTime()).isAfter(now);
   }
 }
