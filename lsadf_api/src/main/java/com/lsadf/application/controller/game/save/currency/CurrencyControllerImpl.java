@@ -19,11 +19,13 @@ import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt
 import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.cache.CacheManager;
+import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.application.game.save.currency.CurrencyQueryService;
 import com.lsadf.core.application.game.save.currency.command.PersistCurrencyCommand;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
@@ -51,22 +53,28 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
   private final CurrencyCommandService currencyCommandService;
   private final CurrencyQueryService currencyQueryService;
   private final CacheManager cacheManager;
+  private final GameSessionQueryService gameSessionService;
 
   private static final CurrencyRequestMapper requestModelMapper = CurrencyRequestMapper.INSTANCE;
   private static final CurrencyResponseMapper currencyResponseMapper =
       CurrencyResponseMapper.INSTANCE;
+  private final ClockService clockService;
 
   public CurrencyControllerImpl(
       GameSaveService gameSaveService,
       CurrencyCommandService currencyCommandService,
       CurrencyQueryService currencyQueryService,
       CurrencyEventPublisherPort currencyEventPublisherPort,
-      CacheManager cacheManager) {
+      GameSessionQueryService gameSessionService,
+      CacheManager cacheManager,
+      ClockService clockService) {
     this.gameSaveService = gameSaveService;
     this.currencyCommandService = currencyCommandService;
     this.currencyQueryService = currencyQueryService;
+    this.gameSessionService = gameSessionService;
     this.currencyEventPublisherPort = currencyEventPublisherPort;
     this.cacheManager = cacheManager;
+    this.clockService = clockService;
   }
 
   @Override
@@ -75,6 +83,7 @@ public class CurrencyControllerImpl extends BaseController implements CurrencyCo
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
+    gameSessionService.checkGameSessionValidity(sessionId, gameSaveId, clockService.nowInstant());
 
     Currency currency = requestModelMapper.map(currencyRequest);
 

@@ -15,6 +15,7 @@
  */
 package com.lsadf.application.unit.controller;
 
+import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,6 +31,7 @@ import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.function.Supplier;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -101,7 +103,9 @@ class InventoryControllerTests {
   void test_getInventoryItems_returns200_when_authenticatedUserAndValidUuid() {
     // when
     mockMvc
-        .perform(get("/api/v1/inventory/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
+        .perform(
+            get("/api/v1/inventory/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString()))
         // then
         .andExpect(status().isOk());
   }
@@ -177,7 +181,8 @@ class InventoryControllerTests {
         .perform(
             post("/api/v1/inventory/{gameSaveId}/items", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(itemRequest)))
+                .content(objectMapper.writeValueAsString(itemRequest))
+                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString()))
         .andExpect(status().isOk());
   }
 
@@ -213,9 +218,10 @@ class InventoryControllerTests {
     mockMvc
         .perform(
             delete(
-                "/api/v1/inventory/{gameSaveId}/items/{clientId}",
-                "36f27c2a-06e8-4bdb-bf59-56999116f5ef",
-                "7a22d36c-b2b1-4b70-bce1-a7a8573a557b"))
+                    "/api/v1/inventory/{gameSaveId}/items/{clientId}",
+                    "36f27c2a-06e8-4bdb-bf59-56999116f5ef",
+                    "7a22d36c-b2b1-4b70-bce1-a7a8573a557b")
+                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString()))
         .andExpect(status().isOk());
   }
 
@@ -308,7 +314,8 @@ class InventoryControllerTests {
                     "7a22d36c-b2b1-4b70-bce1-a7a8573a557b")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(itemRequest)))
+                .content(objectMapper.writeValueAsString(itemRequest))
+                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString()))
         .andExpect(status().isOk());
   }
 }

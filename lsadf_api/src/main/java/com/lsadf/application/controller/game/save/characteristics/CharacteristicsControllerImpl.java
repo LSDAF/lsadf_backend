@@ -19,11 +19,13 @@ import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt
 import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.cache.CacheManager;
+import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsQueryService;
 import com.lsadf.core.application.game.save.characteristics.command.PersistCharacteristicsCommand;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
@@ -50,6 +52,8 @@ public class CharacteristicsControllerImpl extends BaseController
   private final CharacteristicsCommandService characteristicsCommandService;
   private final CharacteristicsQueryService characteristicsQueryService;
   private final CharacteristicsEventPublisherPort characteristicsEventPublisherPort;
+  private final GameSessionQueryService gameSessionService;
+  private final ClockService clockService;
 
   private static final CharacteristicsRequestMapper requestMapper =
       CharacteristicsRequestMapper.INSTANCE;
@@ -61,12 +65,16 @@ public class CharacteristicsControllerImpl extends BaseController
       GameSaveService gameSaveService,
       CharacteristicsQueryService characteristicsQueryService,
       CharacteristicsCommandService characteristicsCommandService,
-      CharacteristicsEventPublisherPort characteristicsEventPublisherPort) {
+      CharacteristicsEventPublisherPort characteristicsEventPublisherPort,
+      GameSessionQueryService gameSessionService,
+      ClockService clockService) {
     this.cacheManager = cacheManager;
     this.gameSaveService = gameSaveService;
     this.characteristicsCommandService = characteristicsCommandService;
     this.characteristicsQueryService = characteristicsQueryService;
     this.characteristicsEventPublisherPort = characteristicsEventPublisherPort;
+    this.gameSessionService = gameSessionService;
+    this.clockService = clockService;
   }
 
   @Override
@@ -75,6 +83,7 @@ public class CharacteristicsControllerImpl extends BaseController
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
+    gameSessionService.checkGameSessionValidity(sessionId, gameSaveId, clockService.nowInstant());
 
     Characteristics characteristics = requestMapper.map(characteristicsRequest);
     var enabled = cacheManager.isEnabled();
