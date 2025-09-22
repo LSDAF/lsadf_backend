@@ -196,8 +196,9 @@ public class ApplicationServiceConfiguration {
   public GameSessionQueryService gameSessionQueryService(
       GameSessionRepositoryPort gameSessionRepositoryPort,
       GameSessionCachePort gameSessionCachePort,
+      ClockService clockService,
       CacheManager cacheManager) {
     return new GameSessionQueryServiceImpl(
-        gameSessionRepositoryPort, gameSessionCachePort, cacheManager);
+        gameSessionRepositoryPort, gameSessionCachePort, cacheManager, clockService);
   }
 }
