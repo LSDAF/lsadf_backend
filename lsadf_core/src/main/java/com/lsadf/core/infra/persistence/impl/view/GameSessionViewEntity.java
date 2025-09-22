@@ -56,6 +56,9 @@ public class GameSessionViewEntity implements Identifiable, Dateable {
   @Column(GAME_SESSION_UPDATED_AT)
   private Date updatedAt;
 
+  @Column(GAME_SESSION_VERSION)
+  private Integer version;
+
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class GameSessionViewAttributes {
     public static final String GAME_SESSION_VIEW_ENTITY = "v_game_session_vgse";
@@ -64,6 +67,7 @@ public class GameSessionViewEntity implements Identifiable, Dateable {
     public static final String GAME_SESSION_USER_EMAIL = "vgse_user_email";
     public static final String GAME_SESSION_END_TIME = "vgse_end_time";
     public static final String GAME_SESSION_CANCELLED = "vgse_cancelled";
+    public static final String GAME_SESSION_VERSION = "vgse_version";
     public static final String GAME_SESSION_CREATED_AT = "vgse_created_at";
     public static final String GAME_SESSION_UPDATED_AT = "vgse_updated_at";
   }

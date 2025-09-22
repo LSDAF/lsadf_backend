@@ -47,8 +47,22 @@ public interface GameSessionRepository extends JdbcRepository<GameSessionEntity>
       @Param(GAME_SESSION_CANCELLED) boolean cancelled);
 
   @Modifying
-  @Query("update t_game_session_tgse set tgse_end_time=:tgse_end_time where tgse_id=:tgse_id")
-  void updateGameSessionEndTime(
+  @Query(
+      """
+              insert into t_game_session_tgse
+              (
+                  tgme_id,
+                  tgse_end_time,
+                  tgse_version
+              )
+              select
+                  tgme_id,
+                  :tgse_end_time,
+                  tgse_version + 1
+              from t_game_session_tgme
+                  where tgse_id=:tgse_id
+              """)
+  void updateGameSession(
       @Param(GAME_SESSION_ID) UUID sessionId, @Param(GAME_SESSION_END_TIME) Instant endTime);
 
   @Modifying

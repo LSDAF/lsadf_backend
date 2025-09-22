@@ -31,4 +31,5 @@ public class GameSession implements Model {
   private final Instant endTime;
   private final boolean cancelled;
   private final Instant updatedAt;
+  private final int version;
 }

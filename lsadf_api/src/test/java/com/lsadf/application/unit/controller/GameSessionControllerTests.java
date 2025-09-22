@@ -74,7 +74,8 @@ class GameSessionControllerTests {
           "test@test.com",
           Instant.now().plus(10, ChronoUnit.HOURS),
           false,
-          Instant.now());
+          Instant.now(),
+          1);
 
   @BeforeEach
   void setUp() {
