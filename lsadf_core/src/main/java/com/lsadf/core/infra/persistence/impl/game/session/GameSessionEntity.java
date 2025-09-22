@@ -20,6 +20,8 @@ import static com.lsadf.core.infra.persistence.impl.game.session.GameSessionEnti
 
 import com.lsadf.core.infra.persistence.Dateable;
 import com.lsadf.core.infra.persistence.Identifiable;
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
@@ -34,9 +36,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 public class GameSessionEntity implements Identifiable, Dateable {
-  @Id
-  @Column(GAME_SESSION_ID)
-  private UUID id;
+  @Id private GameSessionId id;
 
   @Column(GAME_SESSION_GAME_METADATA_ID)
   private UUID gameSaveId;
@@ -53,8 +53,19 @@ public class GameSessionEntity implements Identifiable, Dateable {
   @Column(GAME_SESSION_UPDATED_AT)
   private Date updatedAt;
 
-  @Column(GAME_SESSION_VERSION)
-  private Integer version;
+  public UUID getId() {
+    return this.id.sessionId;
+  }
+
+  public int getVersion() {
+    return this.id.version;
+  }
+
+  public record GameSessionId(
+      @Column(GAME_SESSION_ID) UUID sessionId, @Column(GAME_SESSION_VERSION) int version)
+      implements Serializable {
+    @Serial private static final long serialVersionUID = 4711406387744226043L;
+  }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static class GameSessionEntityAttributes {

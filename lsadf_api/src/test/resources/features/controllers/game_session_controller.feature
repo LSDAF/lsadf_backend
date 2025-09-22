@@ -57,7 +57,7 @@ Feature: Game Session Controller BDD tests
   Scenario: A user refreshes his gameSession for his game save
     Given the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | false     | 1       |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | false     | 2       |
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
@@ -65,6 +65,10 @@ Feature: Game Session Controller BDD tests
     And the user requests the endpoint to refresh his current game session with id 6025d3de-49ee-4ca1-98c0-28cb49f85e87
 
     Then the response status code should be 200
+
+    And the response should have the following GameSessionResponse
+      | id                                   | version |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 3       |
 
   Scenario: A user refreshes his gameSession for a non-existing game save
     When the user logs in with the following credentials
@@ -99,7 +103,7 @@ Feature: Game Session Controller BDD tests
 
     Then the response status code should be 403
 
-  Scenario: A user refreshed an expired game session
+  Scenario: A user refreshes an expired game session
     Given the following game sessions
       | id                                   | gameSaveId                           | cancelled | version | endTime                 |
       | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | false     | 1       | 2020-01-01T00:00:00.00Z |

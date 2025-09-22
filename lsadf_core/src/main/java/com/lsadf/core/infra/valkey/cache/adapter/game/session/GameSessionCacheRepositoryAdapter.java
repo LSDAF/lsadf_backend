@@ -58,6 +58,7 @@ public class GameSessionCacheRepositoryAdapter
             .expiration(this.expirationSeconds)
             .gameSaveId(value.getGameSaveId())
             .endTime(value.getEndTime())
+            .version(value.getVersion())
             .userEmail(value.getUserEmail())
             .build();
 

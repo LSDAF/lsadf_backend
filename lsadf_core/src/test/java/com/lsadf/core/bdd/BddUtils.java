@@ -59,6 +59,7 @@ import com.lsadf.core.infra.web.dto.response.game.save.characteristics.Character
 import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.metadata.GameMetadataResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponse;
+import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
 import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.dto.response.user.UserResponse;
 import java.io.IOException;
@@ -171,15 +172,23 @@ public class BddUtils {
     String cancelledString = row.get(BddFieldConstants.GameSession.CANCELLED);
     boolean cancelled = Boolean.parseBoolean(cancelledString);
     var versionString = row.get(BddFieldConstants.GameSession.VERSION);
-    Optional<Integer> version =
+    int version;
+    Optional<Integer> versionOptional =
         versionString == null ? Optional.empty() : Optional.of(Integer.parseInt(versionString));
-    version.ifPresent(builder::version);
+    version = versionOptional.orElse(1);
     Instant endTime =
         endTimeString != null
             ? Instant.parse(endTimeString)
             // ensuring end date is far
             : Instant.now().plus(10, ChronoUnit.HOURS);
-    return builder.id(id).gameSaveId(gameSaveId).cancelled(cancelled).endTime(endTime).build();
+    GameSessionEntity.GameSessionId gameSessionId =
+        new GameSessionEntity.GameSessionId(id, version);
+    return builder
+        .id(gameSessionId)
+        .gameSaveId(gameSaveId)
+        .cancelled(cancelled)
+        .endTime(endTime)
+        .build();
   }
 
   /**
@@ -438,6 +447,33 @@ public class BddUtils {
         .currency(currencyResponse)
         .stage(stageResponse)
         .build();
+  }
+
+  /**
+   * @param row
+   * @return
+   */
+  public static GameSessionResponse mapToGameSessionResponse(Map<String, String> row) {
+    var builder = GameSessionResponse.builder();
+    String idString = row.get(BddFieldConstants.GameSession.ID);
+    UUID id = idString != null ? UUID.fromString(idString) : null;
+    if (id != null) {
+      builder.id(id);
+    }
+
+    String endTimeString = row.get(BddFieldConstants.GameSession.END_TIME);
+    Instant endTime = endTimeString != null ? Instant.parse(endTimeString) : null;
+    if (endTime != null) {
+      builder.endTime(endTime);
+    }
+
+    String versionString = row.get(BddFieldConstants.GameSession.VERSION);
+    Integer version = versionString != null ? Integer.parseInt(versionString) : null;
+    if (version != null) {
+      builder.version(version);
+    }
+
+    return builder.build();
   }
 
   /**

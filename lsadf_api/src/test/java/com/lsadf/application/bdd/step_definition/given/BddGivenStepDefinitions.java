@@ -137,7 +137,8 @@ public class BddGivenStepDefinitions extends BddLoader {
               gameSessionEntity.getId(),
               gameSessionEntity.getGameSaveId(),
               gameSessionEntity.getEndTime(),
-              gameSessionEntity.isCancelled());
+              gameSessionEntity.isCancelled(),
+              gameSessionEntity.getVersion());
         });
 
     log.info("Game sessions created");

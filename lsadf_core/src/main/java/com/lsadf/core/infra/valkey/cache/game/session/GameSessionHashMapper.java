@@ -19,6 +19,7 @@ package com.lsadf.core.infra.valkey.cache.game.session;
 import com.lsadf.core.domain.game.session.GameSession;
 import com.lsadf.core.infra.valkey.cache.HashModelMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -26,5 +27,6 @@ public interface GameSessionHashMapper extends HashModelMapper<GameSessionHash, 
   GameSessionHashMapper INSTANCE = Mappers.getMapper(GameSessionHashMapper.class);
 
   @Override
+  @Mapping(target = "cancelled", constant = "false")
   GameSession map(GameSessionHash hash);
 }
