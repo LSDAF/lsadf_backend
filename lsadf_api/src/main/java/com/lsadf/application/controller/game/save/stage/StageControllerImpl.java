@@ -19,11 +19,13 @@ import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt
 import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.cache.CacheManager;
+import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
 import com.lsadf.core.application.game.save.stage.StageQueryService;
 import com.lsadf.core.application.game.save.stage.command.PersistStageCommand;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
@@ -51,21 +53,27 @@ public class StageControllerImpl extends BaseController implements StageControll
   private final StageQueryService stageQueryService;
   private final StageCommandService stageCommandService;
   private final StageEventPublisherPort stageEventPublisherPort;
+  private final GameSessionQueryService gameSessionService;
 
   private static final StageRequestMapper stageRequestMapper = StageRequestMapper.INSTANCE;
   private static final StageResponseMapper stageResponseMapper = StageResponseMapper.INSTANCE;
+  private final ClockService clockService;
 
   public StageControllerImpl(
       GameSaveService gameSaveService,
       StageQueryService stageQueryService,
       StageCommandService stageCommandService,
       CacheManager cacheManager,
-      StageEventPublisherPort stageEventPublisherPort) {
+      StageEventPublisherPort stageEventPublisherPort,
+      GameSessionQueryService gameSessionService,
+      ClockService clockService) {
     this.gameSaveService = gameSaveService;
     this.stageQueryService = stageQueryService;
     this.stageCommandService = stageCommandService;
+    this.gameSessionService = gameSessionService;
     this.cacheManager = cacheManager;
     this.stageEventPublisherPort = stageEventPublisherPort;
+    this.clockService = clockService;
   }
 
   @Override
@@ -74,6 +82,7 @@ public class StageControllerImpl extends BaseController implements StageControll
     validateUser(jwt);
     String username = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, username);
+    gameSessionService.checkGameSessionValidity(sessionId, gameSaveId, clockService.nowInstant());
 
     Stage stage = stageRequestMapper.map(stageRequest);
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
