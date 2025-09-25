@@ -2,6 +2,7 @@ spring:
   main:
     banner-mode: off
 
+
 keycloak:
   url: test
   realm: test
@@ -47,3 +48,6 @@ mail:
 api:
   enabled: true
   swagger-enabled: false
+sleep:
+  enabled: false
+  seconds: 0

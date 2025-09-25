@@ -7,6 +7,7 @@ swagger:
   description: Example API Description
   version: 1.0.0
 
+
 http-log:
   enabled: true
   color-enabled: false
@@ -132,3 +133,6 @@ mail:
 
 configuration-display:
   enabled: false
+sleep:
+  enabled: false
+  seconds: 0

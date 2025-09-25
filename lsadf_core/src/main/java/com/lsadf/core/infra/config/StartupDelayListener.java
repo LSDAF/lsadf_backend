@@ -30,7 +30,7 @@ public class StartupDelayListener
     boolean enabled = Boolean.TRUE.equals(env.getProperty("sleep.enabled", Boolean.class));
     int seconds = env.getProperty("sleep.seconds", Integer.class);
     if (enabled) {
-      log.info("SLEEP_ENABLED: true");
+      log.info("Sleep enabled");
       log.info("Sleeping {} seconds...", seconds);
       try {
         Thread.sleep(seconds * 1000L);
@@ -39,7 +39,6 @@ public class StartupDelayListener
       }
       log.info("Running application...");
     } else {
-      log.info("SLEEP_ENABLED: false");
       log.info("Running application...");
     }
   }
