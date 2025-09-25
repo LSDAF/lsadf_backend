@@ -16,6 +16,8 @@
 package com.lsadf.config;
 
 import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.env.Environment;
 
@@ -31,12 +33,13 @@ public class ApplicationModeDetector {
    */
   public static ApplicationMode detectApplicationMode(Environment env) {
     String[] activeProfiles = env.getActiveProfiles();
-
-    if (Arrays.asList(activeProfiles).contains("api")) {
+    Set<String> profiles =
+        Arrays.stream(activeProfiles).map(String::toLowerCase).collect(Collectors.toSet());
+    if (profiles.contains("api")) {
       return ApplicationMode.API;
-    } else if (Arrays.asList(activeProfiles).contains("worker")) {
+    } else if (profiles.contains("worker")) {
       return ApplicationMode.WORKER;
-    } else if (Arrays.asList(activeProfiles).contains("standalone")) {
+    } else if (profiles.contains("standalone")) {
       return ApplicationMode.STANDALONE;
     }
 
