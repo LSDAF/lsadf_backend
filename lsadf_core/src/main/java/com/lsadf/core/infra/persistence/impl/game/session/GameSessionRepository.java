@@ -28,15 +28,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GameSessionRepository extends JdbcRepository<GameSessionEntity> {
-
-  @Modifying
-  @Query(
-      "insert into t_game_session_tgse (tgse_id, tgme_id, tgse_end_time) values (:tgse_id, :tgme_id, :tgse_end_time)")
-  void createNewGameSession(
-      @Param(GAME_SESSION_ID) UUID id,
-      @Param(GAME_SESSION_GAME_METADATA_ID) UUID gameSaveId,
-      @Param(GAME_SESSION_END_TIME) Instant endTime);
-
   @Modifying
   @Query(
       "insert into t_game_session_tgse (tgse_id, tgme_id, tgse_end_time, tgse_cancelled, tgse_version) values (:tgse_id, :tgme_id, :tgse_end_time, :tgse_cancelled, :tgse_version)")
@@ -64,6 +55,8 @@ public interface GameSessionRepository extends JdbcRepository<GameSessionEntity>
                   tgse_version + 1
               from t_game_session_tgse
                   where tgse_id=:tgse_id
+              order by tgse_version desc
+              limit 1
               """)
   void refreshGameSession(
       @Param(GAME_SESSION_ID) UUID sessionId, @Param(GAME_SESSION_END_TIME) Instant endTime);

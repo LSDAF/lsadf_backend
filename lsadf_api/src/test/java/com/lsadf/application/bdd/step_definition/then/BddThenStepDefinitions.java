@@ -173,6 +173,7 @@ public class BddThenStepDefinitions extends BddLoader {
     GameSessionResponse actual = (GameSessionResponse) responseStack.peek().data();
     GameSessionResponse expected = BddUtils.mapToGameSessionResponse(row);
 
+    assertThat(actual).isNotNull();
     assertThat(actual).usingRecursiveComparison().ignoringFields("endTime").isEqualTo(expected);
 
     Instant now = clockService.nowInstant();
