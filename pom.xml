@@ -118,6 +118,7 @@
                                     <exclude>**/**.sql</exclude>
                                     <exclude>**/**.txt</exclude>
                                     <exclude>**/**.yml</exclude>
+                                    <exclude>**/**.factories</exclude>
                                     <exclude>**/**.properties</exclude>
                                 </excludes>
                             </licenseSet>
