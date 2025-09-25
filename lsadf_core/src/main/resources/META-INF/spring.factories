@@ -1,0 +1,3 @@
+org.springframework.context.ApplicationListener=\
+com.lsadf.core.infra.config.StartupDelayListener
+

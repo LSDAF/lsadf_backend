@@ -42,7 +42,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest({GameSaveController.class, GameSaveControllerImpl.class, GlobalExceptionHandler.class})
+@WebMvcTest(
+    value = {GameSaveController.class, GameSaveControllerImpl.class, GlobalExceptionHandler.class})
 @Import(UnitTestConfiguration.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @ActiveProfiles("test")

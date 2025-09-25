@@ -1,25 +1,5 @@
 #!/bin/sh
 
-# Validate profile parameter
-case "$APP_PROFILE" in
-  api|standalone|worker)
-    echo "Starting application with profiles: docker,$APP_PROFILE"
-    ;;
-  *)
-    echo "Invalid profile: $APP_PROFILE. Valid profiles are: api, standalone, worker"
-    exit 1
-    ;;
-esac
-
-if [ "$SLEEP_ENABLED" = "true" ]
-  then
-    echo "SLEEP_ENABLED: true";
-    echo "Sleeping 10 seconds...";
-    sleep 10;
-  else
-    echo "SLEEP_ENABLED: false"
-    echo "Running application..."
-fi
 
 java \
   -XX:+UseContainerSupport \

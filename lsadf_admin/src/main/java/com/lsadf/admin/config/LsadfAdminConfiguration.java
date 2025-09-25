@@ -16,7 +16,6 @@
 package com.lsadf.admin.config;
 
 import com.lsadf.core.infra.clock.ClockConfiguration;
-import com.lsadf.core.infra.config.ApplicationListenerConfiguration;
 import com.lsadf.core.infra.config.ApplicationServiceConfiguration;
 import com.lsadf.core.infra.config.PropertiesConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
@@ -52,7 +51,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   SecurityConfiguration.class,
   LoggingConfiguration.class,
   ValkeyCacheConfiguration.class,
-  ApplicationListenerConfiguration.class,
   ValkeyCacheConfiguration.class,
   NoValkeyCacheConfiguration.class,
   ClockConfiguration.class,
