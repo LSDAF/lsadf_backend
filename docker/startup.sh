@@ -9,6 +9,7 @@ java \
   -Xss256k \
   -XX:-HeapDumpOnOutOfMemoryError \
   -XX:+UseStringDeduplication \
+  -XX:+ExitOnOutOfMemoryError \
   -XX:MaxMetaspaceSize=128m \
   -Dspring.profiles.active=docker,${APP_PROFILE} \
   org.springframework.boot.loader.launch.JarLauncher
