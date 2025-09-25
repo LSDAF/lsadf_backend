@@ -15,11 +15,12 @@
  */
 package com.lsadf.application;
 
-import com.lsadf.config.ApplicationMode;
-import com.lsadf.config.ApplicationModeDetector;
 import com.lsadf.config.LsadfConfiguration;
 import com.lsadf.core.infra.config.ApplicationUtils;
+import com.lsadf.util.ProfileValidator;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,9 +36,12 @@ public class LsadfApplication {
   public static void main(String[] args) throws UnknownHostException {
     SpringApplication application = new SpringApplication(LsadfApplication.class);
     ConfigurableApplicationContext context = application.run(args);
+
+    // Perform profile validation again to ensure exactly one required profile is active
+    List<String> activeProfiles =
+        Arrays.stream(context.getEnvironment().getActiveProfiles()).toList();
+    ProfileValidator.validateProfiles(activeProfiles);
+
     ApplicationUtils.printAccessUrl(context, log);
-    ApplicationMode applicationMode =
-        ApplicationModeDetector.detectApplicationMode(context.getEnvironment());
-    log.info("Running LSADF app in {} mode", applicationMode.name());
   }
 }
