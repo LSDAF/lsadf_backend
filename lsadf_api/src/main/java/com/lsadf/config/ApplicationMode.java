@@ -18,14 +18,26 @@ package com.lsadf.config;
 /** Enum representing the different application modes based on Spring profiles. */
 public enum ApplicationMode {
   /** API-only mode: enables API controllers but disables worker functionality */
-  API,
+  API("api"),
 
   /** Worker-only mode: disables API controllers and enables only worker functionality */
-  WORKER,
+  WORKER("worker"),
 
   /** Standalone mode: enables both API controllers and worker functionality */
-  STANDALONE,
+  STANDALONE("standalone");
 
-  /** Unknown mode: when no specific mode profile is detected */
-  UNKNOWN
+  private final String profileName;
+
+  ApplicationMode(String profileName) {
+    this.profileName = profileName;
+  }
+
+  /**
+   * Get the Spring profile name associated with this application mode
+   *
+   * @return the profile name
+   */
+  public String getProfileName() {
+    return profileName;
+  }
 }
