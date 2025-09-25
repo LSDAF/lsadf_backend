@@ -64,6 +64,12 @@ public class PropertiesConfiguration {
   }
 
   @Bean
+  @ConfigurationProperties(prefix = "sleep")
+  public StartupDelayProperties startupDelayProperties() {
+    return new StartupDelayProperties();
+  }
+
+  @Bean
   @ConfigurationProperties(prefix = "http-log")
   public HttpLogProperties httpLogProperties() {
     return new HttpLogProperties();

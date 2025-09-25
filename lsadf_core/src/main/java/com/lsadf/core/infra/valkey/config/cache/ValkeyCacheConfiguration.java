@@ -33,6 +33,8 @@ import com.lsadf.core.infra.valkey.cache.adapter.game.save.currency.CurrencyCach
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.metadata.GameMetadataCacheAdapter;
 import com.lsadf.core.infra.valkey.cache.adapter.game.save.stage.StageCacheAdapter;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
+import com.lsadf.core.infra.valkey.cache.flush.FlushRecoveryService;
+import com.lsadf.core.infra.valkey.cache.flush.impl.FlushRecoveryServiceImpl;
 import com.lsadf.core.infra.valkey.cache.flush.impl.RedisCacheFlushServiceImpl;
 import com.lsadf.core.infra.valkey.cache.listener.ValkeyRepositoryKeyExpirationListener;
 import com.lsadf.core.infra.valkey.cache.manager.ValkeyCacheManager;
@@ -64,6 +66,12 @@ public class ValkeyCacheConfiguration {
     RedisTemplate<String, String> template = new StringRedisTemplate();
     template.setConnectionFactory(redisConnectionFactory);
     return template;
+  }
+
+  @Bean
+  public FlushRecoveryService flushRecoveryService(
+      RedisTemplate<String, String> redisTemplate, CacheFlushService cacheFlushService) {
+    return new FlushRecoveryServiceImpl(redisTemplate, cacheFlushService);
   }
 
   @Bean

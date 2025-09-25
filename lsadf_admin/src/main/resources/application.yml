@@ -3,6 +3,10 @@ server:
   host-name: localhost
   https: false
 
+sleep:
+  enabled: ${SLEEP_ENABLED:false}
+  seconds: ${SLEEP_SECONDS:5}
+
 management:
   endpoints:
     enabled-by-default: true
