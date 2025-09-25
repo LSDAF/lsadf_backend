@@ -46,7 +46,7 @@ public class GameSessionCommandServiceImpl implements GameSessionCommandService 
     UUID uuid = UUID.randomUUID();
     GameSession gameSession =
         gameSessionRepositoryPort.createNewGameSession(
-            uuid, command.gameSaveId(), command.endTime());
+            uuid, command.gameSaveId(), command.endTime(), false);
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       gameSessionCachePort.set(gameSession.getId().toString(), gameSession);
     }

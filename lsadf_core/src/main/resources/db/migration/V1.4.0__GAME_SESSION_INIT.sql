@@ -24,18 +24,15 @@ CREATE TABLE t_game_session_tgse
     tgse_created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     tgse_updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     tgse_version    INTEGER                  NOT NULL DEFAULT 1
+        CONSTRAINT chk_tgse_strict_positive_version CHECK (tgse_version >= 1)
 );
 
 ALTER TABLE t_game_session_tgse
     ADD CONSTRAINT fk_t_game_session_on_tgme FOREIGN KEY (tgme_id) REFERENCES t_game_metadata_tgme (tgme_id) ON DELETE CASCADE;
 
--- Only active (not cancelled) game sessions, ordered by end_time
-CREATE INDEX idx_tgse_active_sessions
-    ON t_game_session_tgse (tgse_end_time DESC)
-    WHERE tgse_cancelled = FALSE;
+CREATE INDEX idx_tgse_id_version
+    ON t_game_session_tgse (tgse_id, tgse_version DESC);
 
-CREATE INDEX idx_tgse_version
-    ON t_game_session_tgse (tgse_version DESC);
 
 
 -- TRIGGER TRG_GAME_SESSION_UPDATE

@@ -43,12 +43,13 @@ public interface GameSessionViewRepository extends JdbcRepository<GameSessionVie
       @Param(GAME_SESSION_GAME_METADATA_ID) UUID gameSaveId);
 
   @Query(
-      "SELECT * FROM v_game_session_vgse "
-          + "WHERE vgse_end_time > NOW() "
-          + "AND vgse_game_save_id = :vgse_game_save_id "
-          + "AND vgse_cancelled = FALSE "
-          + "ORDER BY vgse_end_time DESC "
-          + "LIMIT 1")
+      """
+              select * from v_game_session_vgse
+              where vgse_cancelled = false
+              and vgse_end_time > now()
+              order by vgse_version desc
+              limit 1
+              """)
   Optional<GameSessionViewEntity> findLatestActiveGameSessionByGameSaveId(
       @Param(GAME_SESSION_GAME_METADATA_ID) UUID gameSaveId);
 }

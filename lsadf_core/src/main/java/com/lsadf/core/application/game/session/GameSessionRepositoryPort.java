@@ -27,7 +27,7 @@ public interface GameSessionRepositoryPort {
 
   List<GameSession> getGameSessionsByGameSaveId(UUID gameSaveId);
 
-  GameSession createNewGameSession(UUID id, UUID gameSaveId, Instant endTime);
+  GameSession findLatestActiveGameSessionByGameSaveId(UUID gameSaveId);
 
   GameSession createNewGameSession(UUID id, UUID gameSaveId, Instant endTime, boolean cancelled);
 
