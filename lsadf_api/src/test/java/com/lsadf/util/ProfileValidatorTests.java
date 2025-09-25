@@ -38,7 +38,7 @@ class ProfileValidatorTests {
   void shouldPassValidation_WhenOnlyOneValidProfileActive(String profileName) {
     List<String> activeProfiles = Arrays.asList(profileName);
 
-    assertDoesNotThrow(() -> ProfileValidator.validateProfiles(activeProfiles));
+    assertDoesNotThrow(() -> ProfileValidator.validateApplicationMode(activeProfiles));
   }
 
   @Test
@@ -47,7 +47,7 @@ class ProfileValidatorTests {
   void shouldPassValidation_WhenValidProfileMixedWithOtherProfiles() {
     List<String> activeProfiles = Arrays.asList("api", "dev", "docker");
 
-    assertDoesNotThrow(() -> ProfileValidator.validateProfiles(activeProfiles));
+    assertDoesNotThrow(() -> ProfileValidator.validateApplicationMode(activeProfiles));
   }
 
   @Test
@@ -57,7 +57,8 @@ class ProfileValidatorTests {
 
     IllegalStateException exception =
         assertThrows(
-            IllegalStateException.class, () -> ProfileValidator.validateProfiles(activeProfiles));
+            IllegalStateException.class,
+            () -> ProfileValidator.validateApplicationMode(activeProfiles));
 
     assertTrue(exception.getMessage().startsWith("No application mode profile is active"));
   }
@@ -69,7 +70,8 @@ class ProfileValidatorTests {
 
     IllegalStateException exception =
         assertThrows(
-            IllegalStateException.class, () -> ProfileValidator.validateProfiles(activeProfiles));
+            IllegalStateException.class,
+            () -> ProfileValidator.validateApplicationMode(activeProfiles));
 
     assertTrue(exception.getMessage().startsWith("No application mode profile is active"));
     assertTrue(exception.getMessage().contains("api"));
@@ -84,7 +86,8 @@ class ProfileValidatorTests {
 
     IllegalStateException exception =
         assertThrows(
-            IllegalStateException.class, () -> ProfileValidator.validateProfiles(activeProfiles));
+            IllegalStateException.class,
+            () -> ProfileValidator.validateApplicationMode(activeProfiles));
 
     assertTrue(exception.getMessage().startsWith("No application mode profile is active"));
   }
@@ -97,7 +100,8 @@ class ProfileValidatorTests {
 
     IllegalStateException exception =
         assertThrows(
-            IllegalStateException.class, () -> ProfileValidator.validateProfiles(activeProfiles));
+            IllegalStateException.class,
+            () -> ProfileValidator.validateApplicationMode(activeProfiles));
 
     String expectedMessage = exception.getMessage();
     assertTrue(expectedMessage.startsWith("Multiple application mode profiles are active:"));
@@ -114,7 +118,8 @@ class ProfileValidatorTests {
 
     IllegalStateException exception =
         assertThrows(
-            IllegalStateException.class, () -> ProfileValidator.validateProfiles(activeProfiles));
+            IllegalStateException.class,
+            () -> ProfileValidator.validateApplicationMode(activeProfiles));
 
     String expectedMessage = exception.getMessage();
     assertTrue(expectedMessage.startsWith("Multiple application mode profiles are active:"));
@@ -131,7 +136,8 @@ class ProfileValidatorTests {
 
     IllegalStateException exception =
         assertThrows(
-            IllegalStateException.class, () -> ProfileValidator.validateProfiles(activeProfiles));
+            IllegalStateException.class,
+            () -> ProfileValidator.validateApplicationMode(activeProfiles));
 
     String expectedMessage = exception.getMessage();
     assertTrue(expectedMessage.startsWith("Multiple application mode profiles are active:"));
@@ -147,7 +153,8 @@ class ProfileValidatorTests {
 
     IllegalStateException exception =
         assertThrows(
-            IllegalStateException.class, () -> ProfileValidator.validateProfiles(activeProfiles));
+            IllegalStateException.class,
+            () -> ProfileValidator.validateApplicationMode(activeProfiles));
 
     String expectedMessage = exception.getMessage();
     assertTrue(expectedMessage.startsWith("Multiple application mode profiles are active:"));
@@ -163,7 +170,7 @@ class ProfileValidatorTests {
     List<String> activeProfiles = null;
 
     assertThrows(
-        NullPointerException.class, () -> ProfileValidator.validateProfiles(activeProfiles));
+        NullPointerException.class, () -> ProfileValidator.validateApplicationMode(activeProfiles));
   }
 
   @Test
@@ -171,7 +178,7 @@ class ProfileValidatorTests {
   void shouldHandleDuplicateProfilesCorrectly() {
     List<String> activeProfiles = Arrays.asList("api", "api", "docker", "docker");
 
-    assertDoesNotThrow(() -> ProfileValidator.validateProfiles(activeProfiles));
+    assertDoesNotThrow(() -> ProfileValidator.validateApplicationMode(activeProfiles));
   }
 
   @Test
@@ -181,7 +188,8 @@ class ProfileValidatorTests {
 
     IllegalStateException exception =
         assertThrows(
-            IllegalStateException.class, () -> ProfileValidator.validateProfiles(activeProfiles));
+            IllegalStateException.class,
+            () -> ProfileValidator.validateApplicationMode(activeProfiles));
 
     assertTrue(exception.getMessage().startsWith("No application mode profile is active"));
   }

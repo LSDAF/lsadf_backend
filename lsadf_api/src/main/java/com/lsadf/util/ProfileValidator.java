@@ -38,7 +38,7 @@ public class ProfileValidator {
    *
    * @param activeProfiles the list of currently active Spring profiles
    */
-  public static void validateProfiles(List<String> activeProfiles) {
+  public static void validateApplicationMode(List<String> activeProfiles) {
 
     Set<String> validProfileNames =
         Arrays.stream(ApplicationMode.values())

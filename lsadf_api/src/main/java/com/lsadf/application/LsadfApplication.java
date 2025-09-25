@@ -40,7 +40,7 @@ public class LsadfApplication {
     // Perform profile validation again to ensure exactly one required profile is active
     List<String> activeProfiles =
         Arrays.stream(context.getEnvironment().getActiveProfiles()).toList();
-    ProfileValidator.validateProfiles(activeProfiles);
+    ProfileValidator.validateApplicationMode(activeProfiles);
 
     ApplicationUtils.printAccessUrl(context, log);
   }
