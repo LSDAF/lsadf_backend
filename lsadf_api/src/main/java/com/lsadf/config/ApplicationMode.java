@@ -15,7 +15,6 @@
  */
 package com.lsadf.config;
 
-
 /** Enum representing the different application modes based on Spring profiles. */
 public enum ApplicationMode {
   /** API-only mode: enables API controllers but disables worker functionality */
