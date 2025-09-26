@@ -104,9 +104,8 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
     log.info("Items created");
   }
 
-  @When(
-      "^the user requests the endpoint to get the inventory of the game save with id (.*) and session id (.*)$")
-  public void whenUserRequestsEndpointToGetInventory(String gameSaveId, String sessionId) {
+  @When("^the user requests the endpoint to get the inventory of the game save with id (.*)$")
+  public void whenUserRequestsEndpointToGetInventory(String gameSaveId) {
     String fullPath =
         ApiPathConstants.INVENTORY
             + InventoryController.Constants.ApiPaths.GAME_SAVE_ID.replace(
@@ -117,7 +116,6 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
-      headers.set(X_GAME_SESSION_ID, sessionId);
       HttpEntity<Void> request = new HttpEntity<>(headers);
       ResponseEntity<ApiResponse<Set<ItemResponse>>> result =
           testRestTemplate.exchange(

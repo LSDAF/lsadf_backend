@@ -103,9 +103,7 @@ class InventoryControllerTests {
   void test_getInventoryItems_returns200_when_authenticatedUserAndValidUuid() {
     // when
     mockMvc
-        .perform(
-            get("/api/v1/inventory/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
-                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString()))
+        .perform(get("/api/v1/inventory/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
         // then
         .andExpect(status().isOk());
   }

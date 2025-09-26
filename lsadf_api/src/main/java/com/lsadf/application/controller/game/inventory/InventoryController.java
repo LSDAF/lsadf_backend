@@ -53,7 +53,6 @@ public interface InventoryController {
    *
    * @param jwt The JWT token of the authenticated user
    * @param gameSaveId The UUID of the game save to retrieve the inventory from
-   * @param gameSessionId The current game session id
    * @return ResponseEntity containing the inventory data
    */
   @GetMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
@@ -77,9 +76,7 @@ public interface InventoryController {
             description = "Internal Server Error")
       })
   ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventoryItems(
-      @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId,
-      @RequestHeader(X_GAME_SESSION_ID) UUID gameSessionId);
+      @AuthenticationPrincipal Jwt jwt, @PathVariable(value = GAME_SAVE_ID) UUID gameSaveId);
 
   /**
    * Creates an item in the inventory of a specific game save.

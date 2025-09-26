@@ -31,15 +31,11 @@ Feature: Inventory Controller BDD tests
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
       | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
-    And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
-
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to get the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 and session id 6025d3de-49ee-4ca1-98c0-28cb49f85e87
+    And the user requests the endpoint to get the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7
 
     Then the response status code should be 200
 
@@ -52,10 +48,6 @@ Feature: Inventory Controller BDD tests
     Given the following game saves
       | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
       | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
-
-    And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
 
     And the following items to the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7
       | clientId                                                                   | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
@@ -71,7 +63,7 @@ Feature: Inventory Controller BDD tests
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-    And the user requests the endpoint to get the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 and session id 6025d3de-49ee-4ca1-98c0-28cb49f85e87
+    And the user requests the endpoint to get the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7
 
     Then the response status code should be 200
 

@@ -66,7 +66,7 @@ public class InventoryControllerImpl extends BaseController implements Inventory
 
   @Override
   public ResponseEntity<ApiResponse<Set<ItemResponse>>> getInventoryItems(
-      Jwt jwt, UUID gameSaveId, UUID gameSessionId) {
+      Jwt jwt, UUID gameSaveId) {
     validateUser(jwt);
     String userEmail = getUsernameFromJwt(jwt);
     gameSaveService.checkGameSaveOwnership(gameSaveId, userEmail);
