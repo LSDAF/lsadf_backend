@@ -27,6 +27,7 @@ import com.lsadf.core.infra.web.config.keycloak.KeycloakConfiguration;
 import com.lsadf.core.infra.web.config.security.CorsConfiguration;
 import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
 import com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration;
+import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -56,5 +57,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   ClockConfiguration.class,
   KeycloakConfiguration.class,
   LsadfAdminSecurityConfiguration.class,
+  GlobalExceptionHandler.class
 })
 public class LsadfAdminConfiguration {}
