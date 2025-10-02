@@ -42,8 +42,6 @@ spring:
   main:
     allow-bean-definition-overriding: true
     banner-mode: off
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss.SSS
   security:
     oauth2:
       client:

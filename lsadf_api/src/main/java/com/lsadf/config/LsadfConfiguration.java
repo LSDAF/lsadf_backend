@@ -17,6 +17,7 @@ package com.lsadf.config;
 
 import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.config.ApplicationServiceConfiguration;
+import com.lsadf.core.infra.config.JacksonConfiguration;
 import com.lsadf.core.infra.config.PropertiesConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
@@ -61,6 +62,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   LsadfSecurityConfiguration.class,
   ValkeyStreamConfiguration.class,
   ValkeyGameStreamConfiguration.class,
-  GlobalExceptionHandler.class
+  GlobalExceptionHandler.class,
+  JacksonConfiguration.class
 })
 public class LsadfConfiguration {}
