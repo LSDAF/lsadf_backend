@@ -12,9 +12,10 @@ spring:
       maximum-pool-size: 15
       minimum-idle: 3
 
-# Optional: Disable management endpoints that are not needed for API-only
 management:
   endpoints:
+    enabled-by-default: true
     web:
+      base-path: "/actuator"
       exposure:
-        include: health, info, metrics
+        include: health, info, prometheus, metrics

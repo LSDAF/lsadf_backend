@@ -12,9 +12,10 @@ spring:
       maximum-pool-size: 25
       minimum-idle: 8
 
-# Enable full management endpoints for monitoring standalone application
 management:
   endpoints:
+    enabled-by-default: true
     web:
+      base-path: "/actuator"
       exposure:
-        include: health, info, metrics, prometheus
+        include: health, info, prometheus, metrics
