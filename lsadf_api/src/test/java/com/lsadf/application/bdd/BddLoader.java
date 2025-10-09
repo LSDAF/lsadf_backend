@@ -242,14 +242,14 @@ public class BddLoader {
 
   @Container
   private static final KeycloakContainer keycloak =
-      new KeycloakContainer("quay.io/keycloak/keycloak:26.0.0")
+      new KeycloakContainer("quay.io/keycloak/keycloak:26.0.4")
           .withRealmImportFile("keycloak/bdd_realm-export.json")
           .withNetwork(testcontainersNetwork)
           .withNetworkAliases("keycloak-bdd");
 
   @Container
   private static final PostgreSQLContainer<?> postgreSqlContainer =
-      new PostgreSQLContainer<>("postgres:16.0-alpine")
+      new PostgreSQLContainer<>("postgres:18.0-alpine")
           .withDatabaseName("bdd")
           .withUsername("bdd")
           .withPassword("bdd")
