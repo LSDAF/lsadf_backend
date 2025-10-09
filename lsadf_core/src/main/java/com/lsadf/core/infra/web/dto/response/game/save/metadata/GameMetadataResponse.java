@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.Builder;
 
@@ -32,8 +32,8 @@ public record GameMetadataResponse(
     @Schema(description = "Game Save ID", example = "6459ce33-5531-4f3e-bb9b-53167893d5c2")
         @JsonProperty(value = ID)
         UUID id,
-    @JsonProperty(value = CREATED_AT) Date createdAt,
-    @JsonProperty(value = UPDATED_AT) Date updatedAt,
+    @JsonProperty(value = CREATED_AT) Instant createdAt,
+    @JsonProperty(value = UPDATED_AT) Instant updatedAt,
     @Schema(description = "User email", example = "6459ce33-5531-4f3e-bb9b-53167893d5c2")
         @JsonProperty(value = USER_EMAIL)
         String userEmail,

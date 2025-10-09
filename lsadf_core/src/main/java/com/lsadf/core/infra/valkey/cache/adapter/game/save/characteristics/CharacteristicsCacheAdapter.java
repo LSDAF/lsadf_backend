@@ -22,6 +22,7 @@ import com.lsadf.core.infra.valkey.ValkeyConstants;
 import com.lsadf.core.infra.valkey.cache.adapter.ValkeyHistoCacheAdapter;
 import org.springframework.data.redis.core.RedisTemplate;
 
+@Deprecated(forRemoval = true)
 public class CharacteristicsCacheAdapter extends ValkeyHistoCacheAdapter<Characteristics>
     implements CharacteristicsCachePort {
   private static final String HISTO_KEY_TYPE = ValkeyConstants.CHARACTERISTICS_HISTO;

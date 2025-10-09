@@ -17,6 +17,7 @@ package com.lsadf.config;
 
 import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.config.ApplicationServiceConfiguration;
+import com.lsadf.core.infra.config.JacksonConfiguration;
 import com.lsadf.core.infra.config.PropertiesConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
@@ -29,6 +30,7 @@ import com.lsadf.core.infra.web.config.keycloak.KeycloakConfiguration;
 import com.lsadf.core.infra.web.config.security.CorsConfiguration;
 import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
 import com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration;
+import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -60,5 +62,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   LsadfSecurityConfiguration.class,
   ValkeyStreamConfiguration.class,
   ValkeyGameStreamConfiguration.class,
+  GlobalExceptionHandler.class,
+  JacksonConfiguration.class
 })
 public class LsadfConfiguration {}

@@ -32,6 +32,7 @@ valkey:
       currency-expiration-seconds: -1
       stage-expiration-seconds: -1
       game-metadata-expiration-seconds: -1
+      game-session-expiration-seconds: -1
   stream:
     game:
       persistence:

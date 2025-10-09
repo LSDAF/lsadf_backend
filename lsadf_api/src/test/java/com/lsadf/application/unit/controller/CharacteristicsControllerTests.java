@@ -15,18 +15,20 @@
  */
 package com.lsadf.application.unit.controller;
 
+import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.application.controller.game.characteristics.CharacteristicsController;
-import com.lsadf.application.controller.game.characteristics.CharacteristicsControllerImpl;
+import com.lsadf.application.controller.game.save.characteristics.CharacteristicsController;
+import com.lsadf.application.controller.game.save.characteristics.CharacteristicsControllerImpl;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.UUID;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -141,7 +143,9 @@ class CharacteristicsControllerTests {
         .perform(
             post("/api/v1/characteristics/{gameSaveId}", "testtesttest")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(characteristicsRequest)))
+                .content(objectMapper.writeValueAsString(characteristicsRequest))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+
         // then
         .andExpect(status().isBadRequest());
   }
@@ -157,7 +161,9 @@ class CharacteristicsControllerTests {
         .perform(
             post("/api/v1/characteristics/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(characteristicsRequest)))
+                .content(objectMapper.writeValueAsString(characteristicsRequest))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+
         // then
         .andExpect(status().isBadRequest());
   }
@@ -173,7 +179,9 @@ class CharacteristicsControllerTests {
         .perform(
             post("/api/v1/characteristics/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(characteristicsRequest)))
+                .content(objectMapper.writeValueAsString(characteristicsRequest))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+
         // then
         .andExpect(status().isBadRequest());
   }
@@ -190,9 +198,28 @@ class CharacteristicsControllerTests {
         .perform(
             post("/api/v1/characteristics/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(characteristicsRequest)))
+                .content(objectMapper.writeValueAsString(characteristicsRequest))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+
         // then
         .andExpect(status().isOk());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
+  void test_saveCharacteristics_returns200_when_noSessionHeader() {
+    // given
+    CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
+    // when
+    mockMvc
+        .perform(
+            post("/api/v1/characteristics/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(characteristicsRequest)))
+
+        // then
+        .andExpect(status().isBadRequest());
   }
 
   @Test
@@ -206,7 +233,8 @@ class CharacteristicsControllerTests {
         .perform(
             post("/api/v1/characteristics/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(characteristicsRequest)))
+                .content(objectMapper.writeValueAsString(characteristicsRequest))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
         // then
         .andExpect(status().isOk());
   }

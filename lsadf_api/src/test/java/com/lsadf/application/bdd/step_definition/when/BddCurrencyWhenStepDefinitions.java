@@ -17,11 +17,12 @@ package com.lsadf.application.bdd.step_definition.when;
 
 import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedCurrencyResponse;
 import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.controller.constant.ApiPathConstants;
-import com.lsadf.application.controller.game.currency.CurrencyController;
+import com.lsadf.application.controller.game.save.currency.CurrencyController;
 import com.lsadf.core.bdd.BddUtils;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
@@ -64,8 +65,9 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
   }
 
   @When(
-      "^the user requests the endpoint to set the currencies with the following CurrencyRequest for the game save with id (.*)$")
-  public void whenUserRequestsEndpointToSetCurrencies(String gameSaveId, DataTable dataTable) {
+      "^the user requests the endpoint to set the currencies with the following CurrencyRequest for the game save with id (.*) and session id (.*)$")
+  public void whenUserRequestsEndpointToSetCurrencies(
+      String gameSaveId, String sessionId, DataTable dataTable) {
     var data = dataTable.asMaps(String.class, String.class);
     assertThat(data).hasSize(1);
 
@@ -81,6 +83,7 @@ public class BddCurrencyWhenStepDefinitions extends BddLoader {
       String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
+      headers.set(X_GAME_SESSION_ID, sessionId);
 
       HttpEntity<CurrencyRequest> httpRequest = new HttpEntity<>(request, headers);
       ResponseEntity<ApiResponse<Void>> result =

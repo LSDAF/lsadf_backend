@@ -29,6 +29,7 @@ public record GameSaveEvent(
     UUID gameSaveId,
     String userId,
     GameSaveEventType eventType,
+    UUID gameSessionId,
     Long timestamp,
     Map<String, String> payload)
     implements Event {
@@ -39,6 +40,7 @@ public record GameSaveEvent(
     public static final String GAME_SAVE_ID = "gameSaveId";
     public static final String TIMESTAMP = "timestamp";
     public static final String PAYLOAD = "payload";
+    public static final String GAME_SESSION_ID = "gameSessionId";
     public static final String USER_ID = "userId";
   }
 

@@ -26,6 +26,7 @@ public final class ApiPathConstants {
   public static final String CHARACTERISTICS = "/api/v1/characteristics";
   public static final String CURRENCY = "/api/v1/currency";
   public static final String GAME_SAVE = "/api/v1/game_save";
+  public static final String GAME_SESSION = "/api/v1/game_session";
   public static final String INVENTORY = "/api/v1/inventory";
   public static final String OAUTH2 = "/api/oauth2";
   public static final String STAGE = "/api/v1/stage";

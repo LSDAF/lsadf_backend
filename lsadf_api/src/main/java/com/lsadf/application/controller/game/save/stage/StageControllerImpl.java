@@ -1,0 +1,112 @@
+/*
+ * Copyright © 2024-2025 LSDAF
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.lsadf.application.controller.game.save.stage;
+
+import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
+import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
+
+import com.lsadf.core.application.cache.CacheManager;
+import com.lsadf.core.application.clock.ClockService;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
+import com.lsadf.core.application.game.save.stage.StageQueryService;
+import com.lsadf.core.application.game.save.stage.command.PersistStageCommand;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.domain.game.save.stage.Stage;
+import com.lsadf.core.infra.web.controller.BaseController;
+import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
+import com.lsadf.core.infra.web.dto.request.game.stage.StageRequestMapper;
+import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponse;
+import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponseMapper;
+import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.RestController;
+
+/** Implementation of the Stage Controller */
+@ConditionalOnProperty(prefix = "api", name = "enabled", havingValue = "true")
+@RestController
+@Slf4j
+public class StageControllerImpl extends BaseController implements StageController {
+
+  private final GameSaveService gameSaveService;
+  private final CacheManager cacheManager;
+  private final StageQueryService stageQueryService;
+  private final StageCommandService stageCommandService;
+  private final StageEventPublisherPort stageEventPublisherPort;
+  private final GameSessionQueryService gameSessionService;
+
+  private static final StageRequestMapper stageRequestMapper = StageRequestMapper.INSTANCE;
+  private static final StageResponseMapper stageResponseMapper = StageResponseMapper.INSTANCE;
+  private final ClockService clockService;
+
+  public StageControllerImpl(
+      GameSaveService gameSaveService,
+      StageQueryService stageQueryService,
+      StageCommandService stageCommandService,
+      CacheManager cacheManager,
+      StageEventPublisherPort stageEventPublisherPort,
+      GameSessionQueryService gameSessionService,
+      ClockService clockService) {
+    this.gameSaveService = gameSaveService;
+    this.stageQueryService = stageQueryService;
+    this.stageCommandService = stageCommandService;
+    this.gameSessionService = gameSessionService;
+    this.cacheManager = cacheManager;
+    this.stageEventPublisherPort = stageEventPublisherPort;
+    this.clockService = clockService;
+  }
+
+  @Override
+  public ResponseEntity<ApiResponse<Void>> saveStage(
+      Jwt jwt, UUID gameSaveId, StageRequest stageRequest, UUID sessionId) {
+    validateUser(jwt);
+    String username = getUsernameFromJwt(jwt);
+    gameSaveService.checkGameSaveOwnership(gameSaveId, username);
+    gameSessionService.checkGameSessionValidity(sessionId, gameSaveId, clockService.nowInstant());
+
+    Stage stage = stageRequestMapper.map(stageRequest);
+    if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
+      stageEventPublisherPort.publishStageUpdatedEvent(username, gameSaveId, stage, sessionId);
+    } else {
+      var command = PersistStageCommand.fromStage(gameSaveId, stage);
+      stageCommandService.persistStage(command);
+    }
+
+    return generateResponse(HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<ApiResponse<StageResponse>> getStage(Jwt jwt, UUID gameSaveId) {
+    validateUser(jwt);
+    String username = getUsernameFromJwt(jwt);
+    gameSaveService.checkGameSaveOwnership(gameSaveId, username);
+    Stage stage = stageQueryService.retrieveStage(gameSaveId);
+    StageResponse stageResponse = stageResponseMapper.map(stage);
+    return generateResponse(HttpStatus.OK, stageResponse);
+  }
+
+  @Override
+  public Logger getLogger() {
+    return log;
+  }
+}

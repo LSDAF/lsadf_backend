@@ -20,16 +20,18 @@ import com.lsadf.application.controller.auth.AuthController;
 import com.lsadf.application.controller.auth.AuthControllerImpl;
 import com.lsadf.application.controller.auth.OAuth2Controller;
 import com.lsadf.application.controller.auth.OAuth2ControllerImpl;
-import com.lsadf.application.controller.game.characteristics.CharacteristicsController;
-import com.lsadf.application.controller.game.characteristics.CharacteristicsControllerImpl;
-import com.lsadf.application.controller.game.currency.CurrencyController;
-import com.lsadf.application.controller.game.currency.CurrencyControllerImpl;
-import com.lsadf.application.controller.game.game_save.GameSaveController;
-import com.lsadf.application.controller.game.game_save.GameSaveControllerImpl;
 import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.application.controller.game.inventory.InventoryControllerImpl;
-import com.lsadf.application.controller.game.stage.StageController;
-import com.lsadf.application.controller.game.stage.StageControllerImpl;
+import com.lsadf.application.controller.game.save.characteristics.CharacteristicsController;
+import com.lsadf.application.controller.game.save.characteristics.CharacteristicsControllerImpl;
+import com.lsadf.application.controller.game.save.currency.CurrencyController;
+import com.lsadf.application.controller.game.save.currency.CurrencyControllerImpl;
+import com.lsadf.application.controller.game.save.game_save.GameSaveController;
+import com.lsadf.application.controller.game.save.game_save.GameSaveControllerImpl;
+import com.lsadf.application.controller.game.save.stage.StageController;
+import com.lsadf.application.controller.game.save.stage.StageControllerImpl;
+import com.lsadf.application.controller.game.session.GameSessionController;
+import com.lsadf.application.controller.game.session.GameSessionControllerImpl;
 import com.lsadf.application.controller.user.UserController;
 import com.lsadf.application.controller.user.UserControllerImpl;
 import com.lsadf.config.LsadfConfiguration;
@@ -43,6 +45,7 @@ import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.currency.CurrencyQueryService;
 import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.application.game.save.stage.StageQueryService;
+import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.application.shared.HistoCachePort;
 import com.lsadf.core.application.user.UserService;
@@ -60,6 +63,7 @@ import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyReposito
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
+import com.lsadf.core.infra.persistence.impl.game.session.GameSessionRepository;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
@@ -67,6 +71,7 @@ import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
@@ -123,6 +128,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
       StageControllerImpl.class,
       OAuth2Controller.class,
       OAuth2ControllerImpl.class,
+      GameSessionController.class,
+      GameSessionControllerImpl.class,
     })
 @ExtendWith(MockitoExtension.class)
 @EnableConfigurationProperties
@@ -144,6 +151,8 @@ public class BddLoader {
 
   // Caches
 
+  @Autowired protected GameSessionCachePort gameSessionCache;
+
   @Autowired protected CachePort<GameMetadata> gameMetadataCache;
 
   @Autowired protected HistoCachePort<Characteristics> characteristicsCache;
@@ -153,6 +162,9 @@ public class BddLoader {
   @Autowired protected HistoCachePort<Stage> stageCache;
 
   // Repositories
+
+  @Autowired protected GameSessionRepository gameSessionRepository;
+
   @Autowired protected CharacteristicsRepository characteristicsRepository;
 
   @Autowired protected CurrencyRepository currencyRepository;
@@ -191,8 +203,6 @@ public class BddLoader {
 
   @Autowired protected CacheManager redisCacheManager;
 
-  @Autowired protected CacheManager localCacheManager;
-
   @Autowired protected CacheFlushService cacheFlushService;
 
   @Autowired protected GameSaveService gameSaveService;
@@ -206,6 +216,8 @@ public class BddLoader {
   @Autowired protected Stack<List<GameMetadataEntity>> gameSaveEntityListStack;
 
   @Autowired protected Stack<List<User>> userListStack;
+
+  @Autowired protected Stack<GameSessionResponse> gameSessionResponseStack;
 
   @Autowired protected Stack<Characteristics> characteristicsStack;
 

@@ -25,6 +25,7 @@ import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEnti
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
 import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import java.util.List;
@@ -51,6 +52,13 @@ public class LsadfBddTestsConfiguration {
   @Bean
   public Stack<Characteristics> characteristicsStack(BddStackCleaner stackCleaner) {
     Stack<Characteristics> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public Stack<GameSessionResponse> gameSessionResponseStack(BddStackCleaner stackCleaner) {
+    Stack<GameSessionResponse> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }

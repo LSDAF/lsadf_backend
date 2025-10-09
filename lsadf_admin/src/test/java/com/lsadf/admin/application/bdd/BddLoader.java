@@ -58,7 +58,9 @@ import com.lsadf.core.infra.persistence.impl.game.save.characteristics.Character
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
+import com.lsadf.core.infra.persistence.impl.game.session.GameSessionRepository;
 import com.lsadf.core.infra.persistence.impl.view.GameSaveViewRepository;
+import com.lsadf.core.infra.persistence.impl.view.GameSessionViewRepository;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
@@ -158,6 +160,10 @@ public class BddLoader {
   // Repositories
   @Autowired protected CharacteristicsRepository characteristicsRepository;
 
+  @Autowired protected GameSessionRepository gameSessionRepository;
+
+  @Autowired protected GameSessionViewRepository gameSessionViewRepository;
+
   @Autowired protected CurrencyRepository currencyRepository;
 
   @Autowired protected ItemRepository itemRepository;
@@ -195,8 +201,6 @@ public class BddLoader {
   @Autowired protected StageQueryService stageQueryService;
 
   @Autowired protected CacheManager redisCacheManager;
-
-  @Autowired protected CacheManager localCacheManager;
 
   @Autowired protected CacheFlushService cacheFlushService;
 

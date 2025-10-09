@@ -36,11 +36,13 @@ public class CurrencyEventPublisherAdapter implements CurrencyEventPublisherPort
   private final ObjectMapper objectMapper;
 
   @Override
-  public void publishCurrencyUpdatedEvent(String userEmail, UUID gameSaveId, Currency currency) {
+  public void publishCurrencyUpdatedEvent(
+      String userEmail, UUID gameSaveId, Currency currency, UUID sessionId) {
     Long timestamp = System.currentTimeMillis();
     Map<String, String> currencyMap = objectMapper.convertValue(currency, new TypeReference<>() {});
     GameSaveEvent gameSaveEvent =
-        new GameSaveEvent(gameSaveId, userEmail, CURRENCY_UPDATE, timestamp, currencyMap);
+        new GameSaveEvent(
+            gameSaveId, userEmail, CURRENCY_UPDATE, sessionId, timestamp, currencyMap);
 
     streamProducer.publishEvent(streamKey, gameSaveEvent);
   }

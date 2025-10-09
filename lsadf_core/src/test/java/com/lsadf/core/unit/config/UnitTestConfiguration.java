@@ -28,12 +28,16 @@ import com.lsadf.core.application.game.save.metadata.GameMetadataService;
 import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
 import com.lsadf.core.application.game.save.stage.StageQueryService;
+import com.lsadf.core.application.game.session.GameSessionCommandService;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.search.SearchService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.valkey.cache.flush.CacheFlushService;
+import com.lsadf.core.infra.valkey.cache.flush.FlushRecoveryService;
 import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
 import javax.sql.DataSource;
+import org.mockito.Answers;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -52,6 +56,13 @@ public class UnitTestConfiguration {
   @MockBean private LettuceConnectionFactory lettuceConnectionFactory;
 
   @MockBean private UserService userService;
+
+  @MockBean(answer = Answers.RETURNS_MOCKS)
+  private GameSessionQueryService gameSessionQueryService;
+
+  @MockBean private GameSessionCommandService gameSessionCommandService;
+
+  @MockBean private FlushRecoveryService flushRecoveryService;
 
   @MockBean private CurrencyCommandService currencyCommandService;
 

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serial;
 import java.io.Serializable;
 import lombok.*;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Generic POJO Response for all API controllers
@@ -32,8 +33,8 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ApiResponse<T>(
     @JsonProperty(value = STATUS) int status,
-    @JsonProperty(value = MESSAGE) String message,
-    @JsonProperty(value = DATA) T data)
+    @Nullable @JsonProperty(value = MESSAGE) String message,
+    @Nullable @JsonProperty(value = DATA) T data)
     implements Serializable {
   @Serial private static final long serialVersionUID = 5392685232533641077L;
 }

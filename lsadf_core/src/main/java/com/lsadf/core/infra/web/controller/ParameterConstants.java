@@ -39,6 +39,11 @@ public final class ParameterConstants {
   public static final String GAME_SAVE_ID = "game_save_id";
 
   /**
+   * Represents a constant parameter key used for identifying and accessing the "game_session_id"
+   */
+  public static final String GAME_SESSION_ID = "game_session_id";
+
+  /**
    * Represents a constant parameter key for identifying and accessing the "client_id" parameter in
    * request handling within controllers. Typically used in scenarios involving authentication or
    * client-specific operations.
@@ -68,4 +73,6 @@ public final class ParameterConstants {
    * request handling within controllers.
    */
   public static final String CODE = "code";
+
+  public static final String X_GAME_SESSION_ID = "X-GameSession-ID";
 }

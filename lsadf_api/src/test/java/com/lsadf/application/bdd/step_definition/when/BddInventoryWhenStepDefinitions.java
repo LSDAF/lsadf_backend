@@ -17,6 +17,7 @@ package com.lsadf.application.bdd.step_definition.when;
 
 import static com.lsadf.application.controller.game.inventory.InventoryController.Constants.ApiPaths.CLIENT_ID;
 import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.application.bdd.BddLoader;
@@ -129,9 +130,9 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @When(
-      "the user requests the endpoint to create an item in the inventory of the game save with id (.*) with the following ItemCreationRequest$")
+      "the user requests the endpoint to create an item in the inventory of the game save with id (.*) with session id (.*) and the following ItemCreationRequest$")
   public void whenUserRequestsEndpointToCreateInventoryItem(
-      String gameSaveId, DataTable dataTable) {
+      String gameSaveId, String sessionId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     assertThat(rows).hasSize(1);
 
@@ -147,6 +148,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
+      headers.set(X_GAME_SESSION_ID, sessionId);
       HttpEntity<ItemRequest> request = new HttpEntity<>(itemRequest, headers);
       ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
@@ -160,8 +162,9 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @When(
-      "the user requests the endpoint to delete an item with client id (.*) in the inventory of the game save with id (.*)$")
-  public void whenUserRequestsEndpointToDeleteInventoryItem(String clientId, String gameSaveId) {
+      "the user requests the endpoint to delete an item with client id (.*) in the inventory of the game save with id (.*) and session id (.*)$")
+  public void whenUserRequestsEndpointToDeleteInventoryItem(
+      String clientId, String gameSaveId, String sessionId) {
     String fullPath =
         ApiPathConstants.INVENTORY
             + CLIENT_ID.replace("{game_save_id}", gameSaveId).replace("{client_id}", clientId);
@@ -171,6 +174,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
+      headers.set(X_GAME_SESSION_ID, sessionId);
       HttpEntity<Void> request = new HttpEntity<>(headers);
       ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
@@ -184,9 +188,9 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
   }
 
   @When(
-      "the user requests the endpoint to update an item with client id (.*) in the inventory of the game save with id (.*) with the following ItemUpdateRequest$")
+      "the user requests the endpoint to update an item with client id (.*) in the inventory of the game save with id (.*) with session id (.*) and the following ItemUpdateRequest$")
   public void whenUserRequestsEndpointToUpdateInventoryItem(
-      String clientId, String gameSaveId, DataTable dataTable) {
+      String clientId, String gameSaveId, String sessionId, DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     assertThat(rows).hasSize(1);
 
@@ -204,6 +208,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
       String token = jwtAuthenticationResponse.accessToken();
       HttpHeaders headers = new HttpHeaders();
       headers.setBearerAuth(token);
+      headers.set(X_GAME_SESSION_ID, sessionId);
       HttpEntity<ItemRequest> request = new HttpEntity<>(itemRequest, headers);
       ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(url, HttpMethod.PUT, request, buildParameterizedVoidResponse());

@@ -42,8 +42,6 @@ spring:
   main:
     allow-bean-definition-overriding: true
     banner-mode: off
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss.SSS
   security:
     oauth2:
       client:
@@ -118,6 +116,7 @@ valkey:
       currency-expiration-seconds: -1
       stage-expiration-seconds: -1
       game-metadata-expiration-seconds: -1
+      game-session-expiration-seconds: -1
 
 
 mail:

@@ -36,11 +36,12 @@ public class StageEventPublisherAdapter implements StageEventPublisherPort {
   private final ObjectMapper objectMapper;
 
   @Override
-  public void publishStageUpdatedEvent(String userEmail, UUID gameSaveId, Stage stage) {
+  public void publishStageUpdatedEvent(
+      String userEmail, UUID gameSaveId, Stage stage, UUID gameSessionId) {
     Long timestamp = System.currentTimeMillis();
     Map<String, String> stageMap = objectMapper.convertValue(stage, new TypeReference<>() {});
     GameSaveEvent gameSaveEvent =
-        new GameSaveEvent(gameSaveId, userEmail, STAGE_UPDATE, timestamp, stageMap);
+        new GameSaveEvent(gameSaveId, userEmail, STAGE_UPDATE, gameSessionId, timestamp, stageMap);
 
     streamProducer.publishEvent(streamKey, gameSaveEvent);
   }

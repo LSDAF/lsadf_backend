@@ -17,10 +17,7 @@ package com.lsadf.core.infra.web.controller.advice;
 
 import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
-import com.lsadf.core.exception.AlreadyExistingGameSaveException;
-import com.lsadf.core.exception.AlreadyExistingItemClientIdException;
-import com.lsadf.core.exception.AlreadyExistingUserException;
-import com.lsadf.core.exception.AlreadyTakenNicknameException;
+import com.lsadf.core.exception.*;
 import com.lsadf.core.exception.http.*;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import java.util.HashMap;
@@ -31,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
@@ -241,6 +239,29 @@ public class GlobalExceptionHandler {
     log.error("AlreadyTakenNicknameException: ", e);
     return generateResponse(
         HttpStatus.BAD_REQUEST, "Nickname already taken: " + e.getMessage(), null);
+  }
+
+  /**
+   * @param e MissingRequestHeaderException
+   * @return ResponseEntity containing the error
+   */
+  @ExceptionHandler(MissingRequestHeaderException.class)
+  public ResponseEntity<ApiResponse<Void>> handleMissingRequestHeaderException(
+      MissingRequestHeaderException e) {
+    log.error("MissingRequestHeaderException: ", e);
+    return generateResponse(
+        HttpStatus.BAD_REQUEST, "Missing request header: " + e.getMessage(), null);
+  }
+
+  /**
+   * @param e InvalidGameSessionException
+   * @return ResponseEntity containing the error
+   */
+  @ExceptionHandler(InvalidGameSessionException.class)
+  public ResponseEntity<ApiResponse<Void>> handleInvalidGameSessionException(
+      InvalidGameSessionException e) {
+    log.error("InvalidGameSessionException: ", e);
+    return generateResponse(HttpStatus.FORBIDDEN, "Invalid game session: " + e.getMessage(), null);
   }
 
   /**
