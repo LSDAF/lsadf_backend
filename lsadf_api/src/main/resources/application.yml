@@ -12,8 +12,6 @@ management:
     enabled-by-default: false
     web:
       base-path: "/actuator"
-      exposure:
-        include: health, info, prometheus, metrics
 spring:
   datasource:
     hikari:
