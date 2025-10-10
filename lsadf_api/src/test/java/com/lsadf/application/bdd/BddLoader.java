@@ -15,7 +15,6 @@
  */
 package com.lsadf.application.bdd;
 
-import com.lsadf.application.bdd.config.LsadfBddTestsConfiguration;
 import com.lsadf.application.controller.auth.AuthController;
 import com.lsadf.application.controller.auth.AuthControllerImpl;
 import com.lsadf.application.controller.auth.OAuth2Controller;
@@ -34,6 +33,7 @@ import com.lsadf.application.controller.game.session.GameSessionController;
 import com.lsadf.application.controller.game.session.GameSessionControllerImpl;
 import com.lsadf.application.controller.user.UserController;
 import com.lsadf.application.controller.user.UserControllerImpl;
+import com.lsadf.bdd.config.BddTestsConfiguration;
 import com.lsadf.config.LsadfConfiguration;
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.clock.ClockService;
@@ -109,7 +109,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     classes = {
       LsadfConfiguration.class,
-      LsadfBddTestsConfiguration.class,
+      BddTestsConfiguration.class,
       GlobalExceptionHandler.class,
       // Precise both the interface and the implementation to avoid ambiguity & errors for testing
       AuthController.class,

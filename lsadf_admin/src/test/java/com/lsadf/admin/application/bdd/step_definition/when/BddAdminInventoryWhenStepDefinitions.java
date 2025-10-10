@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.inventory.AdminInventoryController;
-import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.bdd.util.BddUtils;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;

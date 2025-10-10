@@ -13,45 +13,71 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.bdd.config;
+package com.lsadf.bdd.config;
 
+import com.lsadf.bdd.step_definition.given.BddGivenStepDefinitions;
+import com.lsadf.bdd.step_definition.then.*;
+import com.lsadf.bdd.step_definition.when.BddWhenStepDefinitions;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
+import com.lsadf.core.domain.user.User;
+import com.lsadf.core.domain.user.UserInfo;
+import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
+import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
 import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.dto.response.user.UserResponse;
-import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+/** Configuration class for BDD tests */
 @TestConfiguration
-public class LsadfAdminBddConfiguration {
+@Import({
+  BddStackCleaner.class,
+  BddGivenStepDefinitions.class,
+  BddWhenStepDefinitions.class,
+  BddThenStepDefinitions.class,
+  BddThenCacheStepDefinitions.class,
+  BddThenCharacteristicsStepDefinitions.class,
+  BddThenCurrencyStepDefinitions.class,
+  BddThenGameSaveStepDefinitions.class,
+  BddThenGameSessionStepDefinitions.class,
+  BddThenGlobalInfoStepDefinitions.class,
+  BddThenItemStepDefinitions.class,
+  BddThenStageStepDefinitions.class,
+  BddThenUserInfoStepDefinitions.class,
+  BddThenUserStepDefinitions.class
+})
+public class BddTestsConfiguration {
 
-  @Bean
   @Primary
+  @Bean
   public BddStackCleaner bddStackCleaner() {
     return new BddStackCleaner();
   }
 
   @Bean
-  public Stack<MimeMessage> mimeMessageStack(BddStackCleaner stackCleaner) {
-    Stack<MimeMessage> stack = new Stack<>();
+  public Stack<Characteristics> characteristicsStack(BddStackCleaner stackCleaner) {
+    Stack<Characteristics> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }
 
   @Bean
-  public Stack<Characteristics> characteristicsStack(BddStackCleaner stackCleaner) {
-    Stack<Characteristics> stack = new Stack<>();
+  public Stack<GameSessionResponse> gameSessionResponseStack(BddStackCleaner stackCleaner) {
+    Stack<GameSessionResponse> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }
@@ -78,6 +104,21 @@ public class LsadfAdminBddConfiguration {
   }
 
   @Bean
+  public Stack<List<GameSaveResponse>> gameSaveResponseStack(BddStackCleaner stackCleaner) {
+    Stack<List<GameSaveResponse>> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+
+    return stack;
+  }
+
+  @Bean
+  public Stack<List<UserResponse>> userResponseListStack(BddStackCleaner stackCleaner) {
+    Stack<List<UserResponse>> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
   public Stack<ItemResponse> itemResponseStack(BddStackCleaner stackCleaner) {
     Stack<ItemResponse> stack = new Stack<>();
     stackCleaner.addStack(stack);
@@ -85,8 +126,15 @@ public class LsadfAdminBddConfiguration {
   }
 
   @Bean
-  public Stack<List<UserResponse>> userListStack(BddStackCleaner stackCleaner) {
-    Stack<List<UserResponse>> stack = new Stack<>();
+  public Stack<Set<ItemResponse>> itemSetStack(BddStackCleaner stackCleaner) {
+    Stack<Set<ItemResponse>> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public Stack<List<User>> userListStack(BddStackCleaner stackCleaner) {
+    Stack<List<User>> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }
@@ -113,15 +161,15 @@ public class LsadfAdminBddConfiguration {
   }
 
   @Bean
-  public Stack<Set<ItemResponse>> itemResponseSetStack(BddStackCleaner stackCleaner) {
-    Stack<Set<ItemResponse>> stack = new Stack<>();
+  public Stack<List<UserInfo>> userInfoListStack(BddStackCleaner stackCleaner) {
+    Stack<List<UserInfo>> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }
 
   @Bean
-  public Stack<List<GameSaveResponse>> gameSaveResponseListStack(BddStackCleaner stackCleaner) {
-    var stack = new Stack<List<GameSaveResponse>>();
+  public Stack<List<GameMetadataEntity>> gameSaveEntityListStack(BddStackCleaner stackCleaner) {
+    var stack = new Stack<List<GameMetadataEntity>>();
     stackCleaner.addStack(stack);
     return stack;
   }
@@ -134,9 +182,15 @@ public class LsadfAdminBddConfiguration {
   }
 
   @Bean
-  public Stack<ApiResponse<?>> responseStack(BddStackCleaner stackCleaner) {
+  public Stack<ApiResponse<?>> genericResponseStack(BddStackCleaner stackCleaner) {
     var stack = new Stack<ApiResponse<?>>();
     stackCleaner.addStack(stack);
     return stack;
+  }
+
+  @Bean
+  @Primary
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }

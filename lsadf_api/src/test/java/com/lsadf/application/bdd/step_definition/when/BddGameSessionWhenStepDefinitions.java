@@ -21,7 +21,7 @@ import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameteri
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.session.GameSessionController;
-import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.bdd.util.BddUtils;
 import com.lsadf.core.infra.web.controller.ParameterConstants;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;

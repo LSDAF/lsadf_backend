@@ -36,6 +36,7 @@
         <module>../lsadf_api</module>
         <module>../lsadf_core</module>
         <module>../lsadf_admin</module>
+        <module>../lsadf_bdd</module>
     </modules>
 
     <dependencies>

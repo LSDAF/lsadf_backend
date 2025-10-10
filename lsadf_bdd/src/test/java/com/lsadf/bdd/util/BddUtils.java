@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.bdd;
+package com.lsadf.bdd.util;
 
 import static com.lsadf.core.bdd.BddFieldConstants.Item.*;
 
+import com.lsadf.core.bdd.BddFieldConstants;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;

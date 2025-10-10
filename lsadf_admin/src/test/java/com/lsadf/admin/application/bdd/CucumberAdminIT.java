@@ -23,9 +23,7 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
     features = {"classpath:features"},
-    glue = {
-      "com.lsadf.admin.application.bdd",
-    },
+    glue = {"com.lsadf.admin.application.bdd", "com.lsadf.bdd"},
     plugin = {
       "pretty",
       "html:target/cucumber-lsadf_admin.html",
