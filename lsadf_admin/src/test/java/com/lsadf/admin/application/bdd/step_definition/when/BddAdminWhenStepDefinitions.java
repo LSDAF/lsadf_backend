@@ -26,7 +26,7 @@ import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.admin.application.user.AdminUserController;
-import com.lsadf.core.bdd.BddUtils;
+import com.lsadf.bdd.util.BddUtils;
 import com.lsadf.core.infra.web.dto.request.common.Filter;
 import com.lsadf.core.infra.web.dto.request.game.save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.dto.request.game.save.update.AdminGameSaveUpdateRequest;

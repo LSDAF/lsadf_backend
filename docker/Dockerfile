@@ -6,6 +6,7 @@ COPY lsadf_build_tools lsadf_build_tools/
 COPY lsadf_bom/ lsadf_bom/
 COPY lsadf_dependencies/ lsadf_dependencies/
 COPY lsadf_core/ lsadf_core/
+COPY lsadf_bdd/ lsadf_bdd/
 COPY lsadf_api/ lsadf_api/
 COPY lsadf_admin/ lsadf_admin/
 COPY lsadf_test_report/ lsadf_test_report/

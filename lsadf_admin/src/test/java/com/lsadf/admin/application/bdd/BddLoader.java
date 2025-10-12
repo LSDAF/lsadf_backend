@@ -19,7 +19,6 @@ import com.lsadf.admin.application.auth.AdminAuthController;
 import com.lsadf.admin.application.auth.AdminAuthControllerImpl;
 import com.lsadf.admin.application.auth.OAuth2Controller;
 import com.lsadf.admin.application.auth.OAuth2ControllerImpl;
-import com.lsadf.admin.application.bdd.config.LsadfAdminBddConfiguration;
 import com.lsadf.admin.application.cache.AdminCacheController;
 import com.lsadf.admin.application.cache.AdminCacheControllerImpl;
 import com.lsadf.admin.application.game.AdminGameSaveController;
@@ -33,6 +32,7 @@ import com.lsadf.admin.application.search.AdminSearchControllerImpl;
 import com.lsadf.admin.application.user.AdminUserController;
 import com.lsadf.admin.application.user.AdminUserControllerImpl;
 import com.lsadf.admin.config.LsadfAdminConfiguration;
+import com.lsadf.bdd.config.BddTestsConfiguration;
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.inventory.InventoryService;
@@ -73,7 +73,6 @@ import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.dto.response.user.UserResponse;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
-import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -111,7 +110,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
       GlobalExceptionHandler.class,
       // Precise both the interface and the implementation to avoid ambiguity & errors for testing
       LsadfAdminConfiguration.class,
-      LsadfAdminBddConfiguration.class,
+      BddTestsConfiguration.class,
       AdminAuthController.class,
       AdminAuthControllerImpl.class,
       OAuth2Controller.class,
@@ -215,8 +214,6 @@ public class BddLoader {
   @Autowired protected Stack<List<GameSaveResponse>> gameSaveResponseListStack;
 
   @Autowired protected Stack<List<UserResponse>> userResponseListStack;
-
-  @Autowired protected Stack<MimeMessage> mimeMessageStack;
 
   @Autowired protected Stack<Characteristics> characteristicsStack;
 

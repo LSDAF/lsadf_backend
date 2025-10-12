@@ -15,168 +15,67 @@
  */
 package com.lsadf.application.bdd.step_definition.then;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.lsadf.application.bdd.BddLoader;
-import com.lsadf.core.bdd.BddUtils;
-import com.lsadf.core.domain.game.save.GameSave;
-import com.lsadf.core.domain.user.UserInfo;
-import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
-import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponse;
-import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponseMapper;
-import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
-import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponse;
-import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
-import com.lsadf.core.infra.web.dto.response.user.UserInfoResponse;
-import com.lsadf.core.infra.web.dto.response.user.UserInfoResponseMapper;
+import com.lsadf.bdd.step_definition.then.*;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /** Step definitions for the then steps in the BDD scenarios */
 @Slf4j(topic = "[THEN STEP DEFINITIONS]")
 public class BddThenStepDefinitions extends BddLoader {
 
-  private static final UserInfoResponseMapper userInfoResponseMapper =
-      UserInfoResponseMapper.INSTANCE;
-  private static final CharacteristicsResponseMapper characteristicsResponseMapper =
-      CharacteristicsResponseMapper.INSTANCE;
+  @Autowired
+  private com.lsadf.bdd.step_definition.then.BddThenStepDefinitions bddThenCoreStepDefinitions;
+
+  @Autowired private BddThenCacheStepDefinitions bddThenCacheStepDefinitions;
+  @Autowired private BddThenCharacteristicsStepDefinitions bddThenCharacteristicsStepDefinitions;
+  @Autowired private BddThenCurrencyStepDefinitions bddThenCurrencyStepDefinitions;
+  @Autowired private BddThenGameSaveStepDefinitions bddThenGameSaveStepDefinitions;
+  @Autowired private BddThenGameSessionStepDefinitions bddThenGameSessionStepDefinitions;
+  @Autowired private BddThenItemStepDefinitions bddThenItemStepDefinitions;
+  @Autowired private BddThenStageStepDefinitions bddThenStageStepDefinitions;
+  @Autowired private BddThenUserInfoStepDefinitions bddThenUserInfoStepDefinitions;
+  @Autowired private BddThenUserStepDefinitions bddThenUserStepDefinitions;
 
   @Then("^the response status code should be (.*)$")
   public void thenResponseStatusCodeShouldBe(int statusCode) {
-    int actual = responseStack.peek().status();
-    assertThat(actual).isEqualTo(statusCode);
+    bddThenCoreStepDefinitions.thenResponseStatusCodeShouldBe(statusCode);
   }
 
   @Then("^the response should have the following UserInfo$")
   public void thenResponseShouldHaveFollowingUserInfo(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    UserInfoResponse actual = (UserInfoResponse) responseStack.peek().data();
-    UserInfo expected = BddUtils.mapToUserInfo(row);
-    UserInfoResponse expectedResponse = userInfoResponseMapper.map(expected);
-
-    assertThat(actual)
-        .usingRecursiveComparison()
-        .ignoringFields("id", "createdAt", "updatedAt", "roles")
-        .isEqualTo(expectedResponse);
-
-    assertThat(actual.roles()).containsAll(expectedResponse.roles());
+    bddThenUserInfoStepDefinitions.thenResponseShouldHaveFollowingUserInfo(dataTable);
   }
 
   @Then("^the response should have the following StageResponse$")
   public void thenResponseShouldHaveFollowingStageResponse(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    StageResponse expected = BddUtils.mapToStageResponse(row);
-    StageResponse actual = (StageResponse) responseStack.peek().data();
-
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    bddThenStageStepDefinitions.thenResponseShouldHaveFollowingStageResponse(dataTable);
   }
 
   @Then("^the response should have the following Characteristics$")
   public void thenResponseShouldHaveFollowingCharacteristics(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    CharacteristicsResponse expected =
-        characteristicsResponseMapper.map(BddUtils.mapToCharacteristics(row));
-    CharacteristicsResponse actual = (CharacteristicsResponse) responseStack.peek().data();
-
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    bddThenCharacteristicsStepDefinitions.thenResponseShouldHaveFollowingCharacteristics(dataTable);
   }
 
   @Then("^the response should have the following CurrencyResponse$")
   public void thenResponseShouldHaveFollowingCurrency(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    CurrencyResponse expected = BddUtils.mapToCurrencyResponse(row);
-    CurrencyResponse actual = (CurrencyResponse) responseStack.peek().data();
-
-    assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+    bddThenCurrencyStepDefinitions.thenResponseShouldHaveFollowingCurrency(dataTable);
   }
 
   @Then("^the response should have the following GameSaveResponse$")
   public void thenResponseShouldHaveFollowingGameSaveResponse(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-
-    GameSaveResponse actual = (GameSaveResponse) responseStack.peek().data();
-    GameSaveResponse expected = BddUtils.mapToGameSaveResponse(row);
-
-    assertThat(actual)
-        .usingRecursiveComparison()
-        .ignoringFields("metadata.id", "createdAt", "updatedAt")
-        .ignoringExpectedNullFields()
-        .isEqualTo(expected);
+    bddThenGameSaveStepDefinitions.thenResponseShouldHaveFollowingGameSaveResponse(dataTable);
   }
 
   @Then("^the response should have the following GameSaveResponses$")
   public void thenResponseShouldHaveFollowingGameSaves(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-
-    for (Map<String, String> row : rows) {
-      List<GameSaveResponse> list = gameSaveResponseListStack.peek();
-      String id = row.get("id");
-      UUID uuid = UUID.fromString(id);
-      GameSaveResponse actual =
-          list.stream().filter(g -> g.metadata().id().equals(uuid)).findFirst().orElseThrow();
-      GameSave expected = BddUtils.mapToGameSave(row);
-
-      assertThat(actual)
-          .usingRecursiveComparison()
-          .ignoringFields("id", "metadata.createdAt", "metadata.updatedAt")
-          .isEqualTo(expected);
-    }
+    bddThenGameSaveStepDefinitions.thenResponseShouldHaveFollowingGameSaves(dataTable);
   }
 
   @Then("^the response should have the following GameSessionResponse$")
   public void thenResponseShouldHaveFollowingGameSessionResponse(DataTable dataTable) {
-    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
-    if (rows.size() > 1) {
-      throw new IllegalArgumentException("Expected only one row in the DataTable");
-    }
-
-    Map<String, String> row = rows.get(0);
-    GameSessionResponse actual = (GameSessionResponse) responseStack.peek().data();
-    GameSessionResponse expected = BddUtils.mapToGameSessionResponse(row);
-
-    assertThat(actual).isNotNull();
-    assertThat(actual).usingRecursiveComparison().ignoringFields("endTime").isEqualTo(expected);
-
-    Instant now = clockService.nowInstant();
-    assertThat(actual.endTime()).isAfter(now);
+    bddThenGameSessionStepDefinitions.thenResponseShouldHaveFollowingGameSessionResponse(dataTable);
   }
 }

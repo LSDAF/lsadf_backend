@@ -53,6 +53,10 @@ public class PackageInfoGenerator {
   public static void main(String[] args) throws IOException {
     Path srcDir = Paths.get(args[0]);
     Path destDir = Paths.get(args[1]);
+    if (!Files.isDirectory(srcDir)) {
+      log.warn("Source directory does not exist: {}", srcDir);
+      return;
+    }
     try (Stream<Path> paths = Files.walk(srcDir)) {
       paths
           .filter(Files::isDirectory)

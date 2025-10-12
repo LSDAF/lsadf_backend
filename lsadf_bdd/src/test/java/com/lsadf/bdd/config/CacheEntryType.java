@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.admin.application.bdd;
+package com.lsadf.bdd.config;
 
 public enum CacheEntryType {
   CHARACTERISTICS,
