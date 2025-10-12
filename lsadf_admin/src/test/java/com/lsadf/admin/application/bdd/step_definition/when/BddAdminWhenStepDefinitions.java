@@ -19,7 +19,7 @@ import static com.lsadf.admin.application.cache.AdminCacheController.Constants.A
 import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_GAME_SAVES;
 import static com.lsadf.admin.application.search.AdminSearchController.Constants.ApiPaths.SEARCH_USERS;
 import static com.lsadf.admin.application.user.AdminUserController.Constants.ApiPaths.USER_ID;
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.bdd.util.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;

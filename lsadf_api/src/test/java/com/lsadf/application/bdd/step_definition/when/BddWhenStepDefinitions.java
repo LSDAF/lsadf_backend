@@ -15,15 +15,11 @@
  */
 package com.lsadf.application.bdd.step_definition.when;
 
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
-
 import com.lsadf.application.bdd.BddLoader;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
-import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 
 /** Step definitions for the when steps in the BDD scenarios */
 @Slf4j(topic = "[WHEN STEP DEFINITIONS]")

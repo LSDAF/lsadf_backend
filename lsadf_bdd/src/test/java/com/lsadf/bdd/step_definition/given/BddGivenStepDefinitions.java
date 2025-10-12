@@ -18,13 +18,13 @@ package com.lsadf.bdd.step_definition.given;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.lsadf.bdd.config.BddFieldConstants;
 import com.lsadf.bdd.config.CacheEntryType;
 import com.lsadf.bdd.util.BddUtils;
 import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.application.shared.HistoCachePort;
-import com.lsadf.core.bdd.BddFieldConstants;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.metadata.GameMetadata;
