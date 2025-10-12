@@ -45,7 +45,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <keycloak-spring-boot-starter.version>25.0.3</keycloak-spring-boot-starter.version>
         <keycloak-admin-client.version>26.0.4</keycloak-admin-client.version>
-        <java.version>17</java.version>
+        <java.version>25</java.version>
         <assertj.version>3.24.2</assertj.version>
         <spring-cloud-starter-openfeign.version>4.3.0</spring-cloud-starter-openfeign.version>
         <cucumber.version>7.14.0</cucumber.version>
