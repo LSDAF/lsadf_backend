@@ -21,7 +21,21 @@ import static org.mockito.ArgumentMatchers.any;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.game.AdminGameSaveController;
 import com.lsadf.admin.application.game.AdminGameSaveControllerImpl;
+import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
+import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
+import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
+import com.lsadf.core.application.game.session.GameSessionCachePort;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
@@ -30,7 +44,6 @@ import com.lsadf.core.infra.web.dto.request.game.save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.dto.request.game.save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.dto.request.game.save.update.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
-import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -42,28 +55,42 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(
     value = {
       GlobalExceptionHandler.class,
       AdminGameSaveController.class,
       AdminGameSaveControllerImpl.class
     })
-@Import({UnitTestConfiguration.class, GlobalExceptionHandler.class})
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @ActiveProfiles("test")
+@MockitoBean(
+    types = {
+      GameSaveService.class,
+      GameSessionRepositoryPort.class,
+      GameMetadataRepositoryPort.class,
+      CharacteristicsRepositoryPort.class,
+      CurrencyRepositoryPort.class,
+      StageRepositoryPort.class,
+      GameSaveRepositoryPort.class,
+      InventoryRepositoryPort.class,
+      GameSessionCachePort.class,
+      GameMetadataCachePort.class,
+      CurrencyCachePort.class,
+      StageCachePort.class,
+      CharacteristicsCachePort.class,
+      CharacteristicsEventPublisherPort.class,
+      GameSessionQueryService.class,
+    })
 class AdminGameSaveControllerTests {
   @Autowired private MockMvc mockMvc;
 

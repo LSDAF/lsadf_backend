@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serial;
 import java.io.Serializable;
-import lombok.*;
+import lombok.Builder;
 import org.jspecify.annotations.Nullable;
 
 /**

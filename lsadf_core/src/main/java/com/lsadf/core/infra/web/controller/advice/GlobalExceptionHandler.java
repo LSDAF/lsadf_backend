@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
       HandlerMethodValidationException e) {
     log.error("HandlerMethodValidationException: ", e);
     Map<String, String> fieldErrorMap = new HashMap<>();
-    e.getAllValidationResults()
+    e.getParameterValidationResults()
         .forEach(
             parameterValidationResult -> {
               String rejectedValue =

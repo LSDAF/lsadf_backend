@@ -18,7 +18,7 @@ package com.lsadf.core.domain.info;
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
 import java.time.Instant;
-import lombok.*;
+import lombok.Builder;
 
 @Builder
 public record GlobalInfo(Instant now, Long gameSaveCounter, Long userCounter) implements Model {

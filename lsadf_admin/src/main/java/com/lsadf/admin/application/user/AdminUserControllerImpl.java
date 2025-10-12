@@ -33,7 +33,6 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -48,7 +47,6 @@ public class AdminUserControllerImpl extends BaseController implements AdminUser
 
   private static final UserResponseMapper userResponseMapper = UserResponseMapper.INSTANCE;
 
-  @Autowired
   public AdminUserControllerImpl(UserService userService) {
     this.userService = userService;
   }

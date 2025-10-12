@@ -17,37 +17,70 @@ package com.lsadf.admin.application.unit.controller;
 
 import com.lsadf.admin.application.info.AdminGlobalInfoController;
 import com.lsadf.admin.application.info.AdminGlobalInfoControllerImpl;
+import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
+import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
+import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
+import com.lsadf.core.application.game.session.GameSessionCachePort;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
+import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(
     value = {
       GlobalExceptionHandler.class,
       AdminGlobalInfoController.class,
       AdminGlobalInfoControllerImpl.class
     })
-@Import(UnitTestConfiguration.class)
+@MockitoBean(
+    types = {
+      GameSaveService.class,
+      GameSessionRepositoryPort.class,
+      GameMetadataRepositoryPort.class,
+      CharacteristicsRepositoryPort.class,
+      CurrencyRepositoryPort.class,
+      StageRepositoryPort.class,
+      GameSaveRepositoryPort.class,
+      InventoryRepositoryPort.class,
+      GameSessionCachePort.class,
+      GameMetadataCachePort.class,
+      CurrencyCachePort.class,
+      StageCachePort.class,
+      CharacteristicsCachePort.class,
+      CharacteristicsEventPublisherPort.class,
+      GameSessionQueryService.class,
+    })
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @ActiveProfiles("test")
 class AdminGlobalInfoControllerTests {
 
   @Autowired private MockMvc mockMvc;
+
+  @MockitoBean(answers = Answers.RETURNS_DEEP_STUBS)
+  private GlobalInfoService globalInfoService;
 
   @Test
   @SneakyThrows

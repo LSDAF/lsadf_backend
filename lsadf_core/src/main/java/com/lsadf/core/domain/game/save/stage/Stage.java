@@ -17,7 +17,7 @@ package com.lsadf.core.domain.game.save.stage;
 
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
-import lombok.*;
+import lombok.Builder;
 
 @Builder
 public record Stage(Long currentStage, Long maxStage) implements Model {

@@ -33,7 +33,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +51,6 @@ public class InventoryControllerImpl extends BaseController implements Inventory
   private final ClockService clockService;
   private static final ItemResponseMapper itemResponseMapper = ItemResponseMapper.INSTANCE;
 
-  @Autowired
   public InventoryControllerImpl(
       GameSaveService gameSaveService,
       InventoryService inventoryService,

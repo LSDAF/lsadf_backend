@@ -22,7 +22,7 @@ import static com.lsadf.core.infra.web.JsonAttributes.MAX_STAGE;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.Builder;
 
 @Builder
 @Schema(name = "Stage", description = "Stage object containing the player's game progress")
