@@ -15,7 +15,6 @@
  */
 package com.lsadf.application.bdd.step_definition.then;
 
-
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.bdd.step_definition.then.*;
 import io.cucumber.datatable.DataTable;
