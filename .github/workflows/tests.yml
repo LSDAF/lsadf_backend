@@ -67,7 +67,6 @@ jobs:
         run: |
           ls -la lsadf_admin/target/failsafe-reports
           ls -la lsadf_api/target/failsafe-reports
-          ls -la lsadf_core/target/failsafe-reports
         if: always()
 
       - name: 📝 Tests Summary
