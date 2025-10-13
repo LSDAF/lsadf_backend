@@ -47,8 +47,8 @@ Feature: Admin Cache Controller BDD tests
 
   Scenario: Flush the cache
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | attack | critChance | critDamage | health | resistance |
-      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | attack | critChance | critDamage | health | resistance |
+      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | 1100   | 1200       | 1300       | 1400   | 1500       |
     And the following characteristics entries in cache
       | gameSaveId                           | attack | critChance | critDamage | health | resistance |
       | 0530e1fe-3428-4edd-bb32-cb563419d0bd | 100    | 200        | 300        | 400    | 500        |
@@ -56,8 +56,8 @@ Feature: Admin Cache Controller BDD tests
       | gameSaveId                           | gold     | diamond  | emerald  | amethyst |
       | 0530e1fe-3428-4edd-bb32-cb563419d0bd | 56302802 | 56302802 | 56302802 | 56302802 |
     And the following stage entries in cache
-      | gameSaveId                           | currentStage | maxStage |
-      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | 99           | 100      |
+      | gameSaveId                           | currentStage | maxStage | wave |
+      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | 99           | 100      | 5    |
 
     When the user logs in with the following credentials
       | username            | password |

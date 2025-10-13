@@ -23,9 +23,9 @@ Feature: Game Session Controller BDD tests
     And a clean database
     And the time clock set to the present
     And the following game saves
-      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | attack | critChance | critDamage | health | resistance |
-      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 1100   | 1200       | 1300       | 1400   | 1500       |
-      | cbe75715-80ea-4296-b045-27c3e78d95bc | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | wave | maxStage | attack | critChance | critDamage | health | resistance |
+      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 10   | 1000     | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | cbe75715-80ea-4296-b045-27c3e78d95bc | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 10   | 1000     | 1100   | 1200       | 1300       | 1400   | 1500       |
 
   Scenario: A user generates a new game session for his game save
     When the user logs in with the following credentials

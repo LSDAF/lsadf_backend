@@ -28,8 +28,8 @@ Feature: Inventory Controller BDD tests
 #  ---- GET ----
   Scenario: A user requests its inventory when it is empty
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -46,8 +46,8 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests its inventory when it is not empty
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following items to the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7
       | clientId                                                                   | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
@@ -79,8 +79,8 @@ Feature: Inventory Controller BDD tests
 #  ---- CREATE ----
   Scenario: A user requests to create an item in its inventory
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -98,8 +98,8 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to create an item in its inventory with an already existing client id
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following items to the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7
       | clientId                                                                   | id                                   | itemType | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
@@ -121,9 +121,9 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to create an item in the inventory of another user
     Given the following game saves
-      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
-      | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-2   | 600    | 700        | 800        | 900    | 1000       |
+      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-2   | 600    | 700        | 800        | 900    | 1000       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -141,8 +141,8 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to create an item in an invalid inventory
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -160,8 +160,8 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to create an item in the inventory of a inexistent game save
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -180,8 +180,8 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to delete an item in its inventory
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -206,9 +206,9 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to delete an item in the inventory of another user
     Given the following game saves
-      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
-      | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-2   | 600    | 700        | 800        | 900    | 1000       |
+      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-2   | 600    | 700        | 800        | 900    | 1000       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -233,9 +233,9 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to delete an item from the inventory of another user
     Given the following game saves
-      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
-      | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-2   | 600    | 700        | 800        | 900    | 1000       |
+      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-2   | 600    | 700        | 800        | 900    | 1000       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -260,8 +260,8 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to delete an item from the inventory of inexistent client id
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -286,8 +286,8 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to delete an item in the inventory of a inexistent game save
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -304,8 +304,8 @@ Feature: Inventory Controller BDD tests
 #  ---- UPDATE ----
   Scenario: A user requests to update an item in its inventory
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -333,8 +333,8 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to update an item with an inexistent client id
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -362,9 +362,9 @@ Feature: Inventory Controller BDD tests
 
   Scenario: A user requests to update an item from the inventory of another user
     Given the following game saves
-      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
-      | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-2   | 600    | 700        | 800        | 900    | 1000       |
+      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-2   | 600    | 700        | 800        | 900    | 1000       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |

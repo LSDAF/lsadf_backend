@@ -51,13 +51,14 @@ class StageUpdateEventHandlerTests {
 
   private Long currentStage = 5L;
   private Long maxStage = 75L;
+  private Long wave = 8L;
 
   @BeforeEach
   void setUp() {
     handler = new StageUpdateEventHandler(stageService, objectMapper);
     gameSaveId = UUID.randomUUID();
     payload = Map.of("currentStage", "5", "maxStage", "75");
-    stage = new Stage(currentStage, maxStage);
+    stage = new Stage(currentStage, maxStage, wave);
 
     event =
         GameSaveEvent.builder()

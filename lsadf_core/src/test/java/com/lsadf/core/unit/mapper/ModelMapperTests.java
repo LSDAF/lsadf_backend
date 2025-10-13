@@ -51,7 +51,7 @@ class ModelMapperTests {
   @Test
   void test_map_mapsCorrectly_when_stageRequestToStage() {
     // given
-    StageRequest stageRequest = new StageRequest(25L, 500L);
+    StageRequest stageRequest = new StageRequest(25L, 500L, 10L);
     StageRequestMapper mapper = StageRequestMapper.INSTANCE;
     // when
     Stage stage = mapper.map(stageRequest);
@@ -59,6 +59,7 @@ class ModelMapperTests {
     // then
     assertThat(stage.currentStage()).isEqualTo(25L);
     assertThat(stage.maxStage()).isEqualTo(500L);
+    assertThat(stage.wave()).isEqualTo(10L);
   }
 
   @Test

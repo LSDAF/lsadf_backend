@@ -178,7 +178,7 @@ class AdminGameSaveControllerTests {
     // given
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 100L, 100L, 100L);
-    StageRequest stageRequest = new StageRequest(1L, 10L);
+    StageRequest stageRequest = new StageRequest(1L, 10L, 3L);
     GameMetadataRequest metadataRequest =
         new GameMetadataRequest(
             UUID.fromString("3ab69f45-de06-4fce-bded-21d989fdad73"), "test@test.com", "test");
@@ -207,7 +207,7 @@ class AdminGameSaveControllerTests {
     // given
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
     CurrencyRequest currencyRequest = new CurrencyRequest(100L, 100L, 100L, 100L);
-    StageRequest stageRequest = new StageRequest(1L, 10L);
+    StageRequest stageRequest = new StageRequest(1L, 10L, 3L);
     GameMetadataRequest metadataRequest =
         new GameMetadataRequest(UUID.randomUUID(), "test@test.com", "test");
     AdminGameSaveCreationRequest request =
@@ -232,13 +232,13 @@ class AdminGameSaveControllerTests {
         new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L); // valid characteristicsRequest
     CurrencyRequest currencyRequest =
         new CurrencyRequest(100L, 100L, 100L, 100L); // valid currencyRequest
-    StageRequest stageRequest = new StageRequest(1L, 10L); // valid stageRequest
+    StageRequest stageRequest = new StageRequest(1L, 10L, 3L); // valid stageRequest
 
     CharacteristicsRequest invalidCharacteristicsRequest =
         new CharacteristicsRequest(100L, 100L, 100L, -100L, 100L); // invalid characteristicsRequest
     CurrencyRequest invalidCurrencyRequest =
         new CurrencyRequest(100L, 100L, 100L, -100L); // invalid currencyRequest
-    StageRequest invalidStageRequest = new StageRequest(10L, 1L); // invalid stageRequest
+    StageRequest invalidStageRequest = new StageRequest(10L, 1L, 3L); // invalid stageRequest
 
     return Stream.of(
         Arguments.of(
@@ -360,7 +360,7 @@ class AdminGameSaveControllerTests {
         new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L); // valid characteristicsRequest
     CurrencyRequest currencyRequest =
         new CurrencyRequest(100L, 100L, 100L, 100L); // valid currencyRequest
-    StageRequest stageRequest = new StageRequest(1L, 10L); // valid stageRequest
+    StageRequest stageRequest = new StageRequest(1L, 10L, 3L); // valid stageRequest
 
     return Stream.of(
         Arguments.of(

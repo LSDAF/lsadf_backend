@@ -49,6 +49,7 @@ public class BddFieldConstants {
     public static final String USER_EMAIL = "userEmail";
     public static final String CURRENT_STAGE = "currentStage";
     public static final String MAX_STAGE = "maxStage";
+    public static final String WAVE = "wave";
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)

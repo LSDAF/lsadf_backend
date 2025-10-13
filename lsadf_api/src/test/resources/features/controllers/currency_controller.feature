@@ -28,8 +28,8 @@ Feature: Currency Controller BDD tests
 
   Scenario: A user gets the currencies of one of his game saves with cache
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | maxStage | currentStage | attack | critChance | critDamage | health | resistance |
-      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 100  | 100     | 100     | 100      | 10       | 10           | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | maxStage | currentStage | wave | attack | critChance | critDamage | health | resistance |
+      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 100  | 100     | 100     | 100      | 10       | 10           | 2    | 1100   | 1200       | 1300       | 1400   | 1500       |
     And the following currency entries in cache
       | gameSaveId                           | gold     | diamond  | emerald  | amethyst |
       | f81b710d-3e02-4871-a86f-390377798dd1 | 56302802 | 56302802 | 56302802 | 56302802 |
@@ -48,8 +48,8 @@ Feature: Currency Controller BDD tests
 
   Scenario: A user gets the currencies of one of his game saves without cache
     Given the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | maxStage | currentStage | attack | critChance | critDamage | health | resistance |
-      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 100  | 200     | 300     | 400      | 10       | 10           | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | maxStage | currentStage | wave | attack | critChance | critDamage | health | resistance |
+      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 100  | 200     | 300     | 400      | 10       | 10           | 2    | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -65,8 +65,8 @@ Feature: Currency Controller BDD tests
 
   Scenario: A user gets the currencies of a game save that does not exist
     Given the following game saves
-      | id                                   | userEmail           | gold    | maxStage | currentStage | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
-      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold    | maxStage | currentStage | wave | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
+      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 2    | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -78,8 +78,8 @@ Feature: Currency Controller BDD tests
 
   Scenario: A user gets the currencies of a non-owned game save
     Given the following game saves
-      | id                                   | userEmail            | gold    | maxStage | currentStage | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
-      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.itesse@test.com | 5630280 | 10       | 10           | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail            | gold    | maxStage | currentStage | wave | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
+      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.itesse@test.com | 5630280 | 10       | 10           | 2    | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -91,8 +91,8 @@ Feature: Currency Controller BDD tests
 
   Scenario: A user sets the currencies of one of his game saves with cache
     Given the following game saves
-      | id                                   | userEmail           | gold    | diamond | emerald | amethyst | maxStage | currentStage | attack | critChance | critDamage | health | resistance |
-      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 5630280 | 5630280 | 5630280  | 10       | 10           | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold    | diamond | emerald | amethyst | maxStage | currentStage | wave | attack | critChance | critDamage | health | resistance |
+      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 5630280 | 5630280 | 5630280  | 10       | 10           | 2    | 1100   | 1200       | 1300       | 1400   | 1500       |
     And the following currency entries in cache
       | gameSaveId                           | gold |
       | f81b710d-3e02-4871-a86f-390377798dd1 | 666  |
@@ -118,8 +118,8 @@ Feature: Currency Controller BDD tests
 
   Scenario: A user sets the currencies of one of his game saves without cache
     Given the following game saves
-      | id                                   | userEmail           | gold    | maxStage | currentStage | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
-      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold    | maxStage | currentStage | wave | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
+      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 2    | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -140,8 +140,8 @@ Feature: Currency Controller BDD tests
 
   Scenario: A user sets the currencies of a non-owned game save
     Given the following game saves
-      | id                                   | userEmail            | gold    | maxStage | currentStage | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
-      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.itesse@test.com | 5630280 | 10       | 10           | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail            | gold    | maxStage | currentStage | wave | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
+      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.itesse@test.com | 5630280 | 10       | 10           | 2    | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -159,8 +159,8 @@ Feature: Currency Controller BDD tests
 
   Scenario: A user sets the currencies of a non-existing game save
     Given the following game saves
-      | id                                   | userEmail           | gold    | maxStage | currentStage | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
-      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold    | maxStage | currentStage | wave | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
+      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 2    | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version |
@@ -179,8 +179,8 @@ Feature: Currency Controller BDD tests
 
   Scenario: A user sets the currencies with an expired session id
     Given the following game saves
-      | id                                   | userEmail           | gold    | maxStage | currentStage | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
-      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail           | gold    | maxStage | currentStage | wave | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
+      | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 2    | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
       | id                                   | gameSaveId                           | cancelled | version | endTime                 |

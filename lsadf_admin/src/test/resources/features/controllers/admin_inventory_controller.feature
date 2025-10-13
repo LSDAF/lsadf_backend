@@ -22,8 +22,8 @@ Feature: Admin Inventory Controller BDD tests
     And a clean database
     And the time clock set to the present
     And the following game saves
-      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com | 1    | 5       | 2       | 5        | 10           | 10       | test-1   | 100    | 200        | 300        | 400    | 500        |
+      | id                                   | userEmail           | gold | diamond | emerald | amethyst | currentStage | maxStage | wave | nickname | attack | critChance | critDamage | health | resistance |
+      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com | 1    | 5       | 2       | 5        | 10           | 10       | 10   | test-1   | 100    | 200        | 300        | 400    | 500        |
 
     And the following items to the inventory of the game save with id 0530e1fe-3428-4edd-bb32-cb563419d0bd
       | clientId                               | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
