@@ -15,7 +15,7 @@
  */
 package com.lsadf.admin.application.bdd.step_definition.when;
 
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.bdd.util.ParameterizedTypeReferenceUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.admin.application.bdd.BddLoader;

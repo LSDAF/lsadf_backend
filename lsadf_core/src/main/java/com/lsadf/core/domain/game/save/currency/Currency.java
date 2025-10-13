@@ -17,7 +17,7 @@ package com.lsadf.core.domain.game.save.currency;
 
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
-import lombok.*;
+import lombok.Builder;
 
 @Builder
 public record Currency(Long gold, Long diamond, Long emerald, Long amethyst) implements Model {

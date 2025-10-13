@@ -3,16 +3,22 @@ server:
   host-name: localhost
   https: false
 
+
+
 sleep:
   enabled: ${SLEEP_ENABLED}
   seconds: ${SLEEP_SECONDS}
 
 management:
   endpoints:
-    enabled-by-default: false
     web:
       base-path: "/actuator"
+    access:
+      default: none
 spring:
+  threads:
+    virtual:
+      enabled: true
   datasource:
     hikari:
       maximum-pool-size: 20

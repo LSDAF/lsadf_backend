@@ -36,6 +36,9 @@ server:
       enabled: false
 
 spring:
+  threads:
+    virtual:
+      enabled: true
   output:
     ansi:
       enabled: always

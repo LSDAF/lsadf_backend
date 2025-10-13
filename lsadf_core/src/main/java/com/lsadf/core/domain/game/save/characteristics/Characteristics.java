@@ -17,7 +17,7 @@ package com.lsadf.core.domain.game.save.characteristics;
 
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
-import lombok.*;
+import lombok.Builder;
 
 @Builder
 public record Characteristics(

@@ -57,7 +57,6 @@ import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveUpdateReque
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Implementation of GameSaveService */
@@ -78,7 +77,6 @@ public class GameSaveServiceImpl implements GameSaveService {
   private final CurrencyCachePort currencyCache;
   private final CharacteristicsCachePort characteristicsCache;
 
-  @Autowired
   public GameSaveServiceImpl(
       GameMetadataService gameMetadataService,
       CharacteristicsCommandService characteristicsService,

@@ -16,7 +16,7 @@
 
 package com.lsadf.application.bdd.step_definition.when;
 
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedUserInfoResponse;
+import static com.lsadf.bdd.util.ParameterizedTypeReferenceUtils.buildParameterizedUserInfoResponse;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.controller.constant.ApiPathConstants;

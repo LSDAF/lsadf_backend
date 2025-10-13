@@ -9,12 +9,16 @@ sleep:
 
 management:
   endpoints:
-    enabled-by-default: true
     web:
       base-path: "/actuator"
       exposure:
         include: health, info
+    access:
+      default: none
 spring:
+  threads:
+    virtual:
+      enabled: true
   flyway:
     baseline-on-migrate: true
   datasource:

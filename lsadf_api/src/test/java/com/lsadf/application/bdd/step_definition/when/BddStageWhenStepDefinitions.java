@@ -15,8 +15,8 @@
  */
 package com.lsadf.application.bdd.step_definition.when;
 
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedStageResponse;
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
+import static com.lsadf.bdd.util.ParameterizedTypeReferenceUtils.buildParameterizedStageResponse;
+import static com.lsadf.bdd.util.ParameterizedTypeReferenceUtils.buildParameterizedVoidResponse;
 import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 

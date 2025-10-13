@@ -16,7 +16,7 @@
 
 package com.lsadf.bdd.step_definition.when;
 
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.buildParameterizedJwtAuthenticationResponse;
+import static com.lsadf.bdd.util.ParameterizedTypeReferenceUtils.buildParameterizedJwtAuthenticationResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.bdd.util.BddUtils;

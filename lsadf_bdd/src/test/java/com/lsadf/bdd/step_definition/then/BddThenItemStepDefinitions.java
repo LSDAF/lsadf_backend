@@ -16,7 +16,7 @@
 
 package com.lsadf.bdd.step_definition.then;
 
-import static com.lsadf.core.bdd.BddFieldConstants.Item.CLIENT_ID;
+import static com.lsadf.bdd.config.BddFieldConstants.Item.CLIENT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.bdd.util.BddUtils;

@@ -15,9 +15,9 @@
  */
 package com.lsadf.bdd.util;
 
-import static com.lsadf.core.bdd.BddFieldConstants.Item.*;
+import static com.lsadf.bdd.config.BddFieldConstants.Item.*;
 
-import com.lsadf.core.bdd.BddFieldConstants;
+import com.lsadf.bdd.config.BddFieldConstants;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;

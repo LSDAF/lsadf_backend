@@ -15,7 +15,7 @@
  */
 package com.lsadf.application.bdd.step_definition.when;
 
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.bdd.util.ParameterizedTypeReferenceUtils.*;
 
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.controller.constant.ApiPathConstants;

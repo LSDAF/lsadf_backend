@@ -16,17 +16,36 @@
 package com.lsadf.admin.application.unit.controller;
 
 import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
+import static org.mockito.ArgumentMatchers.any;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.user.AdminUserController;
 import com.lsadf.admin.application.user.AdminUserControllerImpl;
+import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
+import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
+import com.lsadf.core.application.game.save.GameSaveService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
+import com.lsadf.core.application.game.save.currency.CurrencyCachePort;
+import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataCachePort;
+import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
+import com.lsadf.core.application.game.save.stage.StageCachePort;
+import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
+import com.lsadf.core.application.game.session.GameSessionCachePort;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
+import com.lsadf.core.application.user.UserService;
+import com.lsadf.core.domain.user.User;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.user.UserSortingParameter;
 import com.lsadf.core.infra.web.dto.request.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.dto.request.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.unit.config.UnitTestConfiguration;
 import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -35,32 +54,62 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.runner.RunWith;
+import org.mockito.Answers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(
     value = {
       GlobalExceptionHandler.class,
       AdminUserController.class,
       AdminUserControllerImpl.class
     })
-@Import({UnitTestConfiguration.class, GlobalExceptionHandler.class})
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @ActiveProfiles("test")
+@MockitoBean(
+    types = {
+      GameSaveService.class,
+      GameSessionRepositoryPort.class,
+      GameMetadataRepositoryPort.class,
+      CharacteristicsRepositoryPort.class,
+      CurrencyRepositoryPort.class,
+      StageRepositoryPort.class,
+      GameSaveRepositoryPort.class,
+      InventoryRepositoryPort.class,
+      GameSessionCachePort.class,
+      GameMetadataCachePort.class,
+      CurrencyCachePort.class,
+      StageCachePort.class,
+      CharacteristicsCachePort.class,
+      CharacteristicsEventPublisherPort.class,
+      GameSessionQueryService.class,
+    })
 class AdminUserControllerTests {
 
   @Autowired private MockMvc mockMvc;
 
   @Autowired private ObjectMapper objectMapper;
+
+  @MockitoBean(answers = Answers.RETURNS_DEEP_STUBS)
+  private UserService userService;
+
+  private static final User USER =
+      new User(
+          UUID.randomUUID(),
+          "Paul",
+          "ITESSE",
+          "paul.itesse@test.com",
+          true,
+          true,
+          List.of("USER"),
+          new Date());
 
   @Test
   @SneakyThrows
@@ -151,6 +200,8 @@ class AdminUserControllerTests {
             .enabled(true)
             .emailVerified(true)
             .build();
+
+    Mockito.when(userService.updateUser(any(UUID.class), any())).thenReturn(USER);
     // when
     mockMvc
         .perform(
@@ -265,6 +316,8 @@ class AdminUserControllerTests {
             .enabled(true)
             .emailVerified(true)
             .build();
+
+    Mockito.when(userService.createUser(request)).thenReturn(USER);
 
     // when
     mockMvc
@@ -409,6 +462,7 @@ class AdminUserControllerTests {
       roles = {"ADMIN"})
   void test_getUserByUsername_returns200_when_authenticatedUserIsAdmin() {
     // when
+    Mockito.when(userService.getUserByUsername(any(String.class))).thenReturn(USER);
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/user/username/{username}", "test@test.com")
@@ -471,6 +525,7 @@ class AdminUserControllerTests {
       name = "Paul OCHON",
       roles = {"ADMIN"})
   void test_getUserById_returns200_when_authenticatedUserIsAdminAndValidUuid() {
+    Mockito.when(userService.getUserById(any(UUID.class))).thenReturn(USER);
     // when
     mockMvc
         .perform(

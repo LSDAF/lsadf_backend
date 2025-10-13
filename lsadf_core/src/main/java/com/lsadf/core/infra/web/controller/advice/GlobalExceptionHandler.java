@@ -20,6 +20,7 @@ import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateRespon
 import com.lsadf.core.exception.*;
 import com.lsadf.core.exception.http.*;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Hidden;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -36,6 +37,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @RestControllerAdvice
 @Slf4j
+@Hidden
 public class GlobalExceptionHandler {
 
   /**
@@ -84,7 +86,7 @@ public class GlobalExceptionHandler {
       HandlerMethodValidationException e) {
     log.error("HandlerMethodValidationException: ", e);
     Map<String, String> fieldErrorMap = new HashMap<>();
-    e.getAllValidationResults()
+    e.getParameterValidationResults()
         .forEach(
             parameterValidationResult -> {
               String rejectedValue =

@@ -16,7 +16,7 @@
 package com.lsadf.application.bdd.step_definition.when;
 
 import static com.lsadf.application.controller.game.inventory.InventoryController.Constants.ApiPaths.CLIENT_ID;
-import static com.lsadf.core.bdd.ParameterizedTypeReferenceUtils.*;
+import static com.lsadf.bdd.util.ParameterizedTypeReferenceUtils.*;
 import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
