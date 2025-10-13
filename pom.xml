@@ -57,6 +57,7 @@
         <jjwt.version>0.11.5</jjwt.version>
         <commons-io.version>2.17.0</commons-io.version>
         <commons-lang3.version>3.19.0</commons-lang3.version>
+        <commons-fileupload.version>1.6.0</commons-fileupload.version>
         <zonky.version>2.5.0</zonky.version>
         <zonky-embedded-postgres.version>2.0.7</zonky-embedded-postgres.version>
         <azure-okhttp.version>1.11.18</azure-okhttp.version>
