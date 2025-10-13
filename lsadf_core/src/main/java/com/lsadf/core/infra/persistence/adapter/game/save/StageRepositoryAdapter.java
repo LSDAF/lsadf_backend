@@ -41,10 +41,14 @@ public class StageRepositoryAdapter implements StageRepositoryPort {
 
   @Override
   public Stage create(
-      UUID id, @Nullable Long nullableCurrentStage, @Nullable Long nullableMaxStage) {
+      UUID id,
+      @Nullable Long nullableCurrentStage,
+      @Nullable Long nullableMaxStage,
+      @Nullable Long nullableWave) {
     Long currentStage = ObjectUtils.getOrDefault(nullableCurrentStage, 1L);
     Long maxStage = ObjectUtils.getOrDefault(nullableMaxStage, Math.max(currentStage, 1L));
-    StageEntity entity = stageRepository.createNewStageEntity(id, currentStage, maxStage);
+    Long wave = ObjectUtils.getOrDefault(nullableWave, 1L);
+    StageEntity entity = stageRepository.createNewStageEntity(id, currentStage, maxStage, wave);
     return stageEntityMapper.map(entity);
   }
 
@@ -57,7 +61,8 @@ public class StageRepositoryAdapter implements StageRepositoryPort {
   @Override
   public Stage update(UUID gameSaveId, Stage stage) {
     StageEntity entity =
-        stageRepository.updateStage(gameSaveId, stage.currentStage(), stage.maxStage());
+        stageRepository.updateStage(
+            gameSaveId, stage.currentStage(), stage.maxStage(), stage.wave());
     return stageEntityMapper.map(entity);
   }
 
