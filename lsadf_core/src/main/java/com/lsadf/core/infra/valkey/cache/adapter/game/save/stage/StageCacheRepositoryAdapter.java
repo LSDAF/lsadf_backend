@@ -54,6 +54,7 @@ public class StageCacheRepositoryAdapter
             .id(uuid)
             .maxStage(value.maxStage())
             .expiration(this.expirationSeconds)
+            .wave(value.wave())
             .currentStage(value.currentStage())
             .build();
     repository.save(hash);
