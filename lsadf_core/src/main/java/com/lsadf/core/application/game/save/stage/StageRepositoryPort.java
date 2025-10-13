@@ -24,7 +24,7 @@ public interface StageRepositoryPort {
 
   Optional<Stage> findById(UUID id);
 
-  Stage create(UUID id, @Nullable Long currentStage, @Nullable Long maxStage);
+  Stage create(UUID id, @Nullable Long currentStage, @Nullable Long maxStage, @Nullable Long wave);
 
   Stage create(UUID id);
 

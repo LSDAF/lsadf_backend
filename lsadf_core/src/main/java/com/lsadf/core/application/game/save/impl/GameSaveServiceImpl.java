@@ -182,7 +182,10 @@ public class GameSaveServiceImpl implements GameSaveService {
     } else {
       var command =
           new InitializeStageCommand(
-              newGameMetadata.id(), stageRequest.currentStage(), stageRequest.maxStage());
+              newGameMetadata.id(),
+              stageRequest.currentStage(),
+              stageRequest.maxStage(),
+              stageRequest.wave());
       newStage = stageService.initializeStage(command);
     }
     gameSaveBuilder.stage(newStage);

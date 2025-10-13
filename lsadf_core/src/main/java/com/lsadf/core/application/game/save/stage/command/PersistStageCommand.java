@@ -19,8 +19,9 @@ package com.lsadf.core.application.game.save.stage.command;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import java.util.UUID;
 
-public record PersistStageCommand(UUID gameSaveId, Long currentStage, Long maxStage) {
+public record PersistStageCommand(UUID gameSaveId, Long currentStage, Long maxStage, Long wave) {
   public static PersistStageCommand fromStage(UUID gameSaveId, Stage stage) {
-    return new PersistStageCommand(gameSaveId, stage.currentStage(), stage.maxStage());
+    return new PersistStageCommand(
+        gameSaveId, stage.currentStage(), stage.maxStage(), stage.wave());
   }
 }
