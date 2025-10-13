@@ -78,6 +78,7 @@ public final class JsonAttributes {
   public static final String FILTERS = "filters";
   public static final String CURRENT_STAGE = "current_stage";
   public static final String MAX_STAGE = "max_stage";
+  public static final String WAVE = "wave";
   public static final String ATTACK = "attack";
   public static final String CRIT_CHANCE = "crit_chance";
   public static final String CRIT_DAMAGE = "crit_damage";

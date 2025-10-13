@@ -16,8 +16,7 @@
 
 package com.lsadf.core.infra.web.dto.response.game.save.stage;
 
-import static com.lsadf.core.infra.web.JsonAttributes.CURRENT_STAGE;
-import static com.lsadf.core.infra.web.JsonAttributes.MAX_STAGE;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.response.Response;
@@ -31,5 +30,8 @@ public record StageResponse(
         @JsonProperty(value = CURRENT_STAGE)
         Long currentStage,
     @Schema(description = "The Maximum game stage", example = "26") @JsonProperty(value = MAX_STAGE)
-        Long maxStage)
+        Long maxStage,
+    @Schema(description = "The Current wave in the stage", example = "3")
+        @JsonProperty(value = WAVE)
+        Long wave)
     implements Response {}
