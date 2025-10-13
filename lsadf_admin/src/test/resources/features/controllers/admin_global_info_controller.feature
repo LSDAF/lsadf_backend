@@ -28,12 +28,12 @@ Feature: Admin Global Info Controller BDD tests
 
   Scenario: Get the global info of the application
     Given the following game saves
-      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | nickname | attack | critChance | critDamage | health | resistance |
-      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-3   | 1100   | 1200       | 1300       | 1400   | 1500       |
-      | 3dd8b6d8-7aaa-4580-9a8a-a0bb6cc5bb21 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-2   | 600    | 700        | 800        | 900    | 1000       |
-      | 804af894-931b-4ee6-968f-1703689066fb | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-1   | 100    | 200        | 300        | 400    | 500        |
-      | 9929ee41-9a7b-4320-90d5-ee963888d876 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-4   | 600    | 700        | 800        | 900    | 1000       |
-      | 6a4f12dc-4e83-40f7-992e-8f2e04375d74 | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | test-5   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | id                                   | userEmail            | gold | diamond | emerald | amethyst | currentStage | maxStage | wave    | nickname | attack | critChance | critDamage | health | resistance |
+      | 0530e1fe-3428-4edd-bb32-cb563419d0bd | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10      | test-3   | 1100   | 1200       | 1300       | 1400   | 1500       |
+      | 3dd8b6d8-7aaa-4580-9a8a-a0bb6cc5bb21 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 1000    | test-2   | 600    | 700        | 800        | 900    | 1000       |
+      | 804af894-931b-4ee6-968f-1703689066fb | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 100000  | test-1   | 100    | 200        | 300        | 400    | 500        |
+      | 9929ee41-9a7b-4320-90d5-ee963888d876 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 1000000 | test-4   | 600    | 700        | 800        | 900    | 1000       |
+      | 6a4f12dc-4e83-40f7-992e-8f2e04375d74 | paul.ochon@test.com  | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 1000000 | test-5   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the time clock set to the following value 2020-01-01T00:00:00Z
 

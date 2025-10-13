@@ -112,7 +112,8 @@ class GameSaveServiceTests {
   private static final Currency CACHED_CURRENCY =
       Currency.builder().gold(2L).diamond(4L).emerald(6L).amethyst(8L).build();
 
-  private static final Stage DB_STAGE = Stage.builder().currentStage(10L).maxStage(20L).build();
+  private static final Stage DB_STAGE =
+      Stage.builder().currentStage(10L).maxStage(20L).wave(3L).build();
 
   private static final Stage CACHED_STAGE = Stage.builder().currentStage(20L).maxStage(40L).build();
 
@@ -200,7 +201,7 @@ class GameSaveServiceTests {
     GameMetadataRequest metadataRequest = new GameMetadataRequest(UUID, USER_EMAIL, NICKNAME);
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 2L, 3L, 4L, 5L);
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 2L, 3L, 4L);
-    StageRequest stageRequest = new StageRequest(10L, 20L);
+    StageRequest stageRequest = new StageRequest(10L, 20L, 3L);
     GameSaveCreationRequest request =
         new AdminGameSaveCreationRequest(
             metadataRequest, characteristicsRequest, currencyRequest, stageRequest);
@@ -214,7 +215,7 @@ class GameSaveServiceTests {
     GameMetadataRequest metadataRequest = new GameMetadataRequest(UUID, USER_EMAIL, NICKNAME);
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 2L, 3L, 4L, 5L);
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 2L, 3L, 4L);
-    StageRequest stageRequest = new StageRequest(10L, 20L);
+    StageRequest stageRequest = new StageRequest(10L, 20L, 3L);
     GameSaveCreationRequest request =
         new AdminGameSaveCreationRequest(
             metadataRequest, characteristicsRequest, currencyRequest, stageRequest);
@@ -229,7 +230,7 @@ class GameSaveServiceTests {
     GameMetadataRequest metadataRequest = new GameMetadataRequest(UUID, USER_EMAIL, NICKNAME);
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 2L, 3L, 4L, 5L);
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 2L, 3L, 4L);
-    StageRequest stageRequest = new StageRequest(10L, 20L);
+    StageRequest stageRequest = new StageRequest(10L, 20L, 3L);
     GameSaveCreationRequest request =
         new AdminGameSaveCreationRequest(
             metadataRequest, characteristicsRequest, currencyRequest, stageRequest);
@@ -293,7 +294,8 @@ class GameSaveServiceTests {
             DB_CURRENCY.diamond(),
             DB_CURRENCY.emerald(),
             DB_CURRENCY.amethyst());
-    StageRequest stageRequest = new StageRequest(DB_STAGE.currentStage(), DB_STAGE.maxStage());
+    StageRequest stageRequest =
+        new StageRequest(DB_STAGE.currentStage(), DB_STAGE.maxStage(), DB_STAGE.wave());
     GameSaveCreationRequest gameSaveCreationRequest =
         new AdminGameSaveCreationRequest(
             gameMetadataRequest, characteristicsRequest, currencyRequest, stageRequest);

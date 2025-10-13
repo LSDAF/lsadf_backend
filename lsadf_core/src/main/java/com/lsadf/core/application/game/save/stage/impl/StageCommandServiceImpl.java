@@ -65,14 +65,19 @@ public class StageCommandServiceImpl implements StageCommandService {
     UUID gameSaveId = command.gameSaveId();
     Long currentStage = command.currentStage();
     Long maxStage = command.maxStage();
-    return stageRepositoryPort.create(gameSaveId, currentStage, maxStage);
+    Long wave = command.wave();
+    return stageRepositoryPort.create(gameSaveId, currentStage, maxStage, wave);
   }
 
   @Override
   @Transactional
   public void persistStage(PersistStageCommand command) {
     Stage stage =
-        Stage.builder().currentStage(command.currentStage()).maxStage(command.maxStage()).build();
+        Stage.builder()
+            .currentStage(command.currentStage())
+            .maxStage(command.maxStage())
+            .wave(command.wave())
+            .build();
     stageRepositoryPort.update(command.gameSaveId(), stage);
   }
 
@@ -95,7 +100,8 @@ public class StageCommandServiceImpl implements StageCommandService {
             // Adding Objects.requireNonNull() since object is not partial
             new Stage(
                 Objects.requireNonNull(command.currentStage()),
-                Objects.requireNonNull(command.maxStage()));
+                Objects.requireNonNull(command.maxStage()),
+                Objects.requireNonNull(command.wave()));
       }
       stageCache.set(gameSaveIdString, stage);
     } else {
@@ -114,6 +120,7 @@ public class StageCommandServiceImpl implements StageCommandService {
     Stage.StageBuilder builder = Stage.builder();
     builder.currentStage(getOrDefault(command.currentStage(), dbStage.currentStage()));
     builder.maxStage(getOrDefault(command.maxStage(), dbStage.maxStage()));
+    builder.wave(getOrDefault(command.wave(), dbStage.wave()));
     return builder.build();
   }
 
@@ -124,7 +131,7 @@ public class StageCommandServiceImpl implements StageCommandService {
    * @return true if any of the fields (currentStage, maxStage) are null, false otherwise
    */
   private static boolean isStagePartial(UpdateCacheStageCommand command) {
-    return command.currentStage() == null || command.maxStage() == null;
+    return command.currentStage() == null || command.maxStage() == null || command.wave() == null;
   }
 
   /**
@@ -134,6 +141,6 @@ public class StageCommandServiceImpl implements StageCommandService {
    * @return true if all of the fields (currentStage, maxStage) are null, false otherwise
    */
   private static boolean isStageNull(UpdateCacheStageCommand command) {
-    return command.currentStage() == null && command.maxStage() == null;
+    return command.currentStage() == null && command.maxStage() == null && command.wave() == null;
   }
 }

@@ -21,8 +21,9 @@ import java.util.UUID;
 import org.jspecify.annotations.Nullable;
 
 public record UpdateCacheStageCommand(
-    UUID gameSaveId, @Nullable Long currentStage, @Nullable Long maxStage) {
+    UUID gameSaveId, @Nullable Long currentStage, @Nullable Long maxStage, @Nullable Long wave) {
   public static UpdateCacheStageCommand fromStage(UUID gameSaveId, Stage stage) {
-    return new UpdateCacheStageCommand(gameSaveId, stage.currentStage(), stage.maxStage());
+    return new UpdateCacheStageCommand(
+        gameSaveId, stage.currentStage(), stage.maxStage(), stage.wave());
   }
 }

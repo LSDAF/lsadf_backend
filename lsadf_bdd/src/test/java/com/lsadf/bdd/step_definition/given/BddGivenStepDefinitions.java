@@ -211,7 +211,10 @@ public class BddGivenStepDefinitions {
               currencyEntity.getAmethystAmount());
           StageEntity stageEntity = BddUtils.mapToStageEntity(row);
           stageRepository.createNewStageEntity(
-              newEntity.getId(), stageEntity.getCurrentStage(), stageEntity.getMaxStage());
+              newEntity.getId(),
+              stageEntity.getCurrentStage(),
+              stageEntity.getMaxStage(),
+              stageEntity.getWave());
           CharacteristicsEntity characteristicsEntity = BddUtils.mapToCharacteristicsEntity(row);
           characteristicsRepository.createNewCharacteristicsEntity(
               newEntity.getId(),
@@ -394,7 +397,8 @@ public class BddGivenStepDefinitions {
           stageRepository.createNewStageEntity(
               newGameMetadataEntity.getId(),
               stageEntity.getCurrentStage(),
-              stageEntity.getMaxStage());
+              stageEntity.getMaxStage(),
+              stageEntity.getWave());
           characteristicsRepository.createNewCharacteristicsEntity(
               newGameMetadataEntity.getId(),
               characteristicsEntity.getAttack(),

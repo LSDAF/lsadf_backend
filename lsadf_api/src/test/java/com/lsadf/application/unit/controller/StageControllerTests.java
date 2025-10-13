@@ -152,7 +152,7 @@ class StageControllerTests {
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveStage_returns400_when_gameSaveIdIsNonUuid() {
     // given
-    StageRequest stageRequest = new StageRequest(5L, 2L);
+    StageRequest stageRequest = new StageRequest(5L, 2L, 4L);
     // when
     mockMvc
         .perform(
@@ -169,7 +169,25 @@ class StageControllerTests {
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveStage_returns400_when_maxStageSmallerThanCurrentStage() {
     // given
-    StageRequest stageRequest = new StageRequest(5L, 2L);
+    StageRequest stageRequest = new StageRequest(5L, 2L, 3L);
+
+    // when
+    mockMvc
+        .perform(
+            post("/api/v1/stage/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(stageRequest))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+        // then
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
+  void test_saveStage_returns400_when_wave_is_invalid() {
+    // given
+    StageRequest stageRequest = new StageRequest(5L, 2L, -3L);
 
     // when
     mockMvc
@@ -187,7 +205,7 @@ class StageControllerTests {
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveStage_returns400_when_stagesNegative() {
     // given
-    StageRequest stageRequest = new StageRequest(-5L, -2L);
+    StageRequest stageRequest = new StageRequest(-5L, -2L, 3L);
 
     // when
     mockMvc
@@ -204,7 +222,7 @@ class StageControllerTests {
   @SneakyThrows
   void test_saveStage_returns401_when_userNotAuthenticated() {
     // given
-    StageRequest stageRequest = new StageRequest(10L, 25L);
+    StageRequest stageRequest = new StageRequest(10L, 25L, 1L);
     // when
     mockMvc
         .perform(
@@ -221,7 +239,7 @@ class StageControllerTests {
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveStage_returns200_when_validBodyValidGameSaveIdAndAuthenticatedUser() {
     // given
-    StageRequest stageRequest = new StageRequest(10L, 25L);
+    StageRequest stageRequest = new StageRequest(10L, 25L, 10L);
     // when
     mockMvc
         .perform(
@@ -238,7 +256,7 @@ class StageControllerTests {
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveStage_returns400_when_oneStageRequestFieldIsNull() {
     // given
-    StageRequest stageRequest1 = new StageRequest(125L, null);
+    StageRequest stageRequest1 = new StageRequest(125L, null, 10L);
     // when
     mockMvc
         .perform(
@@ -255,7 +273,7 @@ class StageControllerTests {
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveStage_returns400_when_noGameSessionIdHeader() {
     // given
-    StageRequest stageRequest1 = new StageRequest(125L, 200L);
+    StageRequest stageRequest1 = new StageRequest(125L, 200L, 10L);
     // when
     mockMvc
         .perform(

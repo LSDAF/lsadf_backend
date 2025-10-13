@@ -45,10 +45,14 @@ public class StageEntity implements com.lsadf.core.infra.persistence.Entity {
   @Column(STAGE_MAX_STAGE)
   private Long maxStage;
 
+  @Column(STAGE_WAVE)
+  private Long wave;
+
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class StageEntityAttributes {
     public static final String STAGE_ENTITY = "t_stage_tgst";
     public static final String STAGE_CURRENT_STAGE = "tgst_current_stage";
     public static final String STAGE_MAX_STAGE = "tgst_max_stage";
+    public static final String STAGE_WAVE = "tgst_wave";
   }
 }

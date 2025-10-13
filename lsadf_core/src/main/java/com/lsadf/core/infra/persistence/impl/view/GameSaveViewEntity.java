@@ -66,6 +66,9 @@ public class GameSaveViewEntity implements Identifiable, Dateable {
   @Column(STAGE_MAX_STAGE)
   private Long maxStage;
 
+  @Column(STAGE_WAVE)
+  private Long wave;
+
   // Characteristics
   @Column(CHARACTERISTICS_ATTACK)
   private Long attack;
@@ -130,6 +133,6 @@ public class GameSaveViewEntity implements Identifiable, Dateable {
    *     maximum stage values.
    */
   public StageEntity getStageEntity() {
-    return new StageEntity(id, currentStage, maxStage);
+    return new StageEntity(id, currentStage, maxStage, wave);
   }
 }

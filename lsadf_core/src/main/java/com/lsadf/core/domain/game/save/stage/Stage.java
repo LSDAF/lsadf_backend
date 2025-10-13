@@ -20,6 +20,6 @@ import java.io.Serial;
 import lombok.Builder;
 
 @Builder
-public record Stage(Long currentStage, Long maxStage) implements Model {
+public record Stage(Long currentStage, Long maxStage, Long wave) implements Model {
   @Serial private static final long serialVersionUID = -7126306428235414817L;
 }

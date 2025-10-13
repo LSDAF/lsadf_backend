@@ -57,9 +57,11 @@ class StageCommandServiceTests {
   @Mock private StageQueryService stageQueryService;
 
   private static final UUID UUID = java.util.UUID.randomUUID();
-  private static final Stage DEFAULT_STAGE = Stage.builder().currentStage(1L).maxStage(1L).build();
+  private static final Stage DEFAULT_STAGE =
+      Stage.builder().currentStage(1L).maxStage(1L).wave(3L).build();
 
-  private static final Stage CACHED_STAGE = Stage.builder().currentStage(5L).maxStage(10L).build();
+  private static final Stage CACHED_STAGE =
+      Stage.builder().currentStage(5L).maxStage(10L).wave(16L).build();
 
   private AutoCloseable openMocks;
 
@@ -82,7 +84,7 @@ class StageCommandServiceTests {
   @Test
   void test_updateCacheStage_throwsIllegalArgumentException_when_allPropertiesNullAndCacheTrue() {
     // Arrange
-    var command = new UpdateCacheStageCommand(UUID, null, null);
+    var command = new UpdateCacheStageCommand(UUID, null, null, null);
     when(cacheManager.isEnabled()).thenReturn(true);
 
     // Act & Assert
@@ -92,7 +94,7 @@ class StageCommandServiceTests {
   @Test
   void test_updateCacheStage_savesSuccessfully_when_partialStage() {
     // Arrange
-    Stage stage = new Stage(8L, null);
+    Stage stage = new Stage(8L, null, 3L);
     when(cacheManager.isEnabled()).thenReturn(true);
     when(stageCache.get(UUID.toString())).thenReturn(Optional.of(CACHED_STAGE));
     var command = UpdateCacheStageCommand.fromStage(UUID, stage);
@@ -101,14 +103,14 @@ class StageCommandServiceTests {
     stageService.updateCacheStage(command);
 
     // Assert
-    Stage expectedMergedStage = new Stage(8L, CACHED_STAGE.maxStage());
+    Stage expectedMergedStage = new Stage(8L, CACHED_STAGE.maxStage(), 3L);
     verify(stageCache).set(UUID.toString(), expectedMergedStage);
   }
 
   @Test
   void test_updateCacheStage_savesSuccessfully_when_cacheDisabled() {
     // Arrange
-    Stage stage = new Stage(8L, 12L);
+    Stage stage = new Stage(8L, 12L, 16L);
     when(cacheManager.isEnabled()).thenReturn(false);
     var command = UpdateCacheStageCommand.fromStage(UUID, stage);
 
@@ -120,7 +122,7 @@ class StageCommandServiceTests {
   @Test
   void test_updateCacheStage_savesSuccessfully_when_validStage() {
     // Arrange
-    Stage stage = new Stage(8L, 12L);
+    Stage stage = new Stage(8L, 12L, 16L);
     when(cacheManager.isEnabled()).thenReturn(true);
     var command = UpdateCacheStageCommand.fromStage(UUID, stage);
 
@@ -134,7 +136,7 @@ class StageCommandServiceTests {
   @Test
   void test_updateCacheStage_savesSuccessfully_when_cacheMissAndQueryServiceCalled() {
     // Arrange
-    Stage stage = new Stage(8L, null);
+    Stage stage = new Stage(8L, null, 16L);
     when(cacheManager.isEnabled()).thenReturn(true);
     when(stageCache.get(UUID.toString())).thenReturn(Optional.empty());
     when(stageQueryService.retrieveStage(UUID)).thenReturn(CACHED_STAGE);
@@ -144,7 +146,7 @@ class StageCommandServiceTests {
     stageService.updateCacheStage(command);
 
     // Assert
-    Stage expectedMergedStage = new Stage(8L, CACHED_STAGE.maxStage());
+    Stage expectedMergedStage = new Stage(8L, CACHED_STAGE.maxStage(), CACHED_STAGE.wave());
     verify(stageCache).set(UUID.toString(), expectedMergedStage);
     verify(stageQueryService).retrieveStage(UUID);
   }
@@ -168,23 +170,24 @@ class StageCommandServiceTests {
     // Arrange
     Long currentStage = 3L;
     Long maxStage = 5L;
-    InitializeStageCommand command = new InitializeStageCommand(UUID, currentStage, maxStage);
-    Stage expectedStage = new Stage(currentStage, maxStage);
-    when(stageRepositoryPort.create(UUID, currentStage, maxStage)).thenReturn(expectedStage);
+    Long wave = 2L;
+    InitializeStageCommand command = new InitializeStageCommand(UUID, currentStage, maxStage, wave);
+    Stage expectedStage = new Stage(currentStage, maxStage, wave);
+    when(stageRepositoryPort.create(UUID, currentStage, maxStage, wave)).thenReturn(expectedStage);
 
     // Act
     Stage result = stageService.initializeStage(command);
 
     // Assert
     assertEquals(expectedStage, result);
-    verify(stageRepositoryPort).create(UUID, currentStage, maxStage);
+    verify(stageRepositoryPort).create(UUID, currentStage, maxStage, wave);
   }
 
   @Test
   void test_persistStage_persistsSuccessfully() {
     // Arrange
-    PersistStageCommand command = new PersistStageCommand(UUID, 7L, 10L);
-    Stage expectedStage = new Stage(7L, 10L);
+    PersistStageCommand command = new PersistStageCommand(UUID, 7L, 10L, 12L);
+    Stage expectedStage = new Stage(7L, 10L, 12L);
 
     // Act
     stageService.persistStage(command);

@@ -15,8 +15,7 @@
  */
 package com.lsadf.core.infra.web.dto.request.game.stage;
 
-import static com.lsadf.core.infra.web.JsonAttributes.CURRENT_STAGE;
-import static com.lsadf.core.infra.web.JsonAttributes.MAX_STAGE;
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.game.save.stage.validation.StageConsistency;
@@ -37,7 +36,12 @@ public record StageRequest(
         @JsonProperty(value = MAX_STAGE)
         @Positive
         @NotNull
-        Long maxStage)
+        Long maxStage,
+    @Schema(description = "The Current wave in the stage", example = "3")
+        @JsonProperty(value = WAVE)
+        @Positive
+        @NotNull
+        Long wave)
     implements Request {
 
   @Serial private static final long serialVersionUID = -2154269413949156805L;

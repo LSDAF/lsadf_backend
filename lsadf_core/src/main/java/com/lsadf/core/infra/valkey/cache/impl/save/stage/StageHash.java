@@ -43,6 +43,9 @@ public class StageHash implements Hash<UUID> {
   @Column(value = STAGE_MAX_STAGE)
   private Long maxStage;
 
+  @Column(value = STAGE_WAVE)
+  private Long wave;
+
   @TimeToLive private Long expiration;
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -51,5 +54,6 @@ public class StageHash implements Hash<UUID> {
     public static final String STAGE_GAME_SAVE_ID = "gameSaveId";
     public static final String STAGE_CURRENT_STAGE = "currentStage";
     public static final String STAGE_MAX_STAGE = "maxStage";
+    public static final String STAGE_WAVE = "wave";
   }
 }

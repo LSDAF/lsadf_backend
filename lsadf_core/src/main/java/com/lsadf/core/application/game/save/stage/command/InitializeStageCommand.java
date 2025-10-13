@@ -20,4 +20,4 @@ import java.util.UUID;
 import org.jspecify.annotations.Nullable;
 
 public record InitializeStageCommand(
-    UUID gameSaveId, @Nullable Long currentStage, @Nullable Long maxStage) {}
+    UUID gameSaveId, @Nullable Long currentStage, @Nullable Long maxStage, @Nullable Long wave) {}

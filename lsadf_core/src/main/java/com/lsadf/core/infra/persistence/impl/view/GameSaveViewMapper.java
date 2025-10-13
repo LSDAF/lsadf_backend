@@ -68,6 +68,9 @@ public interface GameSaveViewMapper extends EntityModelMapper<GameSaveViewEntity
 
   @Named("mapStage")
   default Stage mapStage(GameSaveViewEntity gameSaveViewEntity) {
-    return new Stage(gameSaveViewEntity.getCurrentStage(), gameSaveViewEntity.getMaxStage());
+    return new Stage(
+        gameSaveViewEntity.getCurrentStage(),
+        gameSaveViewEntity.getMaxStage(),
+        gameSaveViewEntity.getWave());
   }
 }

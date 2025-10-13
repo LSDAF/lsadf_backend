@@ -138,11 +138,13 @@ public class BddUtils {
   public static StageRequest mapToStageRequest(Map<String, String> row) {
     String currentStage = row.get(BddFieldConstants.Stage.CURRENT_STAGE);
     String maxStage = row.get(BddFieldConstants.Stage.MAX_STAGE);
+    String wave = row.get(BddFieldConstants.Stage.WAVE);
 
     long currentStageLong = Long.parseLong(currentStage);
     long maxStageLong = Long.parseLong(maxStage);
+    long waveLong = Long.parseLong(wave);
 
-    return new StageRequest(currentStageLong, maxStageLong);
+    return new StageRequest(currentStageLong, maxStageLong, waveLong);
   }
 
   /**
@@ -205,10 +207,12 @@ public class BddUtils {
     UUID uuid = UUID.fromString(id);
     String currentStage = row.get(BddFieldConstants.Stage.CURRENT_STAGE);
     String maxStage = row.get(BddFieldConstants.Stage.MAX_STAGE);
+    String wave = row.get(BddFieldConstants.Stage.WAVE);
     return StageEntity.builder()
         .id(uuid)
         .currentStage(currentStage == null ? null : Long.parseLong(currentStage))
         .maxStage(maxStage == null ? null : Long.parseLong(maxStage))
+        .wave(wave == null ? null : Long.parseLong(wave))
         .build();
   }
 
@@ -317,6 +321,7 @@ public class BddUtils {
     String resistanceString = row.get(BddFieldConstants.Characteristics.RESISTANCE);
     String currentStageString = row.get(BddFieldConstants.GameSave.CURRENT_STAGE);
     String maxStageString = row.get(BddFieldConstants.GameSave.MAX_STAGE);
+    String waveString = row.get(BddFieldConstants.Stage.WAVE);
     String nickname = row.get(BddFieldConstants.GameSave.NICKNAME);
 
     Long gold = Long.parseLong(goldString);
@@ -330,13 +335,14 @@ public class BddUtils {
     Long resistance = Long.parseLong(resistanceString);
     Long currentStage = Long.parseLong(currentStageString);
     Long maxStage = Long.parseLong(maxStageString);
+    Long wave = Long.parseLong(waveString);
 
     String id = row.get(BddFieldConstants.GameSave.ID);
     UUID uuid = UUID.fromString(id);
     String userEmail = row.get(BddFieldConstants.GameSave.USER_EMAIL);
 
     GameMetadataRequest metadataRequest = new GameMetadataRequest(uuid, userEmail, nickname);
-    StageRequest stageRequest = new StageRequest(currentStage, maxStage);
+    StageRequest stageRequest = new StageRequest(currentStage, maxStage, wave);
     CharacteristicsRequest characteristicsRequest =
         new CharacteristicsRequest(attack, critChance, critDamage, health, resistance);
     CurrencyRequest currencyRequest = new CurrencyRequest(gold, diamond, emerald, amethyst);
@@ -859,11 +865,17 @@ public class BddUtils {
   public static Stage mapToStage(Map<String, String> row) {
     String currentStage = row.get(BddFieldConstants.Stage.CURRENT_STAGE);
     String maxStage = row.get(BddFieldConstants.Stage.MAX_STAGE);
+    String wave = row.get(BddFieldConstants.Stage.WAVE);
 
     long currentStageLong = Long.parseLong(currentStage);
     long maxStageLong = Long.parseLong(maxStage);
+    long waveLong = Long.parseLong(wave);
 
-    return Stage.builder().currentStage(currentStageLong).maxStage(maxStageLong).build();
+    return Stage.builder()
+        .currentStage(currentStageLong)
+        .maxStage(maxStageLong)
+        .wave(waveLong)
+        .build();
   }
 
   /**
@@ -879,15 +891,21 @@ public class BddUtils {
   public static StageResponse mapToStageResponse(Map<String, String> row) {
     String currentStage = row.get(BddFieldConstants.Stage.CURRENT_STAGE);
     String maxStage = row.get(BddFieldConstants.Stage.MAX_STAGE);
+    String wave = row.get(BddFieldConstants.Stage.WAVE);
 
-    if (currentStage == null || maxStage == null) {
-      throw new IllegalArgumentException("Current and maximum stage cannot be null");
+    if (currentStage == null || maxStage == null || wave == null) {
+      throw new IllegalArgumentException("Current, maximum stage and wave cannot be null");
     }
 
     long currentStageLong = Long.parseLong(currentStage);
     long maxStageLong = Long.parseLong(maxStage);
+    long waveLong = Long.parseLong(wave);
 
-    return StageResponse.builder().currentStage(currentStageLong).maxStage(maxStageLong).build();
+    return StageResponse.builder()
+        .currentStage(currentStageLong)
+        .maxStage(maxStageLong)
+        .wave(waveLong)
+        .build();
   }
 
   /**
