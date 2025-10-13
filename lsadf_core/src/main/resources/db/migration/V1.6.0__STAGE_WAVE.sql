@@ -18,6 +18,11 @@ ALTER TABLE t_stage_tgst
     ADD COLUMN tgst_wave BIGINT NOT NULL DEFAULT 1
         CONSTRAINT chk_tgwv_strict_positive_wave_number CHECK (tgst_wave > 0);
 
+-- Set default wave to 1 for all existing records
+UPDATE t_stage_tgst
+SET tgst_wave = 1
+WHERE tgst_wave IS NULL;
+
 -- Drop the existing view if it exists
 DROP VIEW IF EXISTS v_game_save_vgsa;
 
