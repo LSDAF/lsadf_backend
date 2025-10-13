@@ -19,8 +19,8 @@ import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
 import static org.mockito.ArgumentMatchers.any;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.admin.application.game.AdminGameSaveController;
-import com.lsadf.admin.application.game.AdminGameSaveControllerImpl;
+import com.lsadf.admin.application.game.save.AdminGameSaveController;
+import com.lsadf.admin.application.game.save.AdminGameSaveControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
