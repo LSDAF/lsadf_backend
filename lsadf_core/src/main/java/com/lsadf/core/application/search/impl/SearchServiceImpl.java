@@ -28,7 +28,6 @@ import com.lsadf.core.infra.web.dto.request.game.save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.dto.request.search.SearchRequest;
 import com.lsadf.core.infra.web.dto.request.user.UserSortingParameter;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,21 +47,22 @@ public class SearchServiceImpl implements SearchService {
     Stream<User> userStream = userService.getUsers();
     List<Filter> filters = searchRequest.filters();
     for (Filter filter : filters) {
+      var value = filter.value();
+      var regexValue = valueToRegex(value);
       switch (filter.type()) {
-        case FIRST_NAME ->
-            userStream = userStream.filter(user -> user.getFirstName().equals(filter.value()));
-        case LAST_NAME ->
-            userStream = userStream.filter(user -> user.getLastName().equals(filter.value()));
-        case USERNAME, USER_EMAIL ->
-            userStream = userStream.filter(user -> user.getUsername().equals(filter.value()));
+        case FIRST_NAME, FIRST_NAME_CAMEL_CASE ->
+            userStream = userStream.filter(user -> user.getFirstName().matches(regexValue));
+        case LAST_NAME, LAST_NAME_CAMEL_CASE ->
+            userStream = userStream.filter(user -> user.getLastName().matches(regexValue));
+        case USERNAME, USER_EMAIL, USER_EMAIL_CAMEL_CASE ->
+            userStream = userStream.filter(user -> user.getUsername().matches(regexValue));
         case ID ->
-            userStream =
-                userStream.filter(user -> user.getId().equals(UUID.fromString(filter.value())));
+            userStream = userStream.filter(user -> user.getId().toString().matches(regexValue));
         case USER_ROLES ->
             userStream =
                 userStream.filter(
                     user ->
-                        user.getUserRoles().stream().anyMatch(role -> role.equals(filter.value())));
+                        user.getUserRoles().stream().anyMatch(role -> role.matches(regexValue)));
         default -> throw new IllegalArgumentException("Invalid filter type");
       }
     }
@@ -77,24 +77,42 @@ public class SearchServiceImpl implements SearchService {
     Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves().stream();
     List<Filter> filters = searchRequest.filters();
     for (Filter filter : filters) {
+      var value = filter.value();
+      var regexValue = valueToRegex(value);
       switch (filter.type()) {
         case ID ->
             gameSaveStream =
                 gameSaveStream.filter(
-                    gameSave ->
-                        gameSave.getMetadata().id().equals(UUID.fromString(filter.value())));
-        case USER_EMAIL ->
+                    gameSave -> gameSave.getMetadata().id().toString().matches(regexValue));
+        case USER_EMAIL, USER_EMAIL_CAMEL_CASE ->
             gameSaveStream =
                 gameSaveStream.filter(
-                    gameSave -> gameSave.getMetadata().userEmail().equals(filter.value()));
+                    gameSave -> gameSave.getMetadata().userEmail().matches(regexValue));
         case NICKNAME ->
             gameSaveStream =
                 gameSaveStream.filter(
-                    gameSave -> gameSave.getMetadata().nickname().equals(filter.value()));
+                    gameSave -> gameSave.getMetadata().nickname().matches(regexValue));
         default -> throw new IllegalArgumentException("Invalid filter type");
       }
     }
 
     return StreamUtils.sortGameSaves(gameSaveStream, orderBy);
+  }
+
+  /**
+   * Convert a SQL-like pattern to a regex pattern.
+   *
+   * @param valuePattern The SQL-like pattern (e.g. San%)
+   * @return The regex pattern (e.g. ^San.*$)
+   */
+  private static String valueToRegex(String valuePattern) {
+    // Convert SQL-like pattern (e.g. San%) into regex (e.g. ^San.*$)
+    String regex =
+        valuePattern
+            .replace(".", "\\.") // escape literal dots
+            .replace("%", ".*") // convert SQL wildcard
+            .replace("_", "."); // convert SQL single-char wildcard
+    regex = "^" + regex + "$";
+    return regex;
   }
 }
