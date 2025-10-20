@@ -259,30 +259,6 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>com.vaadin</groupId>
-                    <artifactId>vaadin-maven-plugin</artifactId>
-                    <version>${vaadin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>clean-frontend</id>
-                            <phase>clean</phase>
-                            <goals>
-                                <goal>clean-frontend</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>prepare-frontend</id>
-                            <goals>
-                                <goal>prepare-frontend</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <forceProductionBuild>true</forceProductionBuild>
-                        <frontendHotdeploy>false</frontendHotdeploy>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <executions>

@@ -69,7 +69,6 @@
         <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <google-java-format.version>1.25.0</google-java-format.version>
-        <vaadin.version>24.5.7</vaadin.version>
         <flyway.version>11.1.0</flyway.version>
         <license-maven-plugin.version>5.0.0</license-maven-plugin.version>
         <mapstruct.version>1.6.3</mapstruct.version>
