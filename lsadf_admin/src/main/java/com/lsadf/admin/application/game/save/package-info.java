@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 @org.jspecify.annotations.NullMarked
-package com.lsadf.admin.application.ui.user;
+package com.lsadf.admin.application.game.save;

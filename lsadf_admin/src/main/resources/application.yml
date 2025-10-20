@@ -215,8 +215,3 @@ configuration-display:
 
 jdbc:
   enabled: true
-
-vaadin:
-  exclude-urls:
-    - /swagger-ui.html
-    - /swagger-ui/**

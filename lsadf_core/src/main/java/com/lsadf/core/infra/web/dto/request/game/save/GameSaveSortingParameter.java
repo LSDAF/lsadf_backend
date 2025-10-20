@@ -104,7 +104,9 @@ public enum GameSaveSortingParameter implements SortingParameter<GameSave> {
       JsonAttributes.MAX_STAGE,
       DESC,
       (o1, o2) -> o2.getStage().maxStage().compareTo(o1.getStage().maxStage())),
-
+  WAVE(JsonAttributes.WAVE, ASC, Comparator.comparing(gameSave -> gameSave.getStage().wave())),
+  WAVE_DESC(
+      JsonAttributes.WAVE, DESC, (o1, o2) -> o2.getStage().wave().compareTo(o1.getStage().wave())),
   // Characteristics
   ATTACK(
       JsonAttributes.ATTACK,

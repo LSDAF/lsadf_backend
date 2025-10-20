@@ -33,13 +33,16 @@ public final class JsonAttributes {
   public static final String ID = "id";
 
   public static final String CREATED_AT = "created_at";
+  public static final String CREATED_AT_CAMEL_CASE = "createdAt";
 
   public static final String UPDATED_AT = "updated_at";
+  public static final String UPDATED_AT_CAMEL_CASE = "updatedAt";
 
   public static final String TYPE = "type";
   public static final String VALUE = "value";
 
   public static final String USER_EMAIL = "user_email";
+  public static final String USER_EMAIL_CAMEL_CASE = "userEmail";
 
   public static final String METADATA = "metadata";
 
@@ -58,12 +61,15 @@ public final class JsonAttributes {
   public static final String USER_COUNTER = "user_counter";
 
   public static final String FIRST_NAME = "first_name";
+  public static final String FIRST_NAME_CAMEL_CASE = "firstName";
 
   public static final String LAST_NAME = "last_name";
+  public static final String LAST_NAME_CAMEL_CASE = "lastName";
 
   public static final String USERNAME = "username";
 
   public static final String CREATED_TIMESTAMP = "created_timestamp";
+  public static final String CREATED_TIMESTAMP_CAMEL_CASE = "createdTimestamp";
 
   public static final String PASSWORD = "password";
   public static final String STATUS = "status";
@@ -74,14 +80,19 @@ public final class JsonAttributes {
   public static final String ROLES = "roles";
   public static final String EMAIL_VERIFIED = "email_verified";
   public static final String USER_ROLES = "user_roles";
+  public static final String USER_ROLES_CAMEL_CASE = "userRoles";
   public static final String VERIFIED = "verified";
   public static final String FILTERS = "filters";
   public static final String CURRENT_STAGE = "current_stage";
+  public static final String CURRENT_STAGE_CAMEL_CASE = "currentStage";
   public static final String MAX_STAGE = "max_stage";
+  public static final String MAX_STAGE_CAMEL_CASE = "maxStage";
   public static final String WAVE = "wave";
   public static final String ATTACK = "attack";
   public static final String CRIT_CHANCE = "crit_chance";
+  public static final String CRIT_CHANCE_CAMEL_CASE = "critChance";
   public static final String CRIT_DAMAGE = "crit_damage";
+  public static final String CRIT_DAMAGE_CAMEL_CASE = "critDamage";
   public static final String HEALTH = "health";
   public static final String RESISTANCE = "resistance";
   public static final String GOLD = "gold";
