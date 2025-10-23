@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-CREATE TYPE game_mail_status AS ENUM (
-    'UNREAD',
-    'READ',
-    'DELETED'
-    );
 
 CREATE TABLE t_game_mail_tgml
 (
-    tgml_id         UUID PRIMARY KEY         DEFAULT gen_random_uuid(),
-    tgme_id         UUID         NOT NULL,
-    tgml_subject    VARCHAR(255) NOT NULL,
-    tgml_body       TEXT         NOT NULL,
-    tgml_sent_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    tgml_expires_at TIMESTAMP WITH TIME ZONE DEFAULT (CURRENT_TIMESTAMP + INTERVAL '30 days'),
-    tgml_status     game_mail_status         DEFAULT 'UNREAD'
+    tgml_id                 UUID PRIMARY KEY         DEFAULT gen_random_uuid(),
+    tgme_id                 UUID         NOT NULL,
+    tgml_subject            VARCHAR(255) NOT NULL,
+    tgml_body               TEXT         NOT NULL,
+    tgml_read               BOOLEAN      NOT NULL    DEFAULT FALSE,
+    tgml_attachment_claimed BOOLEAN      NOT NULL    DEFAULT FALSE,
+    tgml_created_at         TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    tgml_updated_at         TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    tgml_expires_at         TIMESTAMP WITH TIME ZONE DEFAULT (CURRENT_TIMESTAMP + INTERVAL '30 days')
 );
 
 ALTER TABLE t_game_mail_tgml

@@ -60,6 +60,9 @@ public class GameMailEntity implements Identifiable, Dateable {
   @Column(GAME_MAIL_READ)
   private boolean read;
 
+  @Column(GAME_MAIL_ATTACHMENT_CLAIMED)
+  private boolean attachmentClaimed;
+
   @Override
   public Date getCreatedAt() {
     return Date.from(createdAt);
@@ -80,6 +83,7 @@ public class GameMailEntity implements Identifiable, Dateable {
     public static final String GAME_MAIL_READ = "tgml_read";
     public static final String GAME_MAIL_CREATED_AT = "tgml_created_at";
     public static final String GAME_MAIL_EXPIRES_AT = "tgml_expires_at";
+    public static final String GAME_MAIL_ATTACHMENT_CLAIMED = "tgml_attachment_claimed";
     public static final String GAME_MAIL_UPDATED_AT = "tgml_updated_at";
   }
 }
