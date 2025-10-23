@@ -81,11 +81,6 @@ public class ValkeyGameStreamConfiguration {
    */
   @Bean
   public ScheduledExecutorService flushSchedulerExecutorService() {
-    return Executors.newSingleThreadScheduledExecutor(
-        r -> {
-          Thread thread = new Thread(r, "flush-scheduler");
-          thread.setDaemon(true);
-          return thread;
-        });
+    return Executors.newSingleThreadScheduledExecutor(Thread.ofVirtual().factory());
   }
 }
