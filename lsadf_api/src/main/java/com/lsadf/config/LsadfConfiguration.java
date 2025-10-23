@@ -22,6 +22,7 @@ import com.lsadf.core.infra.config.PropertiesConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
 import com.lsadf.core.infra.persistence.config.JdbcConfiguration;
+import com.lsadf.core.infra.scheduling.config.SchedulingConfiguration;
 import com.lsadf.core.infra.valkey.config.cache.NoValkeyCacheConfiguration;
 import com.lsadf.core.infra.valkey.config.cache.ValkeyCacheConfiguration;
 import com.lsadf.core.infra.valkey.config.stream.ValkeyStreamConfiguration;
@@ -63,6 +64,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   ValkeyStreamConfiguration.class,
   ValkeyGameStreamConfiguration.class,
   GlobalExceptionHandler.class,
-  JacksonConfiguration.class
+  JacksonConfiguration.class,
+  SchedulingConfiguration.class
 })
 public class LsadfConfiguration {}
