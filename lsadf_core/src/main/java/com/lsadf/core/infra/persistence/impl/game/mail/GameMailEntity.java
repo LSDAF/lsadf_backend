@@ -61,7 +61,7 @@ public class GameMailEntity implements Identifiable, Dateable {
   private boolean read;
 
   @Column(GAME_MAIL_ATTACHMENT_CLAIMED)
-  private boolean attachmentClaimed;
+  private boolean attachmentsClaimed;
 
   @Override
   public Date getCreatedAt() {

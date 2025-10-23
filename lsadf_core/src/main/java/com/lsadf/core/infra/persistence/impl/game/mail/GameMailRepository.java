@@ -69,7 +69,7 @@ public interface GameMailRepository extends JdbcRepository<GameMailEntity> {
       @Param(GAME_MAIL_GAME_METADATA_ID) String gameSaveId,
       @Param(GAME_MAIL_SUBJECT) String subject,
       @Param(GAME_MAIL_BODY) String body,
-      @Param(GAME_MAIL_READ) String isRead,
+      @Param(GAME_MAIL_READ) boolean isRead,
       @Param(GAME_MAIL_EXPIRES_AT) Instant expiresAt);
 
   /**

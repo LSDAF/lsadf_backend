@@ -16,22 +16,67 @@
 
 package com.lsadf.core.application.game.mail;
 
-import com.lsadf.core.domain.game.mail.GameMail;
-import com.lsadf.core.domain.game.mail.GameMailStatus;
+import com.lsadf.core.infra.persistence.impl.game.mail.GameMailEntity;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface GameMailRepositoryPort {
-  Optional<GameMail> findByIdWithAttachments(UUID mailId);
+  /**
+   * Find mail by id with attachments
+   *
+   * @param mailId the mail id
+   * @return the mail with attachments
+   */
+  Optional<GameMailEntity> findGameMailEntityById(UUID mailId);
 
-  List<GameMail> findByUserId(String gameSaveId);
+  /**
+   * Find all mails for a specific game save
+   *
+   * @param gameSaveId the game save id
+   * @return list of mails for the game save
+   */
+  List<GameMailEntity> findGameMailsByGameSaveId(UUID gameSaveId);
 
-  GameMail save(
-      UUID id,
-      UUID gameSaveId,
-      String subject,
-      String body,
-      GameMailStatus status,
-      List<com.lsadf.core.shared.model.Model> attachments);
+  /**
+   * Save a new game mail
+   *
+   * @param id the mail id
+   * @param gameSaveId the game save id
+   * @param subject the subject of the mail
+   * @param body the body of the mail
+   * @param isRead true if the mail is read, false otherwise
+   * @param expiresAt the expiration time
+   */
+  void createNewGameEmail(
+      UUID id, UUID gameSaveId, String subject, String body, boolean isRead, Instant expiresAt);
+
+  /**
+   * Mark a game email as read
+   *
+   * @param mailId the mail id
+   */
+  void readGameEmail(UUID mailId);
+
+  /**
+   * Delete game emails by their ids
+   *
+   * @param mailIds list of mail ids to delete
+   */
+  void deleteGameEmails(List<UUID> mailIds);
+
+  /**
+   * Mark game mail attachments as claimed
+   *
+   * @param mailId the mail id
+   */
+  void claimGameMailAttachments(UUID mailId);
+
+  /**
+   * Delete expired game mails in batch
+   *
+   * @param currentTime the current timestamp
+   */
+  void deleteExpiredGameMails(Instant currentTime);
 }

@@ -29,6 +29,9 @@ public record GameMail(
     String subject,
     String body,
     Instant sentAt,
+    Instant expiresAt,
+    boolean read,
+    boolean attachmentsClaimed,
     GameMailStatus status,
     List<Model> attachments)
     implements Model {}
