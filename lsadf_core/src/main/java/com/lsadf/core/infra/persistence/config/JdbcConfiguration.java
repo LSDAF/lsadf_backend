@@ -26,7 +26,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /** Configuration class for JDBC operations. */
 @Configuration
-@Import({DataSourceConfiguration.class, RepositoryPortConfiguration.class})
+@Import({
+  DataSourceConfiguration.class,
+  RepositoryPortConfiguration.class,
+  JdbcCustomConverterConfiguration.class
+})
 @ConditionalOnProperty(name = "jdbc.enabled", havingValue = "true")
 @EnableJdbcRepositories(
     basePackages = {

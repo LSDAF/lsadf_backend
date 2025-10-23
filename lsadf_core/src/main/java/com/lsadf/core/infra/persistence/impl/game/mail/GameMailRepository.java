@@ -62,8 +62,8 @@ public interface GameMailRepository extends JdbcRepository<GameMailEntity> {
   @Modifying
   @Query(
       "INSERT INTO t_game_mail_tgml "
-          + "(tgml_id, tgme_id, tgml_subject, tgml_body, tgml_read, tgml_deleted, tgml_expires_at) "
-          + "VALUES (:tgml_id, :tgme_id, :tgml_subject, :tgml_body, :tgml_read, :tgml_deleted, :tgml_expires_at)")
+          + "(tgml_id, tgme_id, tgml_subject, tgml_body, tgml_read, tgml_expires_at) "
+          + "VALUES (:tgml_id, :tgme_id, :tgml_subject, :tgml_body, :tgml_read, :tgml_expires_at)")
   void createNewGameEmail(
       @Param(GAME_MAIL_ID) String id,
       @Param(GAME_MAIL_GAME_METADATA_ID) String gameSaveId,

@@ -17,21 +17,30 @@
 package com.lsadf.core.domain.game.mail;
 
 import com.lsadf.core.shared.model.Model;
+import java.io.Serial;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import lombok.Builder;
+import lombok.*;
 
-@Builder
-public record GameMail(
-    UUID id,
-    UUID gameSaveId,
-    String subject,
-    String body,
-    Instant sentAt,
-    Instant expiresAt,
-    boolean read,
-    boolean attachmentsClaimed,
-    GameMailStatus status,
-    List<Model> attachments)
-    implements Model {}
+@RequiredArgsConstructor
+@EqualsAndHashCode
+@Getter
+public final class GameMail implements Model {
+  @Serial private static final long serialVersionUID = -8465791165591742351L;
+  private final UUID id;
+  private final UUID gameSaveId;
+  private final String subject;
+  private final String body;
+  private final Instant sentAt;
+  private final Instant expiresAt;
+  private final boolean read;
+  private final boolean attachmentsClaimed;
+  private final GameMailStatus status;
+  private final List<GameMailAttachment<?>> attachments = new ArrayList<>();
+
+  public void addAttachment(GameMailAttachment<?> attachment) {
+    this.attachments.add(attachment);
+  }
+}

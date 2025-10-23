@@ -16,6 +16,7 @@
 package com.lsadf.core.infra.persistence.config;
 
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
+import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsRepositoryPort;
 import com.lsadf.core.application.game.save.currency.CurrencyRepositoryPort;
@@ -23,9 +24,13 @@ import com.lsadf.core.application.game.save.metadata.GameMetadataRepositoryPort;
 import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.infra.persistence.adapter.game.inventory.InventoryRepositoryAdapter;
+import com.lsadf.core.infra.persistence.adapter.game.mail.GameMailRepositoryAdapter;
+import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverterRegistry;
 import com.lsadf.core.infra.persistence.adapter.game.save.*;
 import com.lsadf.core.infra.persistence.impl.game.inventory.AdditionalItemStatsRepository;
 import com.lsadf.core.infra.persistence.impl.game.inventory.ItemRepository;
+import com.lsadf.core.infra.persistence.impl.game.mail.GameMailRepository;
+import com.lsadf.core.infra.persistence.impl.game.mail.attachment.GameMailAttachmentRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
@@ -79,5 +84,14 @@ public class RepositoryPortConfiguration {
   @Bean
   public StageRepositoryPort stageRepositoryAdapter(StageRepository stageRepository) {
     return new StageRepositoryAdapter(stageRepository);
+  }
+
+  @Bean
+  public GameMailRepositoryPort gameMailRepositoryPort(
+      GameMailRepository gameMailRepository,
+      GameMailAttachmentRepository gameMailAttachmentRepository,
+      GameMailAttachmentConverterRegistry gameMailAttachmentConverterRegistry) {
+    return new GameMailRepositoryAdapter(
+        gameMailRepository, gameMailAttachmentRepository, gameMailAttachmentConverterRegistry);
   }
 }

@@ -19,8 +19,10 @@ package com.lsadf.core.infra.persistence.adapter.game.mail.converter.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.domain.game.inventory.item.Item;
+import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverter;
+import com.lsadf.core.shared.model.Model;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -34,7 +36,7 @@ public class GameMailAttachmentItemConverter implements GameMailAttachmentConver
   }
 
   @Override
-  public String toJson(Item attachment) throws JsonProcessingException {
+  public String toJson(GameMailAttachment<Model> attachment) throws JsonProcessingException {
     return objectMapper.writeValueAsString(attachment);
   }
 

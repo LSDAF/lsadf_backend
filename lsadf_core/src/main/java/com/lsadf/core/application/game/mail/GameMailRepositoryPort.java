@@ -16,7 +16,9 @@
 
 package com.lsadf.core.application.game.mail;
 
-import com.lsadf.core.infra.persistence.impl.game.mail.GameMailEntity;
+import com.lsadf.core.domain.game.mail.GameMail;
+import com.lsadf.core.domain.game.mail.GameMailAttachment;
+import com.lsadf.core.shared.model.Model;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +31,7 @@ public interface GameMailRepositoryPort {
    * @param mailId the mail id
    * @return the mail with attachments
    */
-  Optional<GameMailEntity> findGameMailEntityById(UUID mailId);
+  Optional<GameMail> findGameMailEntityById(UUID mailId);
 
   /**
    * Find all mails for a specific game save
@@ -37,7 +39,7 @@ public interface GameMailRepositoryPort {
    * @param gameSaveId the game save id
    * @return list of mails for the game save
    */
-  List<GameMailEntity> findGameMailsByGameSaveId(UUID gameSaveId);
+  List<GameMail> findGameMailsByGameSaveId(UUID gameSaveId);
 
   /**
    * Save a new game mail
@@ -50,7 +52,13 @@ public interface GameMailRepositoryPort {
    * @param expiresAt the expiration time
    */
   void createNewGameEmail(
-      UUID id, UUID gameSaveId, String subject, String body, boolean isRead, Instant expiresAt);
+      UUID id,
+      UUID gameSaveId,
+      String subject,
+      String body,
+      boolean isRead,
+      Instant expiresAt,
+      List<GameMailAttachment<Model>> attachments);
 
   /**
    * Mark a game email as read

@@ -13,18 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.lsadf.core.infra.persistence.adapter.game.mail.converter;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.lsadf.core.domain.game.mail.GameMailAttachment;
-import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
-import com.lsadf.core.shared.model.Model;
-
-public interface GameMailAttachmentConverter<T extends Model> {
-  GameMailAttachmentType getAttachmentType();
-
-  String toJson(GameMailAttachment<Model> attachment) throws JsonProcessingException;
-
-  T toModel(String json) throws JsonProcessingException;
-}
+@org.jspecify.annotations.NullMarked
+package com.lsadf.core.infra.persistence.adapter.game.mail;

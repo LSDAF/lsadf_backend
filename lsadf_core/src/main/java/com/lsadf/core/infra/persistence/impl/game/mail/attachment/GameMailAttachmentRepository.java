@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.impl.game.mail;
+package com.lsadf.core.infra.persistence.impl.game.mail.attachment;
 
-import static com.lsadf.core.infra.persistence.impl.game.mail.GameMailAttachmentEntity.GameMailAttachmentEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.impl.game.mail.attachment.GameMailAttachmentEntity.GameMailAttachmentEntityAttributes.*;
 
 import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.List;

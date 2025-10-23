@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.impl.game.mail;
+package com.lsadf.core.infra.persistence.impl.game.mail.attachment;
 
-import static com.lsadf.core.infra.persistence.impl.game.mail.GameMailAttachmentEntity.GameMailAttachmentEntityAttributes.*;
-import static com.lsadf.core.infra.persistence.impl.game.mail.GameMailAttachmentEntity.GameMailAttachmentEntityAttributes.GAME_MAIL_ATTACHMENT_ENTITY;
+import static com.lsadf.core.infra.persistence.impl.game.mail.attachment.GameMailAttachmentEntity.GameMailAttachmentEntityAttributes.*;
+import static com.lsadf.core.infra.persistence.impl.game.mail.attachment.GameMailAttachmentEntity.GameMailAttachmentEntityAttributes.GAME_MAIL_ATTACHMENT_ENTITY;
 
+import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 import com.lsadf.core.infra.persistence.Identifiable;
-import com.nimbusds.openid.connect.sdk.assurance.evidences.attachment.AttachmentType;
 import java.util.UUID;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -42,7 +42,7 @@ public class GameMailAttachmentEntity implements Identifiable {
   private UUID mailId;
 
   @Column(GAME_MAIL_ATTACHMENT_TYPE)
-  private AttachmentType attachmentType;
+  private GameMailAttachmentType attachmentType;
 
   @Column(GAME_MAIL_ATTACHMENT_OBJECT)
   private String attachmentObject;

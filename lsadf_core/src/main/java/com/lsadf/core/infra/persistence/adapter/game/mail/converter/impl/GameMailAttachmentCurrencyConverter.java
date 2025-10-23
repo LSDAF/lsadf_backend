@@ -20,9 +20,11 @@ import static com.lsadf.core.domain.game.mail.GameMailAttachmentType.CURRENCY;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverter;
+import com.lsadf.core.shared.model.Model;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -36,8 +38,9 @@ public class GameMailAttachmentCurrencyConverter implements GameMailAttachmentCo
   }
 
   @Override
-  public String toJson(Currency attachment) throws JsonProcessingException {
-    return objectMapper.writeValueAsString(attachment);
+  public String toJson(GameMailAttachment<Model> attachment) throws JsonProcessingException {
+    Object attachmentObject = attachment.attachment();
+    return objectMapper.writeValueAsString(attachmentObject);
   }
 
   @Override
