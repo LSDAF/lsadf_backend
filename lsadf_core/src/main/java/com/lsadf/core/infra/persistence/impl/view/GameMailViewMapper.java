@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.persistence.impl.game.mail;
+package com.lsadf.core.infra.persistence.impl.view;
 
 import com.lsadf.core.domain.game.mail.GameMail;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
@@ -22,23 +22,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-/**
- * Mapper for converting between GameMailEntity and GameMail domain model.
- *
- * <p>This mapper uses MapStruct to automatically generate the implementation. The attachments field
- * is ignored during mapping.
- *
- * @see GameMailEntity
- * @see GameMail
- * @see EntityModelMapper
- * @see <a href="https://mapstruct.org/">MapStruct Documentation</a>
- */
 @Mapper
-public interface GameMailEntityMapper extends EntityModelMapper<GameMailEntity, GameMail> {
+public interface GameMailViewMapper extends EntityModelMapper<GameMailViewEntity, GameMail> {
+  GameMailViewMapper INSTANCE = Mappers.getMapper(GameMailViewMapper.class);
 
-  GameMailEntityMapper INSTANCE = Mappers.getMapper(GameMailEntityMapper.class);
-
-  @Override
   @Mapping(target = "attachments", ignore = true)
-  GameMail map(GameMailEntity input);
+  @Override
+  GameMail map(GameMailViewEntity entity);
 }
