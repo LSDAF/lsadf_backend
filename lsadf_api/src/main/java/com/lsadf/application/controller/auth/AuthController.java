@@ -20,6 +20,7 @@ import static com.lsadf.application.controller.auth.AuthController.Constants.Api
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
+import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.dto.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.dto.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
@@ -37,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping(value = ApiPathConstants.AUTH)
 @Tag(name = SwaggerConstants.AUTH_CONTROLLER)
-public interface AuthController {
+public interface AuthController extends Controller {
 
   /**
    * Logs in a user

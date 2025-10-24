@@ -22,6 +22,7 @@ import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_I
 import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.stage.StageResponse;
@@ -43,7 +44,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = STAGE_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
-public interface StageController {
+public interface StageController extends Controller {
 
   /**
    * Saves the current stage for a specified game save.

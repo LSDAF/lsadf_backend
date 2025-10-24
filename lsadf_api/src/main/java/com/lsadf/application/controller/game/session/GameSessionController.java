@@ -23,6 +23,7 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrat
 import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_ID;
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
+import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.controller.ParameterConstants;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
@@ -43,7 +44,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = GAME_SESSION_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
-public interface GameSessionController {
+public interface GameSessionController extends Controller {
 
   /**
    * Opens a new game session for a specified game save.

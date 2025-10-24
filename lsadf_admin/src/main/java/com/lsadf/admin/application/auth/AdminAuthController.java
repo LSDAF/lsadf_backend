@@ -17,6 +17,7 @@ package com.lsadf.admin.application.auth;
 
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.constant.AdminSwaggerConstants;
+import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.dto.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.dto.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
@@ -34,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping(value = AdminApiPathConstants.AUTH)
 @Tag(name = AdminSwaggerConstants.AUTH_CONTROLLER)
-public interface AdminAuthController {
+public interface AdminAuthController extends Controller {
 
   /**
    * Logs in a user

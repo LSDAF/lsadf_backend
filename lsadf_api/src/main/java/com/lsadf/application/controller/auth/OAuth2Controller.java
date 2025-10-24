@@ -17,6 +17,7 @@ package com.lsadf.application.controller.auth;
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
+import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping(value = ApiPathConstants.OAUTH2)
 @Tag(name = SwaggerConstants.OAUTH_2_CONTROLLER)
-public interface OAuth2Controller {
+public interface OAuth2Controller extends Controller {
 
   /**
    * Handle OAuth2 callback

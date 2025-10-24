@@ -20,6 +20,7 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrat
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
+import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.ResponseMessages;
 import com.lsadf.core.infra.web.dto.response.user.UserInfoResponse;
@@ -40,7 +41,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Tag(name = SwaggerConstants.USER_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
-public interface UserController {
+public interface UserController extends Controller {
 
   /**
    * Retrieves the information of the logged-in user.
