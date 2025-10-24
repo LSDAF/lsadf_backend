@@ -70,4 +70,4 @@ CREATE INDEX idx_tgmta_template_id ON t_game_mail_template_attachment_tmta (tgmt
 CREATE INDEX idx_tgmi_game_id ON t_game_mail_instance_tgmi (tgme_id);
 CREATE INDEX idx_tgmi_template_id ON t_game_mail_instance_tgmi (tgmt_id);
 CREATE INDEX idx_tgmi_expires_at ON t_game_mail_instance_tgmi (tgmi_expires_at);
-CREATE INDEX idx_tgmi_unread ON t_game_mail_instance_tgmi (tgme_id, tgmi_read) WHERE tgmi_read = FALSE;
+CREATE INDEX idx_tgmi_read ON t_game_mail_instance_tgmi (tgme_id, tgmi_read);
