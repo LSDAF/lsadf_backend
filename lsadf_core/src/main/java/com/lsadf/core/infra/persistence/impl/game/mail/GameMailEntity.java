@@ -20,7 +20,6 @@ import static com.lsadf.core.infra.persistence.impl.game.mail.GameMailEntity.Gam
 
 import com.lsadf.core.infra.persistence.Dateable;
 import com.lsadf.core.infra.persistence.Identifiable;
-import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 import lombok.*;
@@ -28,40 +27,38 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Builder
-@AllArgsConstructor
-@Table(GAME_MAIL_ENTITY)
 @Getter
 @Setter
-public class GameMailEntity implements Identifiable, Dateable {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(GAME_MAIL_ENTITY)
+public class GameMailEntity implements Dateable, Identifiable {
 
   @Id
   @Column(GAME_MAIL_ID)
   private UUID id;
 
-  @Column(GAME_MAIL_CREATED_AT)
-  private Instant createdAt;
+  @Column(GAME_MAIL_MAIL_TEMPLATE_ID)
+  private UUID mailTemplateId;
 
-  @Column(GAME_MAIL_UPDATED_AT)
-  private Instant updatedAt;
-
-  @Column(GAME_MAIL_GAME_METADATA_ID)
+  @Column(GAME_MAIL_GAME_SAVE_ID)
   private UUID gameSaveId;
 
+  @Column(GAME_MAIL_IS_READ)
+  private boolean isRead;
+
+  @Column(GAME_MAIL_IS_ATTACHMENT_CLAIMED)
+  private boolean isAttachmentClaimed;
+
+  @Column(GAME_MAIL_CREATED_AT)
+  private java.time.Instant createdAt;
+
+  @Column(GAME_MAIL_UPDATED_AT)
+  private java.time.Instant updatedAt;
+
   @Column(GAME_MAIL_EXPIRES_AT)
-  private Instant expiresAt;
-
-  @Column(GAME_MAIL_SUBJECT)
-  private String subject;
-
-  @Column(GAME_MAIL_BODY)
-  private String body;
-
-  @Column(GAME_MAIL_READ)
-  private boolean read;
-
-  @Column(GAME_MAIL_ATTACHMENT_CLAIMED)
-  private boolean attachmentsClaimed;
+  private java.time.Instant expiresAt;
 
   @Override
   public Date getCreatedAt() {
@@ -74,16 +71,15 @@ public class GameMailEntity implements Identifiable, Dateable {
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class GameMailEntityAttributes {
-    public static final String GAME_MAIL_ENTITY = "t_game_mail_tgml";
-    public static final String GAME_MAIL_ID = "tgml_id";
-    public static final String GAME_MAIL_GAME_METADATA_ID = "tgme_id";
-    public static final String GAME_MAIL_SUBJECT = "tgml_subject";
-    public static final String GAME_MAIL_BODY = "tgml_body";
-    public static final String GAME_MAIL_READ = "tgml_read";
-    public static final String GAME_MAIL_CREATED_AT = "tgml_created_at";
-    public static final String GAME_MAIL_EXPIRES_AT = "tgml_expires_at";
-    public static final String GAME_MAIL_ATTACHMENT_CLAIMED = "tgml_attachment_claimed";
-    public static final String GAME_MAIL_UPDATED_AT = "tgml_updated_at";
+  public static final class GameMailEntityAttributes {
+    public static final String GAME_MAIL_ENTITY = "t_game_mail_instance_tgmi";
+    public static final String GAME_MAIL_ID = "tgmi_id";
+    public static final String GAME_MAIL_MAIL_TEMPLATE_ID = "tgmt_id";
+    public static final String GAME_MAIL_GAME_SAVE_ID = "tgme_id";
+    public static final String GAME_MAIL_IS_READ = "tgmi_read";
+    public static final String GAME_MAIL_IS_ATTACHMENT_CLAIMED = "tgmi_attachment_claimed";
+    public static final String GAME_MAIL_CREATED_AT = "tgmi_created_at";
+    public static final String GAME_MAIL_UPDATED_AT = "tgmi_updated_at";
+    public static final String GAME_MAIL_EXPIRES_AT = "tgmi_expires_at";
   }
 }
