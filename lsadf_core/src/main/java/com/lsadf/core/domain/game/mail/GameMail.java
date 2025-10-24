@@ -33,11 +33,11 @@ public final class GameMail implements Model {
   private final UUID gameSaveId;
   private final String subject;
   private final String body;
-  private final Instant sentAt;
+  private final Instant createdAt;
+  private final Instant updatedAt;
   private final Instant expiresAt;
   private final boolean read;
   private final boolean attachmentsClaimed;
-  private final GameMailStatus status;
   private final List<GameMailAttachment<?>> attachments = new ArrayList<>();
 
   public void addAttachment(GameMailAttachment<?> attachment) {

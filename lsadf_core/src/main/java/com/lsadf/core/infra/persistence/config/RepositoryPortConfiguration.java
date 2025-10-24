@@ -30,12 +30,13 @@ import com.lsadf.core.infra.persistence.adapter.game.save.*;
 import com.lsadf.core.infra.persistence.impl.game.inventory.AdditionalItemStatsRepository;
 import com.lsadf.core.infra.persistence.impl.game.inventory.ItemRepository;
 import com.lsadf.core.infra.persistence.impl.game.mail.GameMailRepository;
-import com.lsadf.core.infra.persistence.impl.game.mail.attachment.GameMailAttachmentRepository;
+import com.lsadf.core.infra.persistence.impl.game.mail.template.GameMailTemplateAttachmentRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.stage.StageRepository;
 import com.lsadf.core.infra.persistence.impl.game.session.GameSessionRepository;
+import com.lsadf.core.infra.persistence.impl.view.GameMailViewRepository;
 import com.lsadf.core.infra.persistence.impl.view.GameSaveViewRepository;
 import com.lsadf.core.infra.persistence.impl.view.GameSessionViewRepository;
 import org.springframework.context.annotation.Bean;
@@ -87,11 +88,15 @@ public class RepositoryPortConfiguration {
   }
 
   @Bean
-  public GameMailRepositoryPort gameMailRepositoryPort(
+  public GameMailRepositoryPort gameMailRepositoryAdapter(
       GameMailRepository gameMailRepository,
-      GameMailAttachmentRepository gameMailAttachmentRepository,
-      GameMailAttachmentConverterRegistry gameMailAttachmentConverterRegistry) {
+      GameMailTemplateAttachmentRepository gameMailAttachmentRepository,
+      GameMailViewRepository gameMailViewRepository,
+      GameMailAttachmentConverterRegistry converterRegistry) {
     return new GameMailRepositoryAdapter(
-        gameMailRepository, gameMailAttachmentRepository, gameMailAttachmentConverterRegistry);
+        gameMailRepository,
+        gameMailAttachmentRepository,
+        gameMailViewRepository,
+        converterRegistry);
   }
 }
