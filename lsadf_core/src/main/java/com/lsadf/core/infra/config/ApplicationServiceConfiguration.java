@@ -20,6 +20,11 @@ import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.inventory.impl.InventoryServiceImpl;
+import com.lsadf.core.application.game.mail.*;
+import com.lsadf.core.application.game.mail.impl.GameMailCommandServiceImpl;
+import com.lsadf.core.application.game.mail.impl.GameMailQueryServiceImpl;
+import com.lsadf.core.application.game.mail.impl.GameMailTemplateCommandServiceImpl;
+import com.lsadf.core.application.game.mail.impl.GameMailTemplateQueryServiceImpl;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
@@ -200,5 +205,28 @@ public class ApplicationServiceConfiguration {
       CacheManager cacheManager) {
     return new GameSessionQueryServiceImpl(
         gameSessionRepositoryPort, gameSessionCachePort, cacheManager, clockService);
+  }
+
+  @Bean
+  public GameMailQueryService gameMailQueryService(GameMailRepositoryPort gameMailRepositoryPort) {
+    return new GameMailQueryServiceImpl(gameMailRepositoryPort);
+  }
+
+  @Bean
+  public GameMailCommandService gameMailCommandService(
+      GameMailRepositoryPort gameMailRepositoryPort, GameSaveService gameSaveService) {
+    return new GameMailCommandServiceImpl(gameMailRepositoryPort, gameSaveService);
+  }
+
+  @Bean
+  public GameMailTemplateQueryService gameMailTemplateQueryService(
+      GameMailTemplateRepositoryPort gameMailTemplateRepositoryPort) {
+    return new GameMailTemplateQueryServiceImpl(gameMailTemplateRepositoryPort);
+  }
+
+  @Bean
+  public GameMailTemplateCommandService gameMailTemplateCommandService(
+      GameMailTemplateRepositoryPort gameMailTemplateRepositoryPort) {
+    return new GameMailTemplateCommandServiceImpl(gameMailTemplateRepositoryPort);
   }
 }
