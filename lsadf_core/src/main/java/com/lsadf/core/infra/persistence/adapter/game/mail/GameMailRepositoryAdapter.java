@@ -73,8 +73,9 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
   }
 
   @Override
-  public void createNewGameEmail(
-      UUID id, UUID gameSaveId, UUID mailTemplateId, boolean isRead, boolean isAttachmentClaimed) {
+  public void createNewGameEmail(UUID id, UUID gameSaveId, UUID mailTemplateId) {
+    boolean isRead = false;
+    boolean isAttachmentClaimed = false;
     gameMailRepository.createNewGameEmail(
         id, gameSaveId, mailTemplateId, isRead, isAttachmentClaimed);
   }
@@ -87,6 +88,11 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
   @Override
   public void deleteGameEmails(List<UUID> mailIds) {
     gameMailRepository.deleteGameEmails(mailIds);
+  }
+
+  @Override
+  public void deleteReadGameEmailsByGameSaveId(UUID gameSaveId) {
+    gameMailRepository.deleteReadGameEmailsByGameSaveId(gameSaveId);
   }
 
   @Override
