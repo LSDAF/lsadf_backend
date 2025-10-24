@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 @org.jspecify.annotations.NullMarked
-package com.lsadf.core.infra.persistence.impl.game.mail.attachment;
+package com.lsadf.core.infra.persistence.impl.game.mail.template;
