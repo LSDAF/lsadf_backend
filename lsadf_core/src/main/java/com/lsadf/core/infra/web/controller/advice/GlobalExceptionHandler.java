@@ -17,6 +17,7 @@ package com.lsadf.core.infra.web.controller.advice;
 
 import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.exception.*;
 import com.lsadf.core.exception.http.*;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
@@ -264,6 +265,19 @@ public class GlobalExceptionHandler {
       InvalidGameSessionException e) {
     log.error("InvalidGameSessionException: ", e);
     return generateResponse(HttpStatus.FORBIDDEN, "Invalid game session: " + e.getMessage(), null);
+  }
+
+  /**
+   * Json Processing Exception handler
+   *
+   * @param e the thrown exception
+   * @return ResponseEntity containing the error
+   */
+  @ExceptionHandler(JsonProcessingException.class)
+  public ResponseEntity<ApiResponse<Void>> handleJsonProcessingException(Exception e) {
+    log.error("JsonProcessingException: " + e);
+    return generateResponse(
+        HttpStatus.INTERNAL_SERVER_ERROR, "Json processing error: " + e.getMessage(), null);
   }
 
   /**
