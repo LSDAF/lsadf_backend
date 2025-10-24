@@ -23,6 +23,7 @@ import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
+import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
@@ -33,6 +34,9 @@ import com.lsadf.core.domain.user.User;
 import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.persistence.impl.game.inventory.AdditionalItemStatEntity;
 import com.lsadf.core.infra.persistence.impl.game.inventory.ItemEntity;
+import com.lsadf.core.infra.persistence.impl.game.mail.GameMailEntity;
+import com.lsadf.core.infra.persistence.impl.game.mail.template.GameMailTemplateAttachmentEntity;
+import com.lsadf.core.infra.persistence.impl.game.mail.template.GameMailTemplateEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
@@ -107,6 +111,79 @@ public class BddUtils {
 
     return new CharacteristicsRequest(
         attackLong, critChanceLong, critDamageLong, healthLong, resistanceLong);
+  }
+
+  /**
+   * Maps a row from a BDD table to a GameMailEntity
+   *
+   * @param row row from BDD table
+   * @return GameMailEntity
+   */
+  public static GameMailEntity mapToGameMailEntity(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.GameMail.ID);
+    UUID uuid = UUID.fromString(id);
+    String templateId = row.get(BddFieldConstants.GameMail.MAIL_TEMPLATE_ID);
+    UUID templateUuid = UUID.fromString(templateId);
+    String gameSaveId = row.get(BddFieldConstants.GameMail.GAME_SAVE_ID);
+    UUID gameSaveUuid = UUID.fromString(gameSaveId);
+    String isReadString = row.get(BddFieldConstants.GameMail.IS_READ);
+    boolean isRead = Boolean.parseBoolean(isReadString);
+    String isAttachmentClaimedString = row.get(BddFieldConstants.GameMail.IS_ATTACHMENT_CLAIMED);
+    boolean isAttachmentClaimed = Boolean.parseBoolean(isAttachmentClaimedString);
+    return GameMailEntity.builder()
+        .id(uuid)
+        .mailTemplateId(templateUuid)
+        .gameSaveId(gameSaveUuid)
+        .isRead(isRead)
+        .isAttachmentClaimed(isAttachmentClaimed)
+        .build();
+  }
+
+  /**
+   * Maps a row from a BDD table to a GameMailTemplateAttachmentEntity
+   *
+   * @param row row from BDD table
+   * @return GameMailTemplateAttachmentEntity
+   */
+  public static GameMailTemplateAttachmentEntity mapToGameMailTemplateAttachmentEntity(
+      Map<String, String> row) {
+    String id = row.get(BddFieldConstants.GameMailTemplateAttachment.ID);
+    UUID uuid = UUID.fromString(id);
+    String templateId = row.get(BddFieldConstants.GameMailTemplateAttachment.MAIL_TEMPLATE_ID);
+    UUID templateUuid = UUID.fromString(templateId);
+    String object = row.get(BddFieldConstants.GameMailTemplateAttachment.OBJECT);
+    String typeStr = row.get(BddFieldConstants.GameMailTemplateAttachment.TYPE);
+    GameMailAttachmentType type = GameMailAttachmentType.valueOf(typeStr);
+    return GameMailTemplateAttachmentEntity.builder()
+        .id(uuid)
+        .mailTemplateId(templateUuid)
+        .type(type)
+        .object(object)
+        .build();
+  }
+
+  /**
+   * Maps a row from a BDD table to a GameMailTemplateEntity
+   *
+   * @param row row from BDD table
+   * @return GameMailTemplateEntity
+   */
+  public static GameMailTemplateEntity mapToGameMailTemplateEntity(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.GameMailTemplate.ID);
+    UUID uuid = UUID.fromString(id);
+    String name = row.get(BddFieldConstants.GameMailTemplate.NAME);
+    String subject = row.get(BddFieldConstants.GameMailTemplate.SUBJECT);
+    String body = row.get(BddFieldConstants.GameMailTemplate.BODY);
+    String expirationDaysString = row.get(BddFieldConstants.GameMailTemplate.EXPIRATION_DAYS);
+    Integer expirationDays =
+        expirationDaysString == null ? null : Integer.parseInt(expirationDaysString);
+    return GameMailTemplateEntity.builder()
+        .id(uuid)
+        .name(name)
+        .subject(subject)
+        .body(body)
+        .expirationDays(expirationDays)
+        .build();
   }
 
   /**

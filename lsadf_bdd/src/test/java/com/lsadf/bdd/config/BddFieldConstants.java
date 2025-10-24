@@ -34,6 +34,32 @@ public class BddFieldConstants {
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class GameMail {
+    public static final String ID = BddFieldConstants.ID;
+    public static final String MAIL_TEMPLATE_ID = "mailTemplateId";
+    public static final String GAME_SAVE_ID = "gameSaveId";
+    public static final String IS_READ = "isRead";
+    public static final String IS_ATTACHMENT_CLAIMED = "isAttachmentClaimed";
+  }
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class GameMailTemplate {
+    public static final String ID = BddFieldConstants.ID;
+    public static final String NAME = "name";
+    public static final String SUBJECT = "subject";
+    public static final String BODY = "body";
+    public static final String EXPIRATION_DAYS = "expirationDays";
+  }
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class GameMailTemplateAttachment {
+    public static final String ID = BddFieldConstants.ID;
+    public static final String MAIL_TEMPLATE_ID = "mailTemplateId";
+    public static final String TYPE = "type";
+    public static final String OBJECT = "object";
+  }
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class CharacteristicsCacheEntry {
     public static final String GAME_SAVE_ID = "gameSaveId";
   }
