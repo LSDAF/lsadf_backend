@@ -21,6 +21,8 @@ import com.lsadf.application.controller.auth.OAuth2Controller;
 import com.lsadf.application.controller.auth.OAuth2ControllerImpl;
 import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.application.controller.game.inventory.InventoryControllerImpl;
+import com.lsadf.application.controller.game.mail.GameMailController;
+import com.lsadf.application.controller.game.mail.GameMailControllerImpl;
 import com.lsadf.application.controller.game.save.characteristics.CharacteristicsController;
 import com.lsadf.application.controller.game.save.characteristics.CharacteristicsControllerImpl;
 import com.lsadf.application.controller.game.save.currency.CurrencyController;
@@ -130,6 +132,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
       OAuth2ControllerImpl.class,
       GameSessionController.class,
       GameSessionControllerImpl.class,
+      GameMailController.class,
+      GameMailControllerImpl.class,
     })
 @ExtendWith(MockitoExtension.class)
 @EnableConfigurationProperties
