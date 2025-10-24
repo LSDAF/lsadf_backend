@@ -24,6 +24,8 @@ import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.application.controller.game.inventory.InventoryControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
+import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
@@ -73,6 +75,8 @@ import org.springframework.test.web.servlet.MockMvc;
       GameMetadataRepositoryPort.class,
       CharacteristicsRepositoryPort.class,
       CurrencyRepositoryPort.class,
+      GameMailTemplateRepositoryPort.class,
+      GameMailRepositoryPort.class,
       StageRepositoryPort.class,
       GameSaveRepositoryPort.class,
       InventoryRepositoryPort.class,
