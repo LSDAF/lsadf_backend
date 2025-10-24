@@ -19,10 +19,10 @@ package com.lsadf.core.domain.game.mail;
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.*;
+import org.jspecify.annotations.Nullable;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
@@ -38,9 +38,12 @@ public final class GameMail implements Model {
   private final Instant expiresAt;
   private final boolean read;
   private final boolean attachmentsClaimed;
-  private final List<GameMailAttachment<?>> attachments = new ArrayList<>();
+  @Nullable private List<GameMailAttachment<?>> attachments;
 
   public void addAttachment(GameMailAttachment<?> attachment) {
+    if (this.attachments == null) {
+      attachments = new java.util.ArrayList<>();
+    }
     this.attachments.add(attachment);
   }
 }

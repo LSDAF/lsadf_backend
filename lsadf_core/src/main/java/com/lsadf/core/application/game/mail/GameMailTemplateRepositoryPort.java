@@ -16,25 +16,22 @@
 
 package com.lsadf.core.application.game.mail;
 
-import com.lsadf.core.domain.game.mail.GameMailAttachment;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.domain.game.mail.GameMailTemplate;
-import com.lsadf.core.shared.model.Model;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface GameMailTemplateRepositoryPort {
 
-  void createNewMailTemplate(
-      String name,
-      String subject,
-      String body,
-      Integer expirationDays,
-      List<GameMailAttachment<Model>> attachments);
+  GameMailTemplate createNewMailTemplate(
+      String name, String subject, String body, Integer expirationDays);
 
   List<GameMailTemplate> getMailTemplates();
 
-  Optional<GameMailTemplate> getMailTemplateById(UUID id);
+  Optional<GameMailTemplate> getMailTemplateById(UUID id) throws JsonProcessingException;
 
   void deleteMailTemplateById(UUID id);
+
+  void deleteAllMailTemplates();
 }

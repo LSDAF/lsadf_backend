@@ -46,11 +46,8 @@ public interface GameMailRepositoryPort {
    * @param id the mail id
    * @param gameSaveId the game save id
    * @param mailTemplateId the mail template id
-   * @param isRead whether the mail is read
-   * @param isAttachmentClaimed whether the attachment is claimed
    */
-  void createNewGameEmail(
-      UUID id, UUID gameSaveId, UUID mailTemplateId, boolean isRead, boolean isAttachmentClaimed);
+  void createNewGameEmail(UUID id, UUID gameSaveId, UUID mailTemplateId);
 
   /**
    * Mark a game email as read
@@ -65,6 +62,13 @@ public interface GameMailRepositoryPort {
    * @param mailIds list of mail ids to delete
    */
   void deleteGameEmails(List<UUID> mailIds);
+
+  /**
+   * Delete all read game emails for a specific game save
+   *
+   * @param gameSaveId the game save id
+   */
+  void deleteReadGameEmailsByGameSaveId(UUID gameSaveId);
 
   /**
    * Mark game mail attachments as claimed

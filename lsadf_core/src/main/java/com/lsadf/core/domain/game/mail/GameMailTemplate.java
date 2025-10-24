@@ -19,18 +19,31 @@ package com.lsadf.core.domain.game.mail;
 import com.lsadf.core.shared.model.Model;
 import java.io.Serial;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
-import lombok.Builder;
+import lombok.*;
+import org.jspecify.annotations.Nullable;
 
 @Builder
-public record GameMailTemplate(
-    UUID id,
-    String name,
-    String subject,
-    String body,
-    Integer expirationDays,
-    Instant createdAt,
-    Instant updatedAt)
-    implements Model {
+@Getter
+@EqualsAndHashCode
+@RequiredArgsConstructor
+@AllArgsConstructor
+public final class GameMailTemplate implements Model {
   @Serial private static final long serialVersionUID = -7542452237317816964L;
+  private final UUID id;
+  private final String name;
+  private final String subject;
+  private final String body;
+  private final Integer expirationDays;
+  private final Instant createdAt;
+  private final Instant updatedAt;
+  @Nullable private List<GameMailAttachment<?>> attachments = null;
+
+  public void addAttachment(GameMailAttachment<?> attachment) {
+    if (this.attachments == null) {
+      attachments = new java.util.ArrayList<>();
+    }
+    this.attachments.add(attachment);
+  }
 }
