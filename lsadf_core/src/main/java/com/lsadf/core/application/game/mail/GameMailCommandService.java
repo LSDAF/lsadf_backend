@@ -31,4 +31,6 @@ public interface GameMailCommandService {
   void readGameMailById(UUID id);
 
   void deleteAllReadGameMailsByGameSaveId(UUID gameSaveId);
+
+  void claimGameMailAttachments(UUID id);
 }

@@ -61,4 +61,9 @@ public class GameMailCommandServiceImpl implements GameMailCommandService {
   public void deleteAllReadGameMailsByGameSaveId(UUID gameSaveId) {
     gameMailRepositoryPort.deleteReadGameEmailsByGameSaveId(gameSaveId);
   }
+
+  @Override
+  public void claimGameMailAttachments(UUID id) {
+    gameMailRepositoryPort.claimGameMailAttachments(id);
+  }
 }
