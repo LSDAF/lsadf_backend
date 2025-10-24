@@ -22,6 +22,7 @@ import io.cucumber.java.en.Given;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /** Step definitions for the given steps in the BDD scenarios */
 @Slf4j(topic = "[GIVEN STEP DEFINITIONS]")
@@ -68,5 +69,23 @@ public class BddGivenStepDefinitions extends BddLoader {
   @Given("^the following (.*) entries in cache$")
   public void givenTheFollowingCacheEntriesInCache(String cacheType, DataTable dataTable) {
     commonBddGivenStepDefinitions.givenTheFollowingCacheEntriesInCache(cacheType, dataTable);
+  }
+
+  @Given("^the following game email templates$")
+  @Transactional
+  public void givenFollowingGameEmailTemplates(DataTable dataTable) {
+    commonBddGivenStepDefinitions.givenFollowingGameEmailTemplates(dataTable);
+  }
+
+  @Given("^the following game email template attachments$")
+  @Transactional
+  public void givenFollowingGameEmailTemplateAttachments(DataTable dataTable) {
+    commonBddGivenStepDefinitions.givenFollowingGameEmailTemplateAttachments(dataTable);
+  }
+
+  @Given("^the following game emails$")
+  @Transactional
+  public void givenFollowingGameEmails(DataTable dataTable) {
+    commonBddGivenStepDefinitions.givenFollowingGameEmails(dataTable);
   }
 }
