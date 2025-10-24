@@ -16,9 +16,8 @@
 
 package com.lsadf.core.application.game.mail;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.domain.game.mail.GameMail;
-import com.lsadf.core.domain.game.mail.GameMailAttachment;
-import com.lsadf.core.shared.model.Model;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +30,7 @@ public interface GameMailRepositoryPort {
    * @param mailId the mail id
    * @return the mail with attachments
    */
-  Optional<GameMail> findGameMailEntityById(UUID mailId);
+  Optional<GameMail> findGameMailEntityById(UUID mailId) throws JsonProcessingException;
 
   /**
    * Find all mails for a specific game save
@@ -42,23 +41,16 @@ public interface GameMailRepositoryPort {
   List<GameMail> findGameMailsByGameSaveId(UUID gameSaveId);
 
   /**
-   * Save a new game mail
+   * Create a new game email
    *
    * @param id the mail id
    * @param gameSaveId the game save id
-   * @param subject the subject of the mail
-   * @param body the body of the mail
-   * @param isRead true if the mail is read, false otherwise
-   * @param expiresAt the expiration time
+   * @param mailTemplateId the mail template id
+   * @param isRead whether the mail is read
+   * @param isAttachmentClaimed whether the attachment is claimed
    */
   void createNewGameEmail(
-      UUID id,
-      UUID gameSaveId,
-      String subject,
-      String body,
-      boolean isRead,
-      Instant expiresAt,
-      List<GameMailAttachment<Model>> attachments);
+      UUID id, UUID gameSaveId, UUID mailTemplateId, boolean isRead, boolean isAttachmentClaimed);
 
   /**
    * Mark a game email as read

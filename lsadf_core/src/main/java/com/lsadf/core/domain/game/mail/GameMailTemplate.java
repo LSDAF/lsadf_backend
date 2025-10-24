@@ -16,8 +16,21 @@
 
 package com.lsadf.core.domain.game.mail;
 
-public enum GameMailStatus {
-  UNREAD,
-  READ,
-  DELETED
+import com.lsadf.core.shared.model.Model;
+import java.io.Serial;
+import java.time.Instant;
+import java.util.UUID;
+import lombok.Builder;
+
+@Builder
+public record GameMailTemplate(
+    UUID id,
+    String name,
+    String subject,
+    String body,
+    Integer expirationDays,
+    Instant createdAt,
+    Instant updatedAt)
+    implements Model {
+  @Serial private static final long serialVersionUID = -7542452237317816964L;
 }
