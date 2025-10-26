@@ -21,6 +21,7 @@ import static com.lsadf.core.infra.persistence.impl.view.GameMailViewEntity.Game
 import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -31,11 +32,11 @@ public interface GameMailViewRepository extends JdbcRepository<GameMailViewEntit
   List<GameMailViewEntity> findAll();
 
   @Query("SELECT * FROM v_game_mail_instance_vgmi WHERE tgmi_id = :tgmi_id")
-  Optional<GameMailViewEntity> findById(@Param(GAME_MAIL_VIEW_ID) String id);
+  Optional<GameMailViewEntity> findById(@Param(GAME_MAIL_VIEW_ID) UUID id);
 
   @Query("SELECT * FROM v_game_mail_instance_vgmi WHERE tgme_id = :tgme_id")
-  List<GameMailViewEntity> findByGameSaveId(@Param(GAME_MAIL_VIEW_GAME_SAVE_ID) String id);
+  List<GameMailViewEntity> findByGameSaveId(@Param(GAME_MAIL_VIEW_GAME_SAVE_ID) UUID id);
 
   @Query("SELECT * FROM v_game_mail_instance_vgmi WHERE tgmt_id = :tgmt_id")
-  List<GameMailViewEntity> findByMailTemplateId(@Param(GAME_MAIL_VIEW_TEMPLATE_ID) String id);
+  List<GameMailViewEntity> findByMailTemplateId(@Param(GAME_MAIL_VIEW_TEMPLATE_ID) UUID id);
 }

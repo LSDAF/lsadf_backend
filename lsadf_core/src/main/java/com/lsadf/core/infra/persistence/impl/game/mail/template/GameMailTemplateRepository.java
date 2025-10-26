@@ -20,6 +20,7 @@ import static com.lsadf.core.infra.persistence.impl.game.mail.template.GameMailT
 
 import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -48,11 +49,13 @@ public interface GameMailTemplateRepository extends JdbcRepository<GameMailTempl
   void deleteAllMailTemplates();
 
   @Query("SELECT * FROM t_game_mail_template_tgmt WHERE tgmt_id = :tgmt_id")
-  GameMailTemplateEntity findGameMailTemplateById(@Param(GAME_MAIL_TEMPLATE_ID) UUID id);
+  Optional<GameMailTemplateEntity> findGameMailTemplateById(@Param(GAME_MAIL_TEMPLATE_ID) UUID id);
 
   @Query("SELECT * FROM t_game_mail_template_tgmt")
   List<GameMailTemplateEntity> findAllGameMailTemplates();
 
   @Query("SELECT COUNT(*) FROM t_game_mail_template_tgmt")
   Long count();
+
+  boolean existsById(UUID id);
 }

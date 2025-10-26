@@ -17,10 +17,12 @@
 package com.lsadf.core.infra.persistence.adapter.game.mail;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 import com.lsadf.core.domain.game.mail.GameMailTemplate;
+import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverterRegistry;
 import com.lsadf.core.infra.persistence.impl.game.mail.template.*;
 import com.lsadf.core.shared.model.Model;
@@ -29,6 +31,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,6 +39,7 @@ public class GameMailTemplateRepositoryAdapter implements GameMailTemplateReposi
   private final GameMailTemplateRepository gameMailTemplateRepository;
   private final GameMailTemplateAttachmentRepository gameMailAttachmentRepository;
   private final GameMailAttachmentConverterRegistry converterRegistry;
+  private final ObjectMapper objectMapper;
 
   private static final GameMailTemplateEntityMapper gameMailTemplateEntityMapper =
       GameMailTemplateEntityMapper.INSTANCE;
@@ -56,10 +60,11 @@ public class GameMailTemplateRepositoryAdapter implements GameMailTemplateReposi
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<GameMailTemplate> getMailTemplateById(UUID id) throws JsonProcessingException {
-    GameMailTemplateEntity template = gameMailTemplateRepository.findGameMailTemplateById(id);
-    GameMailTemplate gameMailTemplate = gameMailTemplateEntityMapper.map(template);
-    enrichGameMailTemplateWithAttachments(gameMailTemplate, id);
+    GameMailTemplateEntity templateEntity = getGameMailTemplateEntityFromDatabase(id);
+    GameMailTemplate gameMailTemplate = gameMailTemplateEntityMapper.map(templateEntity);
+    enrichGameMailTemplateWithAttachments(gameMailTemplate);
     return Optional.of(gameMailTemplate);
   }
 
@@ -73,10 +78,31 @@ public class GameMailTemplateRepositoryAdapter implements GameMailTemplateReposi
     gameMailTemplateRepository.deleteAllMailTemplates();
   }
 
-  private void enrichGameMailTemplateWithAttachments(
-      GameMailTemplate gameMailTemplate, UUID mailTemplateId) throws JsonProcessingException {
+  @Override
+  public boolean existsById(UUID mailTemplateId) {
+    return gameMailTemplateRepository.existsById(mailTemplateId);
+  }
+
+  @Override
+  @Transactional
+  public void attachNewObjectToTemplate(
+      UUID mailTemplateId, GameMailAttachmentType type, Object object)
+      throws JsonProcessingException {
+    UUID newId = UUID.randomUUID();
+    String json = objectMapper.writeValueAsString(object);
+    gameMailAttachmentRepository.createNewGameMailAttachment(newId, mailTemplateId, type, json);
+  }
+
+  private GameMailTemplateEntity getGameMailTemplateEntityFromDatabase(UUID gameMailTemplateId) {
+    return gameMailTemplateRepository
+        .findGameMailTemplateById(gameMailTemplateId)
+        .orElseThrow(NotFoundException::new);
+  }
+
+  private void enrichGameMailTemplateWithAttachments(GameMailTemplate gameMailTemplate)
+      throws JsonProcessingException {
     for (GameMailTemplateAttachmentEntity entity :
-        gameMailAttachmentRepository.findByMailTemplateId(mailTemplateId)) {
+        gameMailAttachmentRepository.findByMailTemplateId(gameMailTemplate.getId())) {
       GameMailAttachmentType type = entity.getType();
       String json = entity.getObject();
 

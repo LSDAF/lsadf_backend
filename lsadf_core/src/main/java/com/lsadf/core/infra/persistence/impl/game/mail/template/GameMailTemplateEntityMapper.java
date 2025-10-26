@@ -19,6 +19,7 @@ package com.lsadf.core.infra.persistence.impl.game.mail.template;
 import com.lsadf.core.domain.game.mail.GameMailTemplate;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -27,5 +28,6 @@ public interface GameMailTemplateEntityMapper
   GameMailTemplateEntityMapper INSTANCE = Mappers.getMapper(GameMailTemplateEntityMapper.class);
 
   @Override
+  @Mapping(target = "attachments", ignore = true)
   GameMailTemplate map(GameMailTemplateEntity entity);
 }

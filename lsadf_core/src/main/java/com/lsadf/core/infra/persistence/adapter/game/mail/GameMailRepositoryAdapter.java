@@ -49,26 +49,19 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
 
   @Override
   public Optional<GameMail> findGameMailEntityById(UUID mailId) throws JsonProcessingException {
-    String mailIdStr = mailId.toString();
-    var viewEntityOptional = gameMailViewRepository.findById(mailIdStr);
+    var viewEntityOptional = gameMailViewRepository.findById(mailId);
     if (viewEntityOptional.isEmpty()) {
       return Optional.empty();
     }
     var viewEntity = viewEntityOptional.get();
     GameMail gameMail = gameMailViewMapper.map(viewEntity);
-    try {
-      enrichGameMailWithAttachments(gameMail, viewEntity.getTemplateId());
-
-    } catch (JsonProcessingException e) {
-      log.error("Failed to enrich gameMail view entity with id {}", viewEntity.getId(), e);
-    }
+    enrichGameMailWithAttachments(gameMail, viewEntity.getTemplateId());
     return Optional.of(gameMail);
   }
 
   @Override
   public List<GameMail> findGameMailsByGameSaveId(UUID gameSaveId) {
-    List<GameMailViewEntity> gameMailViewList =
-        gameMailViewRepository.findByGameSaveId(gameSaveId.toString());
+    List<GameMailViewEntity> gameMailViewList = gameMailViewRepository.findByGameSaveId(gameSaveId);
     return gameMailViewList.stream().map(gameMailViewMapper::map).toList();
   }
 

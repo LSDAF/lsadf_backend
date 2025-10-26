@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.infra.persistence.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
 import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
@@ -107,8 +108,9 @@ public class RepositoryPortConfiguration {
   public GameMailTemplateRepositoryPort gameMailTemplateRepositoryAdapter(
       GameMailTemplateAttachmentRepository gameMailAttachmentRepository,
       GameMailTemplateRepository gameMailTemplateRepository,
-      GameMailAttachmentConverterRegistry converterRegistry) {
+      GameMailAttachmentConverterRegistry converterRegistry,
+      ObjectMapper objectMapper) {
     return new GameMailTemplateRepositoryAdapter(
-        gameMailTemplateRepository, gameMailAttachmentRepository, converterRegistry);
+        gameMailTemplateRepository, gameMailAttachmentRepository, converterRegistry, objectMapper);
   }
 }
