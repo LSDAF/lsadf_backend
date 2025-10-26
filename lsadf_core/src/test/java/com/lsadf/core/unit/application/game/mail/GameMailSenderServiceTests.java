@@ -67,8 +67,8 @@ class GameMailSenderServiceTests {
     when(gameSaveService.existsById(gameSaveId)).thenReturn(false);
 
     // When & Then
-    assertThrows(NotFoundException.class,
-        () -> gameMailSenderService.sendGameMailToGameSaveById(command));
+    assertThrows(
+        NotFoundException.class, () -> gameMailSenderService.sendGameMailToGameSaveById(command));
 
     // Verify
     verify(gameSaveService).existsById(gameSaveId);
@@ -77,8 +77,7 @@ class GameMailSenderServiceTests {
   }
 
   @Test
-  void
-      test_sendGameMailToGameSaveById_throwsNotFoundException_when_gameMailTemplateDoesNotExist() {
+  void test_sendGameMailToGameSaveById_throwsNotFoundException_when_gameMailTemplateDoesNotExist() {
     // Given
     UUID gameSaveId = UUID.randomUUID();
     UUID emailTemplateId = UUID.randomUUID();
@@ -88,12 +87,45 @@ class GameMailSenderServiceTests {
     when(gameMailTemplateQueryService.existsById(emailTemplateId)).thenReturn(false);
 
     // When & Then
-    assertThrows(NotFoundException.class,
-        () -> gameMailSenderService.sendGameMailToGameSaveById(command));
+    assertThrows(
+        NotFoundException.class, () -> gameMailSenderService.sendGameMailToGameSaveById(command));
 
     // Verify
     verify(gameSaveService).existsById(gameSaveId);
     verify(gameMailTemplateQueryService).existsById(emailTemplateId);
     verify(gameMailRepositoryPort, never()).createNewGameEmail(any(), any(), any());
+  }
+
+  @Test
+  void test_sendGameMailToGameSaveById_success_when_bothExist() {
+    // Given
+    UUID gameSaveId = UUID.randomUUID();
+    UUID emailTemplateId = UUID.randomUUID();
+    SendEmailCommand command = new SendEmailCommand(gameSaveId, emailTemplateId);
+
+    when(gameSaveService.existsById(gameSaveId)).thenReturn(true);
+    when(gameMailTemplateQueryService.existsById(emailTemplateId)).thenReturn(true);
+
+    // When
+    gameMailSenderService.sendGameMailToGameSaveById(command);
+
+    // Then
+    verify(gameSaveService).existsById(gameSaveId);
+    verify(gameMailTemplateQueryService).existsById(emailTemplateId);
+    verify(gameMailRepositoryPort)
+        .createNewGameEmail(any(UUID.class), eq(gameSaveId), eq(emailTemplateId));
+  }
+
+  @Test
+  void test_sendGameMailToAllGameSaves_success_when_noGameSaves() {
+    // Given
+    when(gameSaveService.getGameSaves()).thenReturn(java.util.List.of());
+
+    // When
+    gameMailSenderService.sendGameMailToAllGameSaves();
+
+    // Then
+    verify(gameSaveService).getGameSaves();
+    verifyNoMoreInteractions(gameSaveService, gameMailTemplateQueryService, gameMailRepositoryPort);
   }
 }
