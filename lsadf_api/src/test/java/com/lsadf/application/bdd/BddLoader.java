@@ -15,6 +15,7 @@
  */
 package com.lsadf.application.bdd;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.auth.AuthController;
 import com.lsadf.application.controller.auth.AuthControllerImpl;
 import com.lsadf.application.controller.auth.OAuth2Controller;
@@ -51,6 +52,7 @@ import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.application.shared.HistoCachePort;
 import com.lsadf.core.application.user.UserService;
+import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
@@ -72,6 +74,7 @@ import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.mail.GameMailResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
@@ -153,6 +156,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 public class BddLoader {
 
+  // ObjectMapper
+
+  @Autowired protected ObjectMapper objectMapper;
+
   // Caches
 
   @Autowired protected GameSessionCachePort gameSessionCache;
@@ -230,6 +237,12 @@ public class BddLoader {
   @Autowired protected Stack<ItemResponse> itemStack;
 
   @Autowired protected Stack<Set<ItemResponse>> itemResponseSetStack;
+
+  @Autowired protected Stack<List<GameMailResponse>> gameMailResponseListStack;
+
+  @Autowired protected Stack<GameMailResponse> gameMailResponseStack;
+
+  @Autowired protected Stack<List<GameMailAttachment<?>>> gameMailAttachmentListStack;
 
   @Autowired protected Stack<Stage> stageStack;
 

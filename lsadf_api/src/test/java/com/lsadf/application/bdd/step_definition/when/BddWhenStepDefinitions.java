@@ -33,13 +33,13 @@ public class BddWhenStepDefinitions extends BddLoader {
     bddCoreWhenStepDefinitions.whenUserLogsInWithRefreshToken(refreshToken, serverPort);
   }
 
-  @When("the user logs in with the following credentials")
+  @When("^the user logs in with the following credentials$")
   public void whenUserLogsInWithCredentials(DataTable dataTable) {
     bddCoreWhenStepDefinitions.whenTheUserLogsInWithTheFollowingCredentials(
         dataTable, this.serverPort);
   }
 
-  @When("the user uses the previously generated refresh token to log in")
+  @When("^the user uses the previously generated refresh token to log in$")
   public void whenUserUsesGeneratedRefreshTokenToLogIn() {
     bddCoreWhenStepDefinitions.whenUserUsesGeneratedRefreshTokenToLogIn(serverPort);
   }

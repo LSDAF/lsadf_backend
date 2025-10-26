@@ -15,7 +15,6 @@
  */
 package com.lsadf.bdd.config;
 
-import io.cucumber.java.Before;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -28,7 +27,6 @@ public class BddStackCleaner {
     stackList = new ArrayList<>();
   }
 
-  @Before
   public void clearStacks() {
     stackList.forEach(Stack::clear);
   }

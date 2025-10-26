@@ -23,6 +23,7 @@ import com.lsadf.core.domain.game.inventory.item.ItemRarity;
 import com.lsadf.core.domain.game.inventory.item.ItemStat;
 import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
 import com.lsadf.core.domain.game.inventory.item.ItemType;
+import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
@@ -59,6 +60,7 @@ import com.lsadf.core.infra.web.dto.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.web.dto.request.user.update.AdminUserUpdateRequest;
 import com.lsadf.core.infra.web.dto.request.user.update.SimpleUserUpdateRequest;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.mail.GameMailResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
@@ -679,6 +681,48 @@ public class BddUtils {
     Long amethystLong = amethyst == null ? null : Long.parseLong(amethyst);
 
     return new CurrencyResponse(goldLong, diamondLong, emeraldLong, amethystLong);
+  }
+
+  /**
+   * Maps
+   *
+   * @param row
+   * @return
+   */
+  public static GameMailAttachment<?> mapToGameMailAttachment(Map<String, String> row) {
+    String type = row.get(BddFieldConstants.GameMailAttachment.TYPE);
+    String attachment = row.get(BddFieldConstants.GameMailAttachment.ATTACHMENT);
+
+    GameMailAttachmentType attachmentType = GameMailAttachmentType.valueOf(type);
+
+    return new GameMailAttachment<>(attachmentType, attachment);
+  }
+
+  /**
+   * @param row
+   * @return
+   */
+  public static GameMailResponse mapToGameMailResponse(Map<String, String> row) {
+    String id = row.get(BddFieldConstants.GameMailResponse.ID);
+    String gameSaveId = row.get(BddFieldConstants.GameMailResponse.GAME_SAVE_ID);
+    String subject = row.get(BddFieldConstants.GameMailResponse.SUBJECT);
+    String body = row.get(BddFieldConstants.GameMailResponse.BODY);
+    String read = row.get(BddFieldConstants.GameMailResponse.READ);
+    String attachmentsClaimed = row.get(BddFieldConstants.GameMailResponse.ATTACHMENTS_CLAIMED);
+
+    UUID uuid = UUID.fromString(id);
+    UUID gameSaveUuid = UUID.fromString(gameSaveId);
+    boolean readBoolean = Boolean.parseBoolean(read);
+    boolean attachmentsClaimedBoolean = Boolean.parseBoolean(attachmentsClaimed);
+
+    return GameMailResponse.builder()
+        .id(uuid)
+        .gameSaveId(gameSaveUuid)
+        .subject(subject)
+        .body(body)
+        .read(readBoolean)
+        .attachmentsClaimed(attachmentsClaimedBoolean)
+        .build();
   }
 
   /**

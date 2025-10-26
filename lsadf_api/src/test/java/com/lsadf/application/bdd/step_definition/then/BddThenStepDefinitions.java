@@ -15,6 +15,7 @@
  */
 package com.lsadf.application.bdd.step_definition.then;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.bdd.step_definition.then.*;
 import io.cucumber.datatable.DataTable;
@@ -38,6 +39,7 @@ public class BddThenStepDefinitions extends BddLoader {
   @Autowired private BddThenStageStepDefinitions bddThenStageStepDefinitions;
   @Autowired private BddThenUserInfoStepDefinitions bddThenUserInfoStepDefinitions;
   @Autowired private BddThenUserStepDefinitions bddThenUserStepDefinitions;
+  @Autowired private BddThenGameMailStepDefinitions bddThenGameMailStepDefinitions;
 
   @Then("^the response status code should be (.*)$")
   public void thenResponseStatusCodeShouldBe(int statusCode) {
@@ -77,5 +79,26 @@ public class BddThenStepDefinitions extends BddLoader {
   @Then("^the response should have the following GameSessionResponse$")
   public void thenResponseShouldHaveFollowingGameSessionResponse(DataTable dataTable) {
     bddThenGameSessionStepDefinitions.thenResponseShouldHaveFollowingGameSessionResponse(dataTable);
+  }
+
+  @Then("^the response should have the following GameMailResponses")
+  public void thenResponseShouldHaveFollowingListOfGameMailResponses(DataTable dataTable) {
+    bddThenGameMailStepDefinitions.thenResponseShouldHaveFollowingGameMailResponses(dataTable);
+  }
+
+  @Then("^the response should have the following GameMailResponse$")
+  public void thenResponseShouldHaveFollowingListOfGameMailResponse(DataTable dataTable) {
+    bddThenGameMailStepDefinitions.thenResponseShouldHaveFollowingGameMailResponse(dataTable);
+  }
+
+  @Then("^the response should have the following GameMailAttachments$")
+  public void thenTheResponseSHouldHaveFollowingGameMailAttachments(DataTable dataTable)
+      throws JsonProcessingException {
+    bddThenGameMailStepDefinitions.thenResponseShouldHaveFollowingGameMailAttachments(dataTable);
+  }
+
+  @Then("^the response should not contain any attachments$")
+  public void thenResponseShouldNotContainAnyGameMailAttachments() {
+    bddThenGameMailStepDefinitions.thenResponseShouldNotContainAttachments();
   }
 }

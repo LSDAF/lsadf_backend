@@ -19,6 +19,7 @@ package com.lsadf.bdd.step_definition.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.bdd.config.BddFieldConstants;
+import com.lsadf.bdd.config.BddStackCleaner;
 import com.lsadf.bdd.config.CacheEntryType;
 import com.lsadf.bdd.util.BddUtils;
 import com.lsadf.core.application.cache.CacheManager;
@@ -108,9 +109,11 @@ public class BddGivenStepDefinitions {
 
   @Autowired protected GameMailTemplateAttachmentRepository gameMailTemplateAttachmentRepository;
 
+  @Autowired protected BddStackCleaner bddStackCleaner;
+
   public void givenBddEngineIsReady() {
     BddUtils.initTestRestTemplate(testRestTemplate);
-
+    bddStackCleaner.clearStacks();
     log.info("BDD engine is ready");
   }
 
