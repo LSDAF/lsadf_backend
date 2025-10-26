@@ -20,6 +20,7 @@ import static com.lsadf.application.controller.game.mail.GameMailController.Cons
 import static com.lsadf.application.controller.game.mail.GameMailController.Constants.ApiPaths.GAME_SAVE_ID;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
+import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.application.controller.constant.ApiPathConstants;
@@ -118,7 +119,8 @@ public interface GameMailController extends Controller {
       })
   ResponseEntity<ApiResponse<Void>> deleteReadGameMails(
       @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = ParameterConstants.GAME_SAVE_ID) UUID gameId);
+      @PathVariable(value = ParameterConstants.GAME_SAVE_ID) UUID gameId,
+      @RequestHeader(X_GAME_SESSION_ID) UUID sessionId);
 
   @PatchMapping(value = GAME_MAIL_ID)
   @Operation(summary = "Claims attachments from a specific game mail")
@@ -142,7 +144,9 @@ public interface GameMailController extends Controller {
       })
   ResponseEntity<ApiResponse<Void>> claimGameMailAttachments(
       @AuthenticationPrincipal Jwt jwt,
-      @PathVariable(value = ParameterConstants.GAME_MAIL_ID) UUID gameMailId);
+      @PathVariable(value = ParameterConstants.GAME_MAIL_ID) UUID gameMailId,
+      @RequestHeader(X_GAME_SESSION_ID) UUID sessionId)
+      throws JsonProcessingException;
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   class Constants {
