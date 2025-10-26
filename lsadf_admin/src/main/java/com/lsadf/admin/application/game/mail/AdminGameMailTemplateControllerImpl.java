@@ -22,9 +22,13 @@ import static org.springframework.http.HttpStatus.OK;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailTemplateCommandService;
 import com.lsadf.core.application.game.mail.GameMailTemplateQueryService;
+import com.lsadf.core.application.game.mail.command.CreateNewTemplateAttachmentCommand;
+import com.lsadf.core.domain.game.mail.GameMailTemplate;
 import com.lsadf.core.infra.web.controller.BaseController;
+import com.lsadf.core.infra.web.dto.request.game.mail.GameMailAttachmentRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.mail.GameMailTemplateResponse;
+import com.lsadf.core.infra.web.dto.response.game.mail.GameMailTemplateResponseMapper;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +46,9 @@ public class AdminGameMailTemplateControllerImpl extends BaseController
 
   private final GameMailTemplateQueryService gameMailTemplateQueryService;
   private final GameMailTemplateCommandService gameMailTemplateCommandService;
+
+  private static final GameMailTemplateResponseMapper gameMailTemplateResponseMapper =
+      GameMailTemplateResponseMapper.INSTANCE;
 
   @Override
   public ResponseEntity<ApiResponse<List<GameMailTemplateResponse>>> getAllTemplates(Jwt jwt) {
@@ -66,6 +73,22 @@ public class AdminGameMailTemplateControllerImpl extends BaseController
 
     gameMailTemplateCommandService.deleteGameMailTemplateById(id);
     return generateResponse(OK);
+  }
+
+  @Override
+  public ResponseEntity<ApiResponse<GameMailTemplateResponse>>
+      createNewTemplateAttachmentToTemplate(
+          Jwt jwt, UUID id, List<GameMailAttachmentRequest<?>> attachments)
+          throws JsonProcessingException {
+    validateUser(jwt);
+    for (GameMailAttachmentRequest<?> attachment : attachments) {
+      CreateNewTemplateAttachmentCommand command =
+          new CreateNewTemplateAttachmentCommand(id, attachment.type(), attachment.object());
+      gameMailTemplateCommandService.attachToGameMailTemplate(command);
+    }
+    GameMailTemplate finalizedTemplate = gameMailTemplateQueryService.getMailTemplateById(id);
+    GameMailTemplateResponse response = gameMailTemplateResponseMapper.map(finalizedTemplate);
+    return generateResponse(OK, response);
   }
 
   @Override
