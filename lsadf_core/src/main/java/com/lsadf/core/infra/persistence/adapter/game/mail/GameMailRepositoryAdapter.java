@@ -98,6 +98,11 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
     gameMailRepository.deleteExpiredGameMails(currentTime);
   }
 
+  @Override
+  public boolean existsById(UUID mailId) {
+    return gameMailRepository.existsById(mailId);
+  }
+
   private void enrichGameMailWithAttachments(GameMail gameMail, UUID mailTemplateId)
       throws JsonProcessingException {
     for (GameMailTemplateAttachmentEntity entity :

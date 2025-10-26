@@ -116,4 +116,19 @@ public interface GameMailRepository extends JdbcRepository<GameMailEntity> {
         SELECT COUNT(*) FROM t_game_mail_instance_tgmi
         """)
   Long count();
+
+  /**
+   * Check existence by id
+   *
+   * @param id the mail id
+   * @return true if exists, false otherwise
+   */
+  @Query(
+      """
+        SELECT EXISTS (
+            SELECT 1 FROM t_game_mail_instance_tgmi
+            WHERE tgmi_id = :tgmi_id
+        )
+        """)
+  Boolean existsById(@Param(GAME_MAIL_ID) UUID id);
 }
