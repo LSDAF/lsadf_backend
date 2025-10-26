@@ -17,11 +17,10 @@
 package com.lsadf.core.application.game.mail.impl;
 
 import com.lsadf.core.application.game.mail.GameMailCommandService;
+import com.lsadf.core.application.game.mail.GameMailQueryService;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
-import com.lsadf.core.application.game.mail.command.SendEmailCommand;
 import com.lsadf.core.application.game.save.GameSaveService;
-import com.lsadf.core.domain.game.mail.GameMail;
-import java.util.List;
+import com.lsadf.core.exception.http.NotFoundException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
@@ -29,41 +28,29 @@ import lombok.RequiredArgsConstructor;
 public class GameMailCommandServiceImpl implements GameMailCommandService {
   private final GameMailRepositoryPort gameMailRepositoryPort;
   private final GameSaveService gameSaveService;
-
-  @Override
-  public void sendGameMailToAllGameSaves() {
-    List<UUID> gameSaveIds =
-        gameSaveService.getGameSaves().stream().map(gs -> gs.getMetadata().id()).toList();
-    for (UUID gameSaveId : gameSaveIds) {
-      SendEmailCommand command = new SendEmailCommand(gameSaveId, gameSaveId);
-      sendGameMailToGameSaveById(command);
-    }
-  }
-
-  @Override
-  public void sendGameMailToGameSaveById(SendEmailCommand command) {
-    UUID mailId = UUID.randomUUID();
-    gameMailRepositoryPort.createNewGameEmail(
-        mailId, command.gameSaveId(), command.emailTemplateId());
-  }
-
-  @Override
-  public List<GameMail> getGameMailsByGameSaveId(UUID gameSaveId) {
-    return gameMailRepositoryPort.findGameMailsByGameSaveId(gameSaveId);
-  }
+  private final GameMailQueryService gameMailQueryService;
 
   @Override
   public void readGameMailById(UUID id) {
+    if (!gameMailQueryService.existsById(id)) {
+      throw new NotFoundException("Game mail with id " + id + " not found");
+    }
     gameMailRepositoryPort.readGameEmail(id);
   }
 
   @Override
   public void deleteAllReadGameMailsByGameSaveId(UUID gameSaveId) {
+    if (!gameSaveService.existsById(gameSaveId)) {
+      throw new NotFoundException("Game save with id " + gameSaveId + " not found");
+    }
     gameMailRepositoryPort.deleteReadGameEmailsByGameSaveId(gameSaveId);
   }
 
   @Override
   public void claimGameMailAttachments(UUID id) {
+    if (!gameMailQueryService.existsById(id)) {
+      throw new NotFoundException("Game mail with id " + id + " not found");
+    }
     gameMailRepositoryPort.claimGameMailAttachments(id);
   }
 }

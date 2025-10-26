@@ -44,4 +44,9 @@ public class GameMailTemplateQueryServiceImpl implements GameMailTemplateQuerySe
     }
     return optional.get();
   }
+
+  @Override
+  public boolean existsById(UUID mailTemplateId) {
+    return gameMailTemplateRepositoryPort.existsById(mailTemplateId);
+  }
 }

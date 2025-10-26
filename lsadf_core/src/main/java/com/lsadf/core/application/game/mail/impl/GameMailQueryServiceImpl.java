@@ -22,7 +22,6 @@ import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
 import com.lsadf.core.domain.game.mail.GameMail;
 import com.lsadf.core.exception.http.NotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
@@ -38,10 +37,13 @@ public class GameMailQueryServiceImpl implements GameMailQueryService {
 
   @Override
   public GameMail getMailById(UUID id) throws JsonProcessingException {
-    Optional<GameMail> optionalGameMail = gameMailRepositoryPort.findGameMailEntityById(id);
-    if (optionalGameMail.isEmpty()) {
-      throw new NotFoundException("Game mail not found with id: " + id);
-    }
-    return optionalGameMail.get();
+    return gameMailRepositoryPort
+        .findGameMailEntityById(id)
+        .orElseThrow(() -> new NotFoundException("Game mail not found with id: " + id));
+  }
+
+  @Override
+  public boolean existsById(UUID mailId) {
+    return gameMailRepositoryPort.existsById(mailId);
   }
 }

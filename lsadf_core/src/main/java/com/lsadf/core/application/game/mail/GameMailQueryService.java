@@ -25,4 +25,6 @@ public interface GameMailQueryService {
   List<GameMail> getMailsByGameSaveId(UUID gameSaveId);
 
   GameMail getMailById(UUID id) throws JsonProcessingException;
+
+  boolean existsById(UUID mailId);
 }

@@ -83,4 +83,12 @@ public interface GameMailRepositoryPort {
    * @param currentTime the current timestamp
    */
   void deleteExpiredGameMails(Instant currentTime);
+
+  /**
+   * Check if a mail exists by its ID
+   *
+   * @param mailId the mail ID
+   * @return true if the mail exists, false otherwise
+   */
+  boolean existsById(UUID mailId);
 }

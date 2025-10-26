@@ -25,4 +25,6 @@ public interface GameMailTemplateQueryService {
   List<GameMailTemplate> getMailTemplates();
 
   GameMailTemplate getMailTemplateById(UUID id) throws JsonProcessingException;
+
+  boolean existsById(UUID mailTemplateId);
 }

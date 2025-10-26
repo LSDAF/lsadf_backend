@@ -16,17 +16,9 @@
 
 package com.lsadf.core.application.game.mail;
 
-import com.lsadf.core.application.game.mail.command.SendEmailCommand;
-import com.lsadf.core.domain.game.mail.GameMail;
-import java.util.List;
 import java.util.UUID;
 
 public interface GameMailCommandService {
-  void sendGameMailToAllGameSaves();
-
-  void sendGameMailToGameSaveById(SendEmailCommand command);
-
-  List<GameMail> getGameMailsByGameSaveId(UUID gameSaveId);
 
   void readGameMailById(UUID id);
 
