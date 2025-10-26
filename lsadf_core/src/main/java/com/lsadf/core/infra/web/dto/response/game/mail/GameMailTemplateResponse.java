@@ -16,16 +16,25 @@
 
 package com.lsadf.core.infra.web.dto.response.game.mail;
 
-import static com.lsadf.core.infra.web.JsonAttributes.TEMPLATE;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.domain.game.mail.GameMailTemplate;
+import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.infra.web.dto.response.Response;
 import java.io.Serial;
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 @Builder
-public record GameMailTemplateResponse(@JsonProperty(TEMPLATE) GameMailTemplate gameMailTemplate)
+public record GameMailTemplateResponse(
+    UUID id,
+    String name,
+    String subject,
+    String body,
+    Integer expirationDays,
+    Instant createdAt,
+    Instant updatedAt,
+    @Nullable List<GameMailAttachment<?>> attachments)
     implements Response {
   @Serial private static final long serialVersionUID = 167454968378687444L;
 }

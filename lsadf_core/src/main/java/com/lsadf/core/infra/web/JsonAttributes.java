@@ -122,4 +122,5 @@ public final class JsonAttributes {
   public static final String SUBJECT = "subject";
   public static final String MAIL = "mail";
   public static final String TEMPLATE = "template";
+  public static final String OBJECT = "object";
 }
