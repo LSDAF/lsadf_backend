@@ -16,8 +16,10 @@
 
 package com.lsadf.core.application.game.mail.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailTemplateCommandService;
 import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
+import com.lsadf.core.application.game.mail.command.CreateNewTemplateAttachmentCommand;
 import com.lsadf.core.application.game.mail.command.InitializeDefaultGameMailTemplateCommand;
 import com.lsadf.core.domain.game.mail.GameMailTemplate;
 import java.util.UUID;
@@ -45,5 +47,12 @@ public class GameMailTemplateCommandServiceImpl implements GameMailTemplateComma
   @Override
   public void deleteGameMailTemplateById(UUID id) {
     gameMailTemplateRepositoryPort.deleteMailTemplateById(id);
+  }
+
+  @Override
+  public void attachToGameMailTemplate(CreateNewTemplateAttachmentCommand command)
+      throws JsonProcessingException {
+    gameMailTemplateRepositoryPort.attachNewObjectToTemplate(
+        command.mailTemplateId(), command.type(), command.attachment());
   }
 }
