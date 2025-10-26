@@ -21,7 +21,6 @@ import java.io.Serial;
 import lombok.Builder;
 
 @Builder
-public record GameMailAttachment<T extends Model>(GameMailAttachmentType type, T attachment)
-    implements Model {
+public record GameMailAttachment<T>(GameMailAttachmentType type, T attachment) implements Model {
   @Serial private static final long serialVersionUID = -871025314684237472L;
 }

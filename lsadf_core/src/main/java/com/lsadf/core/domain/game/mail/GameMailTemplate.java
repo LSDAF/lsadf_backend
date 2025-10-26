@@ -38,7 +38,7 @@ public final class GameMailTemplate implements Model {
   private final Integer expirationDays;
   private final Instant createdAt;
   private final Instant updatedAt;
-  @Nullable private List<GameMailAttachment<?>> attachments = null;
+  @Builder.Default @Nullable private List<GameMailAttachment<?>> attachments = null;
 
   public void addAttachment(GameMailAttachment<?> attachment) {
     if (this.attachments == null) {

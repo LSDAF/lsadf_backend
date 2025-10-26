@@ -27,7 +27,7 @@ import org.jspecify.annotations.Nullable;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @Getter
-public final class GameMail implements Model {
+public class GameMail implements Model {
   @Serial private static final long serialVersionUID = -8465791165591742351L;
   private final UUID id;
   private final UUID gameSaveId;
@@ -36,7 +36,7 @@ public final class GameMail implements Model {
   private final Instant createdAt;
   private final Instant updatedAt;
   private final Instant expiresAt;
-  private final boolean read;
+  @Setter private boolean read;
   private final boolean attachmentsClaimed;
   @Nullable private List<GameMailAttachment<?>> attachments;
 

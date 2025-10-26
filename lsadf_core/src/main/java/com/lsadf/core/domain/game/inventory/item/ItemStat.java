@@ -16,14 +16,14 @@
 package com.lsadf.core.domain.game.inventory.item;
 
 import com.lsadf.core.shared.model.Model;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@Valid
+@NoArgsConstructor
 public class ItemStat implements Model {
-  private final ItemStatistic statistic;
-  private final Float baseValue;
+  private ItemStatistic statistic;
+  private Float baseValue;
 }
