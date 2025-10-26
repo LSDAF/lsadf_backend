@@ -63,8 +63,7 @@ class GameMailCommandServiceTests {
     when(gameMailQueryService.existsById(mailId)).thenReturn(false);
 
     // When & Then
-    assertThrows(NotFoundException.class,
-        () -> gameMailCommandService.readGameMailById(mailId));
+    assertThrows(NotFoundException.class, () -> gameMailCommandService.readGameMailById(mailId));
 
     // Verify
     verify(gameMailQueryService).existsById(mailId);
@@ -78,7 +77,8 @@ class GameMailCommandServiceTests {
     when(gameSaveService.existsById(gameSaveId)).thenReturn(false);
 
     // When & Then
-    assertThrows(NotFoundException.class,
+    assertThrows(
+        NotFoundException.class,
         () -> gameMailCommandService.deleteAllReadGameMailsByGameSaveId(gameSaveId));
 
     // Verify
@@ -93,8 +93,8 @@ class GameMailCommandServiceTests {
     when(gameMailQueryService.existsById(mailId)).thenReturn(false);
 
     // When & Then
-    assertThrows(NotFoundException.class,
-        () -> gameMailCommandService.claimGameMailAttachments(mailId));
+    assertThrows(
+        NotFoundException.class, () -> gameMailCommandService.claimGameMailAttachments(mailId));
 
     // Verify
     verify(gameMailQueryService).existsById(mailId);
@@ -190,15 +190,16 @@ class GameMailCommandServiceTests {
     verify(gameMailRepositoryPort).readGameEmail(existingMailId);
 
     // Failure case
-    assertThrows(NotFoundException.class,
-        () -> gameMailCommandService.readGameMailById(nonExistingMailId));
+    assertThrows(
+        NotFoundException.class, () -> gameMailCommandService.readGameMailById(nonExistingMailId));
 
     // Success case
     gameMailCommandService.deleteAllReadGameMailsByGameSaveId(existingGameSaveId);
     verify(gameMailRepositoryPort).deleteReadGameEmailsByGameSaveId(existingGameSaveId);
 
     // Failure case
-    assertThrows(NotFoundException.class,
+    assertThrows(
+        NotFoundException.class,
         () -> gameMailCommandService.deleteAllReadGameMailsByGameSaveId(nonExistingGameSaveId));
   }
 
@@ -213,15 +214,15 @@ class GameMailCommandServiceTests {
     when(gameSaveService.existsById(any())).thenReturn(false);
 
     // When & Then - Verify that existence is checked for every operation
-    assertThrows(NotFoundException.class,
-        () -> gameMailCommandService.readGameMailById(mailId));
+    assertThrows(NotFoundException.class, () -> gameMailCommandService.readGameMailById(mailId));
     verify(gameMailQueryService).existsById(mailId);
 
-    assertThrows(NotFoundException.class,
-        () -> gameMailCommandService.claimGameMailAttachments(mailId));
+    assertThrows(
+        NotFoundException.class, () -> gameMailCommandService.claimGameMailAttachments(mailId));
     verify(gameMailQueryService, times(2)).existsById(mailId);
 
-    assertThrows(NotFoundException.class,
+    assertThrows(
+        NotFoundException.class,
         () -> gameMailCommandService.deleteAllReadGameMailsByGameSaveId(gameSaveId));
     verify(gameSaveService).existsById(gameSaveId);
 
@@ -244,19 +245,24 @@ class GameMailCommandServiceTests {
     RuntimeException repositoryException = new RuntimeException("Database error");
     doThrow(repositoryException).when(gameMailRepositoryPort).readGameEmail(mailId);
     doThrow(repositoryException).when(gameMailRepositoryPort).claimGameMailAttachments(mailId);
-    doThrow(repositoryException).when(gameMailRepositoryPort).deleteReadGameEmailsByGameSaveId(gameSaveId);
+    doThrow(repositoryException)
+        .when(gameMailRepositoryPort)
+        .deleteReadGameEmailsByGameSaveId(gameSaveId);
 
     // When & Then - Verify exceptions are propagated correctly
-    RuntimeException exception1 = assertThrows(RuntimeException.class,
-        () -> gameMailCommandService.readGameMailById(mailId));
+    RuntimeException exception1 =
+        assertThrows(RuntimeException.class, () -> gameMailCommandService.readGameMailById(mailId));
     assertEquals("Database error", exception1.getMessage());
 
-    RuntimeException exception2 = assertThrows(RuntimeException.class,
-        () -> gameMailCommandService.claimGameMailAttachments(mailId));
+    RuntimeException exception2 =
+        assertThrows(
+            RuntimeException.class, () -> gameMailCommandService.claimGameMailAttachments(mailId));
     assertEquals("Database error", exception2.getMessage());
 
-    RuntimeException exception3 = assertThrows(RuntimeException.class,
-        () -> gameMailCommandService.deleteAllReadGameMailsByGameSaveId(gameSaveId));
+    RuntimeException exception3 =
+        assertThrows(
+            RuntimeException.class,
+            () -> gameMailCommandService.deleteAllReadGameMailsByGameSaveId(gameSaveId));
     assertEquals("Database error", exception3.getMessage());
   }
 
@@ -288,5 +294,4 @@ class GameMailCommandServiceTests {
     verify(gameMailQueryService, times(4)).existsById(any());
     verify(gameSaveService, times(1)).existsById(gameSaveId);
   }
-
 }
