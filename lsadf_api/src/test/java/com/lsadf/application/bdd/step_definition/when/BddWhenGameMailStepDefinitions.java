@@ -125,7 +125,7 @@ public class BddWhenGameMailStepDefinitions extends BddLoader {
   public void whenDeletesReadGameMails(String gameSaveIdStr, String sessionId) {
     String fullPath =
         ApiPathConstants.GAME_MAIL
-            + GameMailController.Constants.ApiPaths.GAME_MAIL_ID.replace(
+            + GameMailController.Constants.ApiPaths.GAME_SAVE_ID.replace(
                 "{game_save_id}", gameSaveIdStr);
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {

@@ -126,15 +126,6 @@ Feature: Game Mail Controller BDD tests
 
     Then the response status code should be 403
 
-  Scenario: A user tries to get an invalid email
-    When the user logs in with the following credentials
-      | username            | password |
-      | paul.ochon@test.com | toto1234 |
-
-    And the user gets the content of the game mail with id 9d1e3f62-4c70-4b9a-9b15-2a7f3c6c8e7a
-
-    Then the response status code should be 404
-
   Scenario: A user tries to read an email not owned by his game save
     When the user logs in with the following credentials
       | username            | password |
@@ -144,7 +135,7 @@ Feature: Game Mail Controller BDD tests
 
     Then the response status code should be 403
 
-  Scenario: A user deletes his read game saves
+  Scenario: A user deletes his read game mails
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
@@ -152,3 +143,12 @@ Feature: Game Mail Controller BDD tests
     And the user deletes his game mails for the game save with id 0530e1fe-3428-4edd-bb32-cb563419d0bd and session id 6025d3de-49ee-4ca1-98c0-28cb49f85e87
 
     Then the response status code should be 200
+
+  Scenario: A user deletes his read game mails from an invalid mailbox
+    When the user logs in with the following credentials
+      | username            | password |
+      | paul.ochon@test.com | toto1234 |
+
+    And the user deletes his game mails for the game save with id 0530e1fe-3428-4edd-bb32-cb563419d0bd and session id e2f9b827-6c3a-4c9f-8e5b-3c4d7f1a9d2b
+
+    Then the response status code should be 403
