@@ -23,6 +23,8 @@ import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
 import com.lsadf.core.infra.valkey.stream.serializer.EventSerializer;
 import com.lsadf.core.infra.valkey.stream.serializer.impl.GameEventSerializer;
 import java.time.Duration;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +40,7 @@ import org.springframework.data.redis.connection.stream.StreamOffset;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 import org.springframework.data.redis.stream.Subscription;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 
 @Slf4j
 @Configuration
@@ -55,17 +57,10 @@ public class ValkeyStreamConfiguration {
     return new GameEventSerializer(objectMapper);
   }
 
-  @Bean(name = "streamListenerExecutor")
-  public TaskExecutor streamListenerExecutor() {
-    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-    executor.setCorePoolSize(3);
-    executor.setMaxPoolSize(5);
-    executor.setQueueCapacity(100);
-    executor.setThreadNamePrefix("streamListenerExecutor-");
-    executor.setWaitForTasksToCompleteOnShutdown(true);
-    executor.setAwaitTerminationSeconds(30);
-    executor.initialize();
-    return executor;
+  @Bean
+  public TaskExecutor taskExecutor() {
+    ExecutorService virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
+    return new ConcurrentTaskExecutor(virtualThreadExecutor);
   }
 
   @Bean
