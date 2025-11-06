@@ -19,14 +19,19 @@ package com.lsadf.core.application.game.mail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.command.CreateNewTemplateAttachmentCommand;
 import com.lsadf.core.application.game.mail.command.InitializeDefaultGameMailTemplateCommand;
+import com.lsadf.core.application.game.mail.command.InitializeGameMailTemplateCommand;
 import com.lsadf.core.domain.game.mail.GameMailTemplate;
 import java.util.UUID;
 
 public interface GameMailTemplateCommandService {
-  GameMailTemplate initializeDefaultGameMailTemplates(
-      InitializeDefaultGameMailTemplateCommand command);
+  default GameMailTemplate initializeDefaultGameMailTemplates(
+      InitializeDefaultGameMailTemplateCommand command) {
+    return initializeGameMailTemplate(
+        new InitializeGameMailTemplateCommand(
+            command.name(), command.subject(), command.body(), 30));
+  }
 
-  GameMailTemplate initializeGameMailTemplate(InitializeDefaultGameMailTemplateCommand command);
+  GameMailTemplate initializeGameMailTemplate(InitializeGameMailTemplateCommand command);
 
   void deleteGameMailTemplateById(UUID id);
 

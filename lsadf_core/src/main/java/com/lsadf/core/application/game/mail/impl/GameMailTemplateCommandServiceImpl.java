@@ -18,10 +18,12 @@ package com.lsadf.core.application.game.mail.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailTemplateCommandService;
+import com.lsadf.core.application.game.mail.GameMailTemplateQueryService;
 import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
 import com.lsadf.core.application.game.mail.command.CreateNewTemplateAttachmentCommand;
-import com.lsadf.core.application.game.mail.command.InitializeDefaultGameMailTemplateCommand;
+import com.lsadf.core.application.game.mail.command.InitializeGameMailTemplateCommand;
 import com.lsadf.core.domain.game.mail.GameMailTemplate;
+import com.lsadf.core.exception.http.NotFoundException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
@@ -29,30 +31,31 @@ import lombok.RequiredArgsConstructor;
 public class GameMailTemplateCommandServiceImpl implements GameMailTemplateCommandService {
 
   private final GameMailTemplateRepositoryPort gameMailTemplateRepositoryPort;
+  private final GameMailTemplateQueryService gameMailTemplateQueryService;
 
   @Override
-  public GameMailTemplate initializeDefaultGameMailTemplates(
-      InitializeDefaultGameMailTemplateCommand command) {
+  public GameMailTemplate initializeGameMailTemplate(InitializeGameMailTemplateCommand command) {
     return gameMailTemplateRepositoryPort.createNewMailTemplate(
-        command.name(), command.subject(), command.body(), 30);
-  }
-
-  @Override
-  public GameMailTemplate initializeGameMailTemplate(
-      InitializeDefaultGameMailTemplateCommand command) {
-    return gameMailTemplateRepositoryPort.createNewMailTemplate(
-        command.name(), command.subject(), command.body(), 30);
+        command.name(), command.subject(), command.body(), command.expirationDays());
   }
 
   @Override
   public void deleteGameMailTemplateById(UUID id) {
+    if (!gameMailTemplateQueryService.existsById(id)) {
+      throw new NotFoundException("Game mail template with id " + id + " does not exist");
+    }
     gameMailTemplateRepositoryPort.deleteMailTemplateById(id);
   }
 
   @Override
   public void attachToGameMailTemplate(CreateNewTemplateAttachmentCommand command)
       throws JsonProcessingException {
+    UUID gameMailTemplateId = command.mailTemplateId();
+    if (!gameMailTemplateQueryService.existsById(gameMailTemplateId)) {
+      throw new NotFoundException(
+          "Game mail template with id " + gameMailTemplateId + " does not exist");
+    }
     gameMailTemplateRepositoryPort.attachNewObjectToTemplate(
-        command.mailTemplateId(), command.type(), command.attachment());
+        gameMailTemplateId, command.type(), command.attachment());
   }
 }
