@@ -20,15 +20,17 @@ import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.request.Request;
+import jakarta.validation.constraints.NotEmpty;
 import java.io.Serial;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 @Builder
 public record GameMailTemplateRequest(
-    @JsonProperty(NAME) String name,
-    @JsonProperty(SUBJECT) String subject,
-    @JsonProperty(BODY) String body,
-    @JsonProperty(EXPIRATION_DAYS) int expirationDays)
+    @NotEmpty @JsonProperty(NAME) String name,
+    @NotEmpty @JsonProperty(SUBJECT) String subject,
+    @NotEmpty @JsonProperty(BODY) String body,
+    @Nullable @JsonProperty(EXPIRATION_DAYS) Integer expirationDays)
     implements Request {
   @Serial private static final long serialVersionUID = -1408819149940233516L;
 }

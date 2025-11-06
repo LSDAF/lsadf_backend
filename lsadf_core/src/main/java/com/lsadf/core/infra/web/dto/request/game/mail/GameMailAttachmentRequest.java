@@ -21,7 +21,6 @@ import static com.lsadf.core.infra.web.JsonAttributes.TYPE;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
-import com.lsadf.core.shared.model.Model;
 
-public record GameMailAttachmentRequest<T extends Model>(
+public record GameMailAttachmentRequest<T>(
     @JsonProperty(TYPE) GameMailAttachmentType type, @JsonProperty(OBJECT) T object) {}
