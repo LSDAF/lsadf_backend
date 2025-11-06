@@ -17,8 +17,7 @@
 package com.lsadf.core.application.game.mail.command;
 
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
-import com.lsadf.core.shared.model.Model;
 import java.util.UUID;
 
 public record CreateNewTemplateAttachmentCommand(
-    UUID mailTemplateId, GameMailAttachmentType type, Model attachment) {}
+    UUID mailTemplateId, GameMailAttachmentType type, Object attachment) {}
