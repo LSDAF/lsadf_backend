@@ -235,7 +235,9 @@ public class ApplicationServiceConfiguration {
 
   @Bean
   public GameMailTemplateCommandService gameMailTemplateCommandService(
-      GameMailTemplateRepositoryPort gameMailTemplateRepositoryPort) {
-    return new GameMailTemplateCommandServiceImpl(gameMailTemplateRepositoryPort);
+      GameMailTemplateRepositoryPort gameMailTemplateRepositoryPort,
+      GameMailTemplateQueryService gameMailTemplateQueryService) {
+    return new GameMailTemplateCommandServiceImpl(
+        gameMailTemplateRepositoryPort, gameMailTemplateQueryService);
   }
 }
