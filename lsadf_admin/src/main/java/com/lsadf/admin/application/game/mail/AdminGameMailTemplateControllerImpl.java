@@ -23,13 +23,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailTemplateCommandService;
 import com.lsadf.core.application.game.mail.GameMailTemplateQueryService;
 import com.lsadf.core.application.game.mail.command.CreateNewTemplateAttachmentCommand;
+import com.lsadf.core.application.game.mail.command.InitializeDefaultGameMailTemplateCommand;
+import com.lsadf.core.application.game.mail.command.InitializeGameMailTemplateCommand;
 import com.lsadf.core.domain.game.mail.GameMailTemplate;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.mail.GameMailAttachmentRequest;
+import com.lsadf.core.infra.web.dto.request.game.mail.GameMailTemplateRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.mail.GameMailTemplateResponse;
 import com.lsadf.core.infra.web.dto.response.game.mail.GameMailTemplateResponseMapper;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +92,32 @@ public class AdminGameMailTemplateControllerImpl extends BaseController
     }
     GameMailTemplate finalizedTemplate = gameMailTemplateQueryService.getMailTemplateById(id);
     GameMailTemplateResponse response = gameMailTemplateResponseMapper.map(finalizedTemplate);
+    return generateResponse(OK, response);
+  }
+
+  @Override
+  public ResponseEntity<ApiResponse<GameMailTemplateResponse>> createNewMailTemplate(
+      Jwt jwt, GameMailTemplateRequest gameMailTemplateRequest) {
+    validateUser(jwt);
+    GameMailTemplate gameMailTemplate;
+    if (gameMailTemplateRequest.expirationDays() == null) {
+      InitializeDefaultGameMailTemplateCommand command =
+          new InitializeDefaultGameMailTemplateCommand(
+              gameMailTemplateRequest.name(),
+              gameMailTemplateRequest.subject(),
+              gameMailTemplateRequest.body());
+      gameMailTemplate = gameMailTemplateCommandService.initializeDefaultGameMailTemplates(command);
+    } else {
+      int expirationDays = Objects.requireNonNull(gameMailTemplateRequest.expirationDays());
+      InitializeGameMailTemplateCommand command =
+          new InitializeGameMailTemplateCommand(
+              gameMailTemplateRequest.name(),
+              gameMailTemplateRequest.subject(),
+              gameMailTemplateRequest.body(),
+              expirationDays);
+      gameMailTemplate = gameMailTemplateCommandService.initializeGameMailTemplate(command);
+    }
+    GameMailTemplateResponse response = gameMailTemplateResponseMapper.map(gameMailTemplate);
     return generateResponse(OK, response);
   }
 

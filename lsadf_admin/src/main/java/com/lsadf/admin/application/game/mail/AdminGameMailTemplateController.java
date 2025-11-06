@@ -26,12 +26,14 @@ import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.controller.ParameterConstants;
 import com.lsadf.core.infra.web.dto.request.game.mail.GameMailAttachmentRequest;
+import com.lsadf.core.infra.web.dto.request.game.mail.GameMailTemplateRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.mail.GameMailTemplateResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -49,7 +51,7 @@ import org.springframework.web.bind.annotation.*;
 public interface AdminGameMailTemplateController extends Controller {
 
   @GetMapping
-  @Operation(summary = "Gets ll the game mail templates")
+  @Operation(summary = "Gets all the game mail templates")
   @ApiResponses(
       value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -151,6 +153,30 @@ public interface AdminGameMailTemplateController extends Controller {
       @PathVariable(value = ParameterConstants.GAME_MAIL_TEMPLATE_ID) UUID id,
       @RequestBody List<GameMailAttachmentRequest<?>> attachments)
       throws JsonProcessingException;
+
+  @PostMapping
+  @Operation(summary = "Creates a new game mail template")
+  @ApiResponses(
+      value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "403",
+            description = "Forbidden"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "OK"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "500",
+            description = "Internal Server Error"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "400",
+            description = "Bad Request")
+      })
+  ResponseEntity<ApiResponse<GameMailTemplateResponse>> createNewMailTemplate(
+      @AuthenticationPrincipal Jwt jwt,
+      @Valid @RequestBody GameMailTemplateRequest gameMailTemplateRequest);
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   class Constants {
