@@ -19,19 +19,15 @@ package com.lsadf.application.bdd.step_definition.when;
 import static com.lsadf.bdd.util.ParameterizedTypeReferenceUtils.*;
 import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.game.mail.GameMailController;
 import com.lsadf.bdd.util.BddUtils;
-import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.mail.GameMailResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.java.en.When;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -88,7 +84,8 @@ public class BddWhenGameMailStepDefinitions extends BddLoader {
       var data = body.data();
       if (data != null) {
         gameMailResponseStack.push(data);
-        handleAttachments(data);
+        gameMailAttachmentListStack.push(
+            data.attachments() != null ? data.attachments() : List.of());
       }
       log.info("Response: {}", result);
     } catch (Exception e) {
@@ -144,27 +141,5 @@ public class BddWhenGameMailStepDefinitions extends BddLoader {
     } catch (Exception e) {
       exceptionStack.push(e);
     }
-  }
-
-  private void handleAttachments(GameMailResponse gameMailResponse) {
-    var attachments = gameMailResponse.attachments();
-    if (attachments == null) {
-      gameMailAttachmentListStack.push(new ArrayList<>(0));
-      return;
-    }
-    List<GameMailAttachment<?>> stringAttachments =
-        attachments.stream()
-            .map(
-                gameMailAttachment -> {
-                  try {
-                    return new GameMailAttachment<>(
-                        gameMailAttachment.type(),
-                        objectMapper.writeValueAsString(gameMailAttachment.attachment()));
-                  } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                  }
-                })
-            .collect(Collectors.toCollection(ArrayList::new));
-    gameMailAttachmentListStack.push(stringAttachments);
   }
 }

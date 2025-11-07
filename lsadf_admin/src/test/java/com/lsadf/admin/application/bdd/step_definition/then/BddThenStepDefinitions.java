@@ -15,6 +15,7 @@
  */
 package com.lsadf.admin.application.bdd.step_definition.then;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.bdd.step_definition.then.*;
 import io.cucumber.datatable.DataTable;
@@ -30,6 +31,8 @@ public class BddThenStepDefinitions extends BddLoader {
 
   @Autowired private BddThenCacheStepDefinitions bddThenCacheStepDefinitions;
   @Autowired private BddThenGameSaveStepDefinitions bddThenGameSaveStepDefinitions;
+  @Autowired private BddThenGameMailStepDefinitions bddThenGameMailStepDefinitions;
+  @Autowired private BddThenGameMailTemplateStepDefinitions bddThenGameMailTemplateStepDefinitions;
 
   @Autowired
   private com.lsadf.bdd.step_definition.then.BddThenStepDefinitions bddThenCoreStepDefinitions;
@@ -114,5 +117,23 @@ public class BddThenStepDefinitions extends BddLoader {
   @Then("^the inventory of the game save with id (.*) should be empty$")
   public void thenTheInventoryOfTheGameSaveWithIdShouldBeEmpty(String gameSaveId) {
     bddThenItemStepDefinitions.thenTheInventoryOfTheGameSaveWithIdShouldBeEmpty(gameSaveId);
+  }
+
+  @Then("^the response should have the following GameMailAttachments$")
+  public void thenTheResponseShouldHaveFollowingGameMailAttachments(DataTable dataTable)
+      throws JsonProcessingException {
+    bddThenGameMailStepDefinitions.thenResponseShouldHaveFollowingGameMailAttachments(dataTable);
+  }
+
+  @Then("^the response should have the following GameMailTemplateResponse$")
+  public void thenTheResponseShouldHaveTheFollowingGameMailTemplateResponse(DataTable dataTable) {
+    bddThenGameMailTemplateStepDefinitions.shouldHaveTheFollowingGameMailTemplateResponse(
+        dataTable);
+  }
+
+  @Then("^the response should have the following GameMailTemplateResponses$")
+  public void thenTheResponseShouldHaveTheFollowingGameMailTemplateResponses(DataTable dataTable) {
+    bddThenGameMailTemplateStepDefinitions.shouldHaveTheFollowingGameMailTemplateResponses(
+        dataTable);
   }
 }

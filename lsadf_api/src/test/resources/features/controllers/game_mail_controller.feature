@@ -39,10 +39,10 @@ Feature: Game Mail Controller BDD tests
       | 806809ab-c241-46b6-803d-2ba5d6bdcc29 | LSADF V3.0       | Welcome to LSDAF 3.0! | Hello there, welcome to LSADF 3.0! Have fun with the new updates ! | 30             |
 
     And the following game email template attachments
-      | id                                   | mailTemplateId                       | object                                                                                                                                                                                                                                 | type     |
-      | 2099c6fc-9618-4b1d-a0a9-24d75d0d1f32 | be7f65c8-c2eb-4dba-b351-746c293751d3 | {"gold":500,"diamond":1000,"emerald":1500,"amethyst":2000}                                                                                                                                                                             | CURRENCY |
-      | 36dca975-ff13-425f-82cb-9a95e424e102 | be7f65c8-c2eb-4dba-b351-746c293751d3 | {"id":"1de67a24-f15c-41aa-88fb-3208eb860abf","gameSaveId":"8443ecaf-c92e-49db-93c8-ce868ccc4e0c","blueprintId":"leg_boo_01","itemType":"BOOTS","itemRarity":"RARE","level":50,"mainStat":{"statistic":"ATTACK_ADD","baseValue":120.0}} | ITEM     |
-      | 7f2b50f4-67c7-458a-93cb-9a47cd82c90c | 38e9b063-724b-4794-ba7e-157d1e25c465 | {"gold":5000}                                                                                                                                                                                                                          | CURRENCY |
+      | id                                   | mailTemplateId                       | object                                                                                                                                                                                       | type     |
+      | 2099c6fc-9618-4b1d-a0a9-24d75d0d1f32 | be7f65c8-c2eb-4dba-b351-746c293751d3 | {"gold":500,"diamond":1000,"emerald":1500,"amethyst":2000}                                                                                                                                   | CURRENCY |
+      | 36dca975-ff13-425f-82cb-9a95e424e102 | be7f65c8-c2eb-4dba-b351-746c293751d3 | {"client_id":null,"blueprint_id":"leg_boo_01","type":"BOOTS","rarity":"RARE","is_equipped":false,"level":50,"main_stat":{"statistic":"ATTACK_ADD","base_value":120.0},"additional_stats":[]} | ITEM     |
+      | 7f2b50f4-67c7-458a-93cb-9a47cd82c90c | 38e9b063-724b-4794-ba7e-157d1e25c465 | {"gold":5000}                                                                                                                                                                                | CURRENCY |
 
     And the following game emails
       | id                                   | gameSaveId                           | mailTemplateId                       | isRead | isAttachmentClaimed |
@@ -79,9 +79,9 @@ Feature: Game Mail Controller BDD tests
       | adbaf507-3987-45e1-bea6-e51525943148 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | Welcome to LSDAF! | Hello there, welcome to LSADF! | true | false              |
 
     And the response should have the following GameMailAttachments
-      | type     | attachment                                                                                                                                                                                                                                                                                      |
-      | CURRENCY | {"gold":500,"diamond":1000,"emerald":1500,"amethyst":2000}                                                                                                                                                                                                                                      |
-      | ITEM     | {"id":"1de67a24-f15c-41aa-88fb-3208eb860abf","gameSaveId":"8443ecaf-c92e-49db-93c8-ce868ccc4e0c","clientId":null,"blueprintId":"leg_boo_01","itemType":"BOOTS","itemRarity":"RARE","isEquipped":null,"level":50,"mainStat":{"statistic":"ATTACK_ADD","baseValue":120.0},"additionalStats":null} |
+      | type     | attachment                                                                                                                                                                                   |
+      | CURRENCY | {"gold":500,"diamond":1000,"emerald":1500,"amethyst":2000}                                                                                                                                   |
+      | ITEM     | {"client_id":null,"type":"BOOTS","blueprint_id":"leg_boo_01","rarity":"RARE","is_equipped":false,"level":50,"main_stat":{"statistic":"ATTACK_ADD","base_value":120.0},"additional_stats":[]} |
 
   Scenario: A user reads a specific email without attachments from his mailbox
     When the user logs in with the following credentials

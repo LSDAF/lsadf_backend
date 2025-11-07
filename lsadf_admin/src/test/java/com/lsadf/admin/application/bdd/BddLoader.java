@@ -69,6 +69,7 @@ import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.mail.GameMailTemplateResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
@@ -218,6 +219,10 @@ public class BddLoader {
   @Autowired protected Stack<List<GameSaveResponse>> gameSaveResponseListStack;
 
   @Autowired protected Stack<List<UserResponse>> userResponseListStack;
+
+  @Autowired protected Stack<List<GameMailTemplateResponse>> gameMailTemplateResponseListStack;
+
+  @Autowired protected Stack<GameMailTemplateResponse> gameMailTemplateResponseStack;
 
   @Autowired protected Stack<Characteristics> characteristicsStack;
 

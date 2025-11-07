@@ -55,6 +55,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
   BddThenCacheStepDefinitions.class,
   BddThenCharacteristicsStepDefinitions.class,
   BddThenGameMailStepDefinitions.class,
+  BddThenGameMailTemplateStepDefinitions.class,
   BddThenCurrencyStepDefinitions.class,
   BddThenGameSaveStepDefinitions.class,
   BddThenGameSessionStepDefinitions.class,

@@ -17,6 +17,8 @@ package com.lsadf.bdd.util;
 
 import static com.lsadf.bdd.config.BddFieldConstants.Item.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.bdd.config.BddFieldConstants;
 import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.inventory.item.ItemRarity;
@@ -48,6 +50,8 @@ import com.lsadf.core.infra.web.dto.request.common.Filter;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.web.dto.request.game.mail.GameMailAttachmentRequest;
+import com.lsadf.core.infra.web.dto.request.game.mail.GameMailTemplateRequest;
 import com.lsadf.core.infra.web.dto.request.game.metadata.GameMetadataRequest;
 import com.lsadf.core.infra.web.dto.request.game.save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.dto.request.game.save.update.AdminGameSaveUpdateRequest;
@@ -113,6 +117,27 @@ public class BddUtils {
 
     return new CharacteristicsRequest(
         attackLong, critChanceLong, critDamageLong, healthLong, resistanceLong);
+  }
+
+  /**
+   * Maps a row from a BDD table to a GameMailTemplateRequest
+   *
+   * @param row row from BDD table
+   * @return GameMailTemplateRequest
+   */
+  public static GameMailTemplateRequest mapToGameMailTemplateRequest(Map<String, String> row) {
+    String name = row.get(BddFieldConstants.GameMailTemplate.NAME);
+    String subject = row.get(BddFieldConstants.GameMailTemplate.SUBJECT);
+    String body = row.get(BddFieldConstants.GameMailTemplate.BODY);
+    String expirationDaysString = row.get(BddFieldConstants.GameMailTemplate.EXPIRATION_DAYS);
+    var builder = GameMailTemplateRequest.builder().name(name).subject(subject).body(body);
+
+    if (expirationDaysString != null) {
+      Integer expirationDays = Integer.parseInt(expirationDaysString);
+      builder.expirationDays(expirationDays);
+    }
+
+    return builder.build();
   }
 
   /**
@@ -684,18 +709,36 @@ public class BddUtils {
   }
 
   /**
-   * Maps
+   * Maps a row from a BDD table to a GameMailAttachmentRequest
    *
-   * @param row
-   * @return
+   * @param row row from BDD table
+   * @return GameMailAttachmentRequest
    */
-  public static GameMailAttachment<?> mapToGameMailAttachment(Map<String, String> row) {
+  public static GameMailAttachmentRequest<?> mapToGameMailAttachmentRequest(
+      Map<String, String> row) {
     String type = row.get(BddFieldConstants.GameMailAttachment.TYPE);
     String attachment = row.get(BddFieldConstants.GameMailAttachment.ATTACHMENT);
 
     GameMailAttachmentType attachmentType = GameMailAttachmentType.valueOf(type);
 
-    return new GameMailAttachment<>(attachmentType, attachment);
+    return new GameMailAttachmentRequest<>(attachmentType, attachment);
+  }
+
+  /**
+   * Maps a row from a BDD table to a Game Mail Attachment
+   *
+   * @param row row from BDD table
+   * @return GameMailAttachment
+   */
+  public static GameMailAttachment<?> mapToGameMailAttachment(
+      Map<String, String> row, ObjectMapper objectMapper) throws JsonProcessingException {
+    String type = row.get(BddFieldConstants.GameMailAttachment.TYPE);
+    String attachment = row.get(BddFieldConstants.GameMailAttachment.ATTACHMENT);
+    Map<String, Object> attachmentMap = objectMapper.readValue(attachment, Map.class);
+
+    GameMailAttachmentType attachmentType = GameMailAttachmentType.valueOf(type);
+
+    return new GameMailAttachment<>(attachmentType, attachmentMap);
   }
 
   /**

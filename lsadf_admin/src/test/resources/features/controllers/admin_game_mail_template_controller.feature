@@ -15,7 +15,7 @@
 #
 
 
-Feature: Game Mail Controller BDD tests
+Feature: Game Mail Template Controller BDD tests
 
   Background:
     Given the BDD engine is ready
@@ -33,10 +33,10 @@ Feature: Game Mail Controller BDD tests
       | 38e9b063-724b-4794-ba7e-157d1e25c465 | LSADF V2.0       | Welcome to LSDAF 2.0! | Hello there, welcome to LSADF 2.0! Have fun with the new updates ! | 30             |
 
     And the following game email template attachments
-      | id                                   | mailTemplateId                       | object                                                                                                                                                                                                                                 | type     |
-      | 2099c6fc-9618-4b1d-a0a9-24d75d0d1f32 | be7f65c8-c2eb-4dba-b351-746c293751d3 | {"gold":500,"diamond":1000,"emerald":1500,"amethyst":2000}                                                                                                                                                                             | CURRENCY |
-      | 36dca975-ff13-425f-82cb-9a95e424e102 | be7f65c8-c2eb-4dba-b351-746c293751d3 | {"id":"1de67a24-f15c-41aa-88fb-3208eb860abf","gameSaveId":"8443ecaf-c92e-49db-93c8-ce868ccc4e0c","blueprintId":"leg_boo_01","itemType":"BOOTS","itemRarity":"RARE","level":50,"mainStat":{"statistic":"ATTACK_ADD","baseValue":120.0}} | ITEM     |
-      | 7f2b50f4-67c7-458a-93cb-9a47cd82c90c | 38e9b063-724b-4794-ba7e-157d1e25c465 | {"gold":5000}                                                                                                                                                                                                                          | CURRENCY |
+      | id                                   | mailTemplateId                       | object                                                                                                                                                                                       | type     |
+      | 2099c6fc-9618-4b1d-a0a9-24d75d0d1f32 | be7f65c8-c2eb-4dba-b351-746c293751d3 | {"gold":500,"diamond":1000,"emerald":1500,"amethyst":2000}                                                                                                                                   | CURRENCY |
+      | 36dca975-ff13-425f-82cb-9a95e424e102 | be7f65c8-c2eb-4dba-b351-746c293751d3 | {"client_id":null,"blueprint_id":"leg_boo_01","type":"BOOTS","rarity":"RARE","is_equipped":false,"level":50,"main_stat":{"statistic":"ATTACK_ADD","base_value":120.0},"additional_stats":[]} | ITEM     |
+      | 7f2b50f4-67c7-458a-93cb-9a47cd82c90c | 38e9b063-724b-4794-ba7e-157d1e25c465 | {"gold":500,"diamond":0,"emerald":0,"amethyst":0}                                                                                                                                            | CURRENCY |
 
     And the following game emails
       | id                                   | gameSaveId                           | mailTemplateId                       | isRead | isAttachmentClaimed |
@@ -48,42 +48,74 @@ Feature: Game Mail Controller BDD tests
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
+    And the user requests the admin endpoint to get all the game mail templates
+
+    Then the response status code should be 200
+
+    And the response should have the following GameMailTemplateResponses
+      | id                                   | name             | subject               | body                                                               | expirationDays |
+      | be7f65c8-c2eb-4dba-b351-746c293751d3 | Welcome Template | Welcome to LSDAF!     | Hello there, welcome to LSADF!                                     | 30             |
+      | 38e9b063-724b-4794-ba7e-157d1e25c465 | LSADF V2.0       | Welcome to LSDAF 2.0! | Hello there, welcome to LSADF 2.0! Have fun with the new updates ! | 30             |
+
   Scenario: An admin user gets a template with its attachments
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-  Scenario: An admin user gets a non-existing template
-    When the user logs in with the following credentials
-      | username            | password |
-      | paul.ochon@test.com | toto1234 |
+    And the user requests the admin endpoint to get the game mail template with id be7f65c8-c2eb-4dba-b351-746c293751d3
+
+    Then the response status code should be 200
+
+    And the response should have the following GameMailTemplateResponse
+      | id                                   | name             | subject           | body                           | expirationDays |
+      | be7f65c8-c2eb-4dba-b351-746c293751d3 | Welcome Template | Welcome to LSDAF! | Hello there, welcome to LSADF! | 30             |
+
+    And the response should have the following GameMailAttachments
+      | attachment                                                                                                                                                                                   | type     |
+      | {"amethyst":2000, "diamond":1000, "emerald":1500, "gold":500}                                                                                                                                | CURRENCY |
+      | {"client_id":null,"blueprint_id":"leg_boo_01","type":"BOOTS","rarity":"RARE","is_equipped":false,"level":50,"main_stat":{"statistic":"ATTACK_ADD","base_value":120.0},"additional_stats":[]} | ITEM     |
+
 
   Scenario: An admin user creates a new game mail template
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-  Scenario: An admin user creates a new game mail template with invalid object definition
-    When the user logs in with the following credentials
-      | username            | password |
-      | paul.ochon@test.com | toto1234 |
+    And the user requests the admin endpoint to create a new game mail template with the following data
+      | name           | subject              | body                                              | expirationDays |
+      | New Template 1 | Welcome to LSDAF V3! | Hello there, welcome to LSADF V3! Enjoy the game! | 15             |
 
-  Scenario: An admin user updates an existing game mail template
-    When the user logs in with the following credentials
-      | username            | password |
-      | paul.ochon@test.com | toto1234 |
+    Then the response status code should be 200
 
-  Scenario: An admin user updates a non-existing game mail template
-    When the user logs in with the following credentials
-      | username            | password |
-      | paul.ochon@test.com | toto1234 |
+    And the response should have the following GameMailTemplateResponse
+      | name           | subject              | body                                              | expirationDays |
+      | New Template 1 | Welcome to LSDAF V3! | Hello there, welcome to LSADF V3! Enjoy the game! | 15             |
 
   Scenario: An admin user deletes an existing game mail template
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
 
-  Scenario: An admin user deletes a non-existing game mail template
+    And the user requests the admin endpoint to delete the game mail template with id be7f65c8-c2eb-4dba-b351-746c293751d3
+
+    Then the response status code should be 200
+
+  Scenario: An admin user adds a new attachment to an existing game mail template
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
+
+    And the user requests the admin endpoint to add a new attachment to the game mail template with id 38e9b063-724b-4794-ba7e-157d1e25c465 with the following data
+      | attachment                                                                                                                                                                                   | type |
+      | {"client_id":null,"blueprint_id":"leg_boo_01","type":"BOOTS","rarity":"RARE","is_equipped":false,"level":50,"main_stat":{"statistic":"ATTACK_ADD","base_value":120.0},"additional_stats":[]} | ITEM |
+
+    Then the response status code should be 200
+
+    And the response should have the following GameMailTemplateResponse
+      | id                                   | name       | subject               | body                                                               | expirationDays |
+      | 38e9b063-724b-4794-ba7e-157d1e25c465 | LSADF V2.0 | Welcome to LSDAF 2.0! | Hello there, welcome to LSADF 2.0! Have fun with the new updates ! | 30             |
+
+    And the response should have the following GameMailAttachments
+      | attachment                                                                                                                                                                                   | type     |
+      | {"gold":500,"diamond":0,"emerald":0,"amethyst":0}                                                                                                                                            | CURRENCY |
+      | {"client_id":null,"blueprint_id":"leg_boo_01","type":"BOOTS","rarity":"RARE","is_equipped":false,"level":50,"main_stat":{"statistic":"ATTACK_ADD","base_value":120.0},"additional_stats":[]} | ITEM     |
