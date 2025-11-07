@@ -22,13 +22,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
-import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverter;
-import com.lsadf.core.shared.model.Model;
+import com.lsadf.core.infra.web.dto.request.Request;
+import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class GameMailAttachmentCurrencyConverter implements GameMailAttachmentConverter<Currency> {
+public class GameMailAttachmentCurrencyConverter
+    implements GameMailAttachmentConverter<CurrencyRequest> {
 
   private final ObjectMapper objectMapper;
 
@@ -38,13 +39,13 @@ public class GameMailAttachmentCurrencyConverter implements GameMailAttachmentCo
   }
 
   @Override
-  public String toJson(GameMailAttachment<Model> attachment) throws JsonProcessingException {
+  public String toJson(GameMailAttachment<Request> attachment) throws JsonProcessingException {
     Object attachmentObject = attachment.attachment();
     return objectMapper.writeValueAsString(attachmentObject);
   }
 
   @Override
-  public Currency toModel(String json) throws JsonProcessingException {
-    return objectMapper.readValue(json, Currency.class);
+  public CurrencyRequest toRequest(String json) throws JsonProcessingException {
+    return objectMapper.readValue(json, CurrencyRequest.class);
   }
 }

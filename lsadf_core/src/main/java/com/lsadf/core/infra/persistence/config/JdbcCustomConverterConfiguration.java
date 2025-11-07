@@ -17,11 +17,11 @@
 package com.lsadf.core.infra.persistence.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverter;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverterRegistry;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.impl.GameMailAttachmentCurrencyConverter;
+import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,18 +33,18 @@ public class JdbcCustomConverterConfiguration {
   }
 
   @Bean
-  public GameMailAttachmentConverter<Currency> currencyGameMailAttachmentConverter(
+  public GameMailAttachmentConverter<CurrencyRequest> currencyGameMailAttachmentConverter(
       GameMailAttachmentConverterRegistry converterRegistry, ObjectMapper objectMapper) {
-    GameMailAttachmentConverter<Currency> converter =
+    GameMailAttachmentConverter<CurrencyRequest> converter =
         new GameMailAttachmentCurrencyConverter(objectMapper);
     converterRegistry.registerConverter(converter);
     return converter;
   }
 
   @Bean
-  public GameMailAttachmentConverter<Item> itemGameMailAttachmentConverter(
+  public GameMailAttachmentConverter<ItemRequest> itemGameMailAttachmentConverter(
       GameMailAttachmentConverterRegistry converterRegistry, ObjectMapper objectMapper) {
-    GameMailAttachmentConverter<Item> converter =
+    GameMailAttachmentConverter<ItemRequest> converter =
         new com.lsadf.core.infra.persistence.adapter.game.mail.converter.impl
             .GameMailAttachmentItemConverter(objectMapper);
     converterRegistry.registerConverter(converter);

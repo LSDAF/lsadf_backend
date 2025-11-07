@@ -18,15 +18,15 @@ package com.lsadf.core.infra.persistence.adapter.game.mail.converter.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lsadf.core.domain.game.inventory.item.Item;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverter;
-import com.lsadf.core.shared.model.Model;
+import com.lsadf.core.infra.web.dto.request.Request;
+import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class GameMailAttachmentItemConverter implements GameMailAttachmentConverter<Item> {
+public class GameMailAttachmentItemConverter implements GameMailAttachmentConverter<ItemRequest> {
 
   private final ObjectMapper objectMapper;
 
@@ -36,12 +36,12 @@ public class GameMailAttachmentItemConverter implements GameMailAttachmentConver
   }
 
   @Override
-  public String toJson(GameMailAttachment<Model> attachment) throws JsonProcessingException {
+  public String toJson(GameMailAttachment<Request> attachment) throws JsonProcessingException {
     return objectMapper.writeValueAsString(attachment);
   }
 
   @Override
-  public Item toModel(String json) throws JsonProcessingException {
-    return objectMapper.readValue(json, Item.class);
+  public ItemRequest toRequest(String json) throws JsonProcessingException {
+    return objectMapper.readValue(json, ItemRequest.class);
   }
 }

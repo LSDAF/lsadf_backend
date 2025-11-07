@@ -28,7 +28,7 @@ import com.lsadf.core.infra.persistence.impl.game.mail.template.GameMailTemplate
 import com.lsadf.core.infra.persistence.impl.view.GameMailViewEntity;
 import com.lsadf.core.infra.persistence.impl.view.GameMailViewMapper;
 import com.lsadf.core.infra.persistence.impl.view.GameMailViewRepository;
-import com.lsadf.core.shared.model.Model;
+import com.lsadf.core.infra.web.dto.request.Request;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -115,8 +115,8 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
         log.error("Could not find converter for type {}", type);
         continue;
       }
-      var result = converter.toModel(json);
-      GameMailAttachment<Model> attachment = new GameMailAttachment<>(type, result);
+      var result = converter.toRequest(json);
+      GameMailAttachment<Request> attachment = new GameMailAttachment<>(type, result);
       gameMail.addAttachment(attachment);
     }
   }

@@ -19,12 +19,12 @@ package com.lsadf.core.infra.persistence.adapter.game.mail.converter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
-import com.lsadf.core.shared.model.Model;
+import com.lsadf.core.infra.web.dto.request.Request;
 
-public interface GameMailAttachmentConverter<T extends Model> {
+public interface GameMailAttachmentConverter<T extends Request> {
   GameMailAttachmentType getAttachmentType();
 
-  String toJson(GameMailAttachment<Model> attachment) throws JsonProcessingException;
+  String toJson(GameMailAttachment<Request> attachment) throws JsonProcessingException;
 
-  T toModel(String json) throws JsonProcessingException;
+  T toRequest(String json) throws JsonProcessingException;
 }

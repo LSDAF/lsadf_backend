@@ -25,7 +25,7 @@ import com.lsadf.core.domain.game.mail.GameMailTemplate;
 import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverterRegistry;
 import com.lsadf.core.infra.persistence.impl.game.mail.template.*;
-import com.lsadf.core.shared.model.Model;
+import com.lsadf.core.infra.web.dto.request.Request;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -89,7 +89,7 @@ public class GameMailTemplateRepositoryAdapter implements GameMailTemplateReposi
       UUID mailTemplateId, GameMailAttachmentType type, Object object)
       throws JsonProcessingException {
     UUID newId = UUID.randomUUID();
-    String json = objectMapper.writeValueAsString(object);
+    String json = object.toString();
     gameMailAttachmentRepository.createNewGameMailAttachment(newId, mailTemplateId, type, json);
   }
 
@@ -111,8 +111,8 @@ public class GameMailTemplateRepositoryAdapter implements GameMailTemplateReposi
         log.error("Could not find converter for type {}", type);
         continue;
       }
-      var result = converter.toModel(json);
-      GameMailAttachment<Model> attachment = new GameMailAttachment<>(type, result);
+      var result = converter.toRequest(json);
+      GameMailAttachment<Request> attachment = new GameMailAttachment<>(type, result);
       gameMailTemplate.addAttachment(attachment);
     }
   }
