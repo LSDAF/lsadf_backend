@@ -32,7 +32,6 @@ import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -40,7 +39,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * used in the application.
  */
 @Configuration
-@EnableScheduling
 @EnableTransactionManagement
 @EnableFeignClients(basePackages = "com.lsadf.core.infra.web.client")
 @Import({
