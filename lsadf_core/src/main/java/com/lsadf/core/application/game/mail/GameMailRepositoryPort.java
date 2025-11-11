@@ -82,7 +82,7 @@ public interface GameMailRepositoryPort {
    *
    * @param currentTime the current timestamp
    */
-  void deleteExpiredGameMails(Instant currentTime);
+  int deleteExpiredGameMails(Instant currentTime);
 
   /**
    * Check if a mail exists by its ID

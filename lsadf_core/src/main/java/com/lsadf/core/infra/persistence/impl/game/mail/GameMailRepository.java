@@ -97,7 +97,7 @@ public interface GameMailRepository extends JdbcRepository<GameMailEntity> {
         DELETE FROM t_game_mail_instance_tgmi
         WHERE tgmi_expires_at <= :currentTime
         """)
-  void deleteExpiredGameMails(@Param("currentTime") Instant currentTime);
+  int deleteExpiredGameMails(@Param("currentTime") Instant currentTime);
 
   /**
    * Delete all read game emails for a specific game save

@@ -48,9 +48,11 @@ public class ExpiredGameMailCleanupScheduler {
    * purposes.
    */
   private void doCleanup() {
-    log.info("Starting expired game mail cleanup job");
-
+    log.debug("Starting expired game mail cleanup job");
     Instant currentTime = Instant.now();
-    gameMailRepository.deleteExpiredGameMails(currentTime);
+    int deleted = gameMailRepository.deleteExpiredGameMails(currentTime);
+    if (deleted != 0) {
+      log.info("Expired game mail cleanup job completed, deleted {} expired mails", deleted);
+    }
   }
 }

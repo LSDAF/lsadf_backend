@@ -94,8 +94,8 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
   }
 
   @Override
-  public void deleteExpiredGameMails(Instant currentTime) {
-    gameMailRepository.deleteExpiredGameMails(currentTime);
+  public int deleteExpiredGameMails(Instant currentTime) {
+    return gameMailRepository.deleteExpiredGameMails(currentTime);
   }
 
   @Override
