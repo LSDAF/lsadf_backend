@@ -23,6 +23,10 @@ import com.lsadf.admin.application.cache.AdminCacheController;
 import com.lsadf.admin.application.cache.AdminCacheControllerImpl;
 import com.lsadf.admin.application.game.inventory.AdminInventoryController;
 import com.lsadf.admin.application.game.inventory.AdminInventoryControllerImpl;
+import com.lsadf.admin.application.game.mail.AdminGameMailController;
+import com.lsadf.admin.application.game.mail.AdminGameMailControllerImpl;
+import com.lsadf.admin.application.game.mail.AdminGameMailTemplateController;
+import com.lsadf.admin.application.game.mail.AdminGameMailTemplateControllerImpl;
 import com.lsadf.admin.application.game.save.AdminGameSaveController;
 import com.lsadf.admin.application.game.save.AdminGameSaveControllerImpl;
 import com.lsadf.admin.application.info.AdminGlobalInfoController;
@@ -67,6 +71,7 @@ import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.mail.GameMailTemplateResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
@@ -126,7 +131,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
       AdminSearchController.class,
       AdminSearchControllerImpl.class,
       AdminGlobalInfoController.class,
-      AdminGlobalInfoControllerImpl.class
+      AdminGlobalInfoControllerImpl.class,
+      AdminGameMailTemplateController.class,
+      AdminGameMailTemplateControllerImpl.class,
+      AdminGameMailController.class,
+      AdminGameMailControllerImpl.class
     })
 @ExtendWith(MockitoExtension.class)
 @EnableConfigurationProperties
@@ -214,6 +223,10 @@ public class BddLoader {
   @Autowired protected Stack<List<GameSaveResponse>> gameSaveResponseListStack;
 
   @Autowired protected Stack<List<UserResponse>> userResponseListStack;
+
+  @Autowired protected Stack<List<GameMailTemplateResponse>> gameMailTemplateResponseListStack;
+
+  @Autowired protected Stack<GameMailTemplateResponse> gameMailTemplateResponseStack;
 
   @Autowired protected Stack<Characteristics> characteristicsStack;
 

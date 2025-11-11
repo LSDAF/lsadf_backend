@@ -30,4 +30,7 @@ public final class AdminSwaggerConstants {
   public static final String ADMIN_INVENTORY_CONTROLLER = "Admin Inventory Controller";
   public static final String ADMIN_SEARCH_CONTROLLER = "Admin Search Controller";
   public static final String ADMIN_GLOBAL_INFO_CONTROLLER = "Admin Global Info Controller";
+  public static final String ADMIN_GAME_MAIL_TEMPLATE_CONTROLLER =
+      "Admin Game Mail Template Controller";
+  public static final String ADMIN_GAME_MAIL_CONTROLLER = "Admin Game Mail Controller";
 }

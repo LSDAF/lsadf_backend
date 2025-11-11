@@ -21,6 +21,7 @@ import static com.lsadf.core.infra.web.controller.ParameterConstants.GAME_SAVE_I
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
+import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.ResponseMessages;
@@ -44,7 +45,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = SwaggerConstants.GAME_SAVE_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
-public interface GameSaveController {
+public interface GameSaveController extends Controller {
 
   /**
    * Generates a new game, returns the generated game save

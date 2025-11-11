@@ -21,6 +21,7 @@ import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
+import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
@@ -46,7 +47,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = SwaggerConstants.INVENTORY_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
-public interface InventoryController {
+public interface InventoryController extends Controller {
 
   /**
    * Retrieves the inventory associated with a specific game save.

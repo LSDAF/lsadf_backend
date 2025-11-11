@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.game.save.stage.StageController;
 import com.lsadf.application.controller.game.save.stage.StageControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
+import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
+import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
@@ -65,6 +67,8 @@ import org.springframework.test.web.servlet.MockMvc;
       StageRepositoryPort.class,
       GameSaveRepositoryPort.class,
       InventoryRepositoryPort.class,
+      GameMailTemplateRepositoryPort.class,
+      GameMailRepositoryPort.class,
       GameSessionCachePort.class,
       GameMetadataCachePort.class,
       CurrencyCachePort.class,

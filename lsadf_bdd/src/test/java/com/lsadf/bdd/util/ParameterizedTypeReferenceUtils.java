@@ -17,6 +17,8 @@ package com.lsadf.bdd.util;
 
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.mail.GameMailResponse;
+import com.lsadf.core.infra.web.dto.response.game.mail.GameMailTemplateResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
@@ -96,6 +98,52 @@ public class ParameterizedTypeReferenceUtils {
    */
   public static ParameterizedTypeReference<ApiResponse<Set<ItemResponse>>>
       buildParameterizedItemSetResponse() {
+    return new ParameterizedTypeReference<>() {};
+  }
+
+  /**
+   * Builds a ParameterizedTypeReference for a ApiResponse containing a List of
+   * GameMailTemplateResponse
+   *
+   * @return ParameterizedTypeReference representing a response with a List of
+   *     GameMailTemplateResponse objects wrapped in a ApiResponse.
+   */
+  public static ParameterizedTypeReference<ApiResponse<List<GameMailTemplateResponse>>>
+      buildParameterizedGameMailTemplateListResponse() {
+    return new ParameterizedTypeReference<>() {};
+  }
+
+  /**
+   * Builds a ParameterizedTypeReference for a ApiResponse containing a GameMailTemplateResponse
+   *
+   * @return ParameterizedTypeReference representing a response with a GameMailTemplateResponse
+   *     object wrapped in a ApiResponse.
+   */
+  public static ParameterizedTypeReference<ApiResponse<GameMailTemplateResponse>>
+      buildParameterizedGameMailTemplateResponse() {
+    return new ParameterizedTypeReference<>() {};
+  }
+
+  /**
+   * Builds a ParameterizedTypeReference for a ApiResponse containing a List of GameMailResponse
+   * objects
+   *
+   * @return ParameterizedTypeReference representing a response with a List of GameMailResponse
+   *     objects * wrapped in a ApiResponse.
+   */
+  public static ParameterizedTypeReference<ApiResponse<List<GameMailResponse>>>
+      buildParameterizedGameMailResponseList() {
+    return new ParameterizedTypeReference<>() {};
+  }
+
+  /**
+   * Builds a ParameterizedTypeReference for a ApiResponse containing a GameMailResponse object
+   *
+   * @return ParameterizedTypeReference representing a response with a GameMailResponse object *
+   *     wrapped in a ApiResponse.
+   */
+  public static ParameterizedTypeReference<ApiResponse<GameMailResponse>>
+      buildParameterizedGameMailResponse() {
     return new ParameterizedTypeReference<>() {};
   }
 

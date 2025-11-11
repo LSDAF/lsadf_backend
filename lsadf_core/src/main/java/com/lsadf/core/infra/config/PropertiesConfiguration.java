@@ -20,6 +20,8 @@ import com.lsadf.core.infra.logging.properties.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.properties.HttpLogProperties;
 import com.lsadf.core.infra.persistence.config.JdbcProperties;
 import com.lsadf.core.infra.persistence.config.properties.DataSourceProperties;
+import com.lsadf.core.infra.scheduling.config.GameMailCleanupProperties;
+import com.lsadf.core.infra.scheduling.config.SchedulingProperties;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyCacheExpirationProperties;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamPersistenceProperties;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamProperties;
@@ -151,5 +153,17 @@ public class PropertiesConfiguration {
   @ConfigurationProperties(prefix = "api")
   public ApiConfigurationProperties apiConfigurationProperties() {
     return new ApiConfigurationProperties();
+  }
+
+  @Bean
+  @ConfigurationProperties(prefix = "scheduling")
+  public SchedulingProperties schedulingProperties() {
+    return new SchedulingProperties();
+  }
+
+  @Bean
+  @ConfigurationProperties(prefix = "scheduling.game-mail-cleanup")
+  public GameMailCleanupProperties expiredGameMailCleanupProperties() {
+    return new GameMailCleanupProperties();
   }
 }

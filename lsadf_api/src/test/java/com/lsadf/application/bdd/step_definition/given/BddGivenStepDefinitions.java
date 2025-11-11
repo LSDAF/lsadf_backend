@@ -68,6 +68,24 @@ public class BddGivenStepDefinitions extends BddLoader {
     commonBddGivenStepDefinitions.givenFollowingGameSaves(dataTable);
   }
 
+  @Given("^the following game email templates$")
+  @Transactional
+  public void givenFollowingGameEmailTemplates(DataTable dataTable) {
+    commonBddGivenStepDefinitions.givenFollowingGameEmailTemplates(dataTable);
+  }
+
+  @Given("^the following game email template attachments$")
+  @Transactional
+  public void givenFollowingGameEmailTemplateAttachments(DataTable dataTable) {
+    commonBddGivenStepDefinitions.givenFollowingGameEmailTemplateAttachments(dataTable);
+  }
+
+  @Given("^the following game emails$")
+  @Transactional
+  public void givenFollowingGameEmails(DataTable dataTable) {
+    commonBddGivenStepDefinitions.givenFollowingGameEmails(dataTable);
+  }
+
   @Given("^the following (.*) entries in cache$")
   public void givenFollowingCacheEntries(String cacheType, DataTable dataTable) {
     commonBddGivenStepDefinitions.givenFollowingCacheEntries(cacheType, dataTable);

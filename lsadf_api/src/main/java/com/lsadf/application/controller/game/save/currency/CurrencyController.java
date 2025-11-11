@@ -22,6 +22,7 @@ import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESS
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
+import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
@@ -43,7 +44,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = SwaggerConstants.CURRENCY_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
-public interface CurrencyController {
+public interface CurrencyController extends Controller {
 
   @PostMapping(value = Constants.ApiPaths.GAME_SAVE_ID)
   @Operation(summary = "Saves one or several currency amounts for a game save")

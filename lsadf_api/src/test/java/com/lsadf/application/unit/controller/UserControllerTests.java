@@ -21,6 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.lsadf.application.controller.user.UserController;
 import com.lsadf.application.controller.user.UserControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
+import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
+import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
@@ -58,6 +60,8 @@ import org.springframework.test.web.servlet.MockMvc;
       CharacteristicsRepositoryPort.class,
       CurrencyRepositoryPort.class,
       StageRepositoryPort.class,
+      GameMailTemplateRepositoryPort.class,
+      GameMailRepositoryPort.class,
       GameSaveRepositoryPort.class,
       InventoryRepositoryPort.class,
       GameSessionCachePort.class,

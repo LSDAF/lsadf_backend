@@ -207,3 +207,9 @@ valkey:
       stage-expiration-seconds: ${STAGE_EXPIRATION_SECONDS}
       game-metadata-expiration-seconds: ${GAME_METADATA_EXPIRATION_SECONDS}
       game-session-expiration-seconds: ${GAME_SESSION_EXPIRATION_SECONDS}
+
+
+scheduling:
+  enabled: true
+  game-mail-cleanup:
+    cron: ${GAME_MAIL_CLEANUP_CRON} # Default: every day

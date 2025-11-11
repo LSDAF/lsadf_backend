@@ -55,3 +55,6 @@ api:
 sleep:
   enabled: false
   seconds: 0
+
+scheduling:
+  enabled: false

@@ -18,6 +18,7 @@ package com.lsadf.bdd.config;
 import com.lsadf.bdd.step_definition.given.BddGivenStepDefinitions;
 import com.lsadf.bdd.step_definition.then.*;
 import com.lsadf.bdd.step_definition.when.BddWhenStepDefinitions;
+import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.save.GameSave;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
@@ -27,6 +28,8 @@ import com.lsadf.core.domain.user.UserInfo;
 import com.lsadf.core.infra.persistence.impl.game.save.metadata.GameMetadataEntity;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
+import com.lsadf.core.infra.web.dto.response.game.mail.GameMailResponse;
+import com.lsadf.core.infra.web.dto.response.game.mail.GameMailTemplateResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.GameSaveResponse;
 import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
 import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
@@ -51,6 +54,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
   BddThenStepDefinitions.class,
   BddThenCacheStepDefinitions.class,
   BddThenCharacteristicsStepDefinitions.class,
+  BddThenGameMailStepDefinitions.class,
+  BddThenGameMailTemplateStepDefinitions.class,
   BddThenCurrencyStepDefinitions.class,
   BddThenGameSaveStepDefinitions.class,
   BddThenGameSessionStepDefinitions.class,
@@ -128,6 +133,44 @@ public class BddTestsConfiguration {
   @Bean
   public Stack<Set<ItemResponse>> itemSetStack(BddStackCleaner stackCleaner) {
     Stack<Set<ItemResponse>> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public Stack<List<GameMailResponse>> gameMailResponseListStack(BddStackCleaner stackCleaner) {
+    Stack<List<GameMailResponse>> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public Stack<GameMailResponse> gameMailResponseStack(BddStackCleaner stackCleaner) {
+    Stack<GameMailResponse> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public Stack<List<GameMailAttachment<?>>> gameMailAttachmentListStack(
+      BddStackCleaner stackCleaner) {
+    Stack<List<GameMailAttachment<?>>> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public Stack<GameMailTemplateResponse> gameMailTemplateResponseStack(
+      BddStackCleaner stackCleaner) {
+    Stack<GameMailTemplateResponse> stack = new Stack<>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public Stack<List<GameMailTemplateResponse>> gameMailTemplateResponseListStack(
+      BddStackCleaner stackCleaner) {
+    Stack<List<GameMailTemplateResponse>> stack = new Stack<>();
     stackCleaner.addStack(stack);
     return stack;
   }

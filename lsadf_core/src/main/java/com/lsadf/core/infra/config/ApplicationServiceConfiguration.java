@@ -20,6 +20,8 @@ import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.inventory.impl.InventoryServiceImpl;
+import com.lsadf.core.application.game.mail.*;
+import com.lsadf.core.application.game.mail.impl.*;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
@@ -200,5 +202,42 @@ public class ApplicationServiceConfiguration {
       CacheManager cacheManager) {
     return new GameSessionQueryServiceImpl(
         gameSessionRepositoryPort, gameSessionCachePort, cacheManager, clockService);
+  }
+
+  @Bean
+  public GameMailQueryService gameMailQueryService(GameMailRepositoryPort gameMailRepositoryPort) {
+    return new GameMailQueryServiceImpl(gameMailRepositoryPort);
+  }
+
+  @Bean
+  public GameMailCommandService gameMailCommandService(
+      GameMailRepositoryPort gameMailRepositoryPort,
+      GameSaveService gameSaveService,
+      GameMailQueryService gameMailQueryService) {
+    return new GameMailCommandServiceImpl(
+        gameMailRepositoryPort, gameSaveService, gameMailQueryService);
+  }
+
+  @Bean
+  public GameMailSenderService gameMailSenderService(
+      GameSaveService gameSaveService,
+      GameMailTemplateQueryService gameMailTemplateQueryService,
+      GameMailRepositoryPort gameMailRepositoryPort) {
+    return new GameMailSenderServiceImpl(
+        gameSaveService, gameMailTemplateQueryService, gameMailRepositoryPort);
+  }
+
+  @Bean
+  public GameMailTemplateQueryService gameMailTemplateQueryService(
+      GameMailTemplateRepositoryPort gameMailTemplateRepositoryPort) {
+    return new GameMailTemplateQueryServiceImpl(gameMailTemplateRepositoryPort);
+  }
+
+  @Bean
+  public GameMailTemplateCommandService gameMailTemplateCommandService(
+      GameMailTemplateRepositoryPort gameMailTemplateRepositoryPort,
+      GameMailTemplateQueryService gameMailTemplateQueryService) {
+    return new GameMailTemplateCommandServiceImpl(
+        gameMailTemplateRepositoryPort, gameMailTemplateQueryService);
   }
 }

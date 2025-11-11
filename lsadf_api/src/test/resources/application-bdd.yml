@@ -16,6 +16,8 @@ http-log:
     - PUT
     - DELETE
 
+scheduling:
+  enabled: false
 
 cors:
   allowed-origins:

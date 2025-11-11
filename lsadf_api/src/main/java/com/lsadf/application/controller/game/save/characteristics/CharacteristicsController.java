@@ -21,6 +21,7 @@ import static com.lsadf.core.infra.web.controller.ParameterConstants.*;
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
+import com.lsadf.core.infra.web.controller.Controller;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponse;
@@ -46,7 +47,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Tag(name = SwaggerConstants.CHARACTERISTICS_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
-public interface CharacteristicsController {
+public interface CharacteristicsController extends Controller {
   /**
    * Updates the characteristics of a game save
    *

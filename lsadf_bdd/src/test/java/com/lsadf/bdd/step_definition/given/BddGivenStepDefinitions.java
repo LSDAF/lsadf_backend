@@ -19,6 +19,7 @@ package com.lsadf.bdd.step_definition.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.bdd.config.BddFieldConstants;
+import com.lsadf.bdd.config.BddStackCleaner;
 import com.lsadf.bdd.config.CacheEntryType;
 import com.lsadf.bdd.util.BddUtils;
 import com.lsadf.core.application.cache.CacheManager;
@@ -34,6 +35,11 @@ import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.persistence.impl.game.inventory.AdditionalItemStatsRepository;
 import com.lsadf.core.infra.persistence.impl.game.inventory.ItemEntity;
 import com.lsadf.core.infra.persistence.impl.game.inventory.ItemRepository;
+import com.lsadf.core.infra.persistence.impl.game.mail.GameMailEntity;
+import com.lsadf.core.infra.persistence.impl.game.mail.GameMailRepository;
+import com.lsadf.core.infra.persistence.impl.game.mail.template.GameMailTemplateAttachmentRepository;
+import com.lsadf.core.infra.persistence.impl.game.mail.template.GameMailTemplateEntity;
+import com.lsadf.core.infra.persistence.impl.game.mail.template.GameMailTemplateRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsEntity;
 import com.lsadf.core.infra.persistence.impl.game.save.characteristics.CharacteristicsRepository;
 import com.lsadf.core.infra.persistence.impl.game.save.currency.CurrencyEntity;
@@ -97,9 +103,17 @@ public class BddGivenStepDefinitions {
 
   @Autowired protected GameSessionRepository gameSessionRepository;
 
+  @Autowired protected GameMailRepository gameMailRepository;
+
+  @Autowired protected GameMailTemplateRepository gameMailTemplateRepository;
+
+  @Autowired protected GameMailTemplateAttachmentRepository gameMailTemplateAttachmentRepository;
+
+  @Autowired protected BddStackCleaner bddStackCleaner;
+
   public void givenBddEngineIsReady() {
     BddUtils.initTestRestTemplate(testRestTemplate);
-
+    bddStackCleaner.clearStacks();
     log.info("BDD engine is ready");
   }
 
@@ -149,6 +163,9 @@ public class BddGivenStepDefinitions {
     // clean game sessions
     this.gameSessionRepository.deleteAllGameSessions();
 
+    // clean email templates
+    this.gameMailTemplateRepository.deleteAllMailTemplates();
+
     assertThat(characteristicsRepository.count()).isZero();
     assertThat(currencyRepository.count()).isZero();
     assertThat(stageRepository.count()).isZero();
@@ -156,6 +173,9 @@ public class BddGivenStepDefinitions {
     assertThat(additionalItemStatsRepository.count()).isZero();
     assertThat(gameMetadataRepository.count()).isZero();
     assertThat(gameSessionRepository.count()).isZero();
+    assertThat(gameMailRepository.count()).isZero();
+    assertThat(gameMailTemplateRepository.count()).isZero();
+    assertThat(gameMailTemplateAttachmentRepository.count()).isZero();
 
     assertThat(characteristicsCache.getAll()).isEmpty();
     assertThat(currencyCache.getAll()).isEmpty();
@@ -165,6 +185,56 @@ public class BddGivenStepDefinitions {
 
     log.info("Database repositories + caches cleaned");
     log.info("Mocks initialized");
+  }
+
+  @Transactional
+  public void givenFollowingGameEmailTemplates(DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+    log.info("Creating in-game emails...");
+    rows.forEach(
+        row -> {
+          GameMailTemplateEntity entity = BddUtils.mapToGameMailTemplateEntity(row);
+          gameMailTemplateRepository.createNewMailTemplate(
+              entity.getId(),
+              entity.getName(),
+              entity.getSubject(),
+              entity.getBody(),
+              entity.getExpirationDays());
+        });
+    log.info("Created in-game email templates");
+  }
+
+  @Transactional
+  public void givenFollowingGameEmailTemplateAttachments(DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+    log.info("Creating in-game email attachments...");
+    rows.forEach(
+        row -> {
+          var attachmentEntity = BddUtils.mapToGameMailTemplateAttachmentEntity(row);
+          gameMailTemplateAttachmentRepository.createNewGameMailAttachment(
+              attachmentEntity.getId(),
+              attachmentEntity.getMailTemplateId(),
+              attachmentEntity.getType(),
+              attachmentEntity.getObject());
+        });
+    log.info("Created in-game email template attachments");
+  }
+
+  @Transactional
+  public void givenFollowingGameEmails(DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+    log.info("Creating in-game emails...");
+    rows.forEach(
+        row -> {
+          GameMailEntity gameMailEntity = BddUtils.mapToGameMailEntity(row, true);
+          gameMailRepository.createNewGameEmail(
+              gameMailEntity.getId(),
+              gameMailEntity.getGameSaveId(),
+              gameMailEntity.getMailTemplateId(),
+              gameMailEntity.isRead(),
+              gameMailEntity.isAttachmentClaimed());
+        });
+    log.info("Created in-game emails");
   }
 
   @Transactional

@@ -30,4 +30,6 @@ public final class AdminApiPathConstants {
   public static final String ADMIN_USER = "/api/v1/admin/user";
   public static final String ADMIN_SEARCH = "/api/v1/admin/search";
   public static final String ADMIN_GLOBAL_INFO = "/api/v1/admin/global_info";
+  public static final String ADMIN_GAME_MAIL_TEMPLATE = "/api/v1/admin/game_mail_template";
+  public static final String ADMIN_GAME_MAIL = "/api/v1/admin/game_mail";
 }

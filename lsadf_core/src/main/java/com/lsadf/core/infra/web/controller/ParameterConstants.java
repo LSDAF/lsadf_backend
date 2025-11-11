@@ -39,6 +39,23 @@ public final class ParameterConstants {
   public static final String GAME_SAVE_ID = "game_save_id";
 
   /**
+   * Represents a constant parameter key used for identifying and accessing the "game_mail_id"
+   * parameter in request handling within controllers. Typically utilized to denote or reference a
+   * specific game mail identifier in the application.
+   */
+  public static final String GAME_MAIL_ID = "game_mail_id";
+
+  /** Represents a constant parameter used for identifying and accessing a game mail template */
+  public static final String GAME_MAIL_TEMPLATE_ID = "game_mail_template_id";
+
+  /**
+   * Represents a constant parameter key used for identifying and accessing the "expired" parameter
+   * in request handling within controllers. Typically utilized to denote an expiration timestamp
+   * for filtering expired items.
+   */
+  public static final String EXPIRED = "expired";
+
+  /**
    * Represents a constant parameter key used for identifying and accessing the "game_session_id"
    */
   public static final String GAME_SESSION_ID = "game_session_id";
