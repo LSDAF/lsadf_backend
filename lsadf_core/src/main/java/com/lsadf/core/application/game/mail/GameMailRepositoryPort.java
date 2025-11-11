@@ -61,14 +61,14 @@ public interface GameMailRepositoryPort {
    *
    * @param mailIds list of mail ids to delete
    */
-  int deleteGameEmails(List<UUID> mailIds);
+  long deleteGameEmails(List<UUID> mailIds);
 
   /**
    * Delete all read game emails for a specific game save
    *
    * @param gameSaveId the game save id
    */
-  void deleteReadGameEmailsByGameSaveId(UUID gameSaveId);
+  long deleteReadGameEmailsByGameSaveId(UUID gameSaveId);
 
   /**
    * Mark game mail attachments as claimed

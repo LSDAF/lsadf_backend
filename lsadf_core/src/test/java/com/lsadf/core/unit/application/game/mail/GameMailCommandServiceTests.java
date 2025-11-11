@@ -23,9 +23,13 @@ import static org.mockito.Mockito.*;
 import com.lsadf.core.application.game.mail.GameMailCommandService;
 import com.lsadf.core.application.game.mail.GameMailQueryService;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
+import com.lsadf.core.application.game.mail.command.DeleteGameMailsCommand;
 import com.lsadf.core.application.game.mail.impl.GameMailCommandServiceImpl;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.exception.http.NotFoundException;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
@@ -293,5 +297,77 @@ class GameMailCommandServiceTests {
     // Verify validation was called for each operation
     verify(gameMailQueryService, times(4)).existsById(any());
     verify(gameSaveService, times(1)).existsById(gameSaveId);
+  }
+
+  @Test
+  void test_deleteExpiredGameMails_success_withValidTimestamp() {
+    // Given
+    Instant expiration = Instant.now().minusSeconds(86400); // 1 day ago
+
+    // When
+    gameMailCommandService.deleteExpiredGameMails(expiration);
+
+    // Then
+    verify(gameMailRepositoryPort).deleteExpiredGameMails(expiration);
+  }
+
+  @Test
+  void test_deleteGameMail_success_withValidCommand() {
+    // Given
+    List<UUID> mailIds = List.of(UUID.randomUUID(), UUID.randomUUID());
+    DeleteGameMailsCommand command = new DeleteGameMailsCommand(mailIds);
+    when(gameMailRepositoryPort.deleteGameEmails(mailIds)).thenReturn(2L);
+
+    // When
+    long result = gameMailCommandService.deleteGameMail(command);
+
+    // Then
+    assertEquals(2, result);
+    verify(gameMailRepositoryPort).deleteGameEmails(mailIds);
+  }
+
+  @Test
+  void test_deleteGameMail_returnsCorrectCount() {
+    // Given
+    List<UUID> mailIds = List.of(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
+    DeleteGameMailsCommand command = new DeleteGameMailsCommand(mailIds);
+    when(gameMailRepositoryPort.deleteGameEmails(mailIds)).thenReturn(3L);
+
+    // When
+    long result = gameMailCommandService.deleteGameMail(command);
+
+    // Then
+    assertEquals(3, result);
+    verify(gameMailRepositoryPort).deleteGameEmails(mailIds);
+  }
+
+  @Test
+  void test_deleteGameMail_withEmptyList() {
+    // Given
+    List<UUID> mailIds = Collections.emptyList();
+    DeleteGameMailsCommand command = new DeleteGameMailsCommand(mailIds);
+    when(gameMailRepositoryPort.deleteGameEmails(mailIds)).thenReturn(0L);
+
+    // When
+    long result = gameMailCommandService.deleteGameMail(command);
+
+    // Then
+    assertEquals(0, result);
+    verify(gameMailRepositoryPort).deleteGameEmails(mailIds);
+  }
+
+  @Test
+  void test_deleteGameMail_returnsDifferentCountThanRequested() {
+    // Given - Request to delete 3 mails but only 1 exists
+    List<UUID> mailIds = List.of(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
+    DeleteGameMailsCommand command = new DeleteGameMailsCommand(mailIds);
+    when(gameMailRepositoryPort.deleteGameEmails(mailIds)).thenReturn(1L);
+
+    // When
+    long result = gameMailCommandService.deleteGameMail(command);
+
+    // Then
+    assertEquals(1, result);
+    verify(gameMailRepositoryPort).deleteGameEmails(mailIds);
   }
 }

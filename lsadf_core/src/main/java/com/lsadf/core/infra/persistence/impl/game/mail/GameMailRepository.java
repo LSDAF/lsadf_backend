@@ -110,7 +110,7 @@ public interface GameMailRepository extends JdbcRepository<GameMailEntity> {
         DELETE FROM t_game_mail_instance_tgmi
         WHERE tgmi_read = TRUE AND tgme_id = :tgme_id
         """)
-  void deleteReadGameEmailsByGameSaveId(@Param(GAME_MAIL_GAME_SAVE_ID) UUID gameSaveId);
+  long deleteReadGameEmailsByGameSaveId(@Param(GAME_MAIL_GAME_SAVE_ID) UUID gameSaveId);
 
   @Query(
       """

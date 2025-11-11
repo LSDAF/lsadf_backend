@@ -138,6 +138,7 @@ public class BddThenStepDefinitions extends BddLoader {
   }
 
   @Then("^the database contains the following game mails$")
+  @Transactional(readOnly = true)
   public void thenDbShouldContainGameMails(DataTable dataTable) {
     bddThenGameMailStepDefinitions.thenDbShouldContainGameMails(dataTable);
   }

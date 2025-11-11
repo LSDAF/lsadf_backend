@@ -20,6 +20,7 @@ import static com.lsadf.bdd.util.ParameterizedTypeReferenceUtils.buildParameteri
 
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
+import com.lsadf.admin.application.game.mail.AdminGameMailController;
 import com.lsadf.bdd.util.BddUtils;
 import com.lsadf.core.infra.web.dto.request.game.mail.SendGameMailRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
@@ -65,10 +66,14 @@ public class BddAdminGameMailControllerStepDefinitions extends BddLoader {
   }
 
   @When(
-      "^the user requests the admin endpoint to delete the expired game saves with timestamp set to tomorrow$")
+      "^the user requests the admin endpoint to delete the expired game saves with timestamp set to next month$")
   public void whenTheUserRequestsTheAdminEndpointToDeleteTheExpiredGameSaves() {
-    long timestamp = clockService.getClock().instant().plus(1, ChronoUnit.DAYS).getEpochSecond();
-    String fullPath = AdminApiPathConstants.ADMIN_GAME_MAIL + "?expired=" + timestamp;
+    var time = clockService.getClock().instant().plus(31, ChronoUnit.DAYS);
+    String fullPath =
+        AdminApiPathConstants.ADMIN_GAME_MAIL
+            + AdminGameMailController.Constants.ApiPaths.DELETE
+            + "?expired="
+            + time.toString();
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
@@ -79,7 +84,7 @@ public class BddAdminGameMailControllerStepDefinitions extends BddLoader {
       HttpEntity<Void> request = new HttpEntity<>(headers);
       ResponseEntity<ApiResponse<Void>> result =
           testRestTemplate.exchange(
-              url, HttpMethod.DELETE, request, buildParameterizedVoidResponse());
+              url, HttpMethod.POST, request, buildParameterizedVoidResponse());
       ApiResponse<Void> body = result.getBody();
       responseStack.push(body);
       log.info("Response: {}", body);

@@ -83,14 +83,14 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
 
   @Override
   @Transactional
-  public int deleteGameEmails(List<UUID> mailIds) {
+  public long deleteGameEmails(List<UUID> mailIds) {
     return gameMailRepository.deleteGameEmails(mailIds);
   }
 
   @Override
   @Transactional
-  public void deleteReadGameEmailsByGameSaveId(UUID gameSaveId) {
-    gameMailRepository.deleteReadGameEmailsByGameSaveId(gameSaveId);
+  public long deleteReadGameEmailsByGameSaveId(UUID gameSaveId) {
+    return gameMailRepository.deleteReadGameEmailsByGameSaveId(gameSaveId);
   }
 
   @Override

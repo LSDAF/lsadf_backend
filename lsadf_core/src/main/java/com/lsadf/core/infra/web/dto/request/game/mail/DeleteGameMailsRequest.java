@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.application.game.mail;
+package com.lsadf.core.infra.web.dto.request.game.mail;
 
-import com.lsadf.core.application.game.mail.command.DeleteGameMailsCommand;
-import java.time.Instant;
+import static com.lsadf.core.infra.web.JsonAttributes.MAIL_IDS;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lsadf.core.infra.web.dto.request.Request;
+import jakarta.validation.constraints.NotNull;
+import java.io.Serial;
+import java.util.List;
 import java.util.UUID;
+import lombok.Builder;
 
-public interface GameMailCommandService {
-
-  void readGameMailById(UUID id);
-
-  void deleteAllReadGameMailsByGameSaveId(UUID gameSaveId);
-
-  void claimGameMailAttachments(UUID id);
-
-  long deleteExpiredGameMails(Instant expiration);
-
-  long deleteGameMail(DeleteGameMailsCommand command);
+/** Request DTO for deleting game mails by IDs */
+@Builder
+public record DeleteGameMailsRequest(@NotNull @JsonProperty(MAIL_IDS) List<UUID> mailIds)
+    implements Request {
+  @Serial private static final long serialVersionUID = 8472635109283746501L;
 }

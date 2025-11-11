@@ -29,8 +29,8 @@ Feature: Game Mail Controller BDD tests
 
     And the following game email templates
       | id                                   | name             | subject               | body                                                               | expirationDays |
-      | be7f65c8-c2eb-4dba-b351-746c293751d3 | Welcome Template | Welcome to LSDAF!     | Hello there, welcome to LSADF!                                     | 30             |
-      | 38e9b063-724b-4794-ba7e-157d1e25c465 | LSADF V2.0       | Welcome to LSDAF 2.0! | Hello there, welcome to LSADF 2.0! Have fun with the new updates ! | 30             |
+      | be7f65c8-c2eb-4dba-b351-746c293751d3 | Welcome Template | Welcome to LSDAF!     | Hello there, welcome to LSADF!                                     | 1              |
+      | 38e9b063-724b-4794-ba7e-157d1e25c465 | LSADF V2.0       | Welcome to LSDAF 2.0! | Hello there, welcome to LSADF 2.0! Have fun with the new updates ! | 1              |
 
     And the following game email template attachments
       | id                                   | mailTemplateId                       | object                                                                                                                                                                                                                                 | type     |
@@ -64,10 +64,14 @@ Feature: Game Mail Controller BDD tests
       | id                                   | gameSaveId                           | mailTemplateId                       | isRead | isAttachmentClaimed |
       | adbaf507-3987-45e1-bea6-e51525943148 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | be7f65c8-c2eb-4dba-b351-746c293751d3 | false  | false               |
       | 3a766b66-f7fc-417f-9e17-0ff400b74414 | 9d68fe00-7449-4d90-9fa9-d3f77193be9f | 38e9b063-724b-4794-ba7e-157d1e25c465 | true   | true                |
+
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
-    And the user requests the admin endpoint to delete the expired game saves with timestamp set to tomorrow
+
+    And the user requests the admin endpoint to delete the expired game saves with timestamp set to next month
+
     Then the response status code should be 200
+
     And the database contains the following game mails
       | mailTemplateId | id | userEmail | subject | body | isRead | sentAt | expirationAt |

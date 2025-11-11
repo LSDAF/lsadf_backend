@@ -16,14 +16,13 @@
 package com.lsadf.admin.application.unit.controller;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.game.mail.AdminGameMailController;
 import com.lsadf.admin.application.game.mail.AdminGameMailControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
+import com.lsadf.core.application.game.mail.GameMailCommandService;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
 import com.lsadf.core.application.game.mail.GameMailSenderService;
 import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
@@ -43,8 +42,10 @@ import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
+import com.lsadf.core.infra.web.dto.request.game.mail.DeleteGameMailsRequest;
 import com.lsadf.core.infra.web.dto.request.game.mail.SendGameMailRequest;
 import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.List;
 import java.util.UUID;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -89,7 +90,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
       CharacteristicsCachePort.class,
       CharacteristicsEventPublisherPort.class,
       GameSessionQueryService.class,
-      GameMailSenderService.class
+      GameMailSenderService.class,
+      GameMailCommandService.class
     })
 class AdminGameMailControllerTests {
 
@@ -98,6 +100,8 @@ class AdminGameMailControllerTests {
   @Autowired private ObjectMapper objectMapper;
 
   @Autowired private GameMailSenderService gameMailSenderService;
+
+  @Autowired private GameMailCommandService gameMailCommandService;
 
   private static final UUID GAME_SAVE_ID = UUID.randomUUID();
   private static final UUID GAME_MAIL_TEMPLATE_ID = UUID.randomUUID();
@@ -284,5 +288,114 @@ class AdminGameMailControllerTests {
    */
   private static java.util.stream.Stream<Arguments> provideInvalidRequests() {
     return java.util.stream.Stream.of(Arguments.of(new SendGameMailRequest(null, null)));
+  }
+
+  // DELETE endpoint tests
+
+  @Test
+  @SneakyThrows
+  void test_deleteGameMails_returns_401_when_user_not_authenticated() {
+    // when
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.delete("/api/v1/admin/game_mail")
+                .param("expired", "2025-12-10T00:00:00Z")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        // then
+        .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
+  void test_deleteGameMails_returns_403_when_user_not_admin() {
+    // when
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.delete("/api/v1/admin/game_mail")
+                .param("expired", "2025-12-10T00:00:00Z")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        // then
+        .andExpect(MockMvcResultMatchers.status().isForbidden());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockJwtUser(
+      roles = {"ADMIN"},
+      username = "paul.ochon@test.com",
+      name = "Paul OCHON")
+  void test_deleteGameMails_returns_200_when_successful_with_expired_timestamp() {
+    // given
+    when(gameMailCommandService.deleteExpiredGameMails(any())).thenReturn(0L);
+
+    // when
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/delete")
+                .param("expired", "2025-12-10T00:00:00Z")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        // then
+        .andExpect(MockMvcResultMatchers.status().isOk());
+
+    verify(gameMailCommandService).deleteExpiredGameMails(any());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockJwtUser(
+      roles = {"ADMIN"},
+      username = "paul.ochon@test.com",
+      name = "Paul OCHON")
+  void test_deleteGameMails_returns_200_when_successful_with_mail_ids() {
+    // given
+    List<UUID> mailIds = List.of(UUID.randomUUID(), UUID.randomUUID());
+    DeleteGameMailsRequest request = DeleteGameMailsRequest.builder().mailIds(mailIds).build();
+    when(gameMailCommandService.deleteExpiredGameMails(any())).thenReturn(4L);
+
+    // when
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/delete")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(request))
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        // then
+        .andExpect(MockMvcResultMatchers.status().isOk());
+
+    verify(gameMailCommandService).deleteGameMail(any());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockJwtUser(
+      roles = {"ADMIN"},
+      username = "paul.ochon@test.com",
+      name = "Paul OCHON")
+  void test_deleteGameMails_returns_400_when_no_parameters_provided() {
+    // when
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/delete")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        // then
+        .andExpect(MockMvcResultMatchers.status().isBadRequest());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockJwtUser(
+      roles = {"ADMIN"},
+      username = "paul.ochon@test.com",
+      name = "Paul OCHON")
+  void test_deleteGameMails_returns_400_with_invalid_timestamp() {
+    // when
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/delete")
+                .param("expired", "invalid-timestamp")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        // then
+        .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 }

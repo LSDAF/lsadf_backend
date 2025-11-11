@@ -25,6 +25,7 @@ import com.lsadf.core.exception.http.NotFoundException;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 public class GameMailCommandServiceImpl implements GameMailCommandService {
@@ -41,6 +42,7 @@ public class GameMailCommandServiceImpl implements GameMailCommandService {
   }
 
   @Override
+  @Transactional
   public void deleteAllReadGameMailsByGameSaveId(UUID gameSaveId) {
     if (!gameSaveService.existsById(gameSaveId)) {
       throw new NotFoundException("Game save with id " + gameSaveId + " not found");
@@ -49,6 +51,7 @@ public class GameMailCommandServiceImpl implements GameMailCommandService {
   }
 
   @Override
+  @Transactional
   public void claimGameMailAttachments(UUID id) {
     if (!gameMailQueryService.existsById(id)) {
       throw new NotFoundException("Game mail with id " + id + " not found");
@@ -57,12 +60,14 @@ public class GameMailCommandServiceImpl implements GameMailCommandService {
   }
 
   @Override
-  public void deleteExpiredGameMails(Instant expiration) {
-    gameMailRepositoryPort.deleteExpiredGameMails(expiration);
+  @Transactional
+  public long deleteExpiredGameMails(Instant expiration) {
+    return gameMailRepositoryPort.deleteExpiredGameMails(expiration);
   }
 
   @Override
-  public int deleteGameMail(DeleteGameMailsCommand command) {
+  @Transactional
+  public long deleteGameMail(DeleteGameMailsCommand command) {
     return gameMailRepositoryPort.deleteGameEmails(command.mailIds());
   }
 }
