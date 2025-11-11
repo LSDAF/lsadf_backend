@@ -34,11 +34,11 @@ public class GameMailSenderServiceImpl implements GameMailSenderService {
   private final GameMailRepositoryPort gameMailRepositoryPort;
 
   @Override
-  public void sendGameMailToAllGameSaves() {
+  public void sendGameMailToAllGameSaves(UUID gameTemplateId) {
     List<UUID> gameSaveIds =
         gameSaveService.getGameSaves().stream().map(gs -> gs.getMetadata().id()).toList();
     for (UUID gameSaveId : gameSaveIds) {
-      SendEmailCommand command = new SendEmailCommand(gameSaveId, gameSaveId);
+      SendEmailCommand command = new SendEmailCommand(gameSaveId, gameTemplateId);
       sendGameMailToGameSaveById(command);
     }
   }

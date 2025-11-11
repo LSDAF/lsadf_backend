@@ -19,8 +19,10 @@ package com.lsadf.core.application.game.mail.impl;
 import com.lsadf.core.application.game.mail.GameMailCommandService;
 import com.lsadf.core.application.game.mail.GameMailQueryService;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
+import com.lsadf.core.application.game.mail.command.DeleteGameMailsCommand;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.exception.http.NotFoundException;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
@@ -52,5 +54,15 @@ public class GameMailCommandServiceImpl implements GameMailCommandService {
       throw new NotFoundException("Game mail with id " + id + " not found");
     }
     gameMailRepositoryPort.claimGameMailAttachments(id);
+  }
+
+  @Override
+  public void deleteExpiredGameMails(Instant expiration) {
+    gameMailRepositoryPort.deleteExpiredGameMails(expiration);
+  }
+
+  @Override
+  public int deleteGameMail(DeleteGameMailsCommand command) {
+    return gameMailRepositoryPort.deleteGameEmails(command.mailIds());
   }
 }

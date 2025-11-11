@@ -35,6 +35,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -66,6 +67,7 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
   }
 
   @Override
+  @Transactional
   public void createNewGameEmail(UUID id, UUID gameSaveId, UUID mailTemplateId) {
     boolean isRead = false;
     boolean isAttachmentClaimed = false;
@@ -74,16 +76,19 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
   }
 
   @Override
+  @Transactional
   public void readGameEmail(UUID mailId) {
     gameMailRepository.readGameEmail(mailId);
   }
 
   @Override
-  public void deleteGameEmails(List<UUID> mailIds) {
-    gameMailRepository.deleteGameEmails(mailIds);
+  @Transactional
+  public int deleteGameEmails(List<UUID> mailIds) {
+    return gameMailRepository.deleteGameEmails(mailIds);
   }
 
   @Override
+  @Transactional
   public void deleteReadGameEmailsByGameSaveId(UUID gameSaveId) {
     gameMailRepository.deleteReadGameEmailsByGameSaveId(gameSaveId);
   }
@@ -94,6 +99,7 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
   }
 
   @Override
+  @Transactional
   public int deleteExpiredGameMails(Instant currentTime) {
     return gameMailRepository.deleteExpiredGameMails(currentTime);
   }

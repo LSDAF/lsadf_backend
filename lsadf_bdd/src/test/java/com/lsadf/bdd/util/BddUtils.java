@@ -146,9 +146,13 @@ public class BddUtils {
    * @param row row from BDD table
    * @return GameMailEntity
    */
-  public static GameMailEntity mapToGameMailEntity(Map<String, String> row) {
-    String id = row.get(BddFieldConstants.GameMail.ID);
-    UUID uuid = UUID.fromString(id);
+  public static GameMailEntity mapToGameMailEntity(Map<String, String> row, boolean id) {
+    var builder = GameMailEntity.builder();
+    if (id) {
+      String idStr = row.get(BddFieldConstants.GameMail.ID);
+      UUID uuid = UUID.fromString(idStr);
+      builder.id(uuid);
+    }
     String templateId = row.get(BddFieldConstants.GameMail.MAIL_TEMPLATE_ID);
     UUID templateUuid = UUID.fromString(templateId);
     String gameSaveId = row.get(BddFieldConstants.GameMail.GAME_SAVE_ID);
@@ -157,8 +161,7 @@ public class BddUtils {
     boolean isRead = Boolean.parseBoolean(isReadString);
     String isAttachmentClaimedString = row.get(BddFieldConstants.GameMail.IS_ATTACHMENT_CLAIMED);
     boolean isAttachmentClaimed = Boolean.parseBoolean(isAttachmentClaimedString);
-    return GameMailEntity.builder()
-        .id(uuid)
+    return builder
         .mailTemplateId(templateUuid)
         .gameSaveId(gameSaveUuid)
         .isRead(isRead)

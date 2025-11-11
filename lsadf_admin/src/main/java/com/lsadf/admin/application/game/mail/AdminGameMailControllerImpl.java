@@ -22,7 +22,6 @@ import com.lsadf.core.application.game.mail.command.SendEmailCommand;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.mail.SendGameMailRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -47,25 +46,19 @@ public class AdminGameMailControllerImpl extends BaseController implements Admin
   }
 
   @Override
-  public ResponseEntity<ApiResponse<Void>> sendGameMailToAllGameSaves(
+  public ResponseEntity<ApiResponse<Void>> sendGameMailToGameSaves(
       SendGameMailRequest request, Jwt jwt) {
     validateUser(jwt);
+    if (request.gameSaveId() == null) {
+      log.info(
+          "Sending game mail template with ID {} to all game saves", request.gameMailTemplateId());
+      gameMailSenderService.sendGameMailToAllGameSaves(request.gameMailTemplateId());
+      return generateResponse(HttpStatus.OK);
+    }
     log.info(
         "Sending game mail to all game saves with template ID: {}", request.gameMailTemplateId());
-    gameMailSenderService.sendGameMailToAllGameSaves();
-    return generateResponse(HttpStatus.OK);
-  }
-
-  @Override
-  public ResponseEntity<ApiResponse<Void>> sendGameMailToGameSaveById(
-      UUID gameSaveId, SendGameMailRequest request, Jwt jwt) {
-    validateUser(jwt);
-    log.info(
-        "Sending game mail to game save ID: {} with template ID: {}",
-        gameSaveId,
-        request.gameMailTemplateId());
-    SendEmailCommand command = new SendEmailCommand(gameSaveId, request.gameMailTemplateId());
-    gameMailSenderService.sendGameMailToGameSaveById(command);
+    gameMailSenderService.sendGameMailToGameSaveById(
+        new SendEmailCommand(request.gameSaveId(), request.gameMailTemplateId()));
     return generateResponse(HttpStatus.OK);
   }
 }

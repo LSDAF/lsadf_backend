@@ -27,7 +27,6 @@ import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
 import com.lsadf.core.application.game.mail.GameMailSenderService;
 import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
-import com.lsadf.core.application.game.mail.command.SendEmailCommand;
 import com.lsadf.core.application.game.save.GameSaveRepositoryPort;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCachePort;
@@ -105,7 +104,7 @@ class AdminGameMailControllerTests {
 
   @Test
   @SneakyThrows
-  void test_sendGameMailToAllGameSaves_returns_401_when_user_not_authenticated() {
+  void test_sendGameMailToGameSaves_returns_401_when_user_not_authenticated() {
     // given
     SendGameMailRequest request =
         SendGameMailRequest.builder().gameMailTemplateId(GAME_MAIL_TEMPLATE_ID).build();
@@ -124,7 +123,7 @@ class AdminGameMailControllerTests {
   @Test
   @SneakyThrows
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void test_sendGameMailToAllGameSaves_returns_403_when_user_not_admin() {
+  void test_sendGameMailToGameSaves_returns_403_when_user_not_admin() {
     // given
     SendGameMailRequest request =
         SendGameMailRequest.builder()
@@ -149,7 +148,7 @@ class AdminGameMailControllerTests {
       roles = {"ADMIN"},
       username = "paul.ochon@test.com",
       name = "Paul OCHON")
-  void test_sendGameMailToAllGameSaves_returns_200_when_successful() {
+  void test_sendGameMailToGameSaves_returns_200_when_successful() {
     // given
     SendGameMailRequest request =
         SendGameMailRequest.builder()
@@ -157,7 +156,7 @@ class AdminGameMailControllerTests {
             .gameMailTemplateId(GAME_MAIL_TEMPLATE_ID)
             .build();
 
-    doNothing().when(gameMailSenderService).sendGameMailToAllGameSaves();
+    doNothing().when(gameMailSenderService).sendGameMailToGameSaveById(any());
 
     // when
     mockMvc
@@ -169,7 +168,7 @@ class AdminGameMailControllerTests {
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
 
-    verify(gameMailSenderService).sendGameMailToAllGameSaves();
+    verify(gameMailSenderService).sendGameMailToGameSaveById(any());
   }
 
   @Test
@@ -178,7 +177,33 @@ class AdminGameMailControllerTests {
       roles = {"ADMIN"},
       username = "paul.ochon@test.com",
       name = "Paul OCHON")
-  void test_sendGameMailToAllGameSaves_returns_404_when_template_not_found() {
+  void test_sendGameMailToGameSaves_returns_200_when_successful_with_no_specified_gameSaveId() {
+    // given
+    SendGameMailRequest request =
+        SendGameMailRequest.builder().gameMailTemplateId(GAME_MAIL_TEMPLATE_ID).build();
+
+    doNothing().when(gameMailSenderService).sendGameMailToAllGameSaves(any());
+
+    // when
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(request))
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+        // then
+        .andExpect(MockMvcResultMatchers.status().isOk());
+
+    verify(gameMailSenderService).sendGameMailToAllGameSaves(any());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockJwtUser(
+      roles = {"ADMIN"},
+      username = "paul.ochon@test.com",
+      name = "Paul OCHON")
+  void test_sendGameMailToGameSaves_returns_404_when_template_not_found() {
     // given
     SendGameMailRequest request =
         SendGameMailRequest.builder()
@@ -188,7 +213,7 @@ class AdminGameMailControllerTests {
 
     doThrow(new NotFoundException("Template not found"))
         .when(gameMailSenderService)
-        .sendGameMailToAllGameSaves();
+        .sendGameMailToGameSaveById(any());
 
     // when
     mockMvc
@@ -200,50 +225,7 @@ class AdminGameMailControllerTests {
         // then
         .andExpect(MockMvcResultMatchers.status().isNotFound());
 
-    verify(gameMailSenderService).sendGameMailToAllGameSaves();
-  }
-
-  @Test
-  @SneakyThrows
-  void test_sendGameMailToGameSaveById_returns_401_when_user_not_authenticated() {
-    // given
-    SendGameMailRequest request =
-        SendGameMailRequest.builder()
-            .gameSaveId(GAME_SAVE_ID)
-            .gameMailTemplateId(GAME_MAIL_TEMPLATE_ID)
-            .build();
-
-    // when
-    mockMvc
-        .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send/" + GAME_SAVE_ID)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-        // then
-        .andExpect(MockMvcResultMatchers.status().isUnauthorized());
-  }
-
-  @Test
-  @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
-  void test_sendGameMailToGameSaveById_returns_401_when_user_not_admin() {
-    // given
-    SendGameMailRequest request =
-        SendGameMailRequest.builder()
-            .gameSaveId(GAME_SAVE_ID)
-            .gameMailTemplateId(GAME_MAIL_TEMPLATE_ID)
-            .build();
-
-    // when
-    mockMvc
-        .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send/" + GAME_SAVE_ID)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-        // then
-        .andExpect(MockMvcResultMatchers.status().isForbidden());
+    verify(gameMailSenderService).sendGameMailToGameSaveById(any());
   }
 
   @Test
@@ -252,89 +234,27 @@ class AdminGameMailControllerTests {
       roles = {"ADMIN"},
       username = "paul.ochon@test.com",
       name = "Paul OCHON")
-  void test_sendGameMailToGameSaveById_returns_200_when_successful() {
+  void
+      test_sendGameMailToGameSaves_returns_404_when_template_not_found_with_no_specified_gameSaveId() {
     // given
     SendGameMailRequest request =
-        SendGameMailRequest.builder()
-            .gameSaveId(GAME_SAVE_ID)
-            .gameMailTemplateId(GAME_MAIL_TEMPLATE_ID)
-            .build();
-
-    doNothing().when(gameMailSenderService).sendGameMailToGameSaveById(any(SendEmailCommand.class));
-
-    // when
-    mockMvc
-        .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send/" + GAME_SAVE_ID)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-        // then
-        .andExpect(MockMvcResultMatchers.status().isOk());
-
-    verify(gameMailSenderService).sendGameMailToGameSaveById(any(SendEmailCommand.class));
-  }
-
-  @Test
-  @SneakyThrows
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
-  void test_sendGameMailToGameSaveById_returns_404_when_game_save_not_found() {
-    // given
-    SendGameMailRequest request =
-        SendGameMailRequest.builder()
-            .gameSaveId(GAME_SAVE_ID)
-            .gameMailTemplateId(GAME_MAIL_TEMPLATE_ID)
-            .build();
-
-    doThrow(new NotFoundException("Game save not found"))
-        .when(gameMailSenderService)
-        .sendGameMailToGameSaveById(any(SendEmailCommand.class));
-
-    // when
-    mockMvc
-        .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send/" + GAME_SAVE_ID)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-        // then
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
-
-    verify(gameMailSenderService).sendGameMailToGameSaveById(any(SendEmailCommand.class));
-  }
-
-  @Test
-  @SneakyThrows
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
-  void test_sendGameMailToGameSaveById_returns_404_when_template_not_found() {
-    // given
-    SendGameMailRequest request =
-        SendGameMailRequest.builder()
-            .gameSaveId(GAME_SAVE_ID)
-            .gameMailTemplateId(GAME_MAIL_TEMPLATE_ID)
-            .build();
+        SendGameMailRequest.builder().gameMailTemplateId(GAME_MAIL_TEMPLATE_ID).build();
 
     doThrow(new NotFoundException("Template not found"))
         .when(gameMailSenderService)
-        .sendGameMailToGameSaveById(any(SendEmailCommand.class));
+        .sendGameMailToAllGameSaves(any());
 
     // when
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send/" + GAME_SAVE_ID)
+            MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request))
                 .accept(MediaType.APPLICATION_JSON_VALUE))
         // then
         .andExpect(MockMvcResultMatchers.status().isNotFound());
 
-    verify(gameMailSenderService).sendGameMailToGameSaveById(any(SendEmailCommand.class));
+    verify(gameMailSenderService).sendGameMailToAllGameSaves(any());
   }
 
   @SneakyThrows
@@ -344,7 +264,7 @@ class AdminGameMailControllerTests {
       roles = {"ADMIN"},
       username = "paul.ochon@test.com",
       name = "Paul OCHON")
-  void test_sendGameMailToAllGameSaves_returns_400_when_request_is_invalid(
+  void test_sendGameMailToGameSaves_returns_400_when_request_is_invalid(
       SendGameMailRequest request) {
     // when
     mockMvc
@@ -363,8 +283,6 @@ class AdminGameMailControllerTests {
    * @return a stream of Arguments containing invalid SendGameMailRequest objects
    */
   private static java.util.stream.Stream<Arguments> provideInvalidRequests() {
-    return java.util.stream.Stream.of(
-        Arguments.of(new SendGameMailRequest(null, GAME_MAIL_TEMPLATE_ID)),
-        Arguments.of(new SendGameMailRequest(GAME_SAVE_ID, null)));
+    return java.util.stream.Stream.of(Arguments.of(new SendGameMailRequest(null, null)));
   }
 }

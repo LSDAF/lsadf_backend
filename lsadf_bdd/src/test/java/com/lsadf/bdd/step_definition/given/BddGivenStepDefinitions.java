@@ -226,7 +226,7 @@ public class BddGivenStepDefinitions {
     log.info("Creating in-game emails...");
     rows.forEach(
         row -> {
-          GameMailEntity gameMailEntity = BddUtils.mapToGameMailEntity(row);
+          GameMailEntity gameMailEntity = BddUtils.mapToGameMailEntity(row, true);
           gameMailRepository.createNewGameEmail(
               gameMailEntity.getId(),
               gameMailEntity.getGameSaveId(),

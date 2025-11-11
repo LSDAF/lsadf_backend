@@ -24,6 +24,8 @@ import com.lsadf.bdd.util.BddUtils;
 import com.lsadf.core.application.game.mail.GameMailQueryService;
 import com.lsadf.core.application.game.mail.GameMailTemplateQueryService;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
+import com.lsadf.core.infra.persistence.impl.game.mail.GameMailEntity;
+import com.lsadf.core.infra.persistence.impl.game.mail.GameMailRepository;
 import com.lsadf.core.infra.web.dto.response.game.mail.GameMailResponse;
 import io.cucumber.datatable.DataTable;
 import java.util.List;
@@ -43,6 +45,7 @@ public class BddThenGameMailStepDefinitions {
   @Autowired private ObjectMapper objectMapper;
   @Autowired private GameMailQueryService gameMailQueryService;
   @Autowired private GameMailTemplateQueryService gameMailTemplateQueryService;
+  @Autowired private GameMailRepository gameMailRepository;
 
   public void thenResponseShouldHaveFollowingGameMailResponse(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
@@ -95,6 +98,54 @@ public class BddThenGameMailStepDefinitions {
           .usingRecursiveComparison()
           .ignoringFields("createdAt", "updatedAt", "expiresAt")
           .isEqualTo(expected);
+    }
+  }
+
+  public void thenDbShouldContainGameMailsIgnoringId(DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+
+    long count = gameMailRepository.count();
+    assertThat(count).isEqualTo(rows.size());
+
+    for (Map<String, String> row : rows) {
+      GameMailEntity gameMailEntity = BddUtils.mapToGameMailEntity(row, false);
+
+      GameMailEntity actualEntity =
+          gameMailRepository.findAll().stream()
+              .filter(
+                  mail ->
+                      mail.getMailTemplateId().equals(gameMailEntity.getMailTemplateId())
+                          && mail.getGameSaveId().equals(gameMailEntity.getGameSaveId())
+                          && mail.isRead() == gameMailEntity.isRead()
+                          && mail.isAttachmentClaimed() == gameMailEntity.isAttachmentClaimed())
+              .findFirst()
+              .orElseThrow();
+
+      assertThat(actualEntity)
+          .usingRecursiveComparison()
+          .ignoringFields("id", "createdAt", "updatedAt", "expiresAt")
+          .isEqualTo(gameMailEntity);
+    }
+  }
+
+  public void thenDbShouldContainGameMails(DataTable dataTable) {
+    List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+
+    long count = gameMailRepository.count();
+    assertThat(count).isEqualTo(rows.size());
+
+    for (Map<String, String> row : rows) {
+      GameMailEntity gameMailEntity = BddUtils.mapToGameMailEntity(row, true);
+
+      GameMailEntity actualEntity =
+          gameMailRepository
+              .findById((gameMailEntity.getId()))
+              .orElseThrow(() -> new AssertionError("Game mail not found in DB"));
+
+      assertThat(actualEntity)
+          .usingRecursiveComparison()
+          .ignoringFields("id", "createdAt", "updatedAt", "expiresAt")
+          .isEqualTo(gameMailEntity);
     }
   }
 }

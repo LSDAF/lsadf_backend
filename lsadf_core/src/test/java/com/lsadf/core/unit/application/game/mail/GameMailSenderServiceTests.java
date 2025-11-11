@@ -121,8 +121,9 @@ class GameMailSenderServiceTests {
     // Given
     when(gameSaveService.getGameSaves()).thenReturn(java.util.List.of());
 
+    UUID gameTemplateId = UUID.randomUUID();
     // When
-    gameMailSenderService.sendGameMailToAllGameSaves();
+    gameMailSenderService.sendGameMailToAllGameSaves(gameTemplateId);
 
     // Then
     verify(gameSaveService).getGameSaves();

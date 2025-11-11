@@ -136,4 +136,14 @@ public class BddThenStepDefinitions extends BddLoader {
     bddThenGameMailTemplateStepDefinitions.shouldHaveTheFollowingGameMailTemplateResponses(
         dataTable);
   }
+
+  @Then("^the database contains the following game mails$")
+  public void thenDbShouldContainGameMails(DataTable dataTable) {
+    bddThenGameMailStepDefinitions.thenDbShouldContainGameMails(dataTable);
+  }
+
+  @Then("^the database contains the following game mails ignoring the ids$")
+  public void thenDbShouldContainGameMailsIgnoringIds(DataTable dataTable) {
+    bddThenGameMailStepDefinitions.thenDbShouldContainGameMailsIgnoringId(dataTable);
+  }
 }

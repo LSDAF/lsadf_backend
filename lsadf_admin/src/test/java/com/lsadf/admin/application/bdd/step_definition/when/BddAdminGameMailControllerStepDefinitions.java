@@ -25,6 +25,7 @@ import com.lsadf.core.infra.web.dto.request.game.mail.SendGameMailRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import io.cucumber.java.en.When;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -64,10 +65,34 @@ public class BddAdminGameMailControllerStepDefinitions extends BddLoader {
   }
 
   @When(
+      "^the user requests the admin endpoint to delete the expired game saves with timestamp set to tomorrow$")
+  public void whenTheUserRequestsTheAdminEndpointToDeleteTheExpiredGameSaves() {
+    long timestamp = clockService.getClock().instant().plus(1, ChronoUnit.DAYS).getEpochSecond();
+    String fullPath = AdminApiPathConstants.ADMIN_GAME_MAIL + "?expired=" + timestamp;
+    String url = BddUtils.buildUrl(this.serverPort, fullPath);
+    try {
+      JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();
+      String token = jwtAuthenticationResponse.accessToken();
+      HttpHeaders headers = new HttpHeaders();
+      headers.setBearerAuth(token);
+
+      HttpEntity<Void> request = new HttpEntity<>(headers);
+      ResponseEntity<ApiResponse<Void>> result =
+          testRestTemplate.exchange(
+              url, HttpMethod.DELETE, request, buildParameterizedVoidResponse());
+      ApiResponse<Void> body = result.getBody();
+      responseStack.push(body);
+      log.info("Response: {}", body);
+    } catch (Exception e) {
+      exceptionStack.push(e);
+    }
+  }
+
+  @When(
       "^the user requests the admin endpoint to send game mail to game save with id (.*) with template with id (.*)$")
   public void whenTheUserRequestsTheAdminEndpointToSendGameMailToGameSaveWithTemplate(
       String gameSaveId, String templateId) {
-    String fullPath = AdminApiPathConstants.ADMIN_GAME_MAIL + "/send/" + gameSaveId;
+    String fullPath = AdminApiPathConstants.ADMIN_GAME_MAIL + "/send";
     String url = BddUtils.buildUrl(this.serverPort, fullPath);
     try {
       JwtAuthenticationResponse jwtAuthenticationResponse = jwtAuthenticationResponseStack.peek();

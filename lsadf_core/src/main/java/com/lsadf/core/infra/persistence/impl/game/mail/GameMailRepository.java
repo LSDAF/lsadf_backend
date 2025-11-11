@@ -22,6 +22,7 @@ import static com.lsadf.core.infra.persistence.impl.game.mail.GameMailEntity.Gam
 import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
@@ -70,7 +71,7 @@ public interface GameMailRepository extends JdbcRepository<GameMailEntity> {
             DELETE FROM t_game_mail_instance_tgmi
             WHERE tgmi_id IN (:tgmi_id)
             """)
-  void deleteGameEmails(@Param(GAME_MAIL_ID) List<UUID> mailIds);
+  int deleteGameEmails(@Param(GAME_MAIL_ID) List<UUID> mailIds);
 
   /**
    * Mark game mail attachments as claimed
@@ -131,4 +132,25 @@ public interface GameMailRepository extends JdbcRepository<GameMailEntity> {
         )
         """)
   Boolean existsById(@Param(GAME_MAIL_ID) UUID id);
+
+  /**
+   * Find by id
+   *
+   * @param id the mail id
+   * @return optional of game mail entity
+   */
+  @Query(
+      """
+              SELECT * FROM t_game_mail_instance_tgmi
+              WHERE tgmi_id = :tgmi_id
+              """)
+  Optional<GameMailEntity> findById(UUID id);
+
+  /**
+   * Find all game mails
+   *
+   * @return list of game mail entities
+   */
+  @Query("SELECT * FROM t_game_mail_instance_tgmi")
+  List<GameMailEntity> findAll();
 }

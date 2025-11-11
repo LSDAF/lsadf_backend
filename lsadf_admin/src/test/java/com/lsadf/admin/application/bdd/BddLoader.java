@@ -23,6 +23,8 @@ import com.lsadf.admin.application.cache.AdminCacheController;
 import com.lsadf.admin.application.cache.AdminCacheControllerImpl;
 import com.lsadf.admin.application.game.inventory.AdminInventoryController;
 import com.lsadf.admin.application.game.inventory.AdminInventoryControllerImpl;
+import com.lsadf.admin.application.game.mail.AdminGameMailController;
+import com.lsadf.admin.application.game.mail.AdminGameMailControllerImpl;
 import com.lsadf.admin.application.game.mail.AdminGameMailTemplateController;
 import com.lsadf.admin.application.game.mail.AdminGameMailTemplateControllerImpl;
 import com.lsadf.admin.application.game.save.AdminGameSaveController;
@@ -131,7 +133,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
       AdminGlobalInfoController.class,
       AdminGlobalInfoControllerImpl.class,
       AdminGameMailTemplateController.class,
-      AdminGameMailTemplateControllerImpl.class
+      AdminGameMailTemplateControllerImpl.class,
+      AdminGameMailController.class,
+      AdminGameMailControllerImpl.class
     })
 @ExtendWith(MockitoExtension.class)
 @EnableConfigurationProperties

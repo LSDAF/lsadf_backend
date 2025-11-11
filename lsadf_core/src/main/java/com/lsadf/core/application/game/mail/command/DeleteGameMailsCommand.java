@@ -14,21 +14,9 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.application.game.mail;
+package com.lsadf.core.application.game.mail.command;
 
-import com.lsadf.core.application.game.mail.command.DeleteGameMailsCommand;
-import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
-public interface GameMailCommandService {
-
-  void readGameMailById(UUID id);
-
-  void deleteAllReadGameMailsByGameSaveId(UUID gameSaveId);
-
-  void claimGameMailAttachments(UUID id);
-
-  void deleteExpiredGameMails(Instant expiration);
-
-  int deleteGameMail(DeleteGameMailsCommand command);
-}
+public record DeleteGameMailsCommand(List<UUID> mailIds) {}

@@ -24,11 +24,12 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.util.UUID;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 /** Request DTO for sending game mail */
 @Builder
 public record SendGameMailRequest(
-    @NotNull @JsonProperty(GAME_SAVE_ID) UUID gameSaveId,
+    @Nullable @JsonProperty(GAME_SAVE_ID) UUID gameSaveId,
     @NotNull @JsonProperty(GAME_MAIL_TEMPLATE_ID) UUID gameMailTemplateId)
     implements Request {
   @Serial private static final long serialVersionUID = 3425876093174523687L;

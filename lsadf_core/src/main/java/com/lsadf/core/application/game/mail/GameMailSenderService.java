@@ -17,9 +17,10 @@
 package com.lsadf.core.application.game.mail;
 
 import com.lsadf.core.application.game.mail.command.SendEmailCommand;
+import java.util.UUID;
 
 public interface GameMailSenderService {
-  void sendGameMailToAllGameSaves();
+  void sendGameMailToAllGameSaves(UUID gameTemplateId);
 
   void sendGameMailToGameSaveById(SendEmailCommand command);
 }
