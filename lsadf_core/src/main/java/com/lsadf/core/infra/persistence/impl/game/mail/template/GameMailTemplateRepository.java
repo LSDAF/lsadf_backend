@@ -42,6 +42,7 @@ public interface GameMailTemplateRepository extends JdbcRepository<GameMailTempl
       @Param(GAME_MAIL_TEMPLATE_EXPIRATION_DAYS) int expirationDays);
 
   @Query("DELETE FROM t_game_mail_template_tgmt WHERE tgmt_id = :tgmt_id")
+  @Modifying
   void deleteGameMailTemplateById(@Param(GAME_MAIL_TEMPLATE_ID) UUID id);
 
   @Modifying

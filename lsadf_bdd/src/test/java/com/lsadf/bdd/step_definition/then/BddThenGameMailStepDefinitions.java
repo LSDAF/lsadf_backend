@@ -21,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.bdd.util.BddUtils;
+import com.lsadf.core.application.game.mail.GameMailQueryService;
+import com.lsadf.core.application.game.mail.GameMailTemplateQueryService;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.infra.web.dto.response.game.mail.GameMailResponse;
 import io.cucumber.datatable.DataTable;
@@ -39,6 +41,8 @@ public class BddThenGameMailStepDefinitions {
   @Autowired private Stack<GameMailResponse> gameMailResponseStack;
   @Autowired private Stack<List<GameMailAttachment<?>>> gameMailAttachmentListStack;
   @Autowired private ObjectMapper objectMapper;
+  @Autowired private GameMailQueryService gameMailQueryService;
+  @Autowired private GameMailTemplateQueryService gameMailTemplateQueryService;
 
   public void thenResponseShouldHaveFollowingGameMailResponse(DataTable dataTable) {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);

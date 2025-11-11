@@ -116,6 +116,7 @@ public final class JsonAttributes {
   public static final String END_TIME = "end_time";
   public static final String VERSION = "version";
   public static final String GAME_SAVE_ID = "game_save_id";
+  public static final String GAME_MAIL_TEMPLATE_ID = "game_mail_template_id";
   public static final String CANCELLED = "cancelled";
   public static final String EXPIRATION_DAYS = "expiration_days";
   public static final String BODY = "body";

@@ -42,20 +42,29 @@ Feature: Game Mail Controller BDD tests
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
+    And the user requests the admin endpoint to send game mail to game save "0530e1fe-3428-4edd-bb32-cb563419d0bd" with template "be7f65c8-c2eb-4dba-b351-746c293751d3"
+    Then the response status code should be 200
 
   Scenario: An admin user sends a game mail to all game saves
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
+    And the user requests the admin endpoint to send game mail to all game saves with template "be7f65c8-c2eb-4dba-b351-746c293751d3"
+    Then the response status code should be 200
 
   Scenario: An admin user sends a game mail to a specific game save with a non-existing template
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
+    And the user requests the admin endpoint to send game mail to game save "0530e1fe-3428-4edd-bb32-cb563419d0bd" with template "00000000-0000-0000-0000-000000000000"
+    Then the response status code should be 404
 
   Scenario: An admin user sends a game mail to all game saves with a non-existing template
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
+    And the user requests the admin endpoint to send game mail to all game saves with template "00000000-0000-0000-0000-000000000000"
+    Then the response status code should be 404
+
 
 
