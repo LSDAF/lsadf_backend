@@ -18,6 +18,7 @@ package com.lsadf.core.infra.scheduling.config;
 
 import com.lsadf.core.infra.persistence.impl.game.mail.GameMailRepository;
 import com.lsadf.core.infra.scheduling.job.ExpiredGameMailCleanupScheduler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,7 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
+@Slf4j
 @Configuration
 @EnableScheduling
 @ConditionalOnProperty(prefix = "scheduling", name = "enabled", havingValue = "true")
@@ -42,7 +44,10 @@ public class SchedulingConfiguration implements SchedulingConfigurer {
 
   @Bean
   public ExpiredGameMailCleanupScheduler expiredGameMailCleanupScheduler(
-      GameMailRepository gameMailRepository) {
+      GameMailRepository gameMailRepository, GameMailCleanupProperties gameMailCleanupProperties) {
+    log.info(
+        "Creating expired Game Mail Cleanup Scheduler with configured cron job='{}'",
+        gameMailCleanupProperties.getCron());
     return new ExpiredGameMailCleanupScheduler(gameMailRepository);
   }
 }
