@@ -212,4 +212,4 @@ valkey:
 scheduling:
   enabled: true
   game-mail-cleanup:
-    cron: 0 /10 * * * *
+    cron: ${GAME_MAIL_CLEANUP_CRON} # Default: every day
