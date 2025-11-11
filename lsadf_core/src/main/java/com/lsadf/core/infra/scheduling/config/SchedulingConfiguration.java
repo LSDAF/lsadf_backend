@@ -35,8 +35,7 @@ public class SchedulingConfiguration implements SchedulingConfigurer {
   public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
     ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
     scheduler.setPoolSize(10); // Adjust pool size as needed
-    scheduler.setThreadNamePrefix("scheduled-virtual-");
-    scheduler.setThreadFactory(Thread.ofVirtual().name("scheduled-virtual-", 0).factory());
+    scheduler.setThreadFactory(Thread.ofVirtual().name("vscheduled-", 0).factory());
     scheduler.initialize();
     taskRegistrar.setScheduler(scheduler);
   }
