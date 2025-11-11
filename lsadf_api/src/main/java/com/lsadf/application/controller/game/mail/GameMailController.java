@@ -43,7 +43,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(value = ApiPathConstants.GAME_MAIL)
-@Tag(name = SwaggerConstants.INVENTORY_CONTROLLER)
+@Tag(name = SwaggerConstants.GAME_MAIL_CONTROLLER)
 @SecurityRequirement(name = BEARER_AUTHENTICATION)
 @SecurityRequirement(name = OAUTH2_AUTHENTICATION)
 public interface GameMailController extends Controller {

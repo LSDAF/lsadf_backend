@@ -28,6 +28,7 @@ public final class SwaggerConstants {
   public static final String GAME_SAVE_CONTROLLER = "Game Save Controller";
   public static final String STAGE_CONTROLLER = "Stage Controller";
   public static final String GAME_SESSION_CONTROLLER = "Game Session Controller";
+  public static final String GAME_MAIL_CONTROLLER = "Game Mail Controller";
   public static final String INVENTORY_CONTROLLER = "Inventory Controller";
   public static final String OAUTH_2_CONTROLLER = "OAuth2 Controller";
   public static final String USER_CONTROLLER = "User Controller";
