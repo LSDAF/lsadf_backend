@@ -7,7 +7,7 @@ as a Maven multi-module structure with distinct API, Core, Admin, BDD testing, a
 
 ## Tech Stack
 
-- **Language**: Java 21
+- **Language**: Java 25
 - **Framework**: Spring Boot 3.x
 - **Build Tool**: Maven (multi-module project)
 - **Database**: PostgreSQL
@@ -89,7 +89,7 @@ correctness.
 
 ## Important Constraints
 
-- **Java Version**: Must use Java 21 (LTS)
+- **Java Version**: Must use Java 25 (LTS)
 - **License**: Apache License 2.0 - all source files must include proper headers
 - **Code Style**: Non-negotiable adherence to Google Java Style Guide
 - **Character Encoding**: UTF-8 for all source and resource files

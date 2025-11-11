@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM maven:3.9.11-eclipse-temurin-21-noble AS compiler
+FROM maven:3.9-eclipse-temurin-25-noble AS compiler
 COPY env env/
 COPY build_parent build_parent/
 COPY lsadf_build_tools lsadf_build_tools/
@@ -22,7 +22,7 @@ RUN mvn clean install -DskipTests --quiet \
     && mv lsadf_api/target/*.jar lsadf_api/target/lsadf_api.jar
 
 
-FROM eclipse-temurin:21.0.8_9-jre-noble AS builder
+FROM eclipse-temurin:25-jre-noble AS builder
 
 COPY --from=compiler lsadf_api/target/lsadf_api.jar lsadf_api.jar
 COPY --from=compiler lsadf_api/target/classes/logback-docker.xml logback-docker.xml
@@ -31,7 +31,7 @@ RUN java -Djarmode=layertools -jar lsadf_api.jar extract
 COPY --from=compiler startup.sh .
 
 # Stage 3: Create the final image
-FROM eclipse-temurin:21.0.8_9-jre-noble
+FROM eclipse-temurin:25-jre-noble
 
 EXPOSE 8080
 LABEL org.opencontainers.image.source="https://github.com/LSDAF/lsadf_backend"
