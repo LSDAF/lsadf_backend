@@ -22,6 +22,7 @@ import com.lsadf.core.domain.game.inventory.event.InventoryItemDeletedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class InventoryEventListener implements InventoryEventListenerPort {
 
   @EventListener
   @Override
+  @Async
   public void onItemDeleted(InventoryItemDeletedEvent event) {
     log.debug("{}: {}", event.getEventType(), event);
     inventoryService.deleteItemFromInventory(event.getGameSaveId(), event.getItemId());
