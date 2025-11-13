@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.config;
 
-import com.lsadf.core.infra.logging.ConfigurationLogger;
-import com.lsadf.core.infra.logging.properties.ConfigurationDisplayProperties;
-import lombok.extern.slf4j.Slf4j;
+package com.lsadf.core.infra.event.config;
+
+import com.lsadf.core.infra.event.publisher.game.mail.GameMailEventPublisher;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.ConfigurableEnvironment;
 
-/** Configuration class for the application listeners. */
 @Configuration
-@Slf4j
-public class ApplicationListenerConfiguration {
+public class EventPublisherConfiguration {
 
   @Bean
-  public ConfigurationLogger configurationLogger(
-      ConfigurableEnvironment environment,
-      ConfigurationDisplayProperties configurationDisplayProperties) {
-    return new ConfigurationLogger(environment, configurationDisplayProperties);
+  public GameMailEventPublisher gameMailEventPublisher(
+      ApplicationEventPublisher springEventPublisher) {
+    return new GameMailEventPublisher(springEventPublisher);
   }
 }
