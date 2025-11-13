@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.EventHandlerRegistryImpl;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,23 +50,23 @@ class EventHandlerRegistryImplTests {
   void setUp() {
     registry = new EventHandlerRegistryImpl();
 
-    when(stageHandler.getEventType()).thenReturn(GameSaveEventType.STAGE_UPDATE);
-    when(currencyHandler.getEventType()).thenReturn(GameSaveEventType.CURRENCY_UPDATE);
+    when(stageHandler.getEventType()).thenReturn(ValkeyGameSaveEventType.STAGE_UPDATED);
+    when(currencyHandler.getEventType()).thenReturn(ValkeyGameSaveEventType.CURRENCY_UPDATED);
     when(characteristicsHandler.getEventType())
-        .thenReturn(GameSaveEventType.CHARACTERISTICS_UPDATE);
+        .thenReturn(ValkeyGameSaveEventType.CHARACTERISTICS_UPDATED);
   }
 
   @Test
   void registerHandlerShouldAddHandlerToRegistry() {
     // Register handlers
-    registry.registerHandler(GameSaveEventType.STAGE_UPDATE, stageHandler);
-    registry.registerHandler(GameSaveEventType.CURRENCY_UPDATE, currencyHandler);
+    registry.registerHandler(ValkeyGameSaveEventType.STAGE_UPDATED, stageHandler);
+    registry.registerHandler(ValkeyGameSaveEventType.CURRENCY_UPDATED, currencyHandler);
 
     // Verify handlers are properly stored
     Optional<EventHandler> retrievedStageHandler =
-        registry.getHandler(GameSaveEventType.STAGE_UPDATE);
+        registry.getHandler(ValkeyGameSaveEventType.STAGE_UPDATED);
     Optional<EventHandler> retrievedCurrencyHandler =
-        registry.getHandler(GameSaveEventType.CURRENCY_UPDATE);
+        registry.getHandler(ValkeyGameSaveEventType.CURRENCY_UPDATED);
 
     assertTrue(retrievedStageHandler.isPresent());
     assertTrue(retrievedCurrencyHandler.isPresent());
@@ -77,11 +77,12 @@ class EventHandlerRegistryImplTests {
   @Test
   void getHandlerShouldReturnCorrectHandler() {
     // Register a handler
-    registry.registerHandler(GameSaveEventType.CHARACTERISTICS_UPDATE, characteristicsHandler);
+    registry.registerHandler(
+        ValkeyGameSaveEventType.CHARACTERISTICS_UPDATED, characteristicsHandler);
 
     // Get the handler
     Optional<EventHandler> retrievedHandler =
-        registry.getHandler(GameSaveEventType.CHARACTERISTICS_UPDATE);
+        registry.getHandler(ValkeyGameSaveEventType.CHARACTERISTICS_UPDATED);
 
     // Verify correct handler is returned
     assertTrue(retrievedHandler.isPresent());
@@ -91,7 +92,8 @@ class EventHandlerRegistryImplTests {
   @Test
   void getHandlerShouldReturnEmptyOptionalForNonExistentHandler() {
     // Try to get a handler that hasn't been registered
-    Optional<EventHandler> retrievedHandler = registry.getHandler(GameSaveEventType.STAGE_UPDATE);
+    Optional<EventHandler> retrievedHandler =
+        registry.getHandler(ValkeyGameSaveEventType.STAGE_UPDATED);
 
     // Should return an empty optional since the handler isn't registered yet
     assertEquals(Optional.empty(), retrievedHandler);
@@ -100,14 +102,15 @@ class EventHandlerRegistryImplTests {
   @Test
   void registerHandlerShouldReplaceExistingHandler() {
     // Register initial handler
-    registry.registerHandler(GameSaveEventType.STAGE_UPDATE, stageHandler);
+    registry.registerHandler(ValkeyGameSaveEventType.STAGE_UPDATED, stageHandler);
 
     // Create and register a replacement handler
     EventHandler replacementHandler = mock(EventHandler.class);
-    registry.registerHandler(GameSaveEventType.STAGE_UPDATE, replacementHandler);
+    registry.registerHandler(ValkeyGameSaveEventType.STAGE_UPDATED, replacementHandler);
 
     // Get the handler and verify it's the replacement
-    Optional<EventHandler> retrievedHandler = registry.getHandler(GameSaveEventType.STAGE_UPDATE);
+    Optional<EventHandler> retrievedHandler =
+        registry.getHandler(ValkeyGameSaveEventType.STAGE_UPDATED);
 
     assertTrue(retrievedHandler.isPresent());
     assertEquals(replacementHandler, retrievedHandler.get());

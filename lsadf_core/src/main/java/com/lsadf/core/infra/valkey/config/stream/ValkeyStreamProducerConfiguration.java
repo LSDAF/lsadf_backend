@@ -16,10 +16,10 @@
 
 package com.lsadf.core.infra.valkey.config.stream;
 
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
 import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;
 import com.lsadf.core.infra.valkey.stream.producer.impl.ValkeyStreamProducer;
-import com.lsadf.core.infra.valkey.stream.serializer.EventSerializer;
+import com.lsadf.core.infra.valkey.stream.serializer.ValkeyEventSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,8 +27,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 public class ValkeyStreamProducerConfiguration {
   @Bean
-  public StreamProducer<GameSaveEvent> gameSaveEventProducer(
-      RedisTemplate<String, String> redisTemplate, EventSerializer<GameSaveEvent> eventSerializer) {
-    return new ValkeyStreamProducer<>(redisTemplate, eventSerializer);
+  public StreamProducer<ValkeyGameSaveUpdatedEvent> gameSaveEventProducer(
+      RedisTemplate<String, String> redisTemplate,
+      ValkeyEventSerializer<ValkeyGameSaveUpdatedEvent> valkeyEventSerializer) {
+    return new ValkeyStreamProducer<>(redisTemplate, valkeyEventSerializer);
   }
 }

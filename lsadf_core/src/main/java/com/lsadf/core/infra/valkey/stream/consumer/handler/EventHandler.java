@@ -17,8 +17,8 @@
 package com.lsadf.core.infra.valkey.stream.consumer.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.lsadf.core.infra.valkey.stream.event.Event;
-import com.lsadf.core.infra.valkey.stream.event.EventType;
+import com.lsadf.core.shared.event.Event;
+import com.lsadf.core.shared.event.EventType;
 
 public interface EventHandler {
   void handleEvent(Event event) throws JsonProcessingException;

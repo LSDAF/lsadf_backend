@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.valkey.stream.consumer.handler;
 
-import com.lsadf.core.infra.valkey.stream.event.EventType;
+import com.lsadf.core.shared.event.EventType;
 import java.util.Optional;
 
 public interface EventHandlerRegistry {

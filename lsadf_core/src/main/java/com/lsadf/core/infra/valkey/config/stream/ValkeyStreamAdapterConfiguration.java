@@ -24,7 +24,7 @@ import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamProperties;
 import com.lsadf.core.infra.valkey.stream.adapter.CharacteristicsEventPublisherAdapter;
 import com.lsadf.core.infra.valkey.stream.adapter.CurrencyEventPublisherAdapter;
 import com.lsadf.core.infra.valkey.stream.adapter.StageEventPublisherAdapter;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
 import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Configuration;
 public class ValkeyStreamAdapterConfiguration {
   @Bean
   public CharacteristicsEventPublisherPort characteristicsEventPublisherPort(
-      StreamProducer<GameSaveEvent> streamProducer,
+      StreamProducer<ValkeyGameSaveUpdatedEvent> streamProducer,
       ValkeyGameStreamProperties valkeyGameStreamProperties,
       ObjectMapper objectMapper) {
     return new CharacteristicsEventPublisherAdapter(
@@ -42,7 +42,7 @@ public class ValkeyStreamAdapterConfiguration {
 
   @Bean
   public StageEventPublisherPort stageEventPublisherPort(
-      StreamProducer<GameSaveEvent> streamProducer,
+      StreamProducer<ValkeyGameSaveUpdatedEvent> streamProducer,
       ValkeyGameStreamProperties valkeyGameStreamProperties,
       ObjectMapper objectMapper) {
     return new StageEventPublisherAdapter(
@@ -51,7 +51,7 @@ public class ValkeyStreamAdapterConfiguration {
 
   @Bean
   public CurrencyEventPublisherPort currencyEventPublisherPort(
-      StreamProducer<GameSaveEvent> streamProducer,
+      StreamProducer<ValkeyGameSaveUpdatedEvent> streamProducer,
       ValkeyGameStreamProperties valkeyGameStreamProperties,
       ObjectMapper objectMapper) {
     return new CurrencyEventPublisherAdapter(

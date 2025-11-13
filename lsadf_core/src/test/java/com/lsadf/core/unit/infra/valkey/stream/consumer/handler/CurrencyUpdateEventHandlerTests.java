@@ -16,6 +16,7 @@
 
 package com.lsadf.core.unit.infra.valkey.stream.consumer.handler;
 
+import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType.CURRENCY_UPDATED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,9 +26,8 @@ import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.currency.command.UpdateCacheCurrencyCommand;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.CurrencyUpdateEventHandler;
-import com.lsadf.core.infra.valkey.stream.event.EventType;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
+import com.lsadf.core.shared.event.EventType;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +46,7 @@ class CurrencyUpdateEventHandlerTests {
   private CurrencyUpdateEventHandler handler;
   private UUID gameSaveId;
   private Map<String, String> payload;
-  private GameSaveEvent event;
+  private ValkeyGameSaveUpdatedEvent event;
   private Currency currency;
 
   private Long gold = 10L;
@@ -61,20 +61,13 @@ class CurrencyUpdateEventHandlerTests {
     payload = Map.of("gold", "10", "diamond", "20", "emerald", "30", "amethyst", "40");
     currency = new Currency(gold, diamond, emerald, amethyst);
 
-    event =
-        GameSaveEvent.builder()
-            .gameSaveId(gameSaveId)
-            .userId("user123")
-            .eventType(GameSaveEventType.CURRENCY_UPDATE)
-            .timestamp(System.currentTimeMillis())
-            .payload(payload)
-            .build();
+    event = new ValkeyGameSaveUpdatedEvent(CURRENCY_UPDATED, gameSaveId, "user123", null, payload);
   }
 
   @Test
   void getEventTypeReturnsCurrencyUpdate() {
     EventType eventType = handler.getEventType();
-    assertEquals(GameSaveEventType.CURRENCY_UPDATE, eventType);
+    assertEquals(CURRENCY_UPDATED, eventType);
   }
 
   @Test

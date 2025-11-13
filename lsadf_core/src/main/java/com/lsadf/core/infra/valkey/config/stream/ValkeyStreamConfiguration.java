@@ -19,9 +19,9 @@ package com.lsadf.core.infra.valkey.config.stream;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamProperties;
 import com.lsadf.core.infra.valkey.stream.consumer.StreamConsumer;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
-import com.lsadf.core.infra.valkey.stream.serializer.EventSerializer;
-import com.lsadf.core.infra.valkey.stream.serializer.impl.GameEventSerializer;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
+import com.lsadf.core.infra.valkey.stream.serializer.ValkeyEventSerializer;
+import com.lsadf.core.infra.valkey.stream.serializer.impl.GameValkeyEventSerializer;
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,8 +53,9 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 public class ValkeyStreamConfiguration {
 
   @Bean
-  public EventSerializer<GameSaveEvent> eventSerializer(ObjectMapper objectMapper) {
-    return new GameEventSerializer(objectMapper);
+  public ValkeyEventSerializer<ValkeyGameSaveUpdatedEvent> eventSerializer(
+      ObjectMapper objectMapper) {
+    return new GameValkeyEventSerializer(objectMapper);
   }
 
   @Bean

@@ -17,9 +17,10 @@
 package com.lsadf.core.infra.valkey.stream.producer.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.lsadf.core.infra.valkey.stream.event.Event;
+import com.lsadf.core.infra.valkey.stream.exception.EventHandlingException;
 import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;
-import com.lsadf.core.infra.valkey.stream.serializer.EventSerializer;
+import com.lsadf.core.infra.valkey.stream.serializer.ValkeyEventSerializer;
+import com.lsadf.core.shared.event.Event;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.stream.*;
@@ -29,24 +30,24 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class ValkeyStreamProducer<T extends Event> implements StreamProducer<T> {
 
   private final RedisTemplate<String, String> redisTemplate;
-  private final EventSerializer<T> eventSerializer;
+  private final ValkeyEventSerializer<T> valkeyEventSerializer;
 
   public ValkeyStreamProducer(
-      RedisTemplate<String, String> redisTemplate, EventSerializer<T> eventSerializer) {
+      RedisTemplate<String, String> redisTemplate, ValkeyEventSerializer<T> valkeyEventSerializer) {
     this.redisTemplate = redisTemplate;
-    this.eventSerializer = eventSerializer;
+    this.valkeyEventSerializer = valkeyEventSerializer;
   }
 
   @Override
   public RecordId publishEvent(String streamKey, T event) {
     try {
-      Map<String, String> eventData = eventSerializer.serialize(event);
+      Map<String, String> eventData = valkeyEventSerializer.serialize(event);
       MapRecord<String, String, String> mapRecord =
           StreamRecords.mapBacked(eventData).withStreamKey(streamKey);
       return redisTemplate.opsForStream().add(mapRecord);
     } catch (JsonProcessingException e) {
       log.error("JsonProcessingException error serializing event for stream {}", streamKey, e);
-      throw new RuntimeException(e);
+      throw new EventHandlingException(e);
     } catch (Exception e) {
       log.error("Error serializing event for stream {}", streamKey, e);
       throw e;

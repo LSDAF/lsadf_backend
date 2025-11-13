@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.valkey.stream.producer;
 
-import com.lsadf.core.infra.valkey.stream.event.Event;
+import com.lsadf.core.shared.event.Event;
 import org.springframework.data.redis.connection.stream.RecordId;
 
 @FunctionalInterface

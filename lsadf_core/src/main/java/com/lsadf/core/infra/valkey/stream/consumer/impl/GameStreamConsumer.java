@@ -21,9 +21,9 @@ import com.lsadf.core.infra.valkey.cache.flush.FlushStatus;
 import com.lsadf.core.infra.valkey.stream.consumer.StreamConsumer;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandlerRegistry;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
 import com.lsadf.core.infra.valkey.stream.exception.EventHandlingException;
-import com.lsadf.core.infra.valkey.stream.serializer.EventSerializer;
+import com.lsadf.core.infra.valkey.stream.serializer.ValkeyEventSerializer;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.stream.MapRecord;
@@ -37,7 +37,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class GameStreamConsumer extends ValkeyStreamConsumer implements StreamConsumer {
 
   private final RedisTemplate<String, String> redisTemplate;
-  private final EventSerializer<GameSaveEvent> gameEventSerializer;
+  private final ValkeyEventSerializer<ValkeyGameSaveUpdatedEvent> gameValkeyEventSerializer;
   private final long debounceWindowMs;
   private final EventHandlerRegistry handlerRegistry;
 
@@ -46,13 +46,13 @@ public class GameStreamConsumer extends ValkeyStreamConsumer implements StreamCo
       String streamKey,
       String consumerGroup,
       RedisTemplate<String, String> redisTemplate,
-      EventSerializer<GameSaveEvent> gameEventSerializer,
+      ValkeyEventSerializer<ValkeyGameSaveUpdatedEvent> gameValkeyEventSerializer,
       EventHandlerRegistry handlerRegistry,
       long debounceWindowMs) {
     super(id, streamKey, consumerGroup);
     this.redisTemplate = redisTemplate;
     this.handlerRegistry = handlerRegistry;
-    this.gameEventSerializer = gameEventSerializer;
+    this.gameValkeyEventSerializer = gameValkeyEventSerializer;
     this.debounceWindowMs = debounceWindowMs;
   }
 
@@ -67,9 +67,9 @@ public class GameStreamConsumer extends ValkeyStreamConsumer implements StreamCo
 
     Map<String, String> eventData = message.getValue();
 
-    GameSaveEvent event;
+    ValkeyGameSaveUpdatedEvent event;
     try {
-      event = gameEventSerializer.deserialize(eventData);
+      event = gameValkeyEventSerializer.deserialize(eventData);
     } catch (JsonProcessingException e) {
       log.error("Error deserializing game save event for debounced persistence", e);
       throw new EventHandlingException("Failed to deserialize game save event", e);
@@ -94,8 +94,8 @@ public class GameStreamConsumer extends ValkeyStreamConsumer implements StreamCo
     resetDebounceWindow(event);
   }
 
-  private void resetDebounceWindow(GameSaveEvent event) {
-    String gameSaveId = event.gameSaveId().toString();
+  private void resetDebounceWindow(ValkeyGameSaveUpdatedEvent event) {
+    String gameSaveId = event.getGameSaveId().toString();
     long currentTimestamp = System.currentTimeMillis();
     long flushTimestamp = currentTimestamp + debounceWindowMs;
     redisTemplate.opsForZSet().add(FlushStatus.PENDING.getKey(), gameSaveId, flushTimestamp);

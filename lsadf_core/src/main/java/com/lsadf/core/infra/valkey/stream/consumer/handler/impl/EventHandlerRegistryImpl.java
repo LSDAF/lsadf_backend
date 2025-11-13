@@ -18,7 +18,7 @@ package com.lsadf.core.infra.valkey.stream.consumer.handler.impl;
 
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandlerRegistry;
-import com.lsadf.core.infra.valkey.stream.event.EventType;
+import com.lsadf.core.shared.event.EventType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
