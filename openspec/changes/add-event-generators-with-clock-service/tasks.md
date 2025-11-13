@@ -2,87 +2,87 @@
 
 ## Implementation Tasks
 
-- [ ] **Refactor AEvent base class**
-    - [ ] Add constructor parameter for timestamp
-    - [ ] Keep existing constructor for backward compatibility
-    - [ ] Update Lombok annotations if needed
-    - [ ] Verify no compilation errors
+- [x] **Refactor AEvent base class**
+    - [x] Add constructor parameter for timestamp
+    - [x] Keep existing constructor for backward compatibility
+    - [x] Update Lombok annotations if needed
+    - [x] Verify no compilation errors
 
-- [ ] **Update GameMailReadEvent**
-    - [ ] Add constructor accepting timestamp parameter
-    - [ ] Keep backward-compatible constructor
-    - [ ] Ensure proper call to super with timestamp
+- [x] **Update GameMailReadEvent**
+    - [x] Add constructor accepting timestamp parameter
+    - [x] Keep backward-compatible constructor
+    - [x] Ensure proper call to super with timestamp
 
-- [ ] **Update GameMailAttachmentsClaimedEvent**
-    - [ ] Add constructor accepting timestamp parameter
-    - [ ] Keep backward-compatible constructor
-    - [ ] Ensure proper call to super with timestamp
+- [x] **Update GameMailAttachmentsClaimedEvent**
+    - [x] Add constructor accepting timestamp parameter
+    - [x] Keep backward-compatible constructor
+    - [x] Ensure proper call to super with timestamp
 
-- [ ] **Create GameMailEventFactory interface**
-    - [ ] Define interface in `com.lsadf.core.application.game.mail` package
-    - [ ] Add method `createGameMailReadEvent(UUID gameMailId, String userId)`
-    - [ ] Add method `createGameMailAttachmentsClaimedEvent(UUID gameMailId, String userId)`
-    - [ ] Add proper JavaDoc
+- [x] **Create GameMailEventFactory interface**
+    - [x] Define interface in `com.lsadf.core.application.game.mail` package
+    - [x] Add method `createGameMailReadEvent(UUID gameMailId, String userId)`
+    - [x] Add method `createGameMailAttachmentsClaimedEvent(UUID gameMailId, String userId)`
+    - [x] Add proper JavaDoc
 
-- [ ] **Implement GameMailEventFactoryImpl**
-    - [ ] Create implementation in `com.lsadf.core.infra.event.factory.game.mail` package
-    - [ ] Annotate with `@Component`
-    - [ ] Inject `ClockService` via constructor
-    - [ ] Implement both event creation methods using clock service
-    - [ ] Add proper JavaDoc
+- [x] **Implement GameMailEventFactoryImpl**
+    - [x] Create implementation in `com.lsadf.core.infra.event.factory.game.mail` package
+    - [x] Annotate with `@Component`
+    - [x] Inject `ClockService` via constructor
+    - [x] Implement both event creation methods using clock service
+    - [x] Add proper JavaDoc
 
-- [ ] **Update GameMailEventPublisher**
-    - [ ] Inject `GameMailEventFactory` via constructor
-    - [ ] Replace direct event construction with factory calls
-    - [ ] Remove unused imports
+- [x] **Update GameMailEventPublisher**
+    - [x] Inject `GameMailEventFactory` via constructor
+    - [x] Replace direct event construction with factory calls
+    - [x] Remove unused imports
 
-- [ ] **Update EventPublisherConfiguration**
-    - [ ] Add `GameMailEventFactory` parameter to bean factory method
-    - [ ] Pass factory to `GameMailEventPublisher` constructor
+- [x] **Update EventPublisherConfiguration**
+    - [x] Add `GameMailEventFactory` parameter to bean factory method
+    - [x] Pass factory to `GameMailEventPublisher` constructor
 
 ## Testing Tasks
 
-- [ ] **Unit test for GameMailEventFactoryImpl**
-    - [ ] Create test class in `lsadf_core/src/test/java`
-    - [ ] Mock `ClockService` to return fixed time
-    - [ ] Verify `GameMailReadEvent` has correct timestamp
-    - [ ] Verify `GameMailAttachmentsClaimedEvent` has correct timestamp
-    - [ ] Verify event fields are correctly set
+- [x] **Unit test for GameMailEventFactoryImpl**
+    - [x] Create test class in `lsadf_core/src/test/java`
+    - [x] Mock `ClockService` to return fixed time
+    - [x] Verify `GameMailReadEvent` has correct timestamp
+    - [x] Verify `GameMailAttachmentsClaimedEvent` has correct timestamp
+    - [x] Verify event fields are correctly set
 
-- [ ] **Integration test for event publisher**
-    - [ ] Verify events published via `GameMailEventPublisher` use clock service
-    - [ ] Test with fixed clock to assert deterministic timestamps
+- [x] **Integration test for event publisher**
+    - [x] Verify events published via `GameMailEventPublisher` use clock service
+    - [x] Test with fixed clock to assert deterministic timestamps
 
-- [ ] **Backward compatibility verification**
-    - [ ] Run all existing tests without modification
-    - [ ] Verify events created without explicit timestamp still work
+- [x] **Backward compatibility verification**
+    - [x] Run all existing tests without modification
+    - [x] Verify events created without explicit timestamp still work
 
 ## Validation Tasks
 
-- [ ] **Code quality checks**
-    - [ ] Run `make lint-check` to verify formatting
-    - [ ] Run `make lint` to auto-format if needed
-    - [ ] Verify license headers are present
+- [x] **Code quality checks**
+    - [x] Run `make lint-check` to verify formatting
+    - [x] Run `make lint` to auto-format if needed
+    - [x] Verify license headers are present
 
-- [ ] **Build verification**
-    - [ ] Run `make clean install` to verify compilation
-    - [ ] Ensure no compilation errors in any module
+- [x] **Build verification**
+    - [x] Run `make clean install` to verify compilation
+    - [x] Ensure no compilation errors in any module
 
-- [ ] **Test execution**
-    - [ ] Run `make test-unit` to verify unit tests pass
-    - [ ] Run `make test-bdd` to verify BDD tests pass
-    - [ ] Fix any failing tests
+- [x] **Test execution**
+    - [x] Run `make test-unit` to verify unit tests pass
+    - [x] Run `make test-bdd` to verify BDD tests pass
+    - [x] Fix any failing tests
 
-- [ ] **Documentation**
-    - [ ] Ensure JavaDoc is complete for new interfaces and classes
-    - [ ] Update any relevant inline comments
+- [x] **Documentation**
+    - [x] Ensure JavaDoc is complete for new interfaces and classes
+    - [x] Update any relevant inline comments
 
 ## Completion Checklist
 
-- [ ] All implementation tasks completed
-- [ ] All tests passing
-- [ ] Code formatted and linted
-- [ ] No compilation errors
-- [ ] License headers verified
-- [ ] Ready for code review
+- [x] All implementation tasks completed
+- [x] All tests passing
+- [x] Code formatted and linted
+- [x] No compilation errors
+- [x] License headers verified
+- [x] Ready for code review
 
