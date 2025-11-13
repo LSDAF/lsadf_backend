@@ -16,9 +16,12 @@
 
 package com.lsadf.core.infra.event.config;
 
+import com.lsadf.core.application.game.inventory.InventoryEventListenerPort;
+import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.mail.GameMailCommandService;
 import com.lsadf.core.application.game.mail.GameMailEventListenerPort;
-import com.lsadf.core.infra.event.listener.mail.GameMailEventListener;
+import com.lsadf.core.infra.event.listener.game.inventory.InventoryEventListener;
+import com.lsadf.core.infra.event.listener.game.mail.GameMailEventListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,5 +32,10 @@ public class EventListenerConfiguration {
   public GameMailEventListenerPort gameMailEventListenerPort(
       GameMailCommandService gameMailCommandService) {
     return new GameMailEventListener(gameMailCommandService);
+  }
+
+  @Bean
+  public InventoryEventListenerPort inventoryEventListenerPort(InventoryService inventoryService) {
+    return new InventoryEventListener(inventoryService);
   }
 }

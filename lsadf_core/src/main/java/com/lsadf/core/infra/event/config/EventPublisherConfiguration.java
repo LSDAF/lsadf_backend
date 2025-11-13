@@ -16,6 +16,9 @@
 
 package com.lsadf.core.infra.event.config;
 
+import com.lsadf.core.application.game.inventory.InventoryEventPublisherPort;
+import com.lsadf.core.application.game.mail.GameMailEventPublisherPort;
+import com.lsadf.core.infra.event.publisher.game.inventory.InventoryEventPublisher;
 import com.lsadf.core.infra.event.publisher.game.mail.GameMailEventPublisher;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +28,14 @@ import org.springframework.context.annotation.Configuration;
 public class EventPublisherConfiguration {
 
   @Bean
-  public GameMailEventPublisher gameMailEventPublisher(
+  public GameMailEventPublisherPort gameMailEventPublisher(
       ApplicationEventPublisher springEventPublisher) {
     return new GameMailEventPublisher(springEventPublisher);
+  }
+
+  @Bean
+  public InventoryEventPublisherPort inventoryEventPublisherPort(
+      ApplicationEventPublisher springEventPublisher) {
+    return new InventoryEventPublisher(springEventPublisher);
   }
 }

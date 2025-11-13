@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 @org.jspecify.annotations.NullMarked
-package com.lsadf.core.infra.event.listener.mail;
+package com.lsadf.core.infra.event.listener.game.mail;

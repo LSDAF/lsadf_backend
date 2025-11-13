@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.event.listener.mail;
+package com.lsadf.core.infra.event.listener.game.mail;
 
 import com.lsadf.core.application.game.mail.GameMailCommandService;
 import com.lsadf.core.application.game.mail.GameMailEventListenerPort;
