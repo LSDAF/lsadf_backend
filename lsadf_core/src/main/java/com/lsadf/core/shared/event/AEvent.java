@@ -16,13 +16,11 @@
 
 package com.lsadf.core.shared.event;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @RequiredArgsConstructor
 @Getter
+@ToString
 public abstract class AEvent implements Event {
   protected final EventType eventType;
   protected final Long timestamp = System.currentTimeMillis();

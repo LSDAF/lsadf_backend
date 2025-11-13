@@ -26,7 +26,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 public class GameMailAttachmentsClaimedEvent extends AEvent implements Event {
   private final UUID gameMailId;

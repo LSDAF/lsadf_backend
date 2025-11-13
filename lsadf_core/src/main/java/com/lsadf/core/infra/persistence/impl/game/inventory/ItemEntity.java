@@ -33,7 +33,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @AllArgsConstructor
 @Builder
-@ToString
+@ToString(callSuper = true)
 @Getter
 @Setter
 @Table(ITEM_ENTITY)

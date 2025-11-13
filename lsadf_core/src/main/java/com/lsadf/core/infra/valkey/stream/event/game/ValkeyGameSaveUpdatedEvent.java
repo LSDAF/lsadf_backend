@@ -22,12 +22,12 @@ import com.lsadf.core.shared.event.EventType;
 import java.io.Serial;
 import java.util.Map;
 import java.util.UUID;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.jspecify.annotations.Nullable;
 
 @Getter
+@EqualsAndHashCode(callSuper = false)
+@ToString(callSuper = true)
 public class ValkeyGameSaveUpdatedEvent extends AEvent implements Event {
   @Serial private static final long serialVersionUID = -8858694336369130030L;
   private final UUID gameSaveId;
