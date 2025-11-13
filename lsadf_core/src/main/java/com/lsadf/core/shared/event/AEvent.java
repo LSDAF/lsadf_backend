@@ -14,8 +14,22 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.valkey.stream.event;
+package com.lsadf.core.shared.event;
 
-public interface EventType {
-  String getValue();
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
+public abstract class AEvent implements Event {
+  private final EventType eventType;
+  private final Long timestamp = System.currentTimeMillis();
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  public static final class EventAttributes {
+    public static final String EVENT_TYPE = "eventType";
+    public static final String TIMESTAMP = "timestamp";
+  }
 }

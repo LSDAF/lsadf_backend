@@ -13,13 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.lsadf.core.infra.valkey.stream.event;
-
-import java.io.Serializable;
-
-public interface Event extends Serializable {
-  EventType getEventType();
-
-  Long getTimestamp();
-}
+@org.jspecify.annotations.NullMarked
+package com.lsadf.core.shared.event;
