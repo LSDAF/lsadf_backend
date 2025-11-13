@@ -17,9 +17,9 @@ package com.lsadf.core.infra.persistence.impl.game.inventory;
 
 import static com.lsadf.core.infra.persistence.impl.game.inventory.ItemEntity.ItemAttributes.*;
 
-import com.lsadf.core.domain.game.inventory.item.ItemRarity;
-import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
-import com.lsadf.core.domain.game.inventory.item.ItemType;
+import com.lsadf.core.domain.game.inventory.ItemRarity;
+import com.lsadf.core.domain.game.inventory.ItemStatistic;
+import com.lsadf.core.domain.game.inventory.ItemType;
 import com.lsadf.core.infra.persistence.Dateable;
 import com.lsadf.core.infra.persistence.Identifiable;
 import java.io.Serial;

@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.persistence.impl.game.inventory;
 
-import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.domain.game.inventory.ItemStat;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

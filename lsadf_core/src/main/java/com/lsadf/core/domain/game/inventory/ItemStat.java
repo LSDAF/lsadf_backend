@@ -13,29 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.game.inventory.item;
+package com.lsadf.core.domain.game.inventory;
 
+import com.lsadf.core.shared.model.Model;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @AllArgsConstructor
-public enum ItemRarity {
-  NORMAL("normal"),
-  RARE("rare"),
-  MAGIC("magic"),
-  EPIC("epic"),
-  LEGENDARY("legendary"),
-  MYTHIC("mythic");
-
-  private final String rarity;
-
-  public static ItemRarity fromString(String itemRarity) {
-    for (ItemRarity itemRarityEnum : ItemRarity.values()) {
-      if (itemRarityEnum.getRarity().equalsIgnoreCase(itemRarity)) {
-        return itemRarityEnum;
-      }
-    }
-    throw new IllegalArgumentException("Invalid item rarity");
-  }
+@NoArgsConstructor
+public class ItemStat implements Model {
+  private ItemStatistic statistic;
+  private Float baseValue;
 }

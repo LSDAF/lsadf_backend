@@ -23,7 +23,7 @@ import com.lsadf.core.application.game.inventory.InventoryEventPublisherPort;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.session.GameSessionQueryService;
-import com.lsadf.core.domain.game.inventory.item.Item;
+import com.lsadf.core.domain.game.inventory.Item;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;

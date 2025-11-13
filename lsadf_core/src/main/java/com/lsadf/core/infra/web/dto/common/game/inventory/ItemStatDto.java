@@ -21,7 +21,7 @@ import static com.lsadf.core.infra.web.JsonAttributes.STATISTIC;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.application.game.inventory.ItemStatCommand;
-import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
+import com.lsadf.core.domain.game.inventory.ItemStatistic;
 import com.lsadf.core.infra.web.dto.Dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

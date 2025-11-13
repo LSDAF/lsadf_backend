@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.application.game.inventory;
 
-import com.lsadf.core.domain.game.inventory.item.Item;
+import com.lsadf.core.domain.game.inventory.Item;
 import com.lsadf.core.exception.AlreadyExistingItemClientIdException;
 import com.lsadf.core.exception.http.ForbiddenException;
 import com.lsadf.core.exception.http.NotFoundException;

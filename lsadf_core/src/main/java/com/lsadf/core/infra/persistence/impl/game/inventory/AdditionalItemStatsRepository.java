@@ -18,7 +18,7 @@ package com.lsadf.core.infra.persistence.impl.game.inventory;
 
 import static com.lsadf.core.infra.persistence.impl.game.inventory.AdditionalItemStatEntity.AdditionalStatsEntityAttributes.*;
 
-import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
+import com.lsadf.core.domain.game.inventory.ItemStatistic;
 import com.lsadf.core.infra.persistence.JdbcRepository;
 import java.util.List;
 import java.util.UUID;

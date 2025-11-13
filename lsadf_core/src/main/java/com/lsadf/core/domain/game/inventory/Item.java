@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.game.inventory.item;
+package com.lsadf.core.domain.game.inventory;
 
 import com.lsadf.core.shared.model.Model;
 import io.swagger.v3.oas.annotations.media.Schema;

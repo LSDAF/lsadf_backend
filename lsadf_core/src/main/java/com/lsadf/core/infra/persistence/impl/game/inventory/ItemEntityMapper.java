@@ -16,8 +16,8 @@
 
 package com.lsadf.core.infra.persistence.impl.game.inventory;
 
-import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.domain.game.inventory.Item;
+import com.lsadf.core.domain.game.inventory.ItemStat;
 import com.lsadf.core.infra.persistence.EntityModelMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -54,7 +54,7 @@ public interface ItemEntityMapper extends EntityModelMapper<ItemEntity, Item> {
   @Mapping(
       target = "mainStat",
       expression =
-          "java(new com.lsadf.core.domain.game.inventory.item.ItemStat(itemEntity.getMainStatistic(), itemEntity.getMainBaseValue()))")
+          "java(new com.lsadf.core.domain.game.inventory.ItemStat(itemEntity.getMainStatistic(), itemEntity.getMainBaseValue()))")
   @Mapping(target = "additionalStats", expression = "java(new java.util.ArrayList())")
   Item map(ItemEntity itemEntity);
 

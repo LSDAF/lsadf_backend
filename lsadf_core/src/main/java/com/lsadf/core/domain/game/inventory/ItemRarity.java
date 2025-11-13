@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.game.inventory.item;
+package com.lsadf.core.domain.game.inventory;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ItemType {
-  BOOTS("boots"),
-  CHESTPLATE("chestplate"),
-  GLOVES("gloves"),
-  HELMET("helmet"),
-  SHIELD("shield"),
-  SWORD("sword");
+public enum ItemRarity {
+  NORMAL("normal"),
+  RARE("rare"),
+  MAGIC("magic"),
+  EPIC("epic"),
+  LEGENDARY("legendary"),
+  MYTHIC("mythic");
 
-  private final String type;
+  private final String rarity;
 
-  public static ItemType fromString(String itemType) {
-    for (ItemType itemTypeEnum : ItemType.values()) {
-      if (itemTypeEnum.getType().equalsIgnoreCase(itemType)) {
-        return itemTypeEnum;
+  public static ItemRarity fromString(String itemRarity) {
+    for (ItemRarity itemRarityEnum : ItemRarity.values()) {
+      if (itemRarityEnum.getRarity().equalsIgnoreCase(itemRarity)) {
+        return itemRarityEnum;
       }
     }
-    throw new IllegalArgumentException("Invalid item type");
+    throw new IllegalArgumentException("Invalid item rarity");
   }
 }

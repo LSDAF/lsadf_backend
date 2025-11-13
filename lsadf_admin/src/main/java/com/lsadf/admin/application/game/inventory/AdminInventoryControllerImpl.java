@@ -18,7 +18,7 @@ package com.lsadf.admin.application.game.inventory;
 import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
 import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.domain.game.inventory.item.Item;
+import com.lsadf.core.domain.game.inventory.Item;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;

@@ -14,18 +14,6 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.application.game.inventory;
+package com.lsadf.core.domain.game.inventory.event;
 
-import com.lsadf.core.domain.game.inventory.ItemStatistic;
-
-public interface ItemStatCommand {
-  /**
-   * @return the statistic type
-   */
-  ItemStatistic getStatistic();
-
-  /**
-   * @return the base value of the statistic
-   */
-  Float getBaseValue();
-}
+public class InventoryItemUpdatedEvent {}
