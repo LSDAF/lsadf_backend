@@ -32,9 +32,26 @@ public class GameMailReadEvent extends AEvent implements Event {
   private final UUID gameMailId;
   private final String userId;
 
-  public GameMailReadEvent(UUID gameMailId, String userEmail) {
-    super(GAME_MAIL_READ);
+  /**
+   * Constructor with timestamp parameter.
+   *
+   * @param gameMailId the game mail ID
+   * @param userId the user ID
+   * @param timestamp the timestamp in epoch milliseconds
+   */
+  public GameMailReadEvent(UUID gameMailId, String userId, Long timestamp) {
+    super(GAME_MAIL_READ, timestamp);
     this.gameMailId = gameMailId;
-    this.userId = userEmail;
+    this.userId = userId;
+  }
+
+  /**
+   * Constructor for backward compatibility using current system time.
+   *
+   * @param gameMailId the game mail ID
+   * @param userId the user ID
+   */
+  public GameMailReadEvent(UUID gameMailId, String userId) {
+    this(gameMailId, userId, System.currentTimeMillis());
   }
 }

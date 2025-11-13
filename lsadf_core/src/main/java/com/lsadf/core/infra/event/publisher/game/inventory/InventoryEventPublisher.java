@@ -18,6 +18,7 @@ package com.lsadf.core.infra.event.publisher.game.inventory;
 
 import com.lsadf.core.application.game.inventory.InventoryEventPublisherPort;
 import com.lsadf.core.domain.game.inventory.event.InventoryItemDeletedEvent;
+import com.lsadf.core.infra.event.factory.game.inventory.InventoryEventFactory;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -25,10 +26,12 @@ import org.springframework.context.ApplicationEventPublisher;
 @RequiredArgsConstructor
 public class InventoryEventPublisher implements InventoryEventPublisherPort {
   private final ApplicationEventPublisher eventPublisher;
+  private final InventoryEventFactory inventoryEventFactory;
 
   @Override
   public void publishInventoryItemDeletedEvent(String userId, UUID gameSaveId, String itemId) {
-    InventoryItemDeletedEvent event = new InventoryItemDeletedEvent(gameSaveId, userId, itemId);
+    InventoryItemDeletedEvent event =
+        inventoryEventFactory.createInventoryItemDeletedEvent(userId, gameSaveId, itemId);
     eventPublisher.publishEvent(event);
   }
 }

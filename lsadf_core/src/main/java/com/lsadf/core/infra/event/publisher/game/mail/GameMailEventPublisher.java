@@ -19,6 +19,7 @@ package com.lsadf.core.infra.event.publisher.game.mail;
 import com.lsadf.core.application.game.mail.GameMailEventPublisherPort;
 import com.lsadf.core.domain.game.mail.event.GameMailAttachmentsClaimedEvent;
 import com.lsadf.core.domain.game.mail.event.GameMailReadEvent;
+import com.lsadf.core.infra.event.factory.game.mail.GameMailEventFactory;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,17 +27,18 @@ import org.springframework.context.ApplicationEventPublisher;
 @RequiredArgsConstructor
 public class GameMailEventPublisher implements GameMailEventPublisherPort {
   private final ApplicationEventPublisher eventPublisher;
+  private final GameMailEventFactory eventFactory;
 
   @Override
   public void publishGameMailReadEvent(String userId, UUID gameMailId) {
-    GameMailReadEvent gameMailReadEvent = new GameMailReadEvent(gameMailId, userId);
+    GameMailReadEvent gameMailReadEvent = eventFactory.createGameMailReadEvent(gameMailId, userId);
     eventPublisher.publishEvent(gameMailReadEvent);
   }
 
   @Override
   public void publishGameMailAttachmentsClaimed(String userId, UUID gameMailId) {
     GameMailAttachmentsClaimedEvent gameMailAttachmentsClaimedEvent =
-        new GameMailAttachmentsClaimedEvent(gameMailId, userId);
+        eventFactory.createGameMailAttachmentsClaimedEvent(gameMailId, userId);
     eventPublisher.publishEvent(gameMailAttachmentsClaimedEvent);
   }
 }

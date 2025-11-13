@@ -18,12 +18,31 @@ package com.lsadf.core.shared.event;
 
 import lombok.*;
 
-@RequiredArgsConstructor
 @Getter
 @ToString
 public abstract class AEvent implements Event {
   protected final EventType eventType;
-  protected final Long timestamp = System.currentTimeMillis();
+  protected final Long timestamp;
+
+  /**
+   * Constructor accepting event type and timestamp.
+   *
+   * @param eventType the event type
+   * @param timestamp the timestamp in epoch milliseconds
+   */
+  protected AEvent(EventType eventType, Long timestamp) {
+    this.eventType = eventType;
+    this.timestamp = timestamp;
+  }
+
+  /**
+   * Constructor accepting event type only, using current system time for backward compatibility.
+   *
+   * @param eventType the event type
+   */
+  protected AEvent(EventType eventType) {
+    this(eventType, System.currentTimeMillis());
+  }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class EventAttributes {

@@ -20,5 +20,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({EventListenerConfiguration.class, EventPublisherConfiguration.class})
+@Import({
+  EventListenerConfiguration.class,
+  EventPublisherConfiguration.class,
+  EventFactoryConfiguration.class
+})
 public class EventConfiguration {}

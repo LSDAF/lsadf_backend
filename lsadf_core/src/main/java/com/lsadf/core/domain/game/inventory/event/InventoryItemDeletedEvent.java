@@ -33,10 +33,14 @@ public class InventoryItemDeletedEvent extends AEvent implements Event {
   private final String userId;
   private final String itemId;
 
-  public InventoryItemDeletedEvent(UUID gameSaveId, String userId, String itemId) {
-    super(INVENTORY_ITEM_DELETED);
+  public InventoryItemDeletedEvent(UUID gameSaveId, String userId, String itemId, Long timestamp) {
+    super(INVENTORY_ITEM_DELETED, timestamp);
     this.gameSaveId = gameSaveId;
     this.userId = userId;
     this.itemId = itemId;
+  }
+
+  public InventoryItemDeletedEvent(UUID gameSaveId, String userId, String itemId) {
+    this(gameSaveId, userId, itemId, System.currentTimeMillis());
   }
 }
