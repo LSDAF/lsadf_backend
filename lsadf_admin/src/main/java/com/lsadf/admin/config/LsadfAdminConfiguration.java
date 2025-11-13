@@ -20,6 +20,7 @@ import com.lsadf.core.infra.config.ApplicationServiceConfiguration;
 import com.lsadf.core.infra.config.AsyncConfiguration;
 import com.lsadf.core.infra.config.JacksonConfiguration;
 import com.lsadf.core.infra.config.PropertiesConfiguration;
+import com.lsadf.core.infra.event.config.EventConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
 import com.lsadf.core.infra.persistence.config.JdbcConfiguration;
@@ -59,6 +60,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   LsadfAdminSecurityConfiguration.class,
   GlobalExceptionHandler.class,
   JacksonConfiguration.class,
-  AsyncConfiguration.class
+  AsyncConfiguration.class,
+  EventConfiguration.class
 })
 public class LsadfAdminConfiguration {}
