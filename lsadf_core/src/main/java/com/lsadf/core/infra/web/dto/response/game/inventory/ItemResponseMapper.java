@@ -16,8 +16,8 @@
 
 package com.lsadf.core.infra.web.dto.response.game.inventory;
 
-import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.domain.game.inventory.Item;
+import com.lsadf.core.domain.game.inventory.ItemStat;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.response.ModelResponseMapper;
 import org.mapstruct.Mapper;

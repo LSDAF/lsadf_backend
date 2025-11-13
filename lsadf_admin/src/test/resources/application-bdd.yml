@@ -138,3 +138,6 @@ configuration-display:
 sleep:
   enabled: false
   seconds: 0
+
+async:
+  enabled: false

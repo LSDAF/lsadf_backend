@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.inventory.impl.InventoryServiceImpl;
 import com.lsadf.core.application.game.save.metadata.GameMetadataService;
-import com.lsadf.core.domain.game.inventory.item.*;
+import com.lsadf.core.domain.game.inventory.*;
 import com.lsadf.core.exception.AlreadyExistingItemClientIdException;
 import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;

@@ -54,6 +54,12 @@ public class PropertiesConfiguration {
   }
 
   @Bean
+  @ConfigurationProperties(prefix = "async")
+  public AsyncProperties asyncProperties() {
+    return new AsyncProperties();
+  }
+
+  @Bean
   @ConfigurationProperties(prefix = "valkey.stream.game")
   public ValkeyGameStreamProperties streamGameValkeyProperties() {
     return new ValkeyGameStreamProperties();

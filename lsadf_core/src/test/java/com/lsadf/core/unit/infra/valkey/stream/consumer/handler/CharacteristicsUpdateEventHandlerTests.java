@@ -26,9 +26,9 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsComma
 import com.lsadf.core.application.game.save.characteristics.command.UpdateCacheCharacteristicsCommand;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.CharacteristicsUpdateEventHandler;
-import com.lsadf.core.infra.valkey.stream.event.EventType;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
+import com.lsadf.core.shared.event.EventType;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +49,7 @@ class CharacteristicsUpdateEventHandlerTests {
   private CharacteristicsUpdateEventHandler handler;
   private UUID gameSaveId;
   private Map<String, String> payload;
-  private GameSaveEvent event;
+  private ValkeyGameSaveUpdatedEvent event;
   private Characteristics characteristics;
 
   private static final Long ATTACK = 25L;
@@ -84,20 +84,19 @@ class CharacteristicsUpdateEventHandlerTests {
             .build();
 
     event =
-        GameSaveEvent.builder()
-            .gameSaveId(gameSaveId)
-            .userId("user123")
-            .eventType(GameSaveEventType.CHARACTERISTICS_UPDATE)
-            .timestamp(System.currentTimeMillis())
-            .payload(payload)
-            .build();
+        new ValkeyGameSaveUpdatedEvent(
+            ValkeyGameSaveEventType.CHARACTERISTICS_UPDATED,
+            gameSaveId,
+            "user-123",
+            UUID.randomUUID(),
+            payload);
     when(objectMapper.convertValue(payload, Characteristics.class)).thenReturn(characteristics);
   }
 
   @Test
   void getEventTypeReturnsCharacteristicsUpdate() {
     EventType eventType = handler.getEventType();
-    assertEquals(GameSaveEventType.CHARACTERISTICS_UPDATE, eventType);
+    assertEquals(ValkeyGameSaveEventType.CHARACTERISTICS_UPDATED, eventType);
   }
 
   @Test

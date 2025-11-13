@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.valkey.stream.consumer.handler.impl;
 
-import static com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType.CHARACTERISTICS_UPDATE;
+import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType.CHARACTERISTICS_UPDATED;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,9 +24,9 @@ import com.lsadf.core.application.game.save.characteristics.CharacteristicsComma
 import com.lsadf.core.application.game.save.characteristics.command.UpdateCacheCharacteristicsCommand;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
-import com.lsadf.core.infra.valkey.stream.event.Event;
-import com.lsadf.core.infra.valkey.stream.event.EventType;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
+import com.lsadf.core.shared.event.Event;
+import com.lsadf.core.shared.event.EventType;
 
 public class CharacteristicsUpdateEventHandler implements EventHandler {
 
@@ -41,19 +41,19 @@ public class CharacteristicsUpdateEventHandler implements EventHandler {
 
   @Override
   public EventType getEventType() {
-    return CHARACTERISTICS_UPDATE;
+    return CHARACTERISTICS_UPDATED;
   }
 
   @Override
   public void handleEvent(Event event) throws JsonProcessingException {
     // string to map
 
-    GameSaveEvent gameSaveEvent = (GameSaveEvent) event;
+    ValkeyGameSaveUpdatedEvent valkeyGameSaveUpdatedEvent = (ValkeyGameSaveUpdatedEvent) event;
     Characteristics characteristics =
-        objectMapper.convertValue(gameSaveEvent.payload(), Characteristics.class);
+        objectMapper.convertValue(valkeyGameSaveUpdatedEvent.getPayload(), Characteristics.class);
     var command =
         UpdateCacheCharacteristicsCommand.fromCharacteristics(
-            gameSaveEvent.gameSaveId(), characteristics);
+            valkeyGameSaveUpdatedEvent.getGameSaveId(), characteristics);
     characteristicsService.updateCacheCharacteristics(command);
   }
 }

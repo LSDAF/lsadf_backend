@@ -16,13 +16,13 @@
 
 package com.lsadf.core.infra.valkey.stream.adapter;
 
-import static com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType.CURRENCY_UPDATE;
+import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType.CURRENCY_UPDATED;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
 import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;
 import java.util.Map;
 import java.util.UUID;
@@ -31,19 +31,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CurrencyEventPublisherAdapter implements CurrencyEventPublisherPort {
 
-  private final StreamProducer<GameSaveEvent> streamProducer;
+  private final StreamProducer<ValkeyGameSaveUpdatedEvent> streamProducer;
   private final String streamKey;
   private final ObjectMapper objectMapper;
 
   @Override
   public void publishCurrencyUpdatedEvent(
       String userEmail, UUID gameSaveId, Currency currency, UUID sessionId) {
-    Long timestamp = System.currentTimeMillis();
     Map<String, String> currencyMap = objectMapper.convertValue(currency, new TypeReference<>() {});
-    GameSaveEvent gameSaveEvent =
-        new GameSaveEvent(
-            gameSaveId, userEmail, CURRENCY_UPDATE, sessionId, timestamp, currencyMap);
-
-    streamProducer.publishEvent(streamKey, gameSaveEvent);
+    ValkeyGameSaveUpdatedEvent valkeyGameSaveUpdatedEvent =
+        new ValkeyGameSaveUpdatedEvent(
+            CURRENCY_UPDATED, gameSaveId, userEmail, sessionId, currencyMap);
+    streamProducer.publishEvent(streamKey, valkeyGameSaveUpdatedEvent);
   }
 }

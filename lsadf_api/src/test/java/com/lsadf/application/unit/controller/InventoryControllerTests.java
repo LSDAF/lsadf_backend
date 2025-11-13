@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.application.controller.game.inventory.InventoryControllerImpl;
+import com.lsadf.core.application.game.inventory.InventoryEventPublisherPort;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
@@ -39,15 +40,14 @@ import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
 import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
-import com.lsadf.core.domain.game.inventory.item.ItemRarity;
-import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
-import com.lsadf.core.domain.game.inventory.item.ItemType;
+import com.lsadf.core.domain.game.inventory.ItemRarity;
+import com.lsadf.core.domain.game.inventory.ItemStatistic;
+import com.lsadf.core.domain.game.inventory.ItemType;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
-import java.util.UUID;
 import java.util.function.Supplier;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -75,6 +75,7 @@ import org.springframework.test.web.servlet.MockMvc;
       GameMetadataRepositoryPort.class,
       CharacteristicsRepositoryPort.class,
       CurrencyRepositoryPort.class,
+      InventoryEventPublisherPort.class,
       GameMailTemplateRepositoryPort.class,
       GameMailRepositoryPort.class,
       StageRepositoryPort.class,

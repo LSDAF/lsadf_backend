@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.application.game.inventory;
 
-import com.lsadf.core.domain.game.inventory.item.Item;
+import com.lsadf.core.domain.game.inventory.Item;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;

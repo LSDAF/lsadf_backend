@@ -16,7 +16,7 @@
 
 package com.lsadf.core.application.game.inventory;
 
-import com.lsadf.core.domain.game.inventory.item.ItemStatistic;
+import com.lsadf.core.domain.game.inventory.ItemStatistic;
 
 public interface ItemStatCommand {
   /**

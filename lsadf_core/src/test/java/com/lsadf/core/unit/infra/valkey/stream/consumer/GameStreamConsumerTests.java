@@ -34,10 +34,10 @@ import com.lsadf.core.infra.valkey.cache.flush.FlushStatus;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandlerRegistry;
 import com.lsadf.core.infra.valkey.stream.consumer.impl.GameStreamConsumer;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
 import com.lsadf.core.infra.valkey.stream.exception.EventHandlingException;
-import com.lsadf.core.infra.valkey.stream.serializer.EventSerializer;
+import com.lsadf.core.infra.valkey.stream.serializer.ValkeyEventSerializer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -66,7 +66,7 @@ class GameStreamConsumerTests {
   @Mock(answer = Answers.RETURNS_DEEP_STUBS)
   private RedisTemplate<String, String> redisTemplate;
 
-  @Mock private EventSerializer<@NonNull GameSaveEvent> eventSerializer;
+  @Mock private ValkeyEventSerializer<@NonNull ValkeyGameSaveUpdatedEvent> valkeyEventSerializer;
 
   @Mock private EventHandlerRegistry handlerRegistry;
 
@@ -86,7 +86,7 @@ class GameStreamConsumerTests {
             STREAM_KEY,
             CONSUMER_GROUP,
             redisTemplate,
-            eventSerializer,
+            valkeyEventSerializer,
             handlerRegistry,
             DEBOUNCE_WINDOW_MS);
   }
@@ -101,15 +101,15 @@ class GameStreamConsumerTests {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     String userId = "user123";
-    GameSaveEventType eventType = GameSaveEventType.STAGE_UPDATE;
+    ValkeyGameSaveEventType eventType = ValkeyGameSaveEventType.STAGE_UPDATED;
     Map<String, String> eventData = new HashMap<>();
 
     MapRecord<String, String, String> mockRecord = createMockRecord(eventData);
 
-    GameSaveEvent event = createGameSaveEvent(gameSaveId, userId, eventType);
+    ValkeyGameSaveUpdatedEvent event = createGameSaveEvent(gameSaveId, userId, eventType);
     EventHandler eventHandler = mock(EventHandler.class);
 
-    when(eventSerializer.deserialize(eventData)).thenReturn(event);
+    when(valkeyEventSerializer.deserialize(eventData)).thenReturn(event);
     when(handlerRegistry.getHandler(eventType)).thenReturn(Optional.of(eventHandler));
     when(redisTemplate.opsForZSet().add(anyString(), anyString(), anyDouble())).thenReturn(true);
 
@@ -117,7 +117,7 @@ class GameStreamConsumerTests {
     gameStreamConsumer.handleEvent(mockRecord);
 
     // Assert
-    verify(eventSerializer).deserialize(eventData);
+    verify(valkeyEventSerializer).deserialize(eventData);
     verify(handlerRegistry).getHandler(eventType);
     verify(eventHandler).handleEvent(event);
     verify(redisTemplate.opsForZSet())
@@ -130,7 +130,7 @@ class GameStreamConsumerTests {
     Map<String, String> eventData = new HashMap<>();
     MapRecord<String, String, String> mockRecord = createMockRecord(eventData);
 
-    when(eventSerializer.deserialize(eventData))
+    when(valkeyEventSerializer.deserialize(eventData))
         .thenThrow(new JsonProcessingException("Deserialization failed") {});
 
     // Act & Assert
@@ -147,13 +147,13 @@ class GameStreamConsumerTests {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     String userId = "user123";
-    GameSaveEventType eventType = GameSaveEventType.CURRENCY_UPDATE;
+    ValkeyGameSaveEventType eventType = ValkeyGameSaveEventType.CURRENCY_UPDATED;
     Map<String, String> eventData = new HashMap<>();
 
     MapRecord<String, String, String> mockRecord = createMockRecord(eventData);
-    GameSaveEvent event = createGameSaveEvent(gameSaveId, userId, eventType);
+    ValkeyGameSaveUpdatedEvent event = createGameSaveEvent(gameSaveId, userId, eventType);
 
-    when(eventSerializer.deserialize(eventData)).thenReturn(event);
+    when(valkeyEventSerializer.deserialize(eventData)).thenReturn(event);
     when(handlerRegistry.getHandler(eventType)).thenReturn(Optional.empty());
 
     // Act & Assert
@@ -169,14 +169,14 @@ class GameStreamConsumerTests {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     String userId = "user123";
-    GameSaveEventType eventType = GameSaveEventType.CHARACTERISTICS_UPDATE;
+    ValkeyGameSaveEventType eventType = ValkeyGameSaveEventType.CHARACTERISTICS_UPDATED;
     Map<String, String> eventData = new HashMap<>();
 
     MapRecord<String, String, String> mockRecord = createMockRecord(eventData);
-    GameSaveEvent event = createGameSaveEvent(gameSaveId, userId, eventType);
+    ValkeyGameSaveUpdatedEvent event = createGameSaveEvent(gameSaveId, userId, eventType);
     EventHandler eventHandler = mock(EventHandler.class);
 
-    when(eventSerializer.deserialize(eventData)).thenReturn(event);
+    when(valkeyEventSerializer.deserialize(eventData)).thenReturn(event);
     when(handlerRegistry.getHandler(eventType)).thenReturn(Optional.of(eventHandler));
     doThrow(new JsonProcessingException("Handler processing failed") {})
         .when(eventHandler)
@@ -192,14 +192,14 @@ class GameStreamConsumerTests {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     String userId = "user123";
-    GameSaveEventType eventType = GameSaveEventType.STAGE_UPDATE;
+    ValkeyGameSaveEventType eventType = ValkeyGameSaveEventType.STAGE_UPDATED;
     Map<String, String> eventData = new HashMap<>();
 
     MapRecord<String, String, String> mockRecord = createMockRecord(eventData);
-    GameSaveEvent event = createGameSaveEvent(gameSaveId, userId, eventType);
+    ValkeyGameSaveUpdatedEvent event = createGameSaveEvent(gameSaveId, userId, eventType);
     EventHandler eventHandler = mock(EventHandler.class);
 
-    when(eventSerializer.deserialize(eventData)).thenReturn(event);
+    when(valkeyEventSerializer.deserialize(eventData)).thenReturn(event);
     when(handlerRegistry.getHandler(eventType)).thenReturn(Optional.of(eventHandler));
 
     // Act
@@ -222,14 +222,8 @@ class GameStreamConsumerTests {
     return mockRecord;
   }
 
-  private GameSaveEvent createGameSaveEvent(
-      UUID gameSaveId, String userId, GameSaveEventType eventType) {
-    return GameSaveEvent.builder()
-        .gameSaveId(gameSaveId)
-        .userId(userId)
-        .eventType(eventType)
-        .timestamp(System.currentTimeMillis())
-        .payload(Map.of("key", "value"))
-        .build();
+  private ValkeyGameSaveUpdatedEvent createGameSaveEvent(
+      UUID gameSaveId, String userId, ValkeyGameSaveEventType eventType) {
+    return new ValkeyGameSaveUpdatedEvent(eventType, gameSaveId, userId, null, new HashMap<>());
   }
 }

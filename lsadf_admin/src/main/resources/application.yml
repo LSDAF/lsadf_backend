@@ -3,6 +3,9 @@ server:
   host-name: localhost
   https: false
 
+async:
+  enabled: false
+
 sleep:
   enabled: ${SLEEP_ENABLED:false}
   seconds: ${SLEEP_SECONDS:5}

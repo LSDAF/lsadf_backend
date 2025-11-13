@@ -58,3 +58,6 @@ sleep:
 
 scheduling:
   enabled: false
+
+async:
+  enabled: false

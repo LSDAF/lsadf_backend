@@ -3,7 +3,8 @@ server:
   host-name: localhost
   https: false
 
-
+async:
+  enabled: false
 
 sleep:
   enabled: ${SLEEP_ENABLED}

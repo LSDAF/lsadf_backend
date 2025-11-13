@@ -16,13 +16,13 @@
 
 package com.lsadf.core.infra.valkey.stream.adapter;
 
-import static com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType.STAGE_UPDATE;
+import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType.STAGE_UPDATED;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
 import com.lsadf.core.domain.game.save.stage.Stage;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
 import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;
 import java.util.Map;
 import java.util.UUID;
@@ -32,17 +32,16 @@ import lombok.RequiredArgsConstructor;
 public class StageEventPublisherAdapter implements StageEventPublisherPort {
 
   private final String streamKey;
-  private final StreamProducer<GameSaveEvent> streamProducer;
+  private final StreamProducer<ValkeyGameSaveUpdatedEvent> streamProducer;
   private final ObjectMapper objectMapper;
 
   @Override
   public void publishStageUpdatedEvent(
       String userEmail, UUID gameSaveId, Stage stage, UUID gameSessionId) {
-    Long timestamp = System.currentTimeMillis();
     Map<String, String> stageMap = objectMapper.convertValue(stage, new TypeReference<>() {});
-    GameSaveEvent gameSaveEvent =
-        new GameSaveEvent(gameSaveId, userEmail, STAGE_UPDATE, gameSessionId, timestamp, stageMap);
-
-    streamProducer.publishEvent(streamKey, gameSaveEvent);
+    ValkeyGameSaveUpdatedEvent valkeyGameSaveUpdatedEvent =
+        new ValkeyGameSaveUpdatedEvent(
+            STAGE_UPDATED, gameSaveId, userEmail, gameSessionId, stageMap);
+    streamProducer.publishEvent(streamKey, valkeyGameSaveUpdatedEvent);
   }
 }

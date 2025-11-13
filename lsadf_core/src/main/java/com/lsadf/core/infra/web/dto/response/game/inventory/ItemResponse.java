@@ -20,8 +20,8 @@ import static com.lsadf.core.infra.web.JsonAttributes.*;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lsadf.core.domain.game.inventory.item.ItemRarity;
-import com.lsadf.core.domain.game.inventory.item.ItemType;
+import com.lsadf.core.domain.game.inventory.ItemRarity;
+import com.lsadf.core.domain.game.inventory.ItemType;
 import com.lsadf.core.infra.web.JsonAttributes;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.response.Response;

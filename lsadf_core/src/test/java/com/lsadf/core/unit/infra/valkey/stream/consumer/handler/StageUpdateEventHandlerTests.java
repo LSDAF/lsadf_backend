@@ -16,6 +16,7 @@
 
 package com.lsadf.core.unit.infra.valkey.stream.consumer.handler;
 
+import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType.STAGE_UPDATED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,9 +26,8 @@ import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.application.game.save.stage.command.UpdateCacheStageCommand;
 import com.lsadf.core.domain.game.save.stage.Stage;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.impl.StageUpdateEventHandler;
-import com.lsadf.core.infra.valkey.stream.event.EventType;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
+import com.lsadf.core.shared.event.EventType;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +46,7 @@ class StageUpdateEventHandlerTests {
   private StageUpdateEventHandler handler;
   private UUID gameSaveId;
   private Map<String, String> payload;
-  private GameSaveEvent event;
+  private ValkeyGameSaveUpdatedEvent event;
   private Stage stage;
 
   private Long currentStage = 5L;
@@ -60,20 +60,13 @@ class StageUpdateEventHandlerTests {
     payload = Map.of("currentStage", "5", "maxStage", "75");
     stage = new Stage(currentStage, maxStage, wave);
 
-    event =
-        GameSaveEvent.builder()
-            .gameSaveId(gameSaveId)
-            .userId("user123")
-            .eventType(GameSaveEventType.STAGE_UPDATE)
-            .timestamp(System.currentTimeMillis())
-            .payload(payload)
-            .build();
+    event = new ValkeyGameSaveUpdatedEvent(STAGE_UPDATED, gameSaveId, "user123", null, payload);
   }
 
   @Test
   void getEventTypeReturnsStageUpdate() {
     EventType eventType = handler.getEventType();
-    assertEquals(GameSaveEventType.STAGE_UPDATE, eventType);
+    assertEquals(STAGE_UPDATED, eventType);
   }
 
   @Test

@@ -16,8 +16,8 @@
 package com.lsadf.core.infra.persistence.adapter.game.inventory;
 
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
-import com.lsadf.core.domain.game.inventory.item.Item;
-import com.lsadf.core.domain.game.inventory.item.ItemStat;
+import com.lsadf.core.domain.game.inventory.Item;
+import com.lsadf.core.domain.game.inventory.ItemStat;
 import com.lsadf.core.infra.persistence.impl.game.inventory.*;
 import java.util.*;
 import java.util.stream.Collectors;

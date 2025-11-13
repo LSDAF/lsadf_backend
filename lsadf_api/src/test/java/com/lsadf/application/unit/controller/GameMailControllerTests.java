@@ -17,6 +17,8 @@
 package com.lsadf.application.unit.controller;
 
 import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -146,8 +148,7 @@ class GameMailControllerTests {
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getGameMailById_returns404_when_mailNotFound() throws Exception {
     // given
-    Mockito.when(gameMailQueryService.getMailById(Mockito.any(UUID.class)))
-        .thenThrow(new NotFoundException());
+    when(gameMailQueryService.getMailById(any(UUID.class))).thenThrow(new NotFoundException());
     // when
     mockMvc
         .perform(
@@ -184,7 +185,7 @@ class GameMailControllerTests {
     // given
     Mockito.doThrow(new NotFoundException())
         .when(gameMailCommandService)
-        .deleteAllReadGameMailsByGameSaveId(Mockito.any(UUID.class));
+        .deleteAllReadGameMailsByGameSaveId(any(UUID.class));
     // when
     mockMvc
         .perform(
@@ -223,9 +224,7 @@ class GameMailControllerTests {
   @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_claimGameMailAttachments_returns404_when_mailNotFound() throws Exception {
     // given
-    Mockito.doThrow(new NotFoundException())
-        .when(gameMailCommandService)
-        .claimGameMailAttachments(Mockito.any(UUID.class));
+    when(gameMailQueryService.getMailById(any())).thenThrow(NotFoundException.class);
     // when
     mockMvc
         .perform(

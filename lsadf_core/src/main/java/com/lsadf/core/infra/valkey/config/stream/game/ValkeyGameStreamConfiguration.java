@@ -23,8 +23,8 @@ import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamPersistence
 import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamProperties;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandlerRegistry;
 import com.lsadf.core.infra.valkey.stream.consumer.impl.GameStreamConsumer;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
-import com.lsadf.core.infra.valkey.stream.serializer.EventSerializer;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
+import com.lsadf.core.infra.valkey.stream.serializer.ValkeyEventSerializer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -48,7 +48,7 @@ public class ValkeyGameStreamConfiguration {
   @Bean
   public GameStreamConsumer debouncedPersistenceConsumer(
       RedisTemplate<String, String> redisTemplate,
-      EventSerializer<GameSaveEvent> gameEventSerializer,
+      ValkeyEventSerializer<ValkeyGameSaveUpdatedEvent> gameValkeyEventSerializer,
       EventHandlerRegistry eventHandlerRegistry,
       ValkeyGameStreamProperties valkeyGameStreamProperties,
       ValkeyGameStreamPersistenceProperties valkeyGameStreamPersistenceProperties) {
@@ -57,7 +57,7 @@ public class ValkeyGameStreamConfiguration {
         valkeyGameStreamProperties.getStreamKey(),
         valkeyGameStreamProperties.getConsumerGroup(),
         redisTemplate,
-        gameEventSerializer,
+        gameValkeyEventSerializer,
         eventHandlerRegistry,
         valkeyGameStreamPersistenceProperties.getDebounceWindowMs());
   }

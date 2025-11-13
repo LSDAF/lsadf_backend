@@ -16,7 +16,7 @@
 
 package com.lsadf.core.infra.valkey.stream.consumer.handler.impl;
 
-import static com.lsadf.core.infra.valkey.stream.event.game.GameSaveEventType.CURRENCY_UPDATE;
+import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType.CURRENCY_UPDATED;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,9 +24,9 @@ import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.currency.command.UpdateCacheCurrencyCommand;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
-import com.lsadf.core.infra.valkey.stream.event.Event;
-import com.lsadf.core.infra.valkey.stream.event.EventType;
-import com.lsadf.core.infra.valkey.stream.event.game.GameSaveEvent;
+import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
+import com.lsadf.core.shared.event.Event;
+import com.lsadf.core.shared.event.EventType;
 
 public class CurrencyUpdateEventHandler implements EventHandler {
 
@@ -41,15 +41,17 @@ public class CurrencyUpdateEventHandler implements EventHandler {
 
   @Override
   public EventType getEventType() {
-    return CURRENCY_UPDATE;
+    return CURRENCY_UPDATED;
   }
 
   @Override
   public void handleEvent(Event event) throws JsonProcessingException {
-    GameSaveEvent gameSaveEvent = (GameSaveEvent) event;
-    Currency currency = objectMapper.convertValue(gameSaveEvent.payload(), Currency.class);
+    ValkeyGameSaveUpdatedEvent valkeyGameSaveUpdatedEvent = (ValkeyGameSaveUpdatedEvent) event;
+    Currency currency =
+        objectMapper.convertValue(valkeyGameSaveUpdatedEvent.getPayload(), Currency.class);
     UpdateCacheCurrencyCommand command =
-        UpdateCacheCurrencyCommand.fromCurrency(gameSaveEvent.gameSaveId(), currency);
+        UpdateCacheCurrencyCommand.fromCurrency(
+            valkeyGameSaveUpdatedEvent.getGameSaveId(), currency);
     currencyService.updateCacheCurrency(command);
   }
 }
