@@ -21,9 +21,13 @@ import static com.lsadf.core.domain.game.mail.event.GameMailEventType.GAME_MAIL_
 import com.lsadf.core.shared.event.AEvent;
 import com.lsadf.core.shared.event.Event;
 import java.util.UUID;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
+@EqualsAndHashCode(callSuper = false)
 public class GameMailAttachmentsClaimedEvent extends AEvent implements Event {
   private final UUID gameMailId;
   private final String userId;

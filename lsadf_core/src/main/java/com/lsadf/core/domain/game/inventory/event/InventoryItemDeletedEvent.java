@@ -21,9 +21,13 @@ import static com.lsadf.core.domain.game.inventory.event.InventoryEventType.INVE
 import com.lsadf.core.shared.event.AEvent;
 import com.lsadf.core.shared.event.Event;
 import java.util.UUID;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
+@EqualsAndHashCode(callSuper = false)
 public class InventoryItemDeletedEvent extends AEvent implements Event {
   private final UUID gameSaveId;
   private final String userId;
