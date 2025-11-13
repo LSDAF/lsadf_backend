@@ -16,14 +16,14 @@
 
 package com.lsadf.core.infra.valkey.stream.event.game;
 
-import com.lsadf.core.infra.valkey.stream.event.EventType;
+import com.lsadf.core.shared.event.EventType;
 
-public enum GameSaveEventType implements EventType {
-  CHARACTERISTICS_UPDATE,
-  STAGE_UPDATE,
-  CURRENCY_UPDATE;
+public enum ValkeyGameSaveEventType implements EventType {
+  CHARACTERISTICS_UPDATED,
+  STAGE_UPDATED,
+  CURRENCY_UPDATED;
 
-  public static GameSaveEventType enumFromString(String value) {
+  public static ValkeyGameSaveEventType enumFromString(String value) {
     for (var eventType : values()) {
       if (eventType.name().equals(value)) {
         return eventType;
