@@ -17,9 +17,10 @@
 package com.lsadf.core.application.game.mail;
 
 import com.lsadf.core.application.shared.EventPublisherPort;
+import java.util.UUID;
 
 public interface GameMailEventPublisherPort extends EventPublisherPort {
-  void publishGameMailReadEvent(String userId, String gameMailId);
+  void publishGameMailReadEvent(String userId, UUID gameMailId);
 
-  void publishGameMailAttachmentsClaimed(String userId, String gameMailId);
+  void publishGameMailAttachmentsClaimed(String userId, UUID gameMailId);
 }

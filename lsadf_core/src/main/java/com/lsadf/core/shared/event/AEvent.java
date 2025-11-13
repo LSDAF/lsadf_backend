@@ -24,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public abstract class AEvent implements Event {
-  private final EventType eventType;
-  private final Long timestamp = System.currentTimeMillis();
+  protected final EventType eventType;
+  protected final Long timestamp = System.currentTimeMillis();
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   public static final class EventAttributes {

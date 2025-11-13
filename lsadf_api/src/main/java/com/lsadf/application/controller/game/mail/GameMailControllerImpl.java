@@ -16,9 +16,12 @@
 
 package com.lsadf.application.controller.game.mail;
 
+import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.mail.GameMailCommandService;
+import com.lsadf.core.application.game.mail.GameMailEventPublisherPort;
 import com.lsadf.core.application.game.mail.GameMailQueryService;
 import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.domain.game.mail.GameMail;
@@ -48,6 +51,7 @@ public class GameMailControllerImpl extends BaseController implements GameMailCo
   private final GameMailQueryService gameMailQueryService;
   private final GameMailCommandService gameMailCommandService;
   private final GameSessionQueryService gameSessionQueryService;
+  private final GameMailEventPublisherPort gameMailEventPublisherPort;
   private final ClockService clockService;
 
   private static final GameMailResponseMapper gameMailResponseMapper =
@@ -68,7 +72,8 @@ public class GameMailControllerImpl extends BaseController implements GameMailCo
     validateUser(jwt);
     GameMail result = gameMailQueryService.getMailById(gameMailId);
     if (!result.isRead()) {
-      gameMailCommandService.readGameMailById(gameMailId);
+      gameMailEventPublisherPort.publishGameMailAttachmentsClaimed(
+          getUsernameFromJwt(jwt), gameMailId);
       result.setRead(true);
     }
     var response = gameMailResponseMapper.map(result);
@@ -102,7 +107,8 @@ public class GameMailControllerImpl extends BaseController implements GameMailCo
       throw new ForbiddenException("Cannot claim attachments, they are already claimed");
     }
 
-    gameMailCommandService.claimGameMailAttachments(gameMailId);
+    gameMailEventPublisherPort.publishGameMailAttachmentsClaimed(
+        getUsernameFromJwt(jwt), gameMailId);
     return ResponseUtils.generateResponse(HttpStatus.OK);
   }
 

@@ -17,9 +17,11 @@ package com.lsadf.core.infra.logging;
 
 import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.infra.logging.interceptor.RequestLoggerInterceptor;
+import com.lsadf.core.infra.logging.properties.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.properties.HttpLogProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 @Configuration
 public class LoggingConfiguration {
@@ -27,5 +29,12 @@ public class LoggingConfiguration {
   public RequestLoggerInterceptor requestLoggerInterceptor(
       HttpLogProperties httpLogProperties, ClockService clockService) {
     return new RequestLoggerInterceptor(httpLogProperties, clockService);
+  }
+
+  @Bean
+  public ConfigurationLogger configurationLogger(
+      ConfigurableEnvironment environment,
+      ConfigurationDisplayProperties configurationDisplayProperties) {
+    return new ConfigurationLogger(environment, configurationDisplayProperties);
   }
 }
