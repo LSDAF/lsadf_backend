@@ -16,6 +16,7 @@
 
 package com.lsadf.core.infra.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,13 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @Configuration
 @EnableAsync
 @ConditionalOnProperty(prefix = "async", name = "enabled", havingValue = "true")
+@Slf4j
 public class AsyncConfiguration {
+
+  public AsyncConfiguration() {
+    log.info("@Async processing is enabled.");
+  }
+
   @Bean
   public TaskExecutor asyncTaskExecutor() {
     ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
