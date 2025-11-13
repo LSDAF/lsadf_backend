@@ -72,8 +72,7 @@ public class GameMailControllerImpl extends BaseController implements GameMailCo
     validateUser(jwt);
     GameMail result = gameMailQueryService.getMailById(gameMailId);
     if (!result.isRead()) {
-      gameMailEventPublisherPort.publishGameMailAttachmentsClaimed(
-          getUsernameFromJwt(jwt), gameMailId);
+      gameMailEventPublisherPort.publishGameMailReadEvent(getUsernameFromJwt(jwt), gameMailId);
       result.setRead(true);
     }
     var response = gameMailResponseMapper.map(result);
