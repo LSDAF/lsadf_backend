@@ -21,6 +21,7 @@ import com.lsadf.core.application.game.mail.GameMailCommandService;
 import com.lsadf.core.application.game.mail.GameMailSenderService;
 import com.lsadf.core.application.game.mail.command.DeleteGameMailsCommand;
 import com.lsadf.core.application.game.mail.command.SendEmailCommand;
+import com.lsadf.core.exception.http.BadRequestException;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.game.mail.DeleteGameMailsRequest;
 import com.lsadf.core.infra.web.dto.request.game.mail.SendGameMailRequest;
@@ -84,9 +85,8 @@ public class AdminGameMailControllerImpl extends BaseController implements Admin
 
     if (request == null) {
       log.error("DeleteGameMailsRequest cannot be null when no expiration parameter is provided");
-      return generateResponse(
-          HttpStatus.BAD_REQUEST,
-          "Request body is required when expiration parameter is not provided");
+      throw new BadRequestException(
+          "DeleteGameMailsRequest cannot be null when no expiration parameter is provided");
     }
 
     // Handle deletion by specific IDs

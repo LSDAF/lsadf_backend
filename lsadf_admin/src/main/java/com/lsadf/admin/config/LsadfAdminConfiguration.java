@@ -17,6 +17,7 @@ package com.lsadf.admin.config;
 
 import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.config.ApplicationServiceConfiguration;
+import com.lsadf.core.infra.config.AsyncConfiguration;
 import com.lsadf.core.infra.config.JacksonConfiguration;
 import com.lsadf.core.infra.config.PropertiesConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
@@ -57,6 +58,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   KeycloakConfiguration.class,
   LsadfAdminSecurityConfiguration.class,
   GlobalExceptionHandler.class,
-  JacksonConfiguration.class
+  JacksonConfiguration.class,
+  AsyncConfiguration.class
 })
 public class LsadfAdminConfiguration {}
