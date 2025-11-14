@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.request.game.save.creation;
 
-
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.dto.request.game.metadata.GameMetadataRequest;

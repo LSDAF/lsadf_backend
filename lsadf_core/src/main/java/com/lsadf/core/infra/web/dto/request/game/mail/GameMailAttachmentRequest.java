@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.request.game.mail;
 
-
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 
 public record GameMailAttachmentRequest<T>(GameMailAttachmentType type, T object) {}

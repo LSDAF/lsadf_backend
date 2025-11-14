@@ -15,7 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.user.login;
 
-
 import com.lsadf.core.infra.web.dto.request.Request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

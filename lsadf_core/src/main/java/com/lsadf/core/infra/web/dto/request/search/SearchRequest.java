@@ -15,7 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.search;
 
-
 import com.lsadf.core.infra.web.dto.request.Request;
 import com.lsadf.core.infra.web.dto.request.common.Filter;
 import jakarta.validation.Valid;

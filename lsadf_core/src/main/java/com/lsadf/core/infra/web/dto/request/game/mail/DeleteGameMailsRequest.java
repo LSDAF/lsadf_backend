@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.request.game.mail;
 
-
 import com.lsadf.core.infra.web.dto.request.Request;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
