@@ -16,11 +16,7 @@
 
 package com.lsadf.core.infra.web.dto.request.game.mail;
 
-import static com.lsadf.core.infra.web.JsonAttributes.OBJECT;
-import static com.lsadf.core.infra.web.JsonAttributes.TYPE;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 
-public record GameMailAttachmentRequest<T>(
-    @JsonProperty(TYPE) GameMailAttachmentType type, @JsonProperty(OBJECT) T object) {}
+public record GameMailAttachmentRequest<T>(GameMailAttachmentType type, T object) {}

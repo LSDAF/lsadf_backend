@@ -16,9 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.request.game.mail;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.request.Request;
 import jakarta.validation.constraints.NotEmpty;
 import java.io.Serial;
@@ -27,10 +24,10 @@ import org.jspecify.annotations.Nullable;
 
 @Builder
 public record GameMailTemplateRequest(
-    @NotEmpty @JsonProperty(NAME) String name,
-    @NotEmpty @JsonProperty(SUBJECT) String subject,
-    @NotEmpty @JsonProperty(BODY) String body,
-    @Nullable @JsonProperty(EXPIRATION_DAYS) Integer expirationDays)
+    @NotEmpty String name,
+    @NotEmpty String subject,
+    @NotEmpty String body,
+    @Nullable Integer expirationDays)
     implements Request {
   @Serial private static final long serialVersionUID = -1408819149940233516L;
 }

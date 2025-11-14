@@ -16,9 +16,7 @@
 
 package com.lsadf.core.infra.web.dto.request.game.save.creation;
 
-import static com.lsadf.core.infra.web.JsonAttributes.USER_EMAIL;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.dto.request.game.metadata.GameMetadataRequest;
@@ -47,10 +45,7 @@ import java.io.Serial;
  * getStageRequest}: Returns null as no stage data is provided.
  */
 public record SimpleGameSaveCreationRequest(
-    @JsonProperty(value = USER_EMAIL)
-        @Schema(description = "Email of the user", example = "test@test.com")
-        @Email
-        @NotNull
+    @Schema(description = "Email of the user", example = "test@test.com") @Email @NotNull
         String userEmail)
     implements GameSaveCreationRequest {
   @Serial private static final long serialVersionUID = 130532544991093362L;

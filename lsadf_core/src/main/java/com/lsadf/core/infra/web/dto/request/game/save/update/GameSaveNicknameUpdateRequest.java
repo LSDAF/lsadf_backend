@@ -15,9 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.game.save.update;
 
-import static com.lsadf.core.infra.web.JsonAttributes.NICKNAME;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
@@ -29,10 +26,7 @@ import org.jspecify.annotations.Nullable;
 
 @Builder
 public record GameSaveNicknameUpdateRequest(
-    @JsonProperty(value = NICKNAME)
-        @Nickname
-        @Schema(description = "Nickname of the user", example = "test")
-        String getNickname)
+    @Nickname @Schema(description = "Nickname of the user", example = "test") String getNickname)
     implements GameSaveUpdateRequest {
 
   @Serial private static final long serialVersionUID = -6478222007381338108L;

@@ -32,7 +32,7 @@ public interface ItemCommand {
   /**
    * @return the item type as string (e.g., "boots", "weapon")
    */
-  String getItemType();
+  String getType();
 
   /**
    * @return the blueprint identifier for the item
@@ -42,7 +42,7 @@ public interface ItemCommand {
   /**
    * @return the item rarity as string (e.g., "LEGENDARY", "COMMON")
    */
-  String getItemRarity();
+  String getRarity();
 
   /**
    * @return whether the item is currently equipped

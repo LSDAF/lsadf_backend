@@ -16,10 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.common.game.inventory;
 
-import static com.lsadf.core.infra.web.JsonAttributes.BASE_VALUE;
-import static com.lsadf.core.infra.web.JsonAttributes.STATISTIC;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.application.game.inventory.ItemStatCommand;
 import com.lsadf.core.domain.game.inventory.ItemStatistic;
 import com.lsadf.core.infra.web.dto.Dto;
@@ -28,14 +24,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record ItemStatDto(
-    @JsonProperty(value = STATISTIC)
-        @Schema(description = "Item stat statistic", example = "ATTACK_ADD")
-        @NotNull
+    @Schema(description = "Item stat statistic", example = "ATTACK_ADD") @NotNull
         ItemStatistic statistic,
-    @JsonProperty(value = BASE_VALUE)
-        @Schema(description = "Item stat base value", example = "100.0")
-        @Positive
-        Float baseValue)
+    @Schema(description = "Item stat base value", example = "100.0") @Positive Float baseValue)
     implements Dto, ItemStatCommand {
 
   // Interface implementation methods
