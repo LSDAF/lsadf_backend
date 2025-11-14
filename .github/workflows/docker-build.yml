@@ -63,7 +63,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          input: /tmp/lsadf-backend-image.tar
+          input: /tmp/lsadf-api-backend-image.tar
           format: 'table'
           exit-code: '0'
           ignore-unfixed: true
@@ -73,7 +73,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          input: /tmp/lsadf-backend-image.tar
+          input: /tmp/lsadf-admin-backend-image.tar
           format: 'table'
           exit-code: '0'
           ignore-unfixed: true
