@@ -28,7 +28,6 @@ import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j(topic = "[GAME SAVE THEN STEP DEFINITIONS]")
 @Component
@@ -62,7 +61,6 @@ public class BddThenGameSaveStepDefinitions {
     }
   }
 
-  @Transactional(readOnly = true)
   public void thenTheNumberOfGameSavesShouldBe(int expected) {
     var list = gameSaveService.getGameSaves();
     assertThat(list).hasSize(expected);

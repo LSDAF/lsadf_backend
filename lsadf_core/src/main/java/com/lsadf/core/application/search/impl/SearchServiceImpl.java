@@ -29,7 +29,6 @@ import com.lsadf.core.infra.web.dto.request.search.SearchRequest;
 import com.lsadf.core.infra.web.dto.request.user.UserSortingParameter;
 import java.util.List;
 import java.util.stream.Stream;
-import org.springframework.transaction.annotation.Transactional;
 
 /** Implementation of SearchService */
 public class SearchServiceImpl implements SearchService {
@@ -71,7 +70,6 @@ public class SearchServiceImpl implements SearchService {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public Stream<GameSave> searchGameSaves(
       SearchRequest searchRequest, List<GameSaveSortingParameter> orderBy) {
     Stream<GameSave> gameSaveStream = gameSaveService.getGameSaves().stream();
