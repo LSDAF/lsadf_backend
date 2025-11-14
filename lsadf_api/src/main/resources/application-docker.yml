@@ -1,6 +1,9 @@
 server:
   port: ${LSADF_API_PORT}
 
+async:
+  enabled: true
+
 db:
   url: ${DB_URL_DOCKER}
 
