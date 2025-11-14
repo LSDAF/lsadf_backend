@@ -39,7 +39,6 @@ public class GameSessionRepositoryAdapter implements GameSessionRepositoryPort {
   private static final GameSessionViewMapper gameSessionViewMapper = GameSessionViewMapper.INSTANCE;
 
   @Override
-  @Transactional(readOnly = true)
   public Optional<GameSession> getGameSessionById(UUID id) {
     Optional<GameSessionViewEntity> gameSessionEntity =
         gameSessionViewRepository.findLatestBySessionId(id);
@@ -51,7 +50,6 @@ public class GameSessionRepositoryAdapter implements GameSessionRepositoryPort {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public List<GameSession> getGameSessionsByGameSaveId(UUID gameSaveId) {
     List<GameSessionViewEntity> databaseResults =
         gameSessionViewRepository.findByGameSaveId(gameSaveId);
