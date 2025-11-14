@@ -31,7 +31,7 @@ RUN java -Djarmode=layertools -jar lsadf_api.jar extract
 COPY --from=compiler startup.sh .
 
 # Stage 3: Create the final image
-FROM eclipse-temurin:25-jre-noble
+FROM gcr.io/distroless/java25-debian13:nonroot
 
 EXPOSE 8080
 LABEL org.opencontainers.image.source="https://github.com/LSDAF/lsadf_backend"
