@@ -15,9 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.game.stage;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.game.save.stage.validation.StageConsistency;
 import com.lsadf.core.infra.web.dto.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,20 +24,11 @@ import java.io.Serial;
 
 @StageConsistency(currentStageField = "currentStage", maxStageField = "maxStage")
 public record StageRequest(
-    @Schema(description = "The Current game stage", example = "26")
-        @JsonProperty(value = CURRENT_STAGE)
-        @Positive
-        @NotNull
+    @Schema(description = "The Current game stage", example = "26") @Positive @NotNull
         Long currentStage,
-    @Schema(description = "The Maximum game stage", example = "260")
-        @JsonProperty(value = MAX_STAGE)
-        @Positive
-        @NotNull
+    @Schema(description = "The Maximum game stage", example = "260") @Positive @NotNull
         Long maxStage,
-    @Schema(description = "The Current wave in the stage", example = "3")
-        @JsonProperty(value = WAVE)
-        @Positive
-        @NotNull
+    @Schema(description = "The Current wave in the stage", example = "3") @Positive @NotNull
         Long wave)
     implements Request {
 

@@ -15,9 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.game.characteristics;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
@@ -38,29 +35,20 @@ import org.jspecify.annotations.Nullable;
  */
 @Builder
 public record CharacteristicsRequest(
-    @Nullable
-        @Schema(description = "The attack level of the user", example = "100")
-        @JsonProperty(value = ATTACK)
-        @Positive
+    @Nullable @Schema(description = "The attack level of the user", example = "100") @Positive
         Long attack,
     @Nullable
         @Schema(description = "The critical chance level of the user", example = "100")
-        @JsonProperty(value = CRIT_CHANCE)
         @PositiveOrZero
         Long critChance,
     @Nullable
         @Schema(description = "The critical damage level of the user", example = "100")
-        @JsonProperty(value = CRIT_DAMAGE)
         @PositiveOrZero
         Long critDamage,
-    @Nullable
-        @Schema(description = "The health level of the user", example = "100")
-        @JsonProperty(value = HEALTH)
-        @Positive
+    @Nullable @Schema(description = "The health level of the user", example = "100") @Positive
         Long health,
     @Nullable
         @Schema(description = "The resistance level of the user", example = "100")
-        @JsonProperty(value = RESISTANCE)
         @PositiveOrZero
         Long resistance)
     implements Request {

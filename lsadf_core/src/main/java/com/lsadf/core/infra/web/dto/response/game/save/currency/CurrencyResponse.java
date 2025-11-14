@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.response.game.save.currency;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lsadf.core.infra.web.dto.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;

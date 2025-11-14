@@ -16,9 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.request.game.metadata;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.user.validation.Nickname;
 import com.lsadf.core.infra.web.dto.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,17 +30,9 @@ import org.jspecify.annotations.Nullable;
 public record GameMetadataRequest(
     @Nullable
         @Schema(description = "Game Save ID", example = "123e4567-e89b-12d3-a456-426655440000")
-        @JsonProperty(value = ID)
         UUID id,
-    @Schema(description = "User Email", example = "toto@toto.com")
-        @JsonProperty(value = USER_EMAIL)
-        @Email
-        @NotNull
-        String userEmail,
-    @Nullable
-        @Schema(description = "The nickname of the game save", example = "Hero2340")
-        @JsonProperty(value = NICKNAME)
-        @Nickname
+    @Schema(description = "User Email", example = "toto@toto.com") @Email @NotNull String userEmail,
+    @Nullable @Schema(description = "The nickname of the game save", example = "Hero2340") @Nickname
         String nickname)
     implements Request {
   @Serial private static final long serialVersionUID = 7340207014576099854L;

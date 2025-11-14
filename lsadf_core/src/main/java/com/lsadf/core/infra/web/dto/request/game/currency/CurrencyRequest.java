@@ -15,9 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.game.currency;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -27,25 +24,13 @@ import org.jspecify.annotations.Nullable;
 
 @Builder
 public record CurrencyRequest(
-    @Nullable
-        @Schema(description = "The amount of gold", example = "100")
-        @JsonProperty(value = GOLD)
-        @PositiveOrZero
+    @Nullable @Schema(description = "The amount of gold", example = "100") @PositiveOrZero
         Long gold,
-    @Nullable
-        @Schema(description = "The amount of diamond", example = "100")
-        @JsonProperty(value = DIAMOND)
-        @PositiveOrZero
+    @Nullable @Schema(description = "The amount of diamond", example = "100") @PositiveOrZero
         Long diamond,
-    @Nullable
-        @Schema(description = "The amount of emerald", example = "100")
-        @JsonProperty(value = EMERALD)
-        @PositiveOrZero
+    @Nullable @Schema(description = "The amount of emerald", example = "100") @PositiveOrZero
         Long emerald,
-    @Nullable
-        @Schema(description = "The amount of amethyst", example = "100")
-        @JsonProperty(value = AMETHYST)
-        @PositiveOrZero
+    @Nullable @Schema(description = "The amount of amethyst", example = "100") @PositiveOrZero
         Long amethyst)
     implements Request {
 
