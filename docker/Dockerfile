@@ -1,5 +1,9 @@
 # Stage 1: Build the application
 FROM maven:3.9-eclipse-temurin-25-noble AS compiler
+
+# Build argument to select module (default: lsadf_api)
+ARG MODULE=lsadf_api
+
 COPY env env/
 COPY build_parent build_parent/
 COPY lsadf_build_tools lsadf_build_tools/
@@ -13,29 +17,29 @@ COPY lsadf_test_report/ lsadf_test_report/
 
 COPY pom.xml .
 COPY ./docker/startup.sh .
-# Delete application-local.yml to prevent ambiguous configurations
-#RUN rm lsadf_api/src/main/resources/application-local.yml
 
 # Delete the test jar to reduce the image size and fix docker build duplicate jar issue
 RUN mvn clean install -DskipTests --quiet \
-    && rm lsadf_api/target/*-tests.jar \
-    && mv lsadf_api/target/*.jar lsadf_api/target/lsadf_api.jar
+    && rm ${MODULE}/target/*-tests.jar \
+    && mv ${MODULE}/target/*.jar ${MODULE}/target/app.jar
 
 
 FROM eclipse-temurin:25-jre-noble AS builder
 
-COPY --from=compiler lsadf_api/target/lsadf_api.jar lsadf_api.jar
-COPY --from=compiler lsadf_api/target/classes/logback-docker.xml logback-docker.xml
+ARG MODULE=lsadf_api
 
-RUN java -Djarmode=layertools -jar lsadf_api.jar extract
+COPY --from=compiler ${MODULE}/target/app.jar app.jar
+COPY --from=compiler ${MODULE}/target/classes/logback-docker.xml logback-docker.xml
+
+RUN java -Djarmode=layertools -jar app.jar extract
 COPY --from=compiler startup.sh .
 
 # Stage 3: Create the final image
-FROM gcr.io/distroless/java25-debian13:nonroot
+FROM eclipse-temurin:25-jre-noble
 
 EXPOSE 8080
 LABEL org.opencontainers.image.source="https://github.com/LSDAF/lsadf_backend"
-LABEL org.opencontainers.image.description="LSADF API container image."
+LABEL org.opencontainers.image.description="LSADF container image."
 
 # Copy layers from the build stage
 COPY --from=builder dependencies/ ./

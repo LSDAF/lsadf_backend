@@ -40,14 +40,35 @@ jobs:
         run: |
           mv env/env.EXAMPLE.properties env/env.properties
 
-      - name: Docker Build
+      - name: LSADF API Docker Build
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
           file: docker/Dockerfile
+          build-args: BUILD=lsadf_api
           push: false
-          tags: lsadf-backend:latest
-          outputs: type=docker,dest=/tmp/lsadf-backend-image.tar
+          tags: lsadf-api-backend:latest
+          outputs: type=docker,dest=/tmp/lsadf-api-backend-image.tar
+
+      - name: LSADF Admin API Docker Build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64
+          file: docker/Dockerfile
+          build-args: BUILD=lsadf_admin
+          push: false
+          tags: lsadf-admin-backend:latest
+          outputs: type=docker,dest=/tmp/lsadf-admin-backend-image.tar
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          input: /tmp/lsadf-backend-image.tar
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'MEDIUM,CRITICAL,HIGH'
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
