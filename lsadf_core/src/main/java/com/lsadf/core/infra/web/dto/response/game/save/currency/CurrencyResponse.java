@@ -16,13 +16,7 @@
 
 package com.lsadf.core.infra.web.dto.response.game.save.currency;
 
-import static com.lsadf.core.infra.web.JsonAttributes.AMETHYST;
-import static com.lsadf.core.infra.web.JsonAttributes.DIAMOND;
-import static com.lsadf.core.infra.web.JsonAttributes.EMERALD;
-import static com.lsadf.core.infra.web.JsonAttributes.GOLD;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -31,12 +25,8 @@ import lombok.Builder;
 @Schema(name = "Currency", description = "Currency object")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record CurrencyResponse(
-    @Schema(description = "The amount of gold", example = "100") @JsonProperty(value = GOLD)
-        Long gold,
-    @Schema(description = "The amount of diamond", example = "100") @JsonProperty(value = DIAMOND)
-        Long diamond,
-    @Schema(description = "The amount of emerald", example = "100") @JsonProperty(value = EMERALD)
-        Long emerald,
-    @Schema(description = "The amount of amethyst", example = "100") @JsonProperty(value = AMETHYST)
-        Long amethyst)
+    @Schema(description = "The amount of gold", example = "100") Long gold,
+    @Schema(description = "The amount of diamond", example = "100") Long diamond,
+    @Schema(description = "The amount of emerald", example = "100") Long emerald,
+    @Schema(description = "The amount of amethyst", example = "100") Long amethyst)
     implements Response {}

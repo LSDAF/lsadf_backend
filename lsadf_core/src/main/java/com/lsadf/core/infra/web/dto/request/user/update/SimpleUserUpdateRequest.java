@@ -15,10 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.user.update;
 
-import static com.lsadf.core.infra.web.JsonAttributes.FIRST_NAME;
-import static com.lsadf.core.infra.web.JsonAttributes.LAST_NAME;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serial;
 import java.util.List;
@@ -26,9 +22,7 @@ import lombok.Builder;
 import org.jspecify.annotations.Nullable;
 
 @Builder
-public record SimpleUserUpdateRequest(
-    @JsonProperty(value = FIRST_NAME) @NotBlank String firstName,
-    @JsonProperty(value = LAST_NAME) @NotBlank String lastName)
+public record SimpleUserUpdateRequest(@NotBlank String firstName, @NotBlank String lastName)
     implements UserUpdateRequest {
 
   @Serial private static final long serialVersionUID = 3391683431995156829L;

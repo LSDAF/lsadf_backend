@@ -63,8 +63,8 @@ public class InventoryServiceImpl implements InventoryService {
           "Item with client id " + itemRequest.getClientId() + " already exists");
     }
 
-    ItemType itemType = ItemType.fromString(itemRequest.getItemType());
-    ItemRarity itemRarity = ItemRarity.fromString(itemRequest.getItemRarity());
+    ItemType itemType = ItemType.fromString(itemRequest.getType());
+    ItemRarity itemRarity = ItemRarity.fromString(itemRequest.getRarity());
     ItemStat mainStat =
         new ItemStat(
             itemRequest.getMainStat().getStatistic(), itemRequest.getMainStat().getBaseValue());
@@ -120,8 +120,8 @@ public class InventoryServiceImpl implements InventoryService {
 
     Item existingItem = optionalItem.get();
 
-    ItemType itemType = ItemType.fromString(itemRequest.getItemType());
-    ItemRarity itemRarity = ItemRarity.fromString(itemRequest.getItemRarity());
+    ItemType itemType = ItemType.fromString(itemRequest.getType());
+    ItemRarity itemRarity = ItemRarity.fromString(itemRequest.getRarity());
     ItemStat mainStat =
         new ItemStat(
             itemRequest.getMainStat().getStatistic(), itemRequest.getMainStat().getBaseValue());

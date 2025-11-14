@@ -15,10 +15,7 @@
  */
 package com.lsadf.core.infra.web.dto.response;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serial;
 import java.io.Serializable;
 import lombok.Builder;
@@ -31,10 +28,7 @@ import org.jspecify.annotations.Nullable;
  */
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ApiResponse<T>(
-    @JsonProperty(value = STATUS) int status,
-    @Nullable @JsonProperty(value = MESSAGE) String message,
-    @Nullable @JsonProperty(value = DATA) T data)
+public record ApiResponse<T>(int status, @Nullable String message, @Nullable T data)
     implements Serializable {
   @Serial private static final long serialVersionUID = 5392685232533641077L;
 }

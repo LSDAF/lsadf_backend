@@ -22,7 +22,6 @@ import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.domain.info.GlobalInfo;
 import java.util.Date;
-import org.springframework.transaction.annotation.Transactional;
 
 public class GlobalInfoServiceImpl implements GlobalInfoService {
 
@@ -38,7 +37,6 @@ public class GlobalInfoServiceImpl implements GlobalInfoService {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public GlobalInfo getGlobalInfo() {
     Date now = clockService.nowDate();
     var userCount = userService.countUsers();

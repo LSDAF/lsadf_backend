@@ -16,9 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.response.game.save.stage;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -26,12 +23,7 @@ import lombok.Builder;
 @Builder
 @Schema(name = "Stage", description = "Stage object containing the player's game progress")
 public record StageResponse(
-    @Schema(description = "The Current game stage", example = "26")
-        @JsonProperty(value = CURRENT_STAGE)
-        Long currentStage,
-    @Schema(description = "The Maximum game stage", example = "26") @JsonProperty(value = MAX_STAGE)
-        Long maxStage,
-    @Schema(description = "The Current wave in the stage", example = "3")
-        @JsonProperty(value = WAVE)
-        Long wave)
+    @Schema(description = "The Current game stage", example = "26") Long currentStage,
+    @Schema(description = "The Maximum game stage", example = "26") Long maxStage,
+    @Schema(description = "The Current wave in the stage", example = "3") Long wave)
     implements Response {}

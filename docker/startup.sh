@@ -1,5 +1,12 @@
 #!/bin/sh
 
+SLEEP_ENABLED=${SLEEP_ENABLED:-false}
+SLEEP_SECONDS=${SLEEP_SECONDS:-5}
+
+if [ "$SLEEP_ENABLED" = "true" ]; then
+  echo "Sleeping for 30 seconds to allow dependent services to start..."
+  sleep $SLEEP_SECONDS
+fi
 
 java \
   -XX:+UseContainerSupport \

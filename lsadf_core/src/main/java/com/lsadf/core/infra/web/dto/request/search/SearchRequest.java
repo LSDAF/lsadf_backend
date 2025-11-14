@@ -15,9 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.search;
 
-import static com.lsadf.core.infra.web.JsonAttributes.FILTERS;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.request.Request;
 import com.lsadf.core.infra.web.dto.request.common.Filter;
 import jakarta.validation.Valid;
@@ -26,8 +23,7 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record SearchRequest(@JsonProperty(value = FILTERS) @Valid List<Filter> filters)
-    implements Request {
+public record SearchRequest(@Valid List<Filter> filters) implements Request {
 
   @Serial private static final long serialVersionUID = 573371570502433749L;
 }

@@ -6,10 +6,6 @@ server:
 async:
   enabled: false
 
-sleep:
-  enabled: ${SLEEP_ENABLED:false}
-  seconds: ${SLEEP_SECONDS:5}
-
 management:
   endpoints:
     web:
