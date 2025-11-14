@@ -16,9 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.response.game.save;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.response.Response;
 import com.lsadf.core.infra.web.dto.response.game.save.characteristics.CharacteristicsResponse;
 import com.lsadf.core.infra.web.dto.response.game.save.currency.CurrencyResponse;
@@ -31,10 +28,10 @@ import lombok.Builder;
 @Schema(name = "GameSaveResponse", description = "Game Save Object")
 @Builder
 public record GameSaveResponse(
-    @JsonProperty(value = METADATA) GameMetadataResponse metadata,
-    @JsonProperty(value = CHARACTERISTICS) CharacteristicsResponse characteristics,
-    @JsonProperty(value = CURRENCY) CurrencyResponse currency,
-    @JsonProperty(value = STAGE) StageResponse stage)
+    GameMetadataResponse metadata,
+    CharacteristicsResponse characteristics,
+    CurrencyResponse currency,
+    StageResponse stage)
     implements Response {
 
   @Serial private static final long serialVersionUID = -2186008999020414794L;
