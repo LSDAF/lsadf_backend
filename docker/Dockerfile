@@ -37,19 +37,20 @@ COPY --from=compiler startup.sh .
 # Stage 3: Create the final image
 FROM eclipse-temurin:25-jre-noble
 
-# Copy layers from the build stage
-COPY --from=builder dependencies/ ./
-COPY --from=builder spring-boot-loader/ ./
-COPY --from=builder snapshot-dependencies/ ./
-COPY --from=builder application/ ./
-COPY --from=builder startup.sh ./
-COPY --from=builder logback-docker.xml ./
-
+WORKDIR /app
 RUN addgroup --system lsadf \
     && adduser --system --ingroup lsadf lsadf \
-    && chown -R lsadf:lsadf . \
-    && mkdir logs \
-    && chmod +x startup.sh
+    && chown -R lsadf:lsadf .
+
+# Copy layers from the build stage
+COPY --chown=lsadf:lsadf --from=builder dependencies/ ./
+COPY --chown=lsadf:lsadf --from=builder spring-boot-loader/ ./
+COPY --chown=lsadf:lsadf --from=builder snapshot-dependencies/ ./
+COPY --chown=lsadf:lsadf --from=builder application/ ./
+COPY --chown=lsadf:lsadf --from=builder startup.sh ./
+COPY --chown=lsadf:lsadf --from=builder logback-docker.xml ./
+
+RUN mkdir logs && chmod +x startup.sh
 
 LABEL org.opencontainers.image.source="https://github.com/LSDAF/lsadf_backend"
 LABEL org.opencontainers.image.description="LSADF container image."
