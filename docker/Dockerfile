@@ -41,6 +41,9 @@ EXPOSE 8080
 LABEL org.opencontainers.image.source="https://github.com/LSDAF/lsadf_backend"
 LABEL org.opencontainers.image.description="LSADF container image."
 
+RUN addgroup --system lsadf && adduser --system --ingroup lsadf lsadf
+USER lsadf
+
 # Copy layers from the build stage
 COPY --from=builder dependencies/ ./
 COPY --from=builder spring-boot-loader/ ./
