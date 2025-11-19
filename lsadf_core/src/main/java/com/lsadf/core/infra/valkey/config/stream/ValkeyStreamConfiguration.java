@@ -23,8 +23,6 @@ import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
 import com.lsadf.core.infra.valkey.stream.serializer.ValkeyEventSerializer;
 import com.lsadf.core.infra.valkey.stream.serializer.impl.GameValkeyEventSerializer;
 import java.time.Duration;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +38,6 @@ import org.springframework.data.redis.connection.stream.StreamOffset;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 import org.springframework.data.redis.stream.Subscription;
-import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 
 @Slf4j
 @Configuration
@@ -56,12 +53,6 @@ public class ValkeyStreamConfiguration {
   public ValkeyEventSerializer<ValkeyGameSaveUpdatedEvent> eventSerializer(
       ObjectMapper objectMapper) {
     return new GameValkeyEventSerializer(objectMapper);
-  }
-
-  @Bean
-  public TaskExecutor taskExecutor() {
-    ExecutorService virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
-    return new ConcurrentTaskExecutor(virtualThreadExecutor);
   }
 
   @Bean

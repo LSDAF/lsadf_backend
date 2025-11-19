@@ -16,18 +16,18 @@
 
 package com.lsadf.core.infra.config;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 
 @Configuration
-@EnableAsync
-@ConditionalOnProperty(prefix = "async", name = "enabled", havingValue = "true")
-@Slf4j
-public class AsyncConfiguration {
-
-  public AsyncConfiguration() {
-    log.info("@Async processing is enabled.");
+public class TaskExecutorConfiguration {
+  @Bean
+  public TaskExecutor taskExecutor() {
+    ExecutorService virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
+    return new ConcurrentTaskExecutor(virtualThreadExecutor);
   }
 }
