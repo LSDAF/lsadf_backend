@@ -31,7 +31,7 @@ ARG MODULE=lsadf_api
 COPY --from=compiler ${MODULE}/target/app.jar app.jar
 COPY --from=compiler ${MODULE}/target/classes/logback-docker.xml logback-docker.xml
 
-RUN java -Djarmode=layertools -jar app.jar extract
+RUN java -jar app.jar -Djarmode=tools extract --layers --launcher
 COPY --from=compiler startup.sh .
 
 # Stage 3: Create the final image
