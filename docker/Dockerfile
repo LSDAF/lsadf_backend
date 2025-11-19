@@ -38,7 +38,8 @@ COPY --from=compiler startup.sh .
 FROM eclipse-temurin:25-jre-noble
 
 WORKDIR /app
-RUN addgroup --system lsadf \
+RUN mkdir logs \
+    && addgroup --system lsadf \
     && adduser --system --ingroup lsadf lsadf \
     && chown -R lsadf:lsadf .
 
@@ -50,7 +51,7 @@ COPY --chown=lsadf:lsadf --from=builder application/ ./
 COPY --chown=lsadf:lsadf --from=builder startup.sh ./
 COPY --chown=lsadf:lsadf --from=builder logback-docker.xml ./
 
-RUN mkdir logs && chmod +x startup.sh
+RUN chmod +x startup.sh
 
 LABEL org.opencontainers.image.source="https://github.com/LSDAF/lsadf_backend"
 LABEL org.opencontainers.image.description="LSADF container image."
