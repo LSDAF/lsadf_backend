@@ -64,6 +64,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   JacksonConfiguration.class,
   SchedulingConfiguration.class,
   AsyncConfiguration.class,
-  EventConfiguration.class
+  EventConfiguration.class,
+  TaskExecutorConfiguration.class,
 })
 public class LsadfConfiguration {}

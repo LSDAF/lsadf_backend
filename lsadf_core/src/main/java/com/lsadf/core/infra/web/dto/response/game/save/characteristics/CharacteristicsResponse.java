@@ -16,10 +16,7 @@
 
 package com.lsadf.core.infra.web.dto.response.game.save.characteristics;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
@@ -43,16 +40,11 @@ import lombok.Builder;
 @Schema(name = "Characteristics", description = "Characteristics object")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record CharacteristicsResponse(
-    @JsonProperty(value = ATTACK) @Schema(description = "Attack level", example = "100")
-        Long attack,
-    @JsonProperty(value = CRIT_CHANCE) @Schema(description = "Crit chance level", example = "100")
-        Long critChance,
-    @JsonProperty(value = CRIT_DAMAGE) @Schema(description = "Crit damage level", example = "100")
-        Long critDamage,
-    @JsonProperty(value = HEALTH) @Schema(description = "Health level", example = "100")
-        Long health,
-    @JsonProperty(value = RESISTANCE) @Schema(description = "Resistance level", example = "100")
-        Long resistance)
+    @Schema(description = "Attack level", example = "100") Long attack,
+    @Schema(description = "Crit chance level", example = "100") Long critChance,
+    @Schema(description = "Crit damage level", example = "100") Long critDamage,
+    @Schema(description = "Health level", example = "100") Long health,
+    @Schema(description = "Resistance level", example = "100") Long resistance)
     implements Response {
   @Serial private static final long serialVersionUID = 9133503960157723249L;
 }

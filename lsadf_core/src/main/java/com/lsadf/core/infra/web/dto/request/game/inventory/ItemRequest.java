@@ -15,9 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.game.inventory;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.application.game.inventory.ItemCommand;
 import com.lsadf.core.application.game.inventory.ItemStatCommand;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
@@ -26,42 +23,25 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.io.Serial;
+import java.util.Collections;
 import java.util.List;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 @Builder
 public record ItemRequest(
     @Schema(
             description = "Client generated id, concatenation of inventory id and item id",
             example = "36f27c2a-06e8-4bdb-bf59-56999116f5ef__11111111-1111-1111-1111-111111111111")
-        @JsonProperty(value = CLIENT_ID)
         @NotNull
         String clientId,
-    @Schema(description = "Item type", example = "boots") @JsonProperty(value = TYPE) @NotNull
-        String itemType,
-    @Schema(description = "Blueprint id", example = "blueprint_id")
-        @JsonProperty(value = BLUEPRINT_ID)
-        @NotNull
-        String blueprintId,
-    @Schema(description = "Item rarity", example = "LEGENDARY")
-        @JsonProperty(value = RARITY)
-        @NotNull
-        String itemRarity,
-    @Schema(description = "Is equipped", example = "true")
-        @JsonProperty(value = IS_EQUIPPED)
-        @NotNull
-        Boolean isEquipped,
-    @Schema(description = "Item level", example = "20")
-        @JsonProperty(value = LEVEL)
-        @NotNull
-        @Positive
-        Integer level,
-    @Schema(description = "Main item stat") @JsonProperty(value = MAIN_STAT) @NotNull
-        ItemStatDto mainStat,
-    @Schema(description = "Additional item stat list")
-        @JsonProperty(value = ADDITIONAL_STATS)
-        @NotNull
-        List<ItemStatDto> additionalStats)
+    @Schema(description = "Item type", example = "boots") @NotNull String type,
+    @Schema(description = "Blueprint id", example = "blueprint_id") @NotNull String blueprintId,
+    @Schema(description = "Item rarity", example = "LEGENDARY") @NotNull String rarity,
+    @Schema(description = "Is equipped", example = "true") @NotNull Boolean isEquipped,
+    @Schema(description = "Item level", example = "20") @NotNull @Positive Integer level,
+    @Schema(description = "Main item stat") @NotNull ItemStatDto mainStat,
+    @Schema(description = "Additional item stat list") @Nullable List<ItemStatDto> additionalStats)
     implements Request, ItemCommand {
 
   @Serial private static final long serialVersionUID = -1116418739363127022L;
@@ -73,8 +53,8 @@ public record ItemRequest(
   }
 
   @Override
-  public String getItemType() {
-    return itemType;
+  public String getType() {
+    return type;
   }
 
   @Override
@@ -83,8 +63,8 @@ public record ItemRequest(
   }
 
   @Override
-  public String getItemRarity() {
-    return itemRarity;
+  public String getRarity() {
+    return rarity;
   }
 
   @Override
@@ -104,6 +84,6 @@ public record ItemRequest(
 
   @Override
   public List<ItemStatCommand> getAdditionalStats() {
-    return List.copyOf(additionalStats); // No casting needed!
+    return additionalStats != null ? List.copyOf(additionalStats) : Collections.emptyList();
   }
 }

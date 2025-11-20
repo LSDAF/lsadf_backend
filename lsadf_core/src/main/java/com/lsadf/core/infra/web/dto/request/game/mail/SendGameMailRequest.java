@@ -16,9 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.request.game.mail;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.request.Request;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
@@ -28,9 +25,7 @@ import org.jspecify.annotations.Nullable;
 
 /** Request DTO for sending game mail */
 @Builder
-public record SendGameMailRequest(
-    @Nullable @JsonProperty(GAME_SAVE_ID) UUID gameSaveId,
-    @NotNull @JsonProperty(GAME_MAIL_TEMPLATE_ID) UUID gameMailTemplateId)
+public record SendGameMailRequest(@Nullable UUID gameSaveId, @NotNull UUID gameMailTemplateId)
     implements Request {
   @Serial private static final long serialVersionUID = 3425876093174523687L;
 }

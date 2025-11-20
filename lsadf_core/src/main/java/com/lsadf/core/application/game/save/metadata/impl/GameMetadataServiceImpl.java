@@ -48,7 +48,6 @@ public class GameMetadataServiceImpl implements GameMetadataService {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public boolean existsById(UUID gameSaveId) {
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       var optionalGameMetadata = gameMetadataCachePort.get(gameSaveId.toString());
@@ -60,13 +59,11 @@ public class GameMetadataServiceImpl implements GameMetadataService {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public boolean existsByNickname(String nickname) {
     return gameMetadataRepositoryPort.existsByNickname(nickname);
   }
 
   @Override
-  @Transactional(readOnly = true)
   public GameMetadata getGameMetadata(UUID gameSaveId) {
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       var optionalGameMetadata = gameMetadataCachePort.get(gameSaveId.toString());
@@ -81,7 +78,6 @@ public class GameMetadataServiceImpl implements GameMetadataService {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public Long count() {
     return gameMetadataRepositoryPort.count();
   }

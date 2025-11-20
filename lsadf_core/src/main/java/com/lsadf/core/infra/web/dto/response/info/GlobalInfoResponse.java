@@ -16,19 +16,13 @@
 
 package com.lsadf.core.infra.web.dto.response.info;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.response.Response;
 import java.io.Serial;
 import java.time.Instant;
 import lombok.Builder;
 
 @Builder
-public record GlobalInfoResponse(
-    @JsonProperty(value = NOW) Instant now,
-    @JsonProperty(value = GAME_SAVE_COUNTER) Long gameSaveCounter,
-    @JsonProperty(value = USER_COUNTER) Long userCounter)
+public record GlobalInfoResponse(Instant now, Long gameSaveCounter, Long userCounter)
     implements Response {
 
   @Serial private static final long serialVersionUID = -5539057784012769955L;

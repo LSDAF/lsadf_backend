@@ -14,7 +14,8 @@ spring:
 
 management:
   endpoints:
-    enabled-by-default: true
     web:
       exposure:
         include: health, info, prometheus, metrics
+    access:
+      default: READ_ONLY

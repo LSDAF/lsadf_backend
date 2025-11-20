@@ -1,5 +1,20 @@
 #!/bin/sh
 
+SLEEP_ENABLED=${SLEEP_ENABLED:-false}
+SLEEP_SECONDS=${SLEEP_SECONDS:-5}
+
+if [ "$SLEEP_ENABLED" = "true" ]; then
+  echo "Sleeping for $SLEEP_SECONDS seconds to allow dependent services to start..."
+  sleep $SLEEP_SECONDS
+fi
+
+SPRING_PROFILES_ACTIVE="docker"
+
+if [ -n "$APP_PROFILE" ]; then
+  SPRING_PROFILES_ACTIVE="$SPRING_PROFILES_ACTIVE,$APP_PROFILE"
+else
+  echo "No APP_PROFILE specified, defaulting to 'docker' profile only."
+fi
 
 java \
   -XX:+UseContainerSupport \
@@ -11,5 +26,5 @@ java \
   -XX:+UseStringDeduplication \
   -XX:+ExitOnOutOfMemoryError \
   -XX:MaxMetaspaceSize=128m \
-  -Dspring.profiles.active=docker,${APP_PROFILE} \
+  -Dspring.profiles.active="${SPRING_PROFILES_ACTIVE}" \
   org.springframework.boot.loader.launch.JarLauncher

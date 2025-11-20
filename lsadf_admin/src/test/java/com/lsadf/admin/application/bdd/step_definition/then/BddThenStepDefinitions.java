@@ -23,7 +23,6 @@ import io.cucumber.java.en.Then;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 /** Step definitions for the then steps in the BDD scenarios */
 @Slf4j(topic = "[THEN STEP DEFINITIONS]")
@@ -52,7 +51,6 @@ public class BddThenStepDefinitions extends BddLoader {
   }
 
   @Then("^the number of game saves should be (.*)$")
-  @Transactional(readOnly = true)
   public void thenTheNumberOfGameSavesShouldBe(int expected) {
     bddThenGameSaveStepDefinitions.thenTheNumberOfGameSavesShouldBe(expected);
   }
@@ -138,7 +136,6 @@ public class BddThenStepDefinitions extends BddLoader {
   }
 
   @Then("^the database contains the following game mails$")
-  @Transactional(readOnly = true)
   public void thenDbShouldContainGameMails(DataTable dataTable) {
     bddThenGameMailStepDefinitions.thenDbShouldContainGameMails(dataTable);
   }

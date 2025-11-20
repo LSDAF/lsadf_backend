@@ -15,9 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.user.creation;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -29,22 +26,13 @@ import lombok.Builder;
 
 @Builder
 public record SimpleUserCreationRequest(
-    @Schema(description = "Name of user to create", example = "Toto Dupont")
-        @JsonProperty(value = FIRST_NAME)
-        @NotBlank
+    @Schema(description = "Name of user to create", example = "Toto Dupont") @NotBlank
         String firstName,
-    @Schema(description = "Lastname of user to create", example = "Dupont")
-        @JsonProperty(value = LAST_NAME)
-        @NotBlank
+    @Schema(description = "Lastname of user to create", example = "Dupont") @NotBlank
         String lastName,
-    @Schema(description = "Password of user to create", example = "k127F978")
-        @JsonProperty(value = PASSWORD)
-        @Size(min = 8)
+    @Schema(description = "Password of user to create", example = "k127F978") @Size(min = 8)
         String password,
-    @Schema(description = "Username of user to create", example = "toto@toto.fr")
-        @JsonProperty(value = USERNAME)
-        @Email
-        @NotBlank
+    @Schema(description = "Username of user to create", example = "toto@toto.fr") @Email @NotBlank
         String username)
     implements UserCreationRequest {
 

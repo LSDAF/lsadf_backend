@@ -102,9 +102,9 @@ class InventoryControllerTests {
   private Supplier<ItemRequest> itemRequestSupplier =
       () ->
           ItemRequest.builder()
-              .itemType(ItemType.CHESTPLATE.getType())
+              .type(ItemType.CHESTPLATE.getType())
               .level(420)
-              .itemRarity(ItemRarity.EPIC.getRarity())
+              .rarity(ItemRarity.EPIC.getRarity())
               .blueprintId("blueprint_id")
               .isEquipped(false)
               .clientId(UUID)
@@ -188,7 +188,7 @@ class InventoryControllerTests {
     ItemRequest invalidItemRequest =
         ItemRequest.builder()
             .isEquipped(null)
-            .itemType(null)
+            .type(null)
             .mainStat(null)
             .blueprintId(null)
             .additionalStats(null)
@@ -301,7 +301,7 @@ class InventoryControllerTests {
     ItemRequest invalidItemRequest =
         ItemRequest.builder()
             .isEquipped(null)
-            .itemType(null)
+            .type(null)
             .mainStat(null)
             .blueprintId(null)
             .additionalStats(null)

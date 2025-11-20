@@ -15,17 +15,13 @@
  */
 package com.lsadf.core.infra.web.dto.request.user.login;
 
-import static com.lsadf.core.infra.web.JsonAttributes.REFRESH_TOKEN;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.request.Request;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serial;
 import lombok.Builder;
 
 @Builder
-public record UserRefreshLoginRequest(
-    @JsonProperty(value = REFRESH_TOKEN) @NotBlank String refreshToken) implements Request {
+public record UserRefreshLoginRequest(@NotBlank String refreshToken) implements Request {
 
   @Serial private static final long serialVersionUID = -1758378448778560290L;
 }
