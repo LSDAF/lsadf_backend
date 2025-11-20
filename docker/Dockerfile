@@ -31,11 +31,11 @@ ARG MODULE=lsadf_api
 COPY --from=compiler ${MODULE}/target/app.jar app.jar
 COPY --from=compiler ${MODULE}/target/classes/logback-docker.xml logback-docker.xml
 
-RUN java -jar app.jar -Djarmode=tools extract --layers --launcher
+RUN java -Djarmode=tools -jar app.jar extract --layers --launcher --destination extracted
 COPY --from=compiler startup.sh .
 
 # Stage 3: Create the final image
-FROM eclipse-temurin:25-jre-noble
+FROM eclipse-temurin:25-jre-noble as app-image
 
 WORKDIR /app
 RUN mkdir logs \
@@ -44,10 +44,10 @@ RUN mkdir logs \
     && chown -R lsadf:lsadf .
 
 # Copy layers from the build stage
-COPY --chown=lsadf:lsadf --from=builder dependencies/ ./
-COPY --chown=lsadf:lsadf --from=builder spring-boot-loader/ ./
-COPY --chown=lsadf:lsadf --from=builder snapshot-dependencies/ ./
-COPY --chown=lsadf:lsadf --from=builder application/ ./
+COPY --chown=lsadf:lsadf --from=builder extracted/dependencies/ ./
+COPY --chown=lsadf:lsadf --from=builder extracted/spring-boot-loader/ ./
+COPY --chown=lsadf:lsadf --from=builder extracted/snapshot-dependencies/ ./
+COPY --chown=lsadf:lsadf --from=builder extracted/application/ ./
 COPY --chown=lsadf:lsadf --from=builder startup.sh ./
 COPY --chown=lsadf:lsadf --from=builder logback-docker.xml ./
 
