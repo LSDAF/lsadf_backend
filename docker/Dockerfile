@@ -35,13 +35,14 @@ RUN java -Djarmode=tools -jar app.jar extract --layers --launcher --destination 
 COPY --from=compiler startup.sh .
 
 # Stage 3: Create the final image
-FROM eclipse-temurin:25-jre-noble as app-image
+FROM eclipse-temurin:25-jre-noble AS app-image
 
 WORKDIR /app
 RUN mkdir logs \
     && addgroup --system lsadf \
     && adduser --system --ingroup lsadf lsadf \
-    && chown -R lsadf:lsadf .
+    && chown -R lsadf:lsadf . \
+    && chown -R lsadf:lsadf "$JAVA_HOME"
 
 # Copy layers from the build stage
 COPY --chown=lsadf:lsadf --from=builder extracted/dependencies/ ./
