@@ -15,9 +15,6 @@
  */
 package com.lsadf.core.infra.web.dto.request.game.save.update;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
@@ -35,8 +32,7 @@ import org.jspecify.annotations.Nullable;
  * <p>The class is designed to be immutable and is annotated using the builder pattern to provide a
  * convenient way to construct instances.
  *
- * <p>The fields are annotated with Jackson's {@link JsonProperty} for JSON
- * serialization/deserialization, Swagger {@link Schema} for API documentation, and custom
+ * <p>The fields are annotated with Swagger {@link Schema} for API documentation, and custom
  * annotations like {@link Nickname} for additional validation.
  *
  * <p>This class ensures all provided components of the game save (characteristics, currency, stage,
@@ -45,24 +41,20 @@ import org.jspecify.annotations.Nullable;
 @Builder
 public record AdminGameSaveUpdateRequest(
     @Nullable
-        @JsonProperty(value = NICKNAME)
         @Nickname(nullable = true)
         @Schema(description = "Nickname of the user", example = "test")
         String nickname,
     @Nullable
-        @JsonProperty(value = CHARACTERISTICS)
         @Schema(
             description = "Characteristics of the user",
             example = "{\"strength\":10,\"agility\":10,\"intelligence\":10,\"luck\":10}")
         Characteristics characteristics,
     @Nullable
-        @JsonProperty(value = CURRENCY)
         @Schema(
             description = "Currency of the user",
             example = "{\"gold\":1000,\"silver\":1000,\"copper\":1000}")
         Currency currency,
     @Nullable
-        @JsonProperty(value = STAGE)
         @Schema(
             description = "Stage of the user",
             example = "{\"stageId\":1,\"stageName\":\"test\"}")

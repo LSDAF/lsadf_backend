@@ -58,12 +58,12 @@ class InventoryServiceTests {
     itemRequest =
         ItemRequest.builder()
             .clientId(itemClientId)
-            .itemType(ItemType.SWORD.getType())
+            .type(ItemType.SWORD.getType())
             .blueprintId("blueprint-123")
             .additionalStats(new ArrayList<>())
             .isEquipped(false)
             .mainStat(new ItemStatDto(ItemStatistic.ATTACK_ADD, 125.4f))
-            .itemRarity(ItemRarity.MYTHIC.getRarity())
+            .rarity(ItemRarity.MYTHIC.getRarity())
             .level(5)
             .build();
     mockItem =

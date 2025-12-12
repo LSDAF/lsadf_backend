@@ -21,6 +21,7 @@ import com.lsadf.core.domain.game.inventory.ItemStat;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.response.ModelResponseMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -49,6 +50,8 @@ public interface ItemResponseMapper extends ModelResponseMapper<Item, ItemRespon
    *     Item}
    */
   @Override
+  @Mapping(source = "itemRarity", target = "rarity")
+  @Mapping(source = "itemType", target = "type")
   ItemResponse map(Item model);
 
   default ItemStatDto mapItemStat(ItemStat itemStat) {

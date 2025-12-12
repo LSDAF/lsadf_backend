@@ -18,11 +18,8 @@ package com.lsadf.core.infra.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 @Configuration
 @EnableAsync
@@ -32,14 +29,5 @@ public class AsyncConfiguration {
 
   public AsyncConfiguration() {
     log.info("@Async processing is enabled.");
-  }
-
-  @Bean
-  public TaskExecutor asyncTaskExecutor() {
-    ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
-    taskScheduler.setPoolSize(100);
-    taskScheduler.setThreadFactory(Thread.ofVirtual().name("vasync-", 0).factory());
-    taskScheduler.initialize();
-    return taskScheduler;
   }
 }

@@ -16,9 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.response.game.save.metadata;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
@@ -29,16 +26,12 @@ import lombok.Builder;
 @Schema(name = "GameMetadataResponse", description = "Game Metadata Object")
 @Builder
 public record GameMetadataResponse(
-    @Schema(description = "Game Save ID", example = "6459ce33-5531-4f3e-bb9b-53167893d5c2")
-        @JsonProperty(value = ID)
-        UUID id,
-    @JsonProperty(value = CREATED_AT) Instant createdAt,
-    @JsonProperty(value = UPDATED_AT) Instant updatedAt,
+    @Schema(description = "Game Save ID", example = "6459ce33-5531-4f3e-bb9b-53167893d5c2") UUID id,
+    Instant createdAt,
+    Instant updatedAt,
     @Schema(description = "User email", example = "6459ce33-5531-4f3e-bb9b-53167893d5c2")
-        @JsonProperty(value = USER_EMAIL)
         String userEmail,
-    @Schema(description = "Game nickname", example = "MyHero420") @JsonProperty(value = NICKNAME)
-        String nickname)
+    @Schema(description = "Game nickname", example = "MyHero420") String nickname)
     implements Response {
   @Serial private static final long serialVersionUID = -1601333638397368281L;
 }

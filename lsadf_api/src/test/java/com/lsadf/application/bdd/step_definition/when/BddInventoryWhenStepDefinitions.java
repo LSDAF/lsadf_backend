@@ -245,7 +245,7 @@ public class BddInventoryWhenStepDefinitions extends BddLoader {
               .findFirst()
               .orElseThrow();
 
-      Item expected = BddUtils.mapToItem(row);
+      ItemResponse expected = BddUtils.mapToItemResponse(row);
 
       assertThat(actual)
           .usingRecursiveComparison()

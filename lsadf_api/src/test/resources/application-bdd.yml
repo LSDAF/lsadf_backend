@@ -38,10 +38,6 @@ server:
     whitelabel:
       enabled: false
 
-sleep:
-  seconds: 0
-  enabled: false
-
 
 spring:
   threads:

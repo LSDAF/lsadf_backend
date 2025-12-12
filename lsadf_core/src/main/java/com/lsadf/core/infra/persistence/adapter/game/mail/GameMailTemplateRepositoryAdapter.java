@@ -60,7 +60,6 @@ public class GameMailTemplateRepositoryAdapter implements GameMailTemplateReposi
   }
 
   @Override
-  @Transactional(readOnly = true)
   public Optional<GameMailTemplate> getMailTemplateById(UUID id) throws JsonProcessingException {
     GameMailTemplateEntity templateEntity = getGameMailTemplateEntityFromDatabase(id);
     GameMailTemplate gameMailTemplate = gameMailTemplateEntityMapper.map(templateEntity);

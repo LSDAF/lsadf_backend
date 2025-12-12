@@ -17,6 +17,7 @@
 package com.lsadf.core.infra.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.blackbird.BlackbirdModule;
 import java.text.DateFormat;
@@ -36,6 +37,7 @@ public class JacksonConfiguration {
         Jackson2ObjectMapperBuilder.json()
             .dateFormat(dateFormat)
             .createXmlMapper(false)
+            .propertyNamingStrategy(PropertyNamingStrategies.SnakeCaseStrategy.INSTANCE)
             // Adding jackson blackbird module to enhance json processing & JavaTimeModule for
             // Instant processing
             .modules(new BlackbirdModule(), new JavaTimeModule());

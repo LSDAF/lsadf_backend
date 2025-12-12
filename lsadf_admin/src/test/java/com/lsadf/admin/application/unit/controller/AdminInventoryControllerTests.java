@@ -101,9 +101,9 @@ class AdminInventoryControllerTests {
     ItemStatDto mainStat = new ItemStatDto(ItemStatistic.ATTACK_ADD, 100.0f);
     return ItemRequest.builder()
         .clientId(ITEM_CLIENT_ID)
-        .itemType("weapon")
+        .type("weapon")
         .blueprintId("test_blueprint")
-        .itemRarity("COMMON")
+        .rarity("COMMON")
         .isEquipped(false)
         .level(1)
         .mainStat(mainStat)

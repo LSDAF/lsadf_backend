@@ -16,9 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.response.user;
 
-import static com.lsadf.core.infra.web.JsonAttributes.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lsadf.core.infra.web.dto.response.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
@@ -27,11 +24,7 @@ import lombok.Builder;
 
 @Builder
 @Schema(name = "UserInfo", description = "UserInfo response object")
-public record UserInfoResponse(
-    @JsonProperty(value = NAME) String name,
-    @JsonProperty(value = USERNAME) String username,
-    @JsonProperty(value = VERIFIED) boolean verified,
-    @JsonProperty(value = ROLES) Set<String> roles)
+public record UserInfoResponse(String name, String username, boolean verified, Set<String> roles)
     implements Response {
   @Serial private static final long serialVersionUID = -5863483742674101453L;
 }
