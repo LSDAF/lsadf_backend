@@ -47,7 +47,7 @@
         <keycloak-admin-client.version>26.0.4</keycloak-admin-client.version>
         <java.version>25</java.version>
         <spring-cloud-starter-openfeign.version>4.3.0</spring-cloud-starter-openfeign.version>
-        <cucumber.version>7.14.0</cucumber.version>
+        <cucumber.version>7.31.0</cucumber.version>
         <copy-rename-maven-plugin.version>1.0</copy-rename-maven-plugin.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <maven-javadoc.version>3.7.0</maven-javadoc.version>
