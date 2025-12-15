@@ -44,7 +44,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <keycloak-spring-boot-starter.version>25.0.3</keycloak-spring-boot-starter.version>
-        <keycloak-admin-client.version>26.0.4</keycloak-admin-client.version>
+        <keycloak-admin-client.version>26.0.7</keycloak-admin-client.version>
         <java.version>25</java.version>
         <spring-cloud-starter-openfeign.version>4.3.0</spring-cloud-starter-openfeign.version>
         <cucumber.version>7.31.0</cucumber.version>
@@ -54,11 +54,11 @@
         <postgresql.version>42.7.3</postgresql.version>
         <swagger.version>2.5.0</swagger.version>
         <jjwt.version>0.11.5</jjwt.version>
-        <commons-io.version>2.17.0</commons-io.version>
-        <commons-lang3.version>3.19.0</commons-lang3.version>
+        <commons-io.version>2.21.0</commons-io.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
         <commons-fileupload.version>1.6.0</commons-fileupload.version>
         <springdoc-openapi.version>1.7.0</springdoc-openapi.version>
-        <embedded-redis.version>1.4.2</embedded-redis.version>
+        <embedded-redis.version>1.4.3</embedded-redis.version>
         <testcontainers-keycloak.version>4.0.1</testcontainers-keycloak.version>
         <commons-compress.version>1.27.1</commons-compress.version>
         <maven-surefire-report-plugin.version>3.5.2</maven-surefire-report-plugin.version>
