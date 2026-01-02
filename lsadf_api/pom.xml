@@ -282,6 +282,7 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers-postgresql</artifactId>
+            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -292,6 +293,7 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers-junit-jupiter</artifactId>
             <scope>test</scope>
+            <version>${testcontainers.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
