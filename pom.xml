@@ -70,6 +70,7 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <jspecify.version>1.0.0</jspecify.version>
         <testcontainers.version>2.0.2</testcontainers.version>
+        <rest-assured.version>6.0.0</rest-assured.version>
     </properties>
 
     <build>
