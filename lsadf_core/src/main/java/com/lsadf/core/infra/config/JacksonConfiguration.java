@@ -34,12 +34,10 @@ public class JacksonConfiguration {
   @Bean
   public ObjectMapper objectMapper() {
     var builder =
-        Jackson2ObjectMapperBuilder.json()
+        new Jackson2ObjectMapperBuilder()
             .dateFormat(dateFormat)
             .createXmlMapper(false)
             .propertyNamingStrategy(PropertyNamingStrategies.SnakeCaseStrategy.INSTANCE)
-            // Adding jackson blackbird module to enhance json processing & JavaTimeModule for
-            // Instant processing
             .modules(new BlackbirdModule(), new JavaTimeModule());
     return builder.build();
   }
