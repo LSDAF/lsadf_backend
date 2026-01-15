@@ -15,6 +15,7 @@
  */
 package com.lsadf.application.unit.controller;
 
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,7 +40,7 @@ import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveNicknameUpdateRequest;
-import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,7 @@ import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -85,6 +87,9 @@ class GameSaveControllerTests {
   @MockitoBean(answers = Answers.RETURNS_DEEP_STUBS)
   private GameSaveService gameSaveService;
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
   @Test
   @SneakyThrows
   void test_generateNewGameSave_returns401_when_userNotAuthenticated() {
@@ -97,11 +102,10 @@ class GameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_generateNewGameSave_returns200_when_userIsAuthenticated() {
     // when
     mockMvc
-        .perform(post("/api/v1/game_save/generate"))
+        .perform(post("/api/v1/game_save/generate").with(MOCK_JWT_USER))
         // then
         .andExpect(status().isOk());
   }
@@ -123,7 +127,6 @@ class GameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateNickname_returns400_when_gameSaveIdIsNotUuid() {
     // given
     GameSaveNicknameUpdateRequest request = new GameSaveNicknameUpdateRequest("test");
@@ -132,14 +135,14 @@ class GameSaveControllerTests {
         .perform(
             post("/api/v1/game_save/{gameSaveId}/nickname", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateNickname_returns400_when_nicknameValueIsNull() {
     // given
     GameSaveNicknameUpdateRequest request = new GameSaveNicknameUpdateRequest(null);
@@ -148,14 +151,14 @@ class GameSaveControllerTests {
         .perform(
             post("/api/v1/game_save/{gameSaveId}/nickname", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateNickname_returns400_when_gameSaveNicknameUpdateRequestIsNull() {
     // given
     GameSaveNicknameUpdateRequest request = null;
@@ -164,7 +167,8 @@ class GameSaveControllerTests {
         .perform(
             post("/api/v1/game_save/{gameSaveId}/nickname", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
@@ -172,7 +176,6 @@ class GameSaveControllerTests {
   @ParameterizedTest
   @SneakyThrows
   @ValueSource(strings = {"tr", "ertyuioqsdfghjklm", "test!", "test tu671"})
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateNickname_returns400_when_nicknameValueIsInvalid(String nickname) {
     // given
     GameSaveNicknameUpdateRequest request = new GameSaveNicknameUpdateRequest(nickname);
@@ -181,14 +184,14 @@ class GameSaveControllerTests {
         .perform(
             post("/api/v1/game_save/{gameSaveId}/nickname", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateNickname_returns200_when_nicknameValueIsValidAndUserAuthenticated() {
     // given
     String nickname = "toto1234";
@@ -198,7 +201,8 @@ class GameSaveControllerTests {
         .perform(
             post("/api/v1/game_save/{gameSaveId}/nickname", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isOk());
   }
@@ -215,11 +219,10 @@ class GameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getUserGameSaves_returns200_when_userIsAuthenticated() {
     // when
     mockMvc
-        .perform(get("/api/v1/game_save/me"))
+        .perform(get("/api/v1/game_save/me").with(MOCK_JWT_USER))
         // then
         .andExpect(status().isOk());
   }

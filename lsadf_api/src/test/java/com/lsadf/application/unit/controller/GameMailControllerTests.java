@@ -17,6 +17,7 @@
 package com.lsadf.application.unit.controller;
 
 import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -46,7 +47,7 @@ import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -56,6 +57,7 @@ import org.mockito.Answers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -95,6 +97,9 @@ class GameMailControllerTests {
   @MockitoBean(answers = Answers.RETURNS_DEEP_STUBS)
   private GameMailCommandService gameMailCommandService;
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
   @BeforeEach
   void init() {
     Mockito.reset(gameMailCommandService, gameMailQueryService);
@@ -111,13 +116,13 @@ class GameMailControllerTests {
   }
 
   @Test
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getAllGameMails_returns400_when_notUUID() throws Exception {
     // when
     mockMvc
         .perform(
             get("/api/v1/game_mail/game_save/{gameSaveId}", "toto")
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
 
         // then
         .andExpect(status().isBadRequest());
@@ -133,19 +138,18 @@ class GameMailControllerTests {
   }
 
   @Test
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getGameMailById_returns400_when_notUUID() throws Exception {
     // when
     mockMvc
         .perform(
             get("/api/v1/game_mail/{gameMailId}", "toto")
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getGameMailById_returns404_when_mailNotFound() throws Exception {
     // given
     when(gameMailQueryService.getMailById(any(UUID.class))).thenThrow(new NotFoundException());
@@ -153,7 +157,8 @@ class GameMailControllerTests {
     mockMvc
         .perform(
             get("/api/v1/game_mail/{gameMailId}", "4dae1e72-bd47-4f84-96ec-48c96f7708ba")
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isNotFound());
   }
@@ -168,19 +173,18 @@ class GameMailControllerTests {
   }
 
   @Test
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_deleteReadGameMails_returns400_when_notUUID() throws Exception {
     // when
     mockMvc
         .perform(
             delete("/api/v1/game_mail/game_save/{gameMailId}", "toto")
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_deleteReadGameMails_returns404_when_gameSaveNotFound() throws Exception {
     // given
     Mockito.doThrow(new NotFoundException())
@@ -192,7 +196,8 @@ class GameMailControllerTests {
             delete(
                     "/api/v1/game_mail/game_save/{gameSaveId}",
                     "4dae1e72-bd47-4f84-96ec-48c96f7708ba")
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isNotFound());
   }
@@ -209,19 +214,18 @@ class GameMailControllerTests {
   }
 
   @Test
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_claimGameMailAttachments_returns400_when_notUUID() throws Exception {
     // when
     mockMvc
         .perform(
             patch("/api/v1/game_mail/{gameMailId}", "toto")
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_claimGameMailAttachments_returns404_when_mailNotFound() throws Exception {
     // given
     when(gameMailQueryService.getMailById(any())).thenThrow(NotFoundException.class);
@@ -229,7 +233,8 @@ class GameMailControllerTests {
     mockMvc
         .perform(
             patch("/api/v1/game_mail/{gameMailId}", "4dae1e72-bd47-4f84-96ec-48c96f7708ba")
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isNotFound());
   }

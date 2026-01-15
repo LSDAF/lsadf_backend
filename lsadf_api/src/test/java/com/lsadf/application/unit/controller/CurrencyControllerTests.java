@@ -16,6 +16,7 @@
 package com.lsadf.application.unit.controller;
 
 import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,7 +42,7 @@ import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
-import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.List;
 import java.util.UUID;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -50,6 +51,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -89,6 +91,9 @@ class CurrencyControllerTests {
 
   @Autowired private ObjectMapper objectMapper;
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
   @Test
   @SneakyThrows
   void test_getCurrency_returns401_when_userNotAuthenticated() {
@@ -116,42 +121,41 @@ class CurrencyControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getCurrency_returns400_when_nonUuidGameSaveId() {
     // when
     mockMvc
-        .perform(get("/api/v1/currency/{gameSaveId}", "testtesttest"))
+        .perform(get("/api/v1/currency/{gameSaveId}", "testtesttest").with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getCurrency_returns200_when_authenticatedUserAndValidUuid() {
     // when
     mockMvc
-        .perform(get("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
+        .perform(
+            get("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveCurrency_returns400_when_noBody() {
     // when
     mockMvc
         .perform(
             post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
-                .contentType(APPLICATION_JSON))
+                .contentType(APPLICATION_JSON)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveCurrency_returns400_when_bodyIsNull() {
     // when
     mockMvc
@@ -159,14 +163,14 @@ class CurrencyControllerTests {
             post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(null))
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveCurrency_returns400_when_gameSaveIdIsNonUuid() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 1L, 1L, 1L);
@@ -176,14 +180,14 @@ class CurrencyControllerTests {
             post("/api/v1/currency/{gameSaveId}", "testtesttest")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(currencyRequest))
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveCurrency_returns400_when_oneCurrencyRequestFieldIsNegative() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(-1L, 1L, 1L, 1L);
@@ -193,14 +197,14 @@ class CurrencyControllerTests {
             post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(currencyRequest))
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveCurrency_returns200_when_oneCurrencyRequestFieldIsNull() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(null, 1L, 1L, 1L);
@@ -210,14 +214,14 @@ class CurrencyControllerTests {
             post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(currencyRequest))
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveCurrency_returns200_when_authenticatedUserValidBodyAndValidGameSaveId() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 1L, 1L, 1L);
@@ -227,14 +231,14 @@ class CurrencyControllerTests {
             post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(currencyRequest))
-                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_saveCurrency_returns400_when_noGameSessionIdHeader() {
     // given
     CurrencyRequest currencyRequest = new CurrencyRequest(1L, 1L, 1L, 1L);
@@ -243,7 +247,8 @@ class CurrencyControllerTests {
         .perform(
             post("/api/v1/currency/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(currencyRequest)))
+                .content(objectMapper.writeValueAsString(currencyRequest))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
