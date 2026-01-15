@@ -16,6 +16,7 @@
 package com.lsadf.admin.application.unit.controller;
 
 import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 import static org.mockito.ArgumentMatchers.any;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +45,6 @@ import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.user.UserSortingParameter;
 import com.lsadf.core.infra.web.dto.request.user.creation.AdminUserCreationRequest;
 import com.lsadf.core.infra.web.dto.request.user.update.AdminUserUpdateRequest;
-import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -61,6 +61,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -115,6 +116,12 @@ class AdminUserControllerTests {
           List.of("USER"),
           new Date());
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_ADMIN =
+      createMockJwt("paul.ochon@test.com", List.of("ADMIN", "USER"), "Paul OCHON");
+
   @Test
   @SneakyThrows
   void test_updateUser_returns401_when_userNotAuthenticated() {
@@ -140,7 +147,6 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateUser_returns403_when_userNotAdmin() {
     // given
     AdminUserUpdateRequest request =
@@ -157,17 +163,14 @@ class AdminUserControllerTests {
             MockMvcRequestBuilders.post(
                     "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_updateUser_returns400_when_idIsNotUuid() {
     // given
     AdminUserUpdateRequest request =
@@ -183,17 +186,14 @@ class AdminUserControllerTests {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/user/id/{user_id}", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_updateUser_returns200_when_authenticatedUserIsAdmin() {
     // given
     AdminUserUpdateRequest request =
@@ -212,7 +212,8 @@ class AdminUserControllerTests {
             MockMvcRequestBuilders.post(
                     "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -231,10 +232,6 @@ class AdminUserControllerTests {
   @ParameterizedTest
   @SneakyThrows
   @MethodSource("updateUserArgumentsProvider")
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_updateUser_returns400_when_requestIsInvalid(
       String firstName, String lastName, Boolean enabled, Boolean emailVerified) {
     // given
@@ -252,7 +249,8 @@ class AdminUserControllerTests {
             MockMvcRequestBuilders.post(
                     "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -282,7 +280,6 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_createUser_returns403_when_userNotAdmin() {
     // given
     AdminUserCreationRequest request =
@@ -299,17 +296,14 @@ class AdminUserControllerTests {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_createUser_returns200_when_authenticatedUserIsAdmin() {
     // given
     AdminUserCreationRequest request =
@@ -328,7 +322,8 @@ class AdminUserControllerTests {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -347,10 +342,6 @@ class AdminUserControllerTests {
 
   @SneakyThrows
   @ParameterizedTest
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   @MethodSource("createUserArgumentsProvider")
   void test_createUser_returns400_when_requestIsInvalid(
       String username, String firstName, String lastName, Boolean enabled, Boolean emailVerified) {
@@ -369,7 +360,8 @@ class AdminUserControllerTests {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -388,43 +380,38 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_deleteUser_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
+                "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_deleteUser_returns400_when_idIsNotUuid() {
     // when
     mockMvc
-        .perform(MockMvcRequestBuilders.delete("/api/v1/admin/user/id/{user_id}", "testtesttest"))
+        .perform(
+            MockMvcRequestBuilders.delete("/api/v1/admin/user/id/{user_id}", "testtesttest")
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_deleteUser_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
+                "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -445,7 +432,6 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getUserByUsername_returns403_when_userNotAdmin() {
     // when
     mockMvc
@@ -453,17 +439,14 @@ class AdminUserControllerTests {
             MockMvcRequestBuilders.get(
                     "/api/v1/admin/user/username/{username}", "paul.ochon@test.com")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getUserByUsername_returns200_when_authenticatedUserIsAdmin() {
     // when
     Mockito.when(userService.getUserByUsername(any(String.class))).thenReturn(USER);
@@ -471,24 +454,22 @@ class AdminUserControllerTests {
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/user/username/{username}", "test@test.com")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getUserByUsername_returns400_when_usernameIsNotValid() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/user/username/{username}", "test")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -509,7 +490,6 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getUserById_returns403_when_userNotAdmin() {
     // when
     mockMvc
@@ -517,17 +497,14 @@ class AdminUserControllerTests {
             MockMvcRequestBuilders.get(
                     "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getUserById_returns200_when_authenticatedUserIsAdminAndValidUuid() {
     Mockito.when(userService.getUserById(any(UUID.class))).thenReturn(USER);
     // when
@@ -536,24 +513,22 @@ class AdminUserControllerTests {
             MockMvcRequestBuilders.get(
                     "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getUserById_returns400_when_idIsNotUuid() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/user/id/{user_id}", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -573,41 +548,34 @@ class AdminUserControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getUsers_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getUsers_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getUsers_returns400_when_invalidOrderBy() {
     // when
     mockMvc
@@ -615,17 +583,14 @@ class AdminUserControllerTests {
             MockMvcRequestBuilders.get("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param(ORDER_BY, "INVALID_ORDER_BY"))
+                .param(ORDER_BY, "INVALID_ORDER_BY")
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getUsers_returns200_when_orderByIsSet() {
     // when
     mockMvc
@@ -633,7 +598,8 @@ class AdminUserControllerTests {
             MockMvcRequestBuilders.get("/api/v1/admin/user")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param(ORDER_BY, UserSortingParameter.FIRST_NAME_DESC.name()))
+                .param(ORDER_BY, UserSortingParameter.FIRST_NAME_DESC.name())
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
