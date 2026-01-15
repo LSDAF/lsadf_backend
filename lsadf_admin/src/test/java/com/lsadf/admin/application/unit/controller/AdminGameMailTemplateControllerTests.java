@@ -196,7 +196,8 @@ class AdminGameMailTemplateControllerTests {
   void test_deleteMailTemplateById_whenNotAdmin() {
     // when
     mockMvc
-        .perform(delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_USER))
+        .perform(
+            delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_USER))
         // then
         .andExpect(status().isForbidden());
   }
@@ -210,7 +211,8 @@ class AdminGameMailTemplateControllerTests {
         .deleteGameMailTemplateById(UUID);
     // when
     mockMvc
-        .perform(delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_ADMIN))
+        .perform(
+            delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isNotFound());
   }
@@ -234,7 +236,8 @@ class AdminGameMailTemplateControllerTests {
         .deleteGameMailTemplateById(UUID);
     // when
     mockMvc
-        .perform(delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_ADMIN))
+        .perform(
+            delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isInternalServerError());
   }

@@ -385,7 +385,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                    "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
@@ -410,7 +410,7 @@ class AdminUserControllerTests {
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete(
-                "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                    "/api/v1/admin/user/id/{user_id}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
