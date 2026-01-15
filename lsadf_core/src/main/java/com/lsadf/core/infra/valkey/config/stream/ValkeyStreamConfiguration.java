@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.valkey.config.stream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamProperties;
 import com.lsadf.core.infra.valkey.stream.consumer.StreamConsumer;
 import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
@@ -38,6 +37,7 @@ import org.springframework.data.redis.connection.stream.StreamOffset;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 import org.springframework.data.redis.stream.Subscription;
+import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 @Configuration

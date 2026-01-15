@@ -16,12 +16,12 @@
 
 package com.lsadf.core.application.game.mail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.command.CreateNewTemplateAttachmentCommand;
 import com.lsadf.core.application.game.mail.command.InitializeDefaultGameMailTemplateCommand;
 import com.lsadf.core.application.game.mail.command.InitializeGameMailTemplateCommand;
 import com.lsadf.core.domain.game.mail.GameMailTemplate;
 import java.util.UUID;
+import tools.jackson.core.JacksonException;
 
 public interface GameMailTemplateCommandService {
   default GameMailTemplate initializeDefaultGameMailTemplates(
@@ -35,6 +35,5 @@ public interface GameMailTemplateCommandService {
 
   void deleteGameMailTemplateById(UUID id);
 
-  void attachToGameMailTemplate(CreateNewTemplateAttachmentCommand command)
-      throws JsonProcessingException;
+  void attachToGameMailTemplate(CreateNewTemplateAttachmentCommand command) throws JacksonException;
 }

@@ -34,13 +34,16 @@ import com.lsadf.core.infra.valkey.cache.listener.ValkeyKeyExpirationListener;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.connection.DefaultMessage;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.core.RedisTemplate;
 
+@ExtendWith(MockitoExtension.class)
 class ValkeyKeyExpirationListenerTests {
   @Mock CharacteristicsCommandService characteristicsService;
   @Mock CurrencyCommandService currencyService;

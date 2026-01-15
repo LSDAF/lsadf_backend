@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.persistence.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverter;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverterRegistry;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.impl.GameMailAttachmentCurrencyConverter;
@@ -24,6 +23,7 @@ import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
 
 @Configuration
 public class JdbcCustomConverterConfiguration {

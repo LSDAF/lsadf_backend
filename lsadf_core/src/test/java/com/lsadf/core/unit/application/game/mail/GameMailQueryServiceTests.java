@@ -19,7 +19,6 @@ package com.lsadf.core.unit.application.game.mail;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailQueryService;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
 import com.lsadf.core.application.game.mail.impl.GameMailQueryServiceImpl;
@@ -34,10 +33,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.core.JacksonException;
 
+@ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class GameMailQueryServiceTests {
   private GameMailQueryService gameMailQueryService;
@@ -70,7 +73,7 @@ class GameMailQueryServiceTests {
 
   @Test
   void test_getMailById_throwsNotFoundException_when_nonExistingGameSaveId()
-      throws JsonProcessingException {
+      throws JacksonException {
     when(gameMailRepositoryPort.findGameMailEntityById(UUID)).thenThrow(NotFoundException.class);
 
     assertThrows(NotFoundException.class, () -> gameMailQueryService.getMailById(UUID));
@@ -118,7 +121,7 @@ class GameMailQueryServiceTests {
   }
 
   @Test
-  void test_getMailById_returnsGameMail_when_mailExists() throws JsonProcessingException {
+  void test_getMailById_returnsGameMail_when_mailExists() throws JacksonException {
     // Given
     UUID mailId = java.util.UUID.randomUUID();
     UUID gameSaveId = java.util.UUID.randomUUID();
@@ -141,7 +144,7 @@ class GameMailQueryServiceTests {
 
   @Test
   void test_getMailById_returnsGameMailWithAttachments_when_mailExistsWithAttachments()
-      throws JsonProcessingException {
+      throws JacksonException {
     // Given
     UUID mailId = java.util.UUID.randomUUID();
     UUID gameSaveId = java.util.UUID.randomUUID();
@@ -195,7 +198,7 @@ class GameMailQueryServiceTests {
   }
 
   @Test
-  void test_getMailById_returnsEmpty_when_mailNotFound() throws JsonProcessingException {
+  void test_getMailById_returnsEmpty_when_mailNotFound() throws JacksonException {
     // Given
     UUID mailId = java.util.UUID.randomUUID();
 

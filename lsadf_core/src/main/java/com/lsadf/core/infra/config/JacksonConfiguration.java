@@ -16,14 +16,14 @@
 
 package com.lsadf.core.infra.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.module.blackbird.BlackbirdModule;
 
 @Configuration
 public class JacksonConfiguration {
@@ -33,11 +33,10 @@ public class JacksonConfiguration {
   @Bean
   public ObjectMapper objectMapper() {
     var builder =
-        new Jackson2ObjectMapperBuilder()
-            .dateFormat(dateFormat)
-            .createXmlMapper(false)
-            .propertyNamingStrategy(PropertyNamingStrategies.SnakeCaseStrategy.INSTANCE)
-            .modules(new JavaTimeModule());
+        JsonMapper.builderWithJackson2Defaults()
+            .defaultDateFormat(dateFormat)
+            .propertyNamingStrategy(new PropertyNamingStrategies.SnakeCaseStrategy())
+            .addModule(new BlackbirdModule());
     return builder.build();
   }
 }

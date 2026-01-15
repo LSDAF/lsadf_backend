@@ -18,8 +18,6 @@ package com.lsadf.core.infra.valkey.stream.adapter;
 
 import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType.CHARACTERISTICS_UPDATED;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
@@ -27,6 +25,8 @@ import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 @RequiredArgsConstructor
 public class CharacteristicsEventPublisherAdapter implements CharacteristicsEventPublisherPort {

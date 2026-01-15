@@ -43,10 +43,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class CurrencyCommandServiceTests {
   private CurrencyCommandService currencyService;
@@ -86,7 +89,6 @@ class CurrencyCommandServiceTests {
       test_updateCacheCurrency_throwsIllegalArgumentException_when_allPropertiesNullAndCacheTrue() {
     // Arrange
     var command = new UpdateCacheCurrencyCommand(UUID, null, null, null, null);
-    when(cacheManager.isEnabled()).thenReturn(true);
 
     // Act & Assert
     assertThrows(

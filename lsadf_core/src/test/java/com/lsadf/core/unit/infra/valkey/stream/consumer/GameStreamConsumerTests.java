@@ -29,7 +29,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.infra.valkey.cache.flush.FlushStatus;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandlerRegistry;
@@ -54,6 +53,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.data.redis.core.RedisTemplate;
+import tools.jackson.core.JacksonException;
 
 @ExtendWith(MockitoExtension.class)
 class GameStreamConsumerTests {
@@ -97,7 +97,7 @@ class GameStreamConsumerTests {
   }
 
   @Test
-  void handleEvent_shouldProcessValidEventAndUpdateFlushTimestamp() throws JsonProcessingException {
+  void handleEvent_shouldProcessValidEventAndUpdateFlushTimestamp() throws JacksonException {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     String userId = "user123";
@@ -125,13 +125,13 @@ class GameStreamConsumerTests {
   }
 
   @Test
-  void handleEvent_shouldThrowException_whenDeserializationFails() throws JsonProcessingException {
+  void handleEvent_shouldThrowException_whenDeserializationFails() throws JacksonException {
     // Arrange
     Map<String, String> eventData = new HashMap<>();
     MapRecord<String, String, String> mockRecord = createMockRecord(eventData);
 
     when(valkeyEventSerializer.deserialize(eventData))
-        .thenThrow(new JsonProcessingException("Deserialization failed") {});
+        .thenThrow(new JacksonException("Deserialization failed") {});
 
     // Act & Assert
     EventHandlingException exception =
@@ -143,7 +143,7 @@ class GameStreamConsumerTests {
   }
 
   @Test
-  void handleEvent_shouldThrowException_whenNoHandlerFound() throws JsonProcessingException {
+  void handleEvent_shouldThrowException_whenNoHandlerFound() throws JacksonException {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     String userId = "user123";
@@ -165,7 +165,7 @@ class GameStreamConsumerTests {
   }
 
   @Test
-  void handleEvent_shouldThrowException_whenHandlerFails() throws JsonProcessingException {
+  void handleEvent_shouldThrowException_whenHandlerFails() throws JacksonException {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     String userId = "user123";
@@ -178,7 +178,7 @@ class GameStreamConsumerTests {
 
     when(valkeyEventSerializer.deserialize(eventData)).thenReturn(event);
     when(handlerRegistry.getHandler(eventType)).thenReturn(Optional.of(eventHandler));
-    doThrow(new JsonProcessingException("Handler processing failed") {})
+    doThrow(new JacksonException("Handler processing failed") {})
         .when(eventHandler)
         .handleEvent(event);
 
@@ -188,7 +188,7 @@ class GameStreamConsumerTests {
   }
 
   @Test
-  void resetDebounceWindow_shouldAddGameSaveToZSet() throws JsonProcessingException {
+  void resetDebounceWindow_shouldAddGameSaveToZSet() throws JacksonException {
     // Arrange
     UUID gameSaveId = UUID.randomUUID();
     String userId = "user123";

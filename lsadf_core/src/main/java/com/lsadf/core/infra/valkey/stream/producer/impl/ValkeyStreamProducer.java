@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.valkey.stream.producer.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.infra.valkey.stream.exception.EventHandlingException;
 import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;
 import com.lsadf.core.infra.valkey.stream.serializer.ValkeyEventSerializer;
@@ -25,6 +24,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.stream.*;
 import org.springframework.data.redis.core.RedisTemplate;
+import tools.jackson.core.JacksonException;
 
 @Slf4j
 public class ValkeyStreamProducer<T extends Event> implements StreamProducer<T> {
@@ -45,7 +45,7 @@ public class ValkeyStreamProducer<T extends Event> implements StreamProducer<T> 
       MapRecord<String, String, String> mapRecord =
           StreamRecords.mapBacked(eventData).withStreamKey(streamKey);
       return redisTemplate.opsForStream().add(mapRecord);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       log.error("JsonProcessingException error serializing event for stream {}", streamKey, e);
       throw new EventHandlingException(e);
     } catch (Exception e) {

@@ -20,9 +20,6 @@ import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdate
 import static com.lsadf.core.shared.event.AEvent.EventAttributes.EVENT_TYPE;
 import static com.lsadf.core.shared.event.AEvent.EventAttributes.TIMESTAMP;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.infra.util.ObjectUtils;
 import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType;
 import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
@@ -31,6 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 @RequiredArgsConstructor
 public class GameValkeyEventSerializer
@@ -39,8 +39,7 @@ public class GameValkeyEventSerializer
   private final ObjectMapper objectMapper;
 
   @Override
-  public Map<String, String> serialize(ValkeyGameSaveUpdatedEvent event)
-      throws JsonProcessingException {
+  public Map<String, String> serialize(ValkeyGameSaveUpdatedEvent event) throws JacksonException {
     Map<String, String> map = HashMap.newHashMap(5);
     map.put(EVENT_TYPE, event.getEventType().getValue());
     map.put(GAME_SAVE_ID, event.getGameSaveId().toString());
@@ -54,8 +53,7 @@ public class GameValkeyEventSerializer
   }
 
   @Override
-  public ValkeyGameSaveUpdatedEvent deserialize(Map<String, String> map)
-      throws JsonProcessingException {
+  public ValkeyGameSaveUpdatedEvent deserialize(Map<String, String> map) throws JacksonException {
     UUID gameSaveId = UUID.fromString(map.get(GAME_SAVE_ID));
     String userId = map.get(USER_ID);
     ValkeyGameSaveEventType eventType = ValkeyGameSaveEventType.enumFromString(map.get(EVENT_TYPE));

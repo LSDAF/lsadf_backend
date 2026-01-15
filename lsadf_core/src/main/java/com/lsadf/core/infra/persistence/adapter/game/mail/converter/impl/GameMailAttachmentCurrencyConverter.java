@@ -18,14 +18,14 @@ package com.lsadf.core.infra.persistence.adapter.game.mail.converter.impl;
 
 import static com.lsadf.core.domain.game.mail.GameMailAttachmentType.CURRENCY;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverter;
 import com.lsadf.core.infra.web.dto.request.Request;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @RequiredArgsConstructor
 public class GameMailAttachmentCurrencyConverter
@@ -39,13 +39,13 @@ public class GameMailAttachmentCurrencyConverter
   }
 
   @Override
-  public String toJson(GameMailAttachment<Request> attachment) throws JsonProcessingException {
+  public String toJson(GameMailAttachment<Request> attachment) throws JacksonException {
     Object attachmentObject = attachment.attachment();
     return objectMapper.writeValueAsString(attachmentObject);
   }
 
   @Override
-  public CurrencyRequest toRequest(String json) throws JsonProcessingException {
+  public CurrencyRequest toRequest(String json) throws JacksonException {
     return objectMapper.readValue(json, CurrencyRequest.class);
   }
 }

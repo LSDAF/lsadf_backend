@@ -16,12 +16,12 @@
 
 package com.lsadf.core.application.game.mail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.domain.game.mail.GameMail;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import tools.jackson.core.JacksonException;
 
 public interface GameMailRepositoryPort {
   /**
@@ -30,7 +30,7 @@ public interface GameMailRepositoryPort {
    * @param mailId the mail id
    * @return the mail with attachments
    */
-  Optional<GameMail> findGameMailEntityById(UUID mailId) throws JsonProcessingException;
+  Optional<GameMail> findGameMailEntityById(UUID mailId) throws JacksonException;
 
   /**
    * Find all mails for a specific game save

@@ -32,10 +32,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class GameMailCommandServiceTests {
   private GameMailCommandService gameMailCommandService;

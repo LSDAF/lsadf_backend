@@ -16,15 +16,15 @@
 
 package com.lsadf.core.application.game.mail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.domain.game.mail.GameMail;
 import java.util.List;
 import java.util.UUID;
+import tools.jackson.core.JacksonException;
 
 public interface GameMailQueryService {
   List<GameMail> getMailsByGameSaveId(UUID gameSaveId);
 
-  GameMail getMailById(UUID id) throws JsonProcessingException;
+  GameMail getMailById(UUID id) throws JacksonException;
 
   boolean existsById(UUID mailId);
 }

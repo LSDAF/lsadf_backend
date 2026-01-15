@@ -16,12 +16,12 @@
 
 package com.lsadf.core.infra.valkey.stream.consumer.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.shared.event.Event;
 import com.lsadf.core.shared.event.EventType;
+import tools.jackson.core.JacksonException;
 
 public interface EventHandler {
-  void handleEvent(Event event) throws JsonProcessingException;
+  void handleEvent(Event event) throws JacksonException;
 
   EventType getEventType();
 }

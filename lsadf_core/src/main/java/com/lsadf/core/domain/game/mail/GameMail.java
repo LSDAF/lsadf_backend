@@ -21,7 +21,10 @@ import java.io.Serial;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.jspecify.annotations.Nullable;
 
 @RequiredArgsConstructor

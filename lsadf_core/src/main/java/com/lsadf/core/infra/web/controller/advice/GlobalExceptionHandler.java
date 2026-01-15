@@ -17,7 +17,6 @@ package com.lsadf.core.infra.web.controller.advice;
 
 import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.exception.*;
 import com.lsadf.core.exception.http.*;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
@@ -35,6 +34,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import tools.jackson.core.JacksonException;
 
 @RestControllerAdvice
 @Slf4j
@@ -273,7 +273,7 @@ public class GlobalExceptionHandler {
    * @param e the thrown exception
    * @return ResponseEntity containing the error
    */
-  @ExceptionHandler(JsonProcessingException.class)
+  @ExceptionHandler(JacksonException.class)
   public ResponseEntity<ApiResponse<Void>> handleJsonProcessingException(Exception e) {
     log.error("JsonProcessingException: " + e);
     return generateResponse(

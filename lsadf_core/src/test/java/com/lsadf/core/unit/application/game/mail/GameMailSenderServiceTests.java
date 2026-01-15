@@ -28,10 +28,13 @@ import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.exception.http.NotFoundException;
 import java.util.UUID;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class GameMailSenderServiceTests {
   private GameMailSenderService gameMailSenderService;

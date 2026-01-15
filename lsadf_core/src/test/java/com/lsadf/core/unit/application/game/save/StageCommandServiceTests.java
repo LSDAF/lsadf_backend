@@ -43,10 +43,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class StageCommandServiceTests {
   private StageCommandService stageService;
@@ -85,7 +88,6 @@ class StageCommandServiceTests {
   void test_updateCacheStage_throwsIllegalArgumentException_when_allPropertiesNullAndCacheTrue() {
     // Arrange
     var command = new UpdateCacheStageCommand(UUID, null, null, null);
-    when(cacheManager.isEnabled()).thenReturn(true);
 
     // Act & Assert
     assertThrows(IllegalArgumentException.class, () -> stageService.updateCacheStage(command));

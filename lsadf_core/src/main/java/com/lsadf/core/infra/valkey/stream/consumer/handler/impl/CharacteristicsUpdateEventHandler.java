@@ -18,8 +18,6 @@ package com.lsadf.core.infra.valkey.stream.consumer.handler.impl;
 
 import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType.CHARACTERISTICS_UPDATED;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.characteristics.command.UpdateCacheCharacteristicsCommand;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
@@ -27,6 +25,8 @@ import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
 import com.lsadf.core.shared.event.Event;
 import com.lsadf.core.shared.event.EventType;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 public class CharacteristicsUpdateEventHandler implements EventHandler {
 
@@ -45,7 +45,7 @@ public class CharacteristicsUpdateEventHandler implements EventHandler {
   }
 
   @Override
-  public void handleEvent(Event event) throws JsonProcessingException {
+  public void handleEvent(Event event) throws JacksonException {
     // string to map
 
     ValkeyGameSaveUpdatedEvent valkeyGameSaveUpdatedEvent = (ValkeyGameSaveUpdatedEvent) event;

@@ -16,7 +16,6 @@
 
 package com.lsadf.core.application.game.mail.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailTemplateCommandService;
 import com.lsadf.core.application.game.mail.GameMailTemplateQueryService;
 import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
@@ -26,6 +25,7 @@ import com.lsadf.core.domain.game.mail.GameMailTemplate;
 import com.lsadf.core.exception.http.NotFoundException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.JacksonException;
 
 @RequiredArgsConstructor
 public class GameMailTemplateCommandServiceImpl implements GameMailTemplateCommandService {
@@ -49,7 +49,7 @@ public class GameMailTemplateCommandServiceImpl implements GameMailTemplateComma
 
   @Override
   public void attachToGameMailTemplate(CreateNewTemplateAttachmentCommand command)
-      throws JsonProcessingException {
+      throws JacksonException {
     UUID gameMailTemplateId = command.mailTemplateId();
     if (!gameMailTemplateQueryService.existsById(gameMailTemplateId)) {
       throw new NotFoundException(

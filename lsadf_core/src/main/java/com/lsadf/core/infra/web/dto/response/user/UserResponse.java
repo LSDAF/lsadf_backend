@@ -16,8 +16,6 @@
 
 package com.lsadf.core.infra.web.dto.response.user;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lsadf.core.infra.serializer.DateToLongSerializer;
 import com.lsadf.core.infra.serializer.LongToDateSerializer;
 import com.lsadf.core.infra.web.dto.response.Response;
@@ -26,6 +24,8 @@ import java.io.Serial;
 import java.util.Date;
 import java.util.List;
 import lombok.Builder;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 @Builder
 public record UserResponse(

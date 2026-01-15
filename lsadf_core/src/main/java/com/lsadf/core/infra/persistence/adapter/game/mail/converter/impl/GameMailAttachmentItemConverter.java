@@ -16,14 +16,14 @@
 
 package com.lsadf.core.infra.persistence.adapter.game.mail.converter.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverter;
 import com.lsadf.core.infra.web.dto.request.Request;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @RequiredArgsConstructor
 public class GameMailAttachmentItemConverter implements GameMailAttachmentConverter<ItemRequest> {
@@ -36,12 +36,12 @@ public class GameMailAttachmentItemConverter implements GameMailAttachmentConver
   }
 
   @Override
-  public String toJson(GameMailAttachment<Request> attachment) throws JsonProcessingException {
+  public String toJson(GameMailAttachment<Request> attachment) throws JacksonException {
     return objectMapper.writeValueAsString(attachment);
   }
 
   @Override
-  public ItemRequest toRequest(String json) throws JsonProcessingException {
+  public ItemRequest toRequest(String json) throws JacksonException {
     return objectMapper.readValue(json, ItemRequest.class);
   }
 }

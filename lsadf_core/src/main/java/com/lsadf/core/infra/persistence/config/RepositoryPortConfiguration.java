@@ -15,7 +15,6 @@
  */
 package com.lsadf.core.infra.persistence.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
 import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
@@ -45,6 +44,7 @@ import com.lsadf.core.infra.persistence.impl.view.GameSaveViewRepository;
 import com.lsadf.core.infra.persistence.impl.view.GameSessionViewRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
 
 @Configuration
 public class RepositoryPortConfiguration {

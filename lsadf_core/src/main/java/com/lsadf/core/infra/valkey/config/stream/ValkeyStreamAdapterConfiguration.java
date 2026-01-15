@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.valkey.config.stream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
@@ -28,6 +27,7 @@ import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
 import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
 
 @Configuration
 public class ValkeyStreamAdapterConfiguration {

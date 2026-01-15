@@ -16,7 +16,6 @@
 
 package com.lsadf.core.infra.persistence.adapter.game.mail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
 import com.lsadf.core.domain.game.mail.GameMail;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
@@ -36,6 +35,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.core.JacksonException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -49,7 +49,7 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
   private static final GameMailViewMapper gameMailViewMapper = GameMailViewMapper.INSTANCE;
 
   @Override
-  public Optional<GameMail> findGameMailEntityById(UUID mailId) throws JsonProcessingException {
+  public Optional<GameMail> findGameMailEntityById(UUID mailId) throws JacksonException {
     var viewEntityOptional = gameMailViewRepository.findById(mailId);
     if (viewEntityOptional.isEmpty()) {
       return Optional.empty();
@@ -110,7 +110,7 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
   }
 
   private void enrichGameMailWithAttachments(GameMail gameMail, UUID mailTemplateId)
-      throws JsonProcessingException {
+      throws JacksonException {
     for (GameMailTemplateAttachmentEntity entity :
         gameMailAttachmentRepository.findByMailTemplateId(mailTemplateId)) {
       GameMailAttachmentType type = entity.getType();
