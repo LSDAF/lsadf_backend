@@ -18,6 +18,7 @@ package com.lsadf.core.unit.config;
 
 import java.util.List;
 import lombok.experimental.UtilityClass;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 
 @UtilityClass
@@ -27,11 +28,13 @@ public class MockAuthenticationFactory {
     return SecurityMockMvcRequestPostProcessors.jwt()
         .jwt(
             jwt -> {
+              jwt.tokenValue("mock-token-value");
               jwt.claim("name", name);
-              jwt.claim("scope", "openid profile email");
+              jwt.claim("scope", "openid profile");
               jwt.claim("preferred_username", username);
               jwt.claim("email_verified", true);
               jwt.claim("realm_access", java.util.Map.of("roles", roles));
-            });
+            })
+        .authorities(roles.stream().map(role -> (GrantedAuthority) () -> "ROLE_" + role).toList());
   }
 }
