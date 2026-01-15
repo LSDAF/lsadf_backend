@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright © 2024-2025 LSDAF
+    Copyright © 2024-2026 LSDAF
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@
                     <configuration>
                         <properties>
                             <owner>LSDAF</owner>
-                            <year>2024-2025</year>
+                            <year>2024-2026</year>
                         </properties>
                         <useDefaultExcludes>true</useDefaultExcludes>
                         <licenseSets>
