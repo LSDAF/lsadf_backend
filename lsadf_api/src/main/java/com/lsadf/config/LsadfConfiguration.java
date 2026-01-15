@@ -57,7 +57,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   KeycloakConfiguration.class,
   CommonHttpClientConfiguration.class,
   JdbcConfiguration.class,
-  LsadfSecurityConfiguration.class,
   ValkeyStreamConfiguration.class,
   ValkeyGameStreamConfiguration.class,
   GlobalExceptionHandler.class,

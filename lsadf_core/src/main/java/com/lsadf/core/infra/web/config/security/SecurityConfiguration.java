@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.infra.web.config.security;
 
+import com.lsadf.core.domain.user.UserRole;
 import com.lsadf.core.infra.logging.interceptor.RequestLoggerInterceptor;
 import com.lsadf.core.infra.logging.properties.HttpLogProperties;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakJwtAuthenticationConverter;
@@ -37,7 +38,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -58,7 +58,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     this.httpLogProperties = httpLogProperties;
   }
 
-  public static final String[] WHITELIST_URLS = {
+  protected static final String[] WHITELIST_URLS = {
     "/api-docs/**",
     "/swagger-ui/**",
     "/swagger-ui.html",
@@ -75,7 +75,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
   @Bean
   public SecurityFilterChain filterChain(
       HttpSecurity security,
-      CorsFilter corsFilter,
       JwtAuthenticationConverter customJwtAuthenticationProvider,
       Customizer<
               AuthorizeHttpRequestsConfigurer<HttpSecurity>
@@ -83,7 +82,6 @@ public class SecurityConfiguration implements WebMvcConfigurer {
           requestMatcherRegistry)
       throws Exception {
     security
-        .addFilter(corsFilter)
         .sessionManagement(
             configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .csrf(AbstractHttpConfigurer::disable)
@@ -97,6 +95,20 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(customJwtAuthenticationProvider)));
 
     return security.build();
+  }
+
+  @Bean
+  public Customizer<
+          AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>
+      authorizationManagerRequestMatcherRegistryCustomizer() {
+    return configurer ->
+        configurer
+            .requestMatchers(WHITELIST_URLS)
+            .permitAll()
+            .requestMatchers(ADMIN_URLS)
+            .hasAuthority(UserRole.ADMIN.getRole())
+            .anyRequest()
+            .authenticated();
   }
 
   @Bean

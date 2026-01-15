@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
@@ -27,9 +28,12 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 public class CustomJwtSecurityContextFactory
     implements WithSecurityContextFactory<WithMockJwtUser> {
 
+  private final SecurityContextHolderStrategy securityContextHolderStrategy =
+      SecurityContextHolder.getContextHolderStrategy();
+
   @Override
   public SecurityContext createSecurityContext(WithMockJwtUser mockUser) {
-    SecurityContext context = SecurityContextHolder.createEmptyContext();
+    SecurityContext context = securityContextHolderStrategy.createEmptyContext();
 
     // Create a mock Jwt object with the desired claims
     Jwt mockJwt = Mockito.mock(Jwt.class);

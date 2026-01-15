@@ -54,7 +54,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   ClockConfiguration.class,
   KeycloakConfiguration.class,
   CommonHttpClientConfiguration.class,
-  LsadfAdminSecurityConfiguration.class,
   GlobalExceptionHandler.class,
   JacksonConfiguration.class,
   AsyncConfiguration.class,
