@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.infra.web.dto.request.game.currency;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lsadf.core.infra.web.dto.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -23,6 +24,7 @@ import lombok.Builder;
 import org.jspecify.annotations.Nullable;
 
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record CurrencyRequest(
     @Nullable @Schema(description = "The amount of gold", example = "100") @PositiveOrZero
         Long gold,

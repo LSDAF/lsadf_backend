@@ -58,8 +58,3 @@ scheduling:
 
 async:
   enabled: false
-
-
-logging:
-  level:
-    org.springframework.security: DEBUG

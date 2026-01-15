@@ -16,6 +16,7 @@
 
 package com.lsadf.core.infra.web.dto.request.game.metadata;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lsadf.core.domain.user.validation.Nickname;
 import com.lsadf.core.infra.web.dto.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,6 +28,7 @@ import lombok.Builder;
 import org.jspecify.annotations.Nullable;
 
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record GameMetadataRequest(
     @Nullable
         @Schema(description = "Game Save ID", example = "123e4567-e89b-12d3-a456-426655440000")

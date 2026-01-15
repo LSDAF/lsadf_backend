@@ -18,8 +18,6 @@ package com.lsadf.bdd.step_definition.then;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.bdd.util.BddUtils;
 import com.lsadf.core.application.game.mail.GameMailQueryService;
 import com.lsadf.core.application.game.mail.GameMailTemplateQueryService;
@@ -34,6 +32,8 @@ import java.util.Stack;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @Slf4j(topic = "[GAME MAIL THEN STEP DEFINITIONS]")
 @Component
@@ -61,7 +61,7 @@ public class BddThenGameMailStepDefinitions {
   }
 
   public void thenResponseShouldHaveFollowingGameMailAttachments(DataTable dataTable)
-      throws JsonProcessingException {
+      throws JacksonException {
     List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
     List<GameMailAttachment<?>> gameMailAttachments = gameMailAttachmentListStack.peek();
     for (var row : rows) {

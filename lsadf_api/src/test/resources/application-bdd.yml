@@ -33,11 +33,6 @@ cors:
   exposed-headers:
     - "*"
 
-server:
-  error:
-    whitelabel:
-      enabled: false
-
 
 spring:
   threads:
@@ -150,3 +145,5 @@ async:
 logging:
   level:
     com.lsadf.core.infra.event: DEBUG
+
+spring.web.error.whitelabel.enabled: false

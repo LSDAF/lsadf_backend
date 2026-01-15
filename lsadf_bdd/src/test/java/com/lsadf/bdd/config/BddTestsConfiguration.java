@@ -38,6 +38,7 @@ import com.lsadf.core.infra.web.dto.response.user.UserResponse;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -47,6 +48,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /** Configuration class for BDD tests */
 @TestConfiguration
+@AutoConfigureTestRestTemplate
 @Import({
   BddStackCleaner.class,
   BddGivenStepDefinitions.class,

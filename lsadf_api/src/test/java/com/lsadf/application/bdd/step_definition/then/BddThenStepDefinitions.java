@@ -15,13 +15,13 @@
  */
 package com.lsadf.application.bdd.step_definition.then;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.application.bdd.BddLoader;
 import com.lsadf.bdd.step_definition.then.*;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.core.JacksonException;
 
 /** Step definitions for the then steps in the BDD scenarios */
 @Slf4j(topic = "[THEN STEP DEFINITIONS]")
@@ -93,7 +93,7 @@ public class BddThenStepDefinitions extends BddLoader {
 
   @Then("^the response should have the following GameMailAttachments$")
   public void thenTheResponseSHouldHaveFollowingGameMailAttachments(DataTable dataTable)
-      throws JsonProcessingException {
+      throws JacksonException {
     bddThenGameMailStepDefinitions.thenResponseShouldHaveFollowingGameMailAttachments(dataTable);
   }
 

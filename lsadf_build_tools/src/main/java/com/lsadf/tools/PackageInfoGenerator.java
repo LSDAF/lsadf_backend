@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,8 +50,8 @@ public class PackageInfoGenerator {
   private static final String JAVA_EXTENSION = ".java";
 
   public static void main(String[] args) throws IOException {
-    Path srcDir = Paths.get(args[0]);
-    Path destDir = Paths.get(args[1]);
+    Path srcDir = Path.of(args[0]);
+    Path destDir = Path.of(args[1]);
     if (!Files.isDirectory(srcDir)) {
       log.warn("Source directory does not exist: {}", srcDir);
       return;

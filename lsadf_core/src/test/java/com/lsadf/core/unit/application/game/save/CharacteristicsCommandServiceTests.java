@@ -90,6 +90,7 @@ class CharacteristicsCommandServiceTests {
     // Arrange
     Characteristics characteristics = new Characteristics(10L, 25L, null, null, null);
     Characteristics cachedCharacteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
+    when(cacheManager.isEnabled()).thenReturn(true);
     when(characteristicsCache.get(UUID.toString())).thenReturn(Optional.of(cachedCharacteristics));
     var command = UpdateCacheCharacteristicsCommand.fromCharacteristics(UUID, characteristics);
     // Act & Assert

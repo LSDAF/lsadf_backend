@@ -29,6 +29,9 @@
     <artifactId>lsadf-dependencies</artifactId>
     <packaging>pom</packaging>
     <name>LSADF Dependencies</name>
+    <properties>
+        <spring-boot.version>4.0.1</spring-boot.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -105,18 +108,13 @@
                 <version>${embedded-redis.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons-lang3.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
             </dependency>
             <dependency>
-                <groupId>commons-fileupload</groupId>
-                <artifactId>commons-fileupload</artifactId>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-fileupload2-jakarta-servlet6</artifactId>
                 <version>${commons-fileupload.version}</version>
             </dependency>
             <dependency>
@@ -138,11 +136,6 @@
             </dependency>
 
             <!-- JSpecify -->
-            <dependency>
-                <groupId>org.jspecify</groupId>
-                <artifactId>jspecify</artifactId>
-                <version>${jspecify.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 

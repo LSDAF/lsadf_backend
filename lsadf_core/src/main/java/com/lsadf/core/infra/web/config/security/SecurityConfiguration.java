@@ -26,11 +26,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,7 +41,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @Import({OAuth2Properties.class})
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration implements WebMvcConfigurer {
 
@@ -74,41 +72,27 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
   @Bean
   public SecurityFilterChain filterChain(
-      HttpSecurity security,
-      JwtAuthenticationConverter customJwtAuthenticationProvider,
-      Customizer<
-              AuthorizeHttpRequestsConfigurer<HttpSecurity>
-                  .AuthorizationManagerRequestMatcherRegistry>
-          requestMatcherRegistry)
-      throws Exception {
+      HttpSecurity security, JwtAuthenticationConverter customJwtAuthenticationProvider) {
     security
         .sessionManagement(
             configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .csrf(AbstractHttpConfigurer::disable)
         .httpBasic(AbstractHttpConfigurer::disable)
         .formLogin(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(requestMatcherRegistry)
-        //                .oauth2Login(oauth2 -> oauth2
-        //                        .loginPage("/oauth2/login"))
+        .authorizeHttpRequests(
+            configurer ->
+                configurer
+                    .requestMatchers(WHITELIST_URLS)
+                    .permitAll()
+                    .requestMatchers(ADMIN_URLS)
+                    .hasAuthority(UserRole.ADMIN.getRole())
+                    .anyRequest()
+                    .authenticated())
         .oauth2ResourceServer(
             oauth2 ->
                 oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(customJwtAuthenticationProvider)));
 
     return security.build();
-  }
-
-  @Bean
-  public Customizer<
-          AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>
-      authorizationManagerRequestMatcherRegistryCustomizer() {
-    return configurer ->
-        configurer
-            .requestMatchers(WHITELIST_URLS)
-            .permitAll()
-            .requestMatchers(ADMIN_URLS)
-            .hasAuthority(UserRole.ADMIN.getRole())
-            .anyRequest()
-            .authenticated();
   }
 
   @Bean

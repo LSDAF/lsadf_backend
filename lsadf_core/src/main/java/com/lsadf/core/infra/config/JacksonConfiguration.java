@@ -20,7 +20,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.module.blackbird.BlackbirdModule;
@@ -31,12 +30,10 @@ public class JacksonConfiguration {
   public final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
   @Bean
-  public ObjectMapper objectMapper() {
-    var builder =
-        JsonMapper.builderWithJackson2Defaults()
-            .defaultDateFormat(dateFormat)
-            .propertyNamingStrategy(new PropertyNamingStrategies.SnakeCaseStrategy())
-            .addModule(new BlackbirdModule());
-    return builder.build();
+  public JsonMapper.Builder objectMapper() {
+    return JsonMapper.builderWithJackson2Defaults()
+        .defaultDateFormat(dateFormat)
+        .propertyNamingStrategy(new PropertyNamingStrategies.SnakeCaseStrategy())
+        .addModule(new BlackbirdModule());
   }
 }

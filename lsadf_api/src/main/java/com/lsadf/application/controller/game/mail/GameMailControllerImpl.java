@@ -18,7 +18,6 @@ package com.lsadf.application.controller.game.mail;
 
 import static com.lsadf.core.infra.web.config.auth.TokenUtils.getUsernameFromJwt;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.clock.ClockService;
 import com.lsadf.core.application.game.mail.GameMailCommandService;
 import com.lsadf.core.application.game.mail.GameMailEventPublisherPort;
@@ -41,6 +40,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.core.JacksonException;
 
 @RestController
 @ConditionalOnProperty(prefix = "api", name = "enabled", havingValue = "true")
@@ -68,7 +68,7 @@ public class GameMailControllerImpl extends BaseController implements GameMailCo
 
   @Override
   public ResponseEntity<ApiResponse<GameMailResponse>> getGameMailById(Jwt jwt, UUID gameMailId)
-      throws JsonProcessingException {
+      throws JacksonException {
     validateUser(jwt);
     GameMail result = gameMailQueryService.getMailById(gameMailId);
     if (!result.isRead()) {
@@ -90,7 +90,7 @@ public class GameMailControllerImpl extends BaseController implements GameMailCo
 
   @Override
   public ResponseEntity<ApiResponse<Void>> claimGameMailAttachments(
-      Jwt jwt, UUID gameMailId, UUID sessionId) throws JsonProcessingException {
+      Jwt jwt, UUID gameMailId, UUID sessionId) throws JacksonException {
     validateUser(jwt);
 
     var gameMail = gameMailQueryService.getMailById(gameMailId);

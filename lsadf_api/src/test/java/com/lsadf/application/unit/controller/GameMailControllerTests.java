@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.game.mail.GameMailController;
 import com.lsadf.application.controller.game.mail.GameMailControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
@@ -56,11 +55,12 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Answers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest({GameMailController.class, GameMailControllerImpl.class, GlobalExceptionHandler.class})
 @TestMethodOrder(MethodOrderer.MethodName.class)

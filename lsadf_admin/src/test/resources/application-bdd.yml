@@ -30,11 +30,6 @@ cors:
   exposed-headers:
     - "*"
 
-server:
-  error:
-    whitelabel:
-      enabled: false
-
 spring:
   threads:
     virtual:
@@ -129,3 +124,5 @@ configuration-display:
   enabled: false
 async:
   enabled: false
+
+spring.web.error.whitelabel.enabled: false

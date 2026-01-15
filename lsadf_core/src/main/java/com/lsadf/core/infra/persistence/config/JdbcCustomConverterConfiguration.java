@@ -24,6 +24,7 @@ import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 public class JdbcCustomConverterConfiguration {
@@ -43,10 +44,10 @@ public class JdbcCustomConverterConfiguration {
 
   @Bean
   public GameMailAttachmentConverter<ItemRequest> itemGameMailAttachmentConverter(
-      GameMailAttachmentConverterRegistry converterRegistry, ObjectMapper objectMapper) {
+      GameMailAttachmentConverterRegistry converterRegistry, JsonMapper jsonMapper) {
     GameMailAttachmentConverter<ItemRequest> converter =
         new com.lsadf.core.infra.persistence.adapter.game.mail.converter.impl
-            .GameMailAttachmentItemConverter(objectMapper);
+            .GameMailAttachmentItemConverter(jsonMapper);
     converterRegistry.registerConverter(converter);
     return converter;
   }

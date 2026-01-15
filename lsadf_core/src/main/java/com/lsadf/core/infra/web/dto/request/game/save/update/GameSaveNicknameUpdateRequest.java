@@ -33,18 +33,21 @@ public record GameSaveNicknameUpdateRequest(
 
   @Override
   @Nullable
+  @jakarta.annotation.Nullable
   public Characteristics getCharacteristics() {
     return null;
   }
 
   @Override
   @Nullable
+  @jakarta.annotation.Nullable
   public Currency getCurrency() {
     return null;
   }
 
   @Override
   @Nullable
+  @jakarta.annotation.Nullable
   public Stage getStage() {
     return null;
   }

@@ -122,8 +122,7 @@ springdoc:
 
 
 logging:
-  file:
-    path: classpath:logback.xml
+  file.name: classpath:logback.xml
 
 cors:
   allowed-headers:
