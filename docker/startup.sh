@@ -27,5 +27,4 @@ java \
   -XX:+ExitOnOutOfMemoryError \
   -XX:MaxMetaspaceSize=128m \
   -Dspring.profiles.active="${SPRING_PROFILES_ACTIVE}" \
-  -Djava.io.tmpdir=/temp \
   org.springframework.boot.loader.launch.JarLauncher
