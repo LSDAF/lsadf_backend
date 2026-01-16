@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.blackbird.BlackbirdModule;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.module.blackbird.BlackbirdModule;
 
 @Configuration
 public class JacksonConfiguration {
@@ -32,15 +29,10 @@ public class JacksonConfiguration {
   public final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
   @Bean
-  public ObjectMapper objectMapper() {
-    var builder =
-        Jackson2ObjectMapperBuilder.json()
-            .dateFormat(dateFormat)
-            .createXmlMapper(false)
-            .propertyNamingStrategy(PropertyNamingStrategies.SnakeCaseStrategy.INSTANCE)
-            // Adding jackson blackbird module to enhance json processing & JavaTimeModule for
-            // Instant processing
-            .modules(new BlackbirdModule(), new JavaTimeModule());
-    return builder.build();
+  public JsonMapper.Builder objectMapper() {
+    return JsonMapper.builderWithJackson2Defaults()
+        .defaultDateFormat(dateFormat)
+        .propertyNamingStrategy(new PropertyNamingStrategies.SnakeCaseStrategy())
+        .addModule(new BlackbirdModule());
   }
 }

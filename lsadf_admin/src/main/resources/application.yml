@@ -72,17 +72,9 @@ spring:
         jwt:
           issuer-uri: ${keycloak.issuer-uri}
   cloud:
-    openfeign:
-      client:
-        config:
-          default:
-            connect-timeout: 5000
-            read-timeout: 5000
-            logger-level: FULL
-          keycloak:
-            url: ${keycloak.url}
-          keycloak-admin:
-            url: ${keycloak.admin-url}
+    httpclient:
+      connect-timeout: 5000
+      read-timeout: 5000
 
 
 keycloak:
@@ -129,7 +121,7 @@ springdoc:
 
 logging:
   file:
-    path: classpath:logback.xml
+    name: classpath:logback.xml
 
 cors:
   allowed-headers:

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.valkey.config.stream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.infra.valkey.config.properties.ValkeyGameStreamProperties;
 import com.lsadf.core.infra.valkey.stream.consumer.StreamConsumer;
 import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
@@ -38,6 +36,7 @@ import org.springframework.data.redis.connection.stream.StreamOffset;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 import org.springframework.data.redis.stream.Subscription;
+import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 @Configuration

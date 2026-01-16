@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.admin.application.game.mail;
 
 import static com.lsadf.admin.application.game.mail.AdminGameMailTemplateController.Constants.ApiPaths.GAME_MAIL_TEMPLATE_ID;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.BEARER_AUTHENTICATION;
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.admin.application.constant.AdminSwaggerConstants;
 import com.lsadf.core.infra.web.controller.Controller;
@@ -42,6 +40,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.core.JacksonException;
 
 /** */
 @RequestMapping(value = AdminApiPathConstants.ADMIN_GAME_MAIL_TEMPLATE)
@@ -96,7 +95,7 @@ public interface AdminGameMailTemplateController extends Controller {
   ResponseEntity<ApiResponse<GameMailTemplateResponse>> getTemplateById(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = ParameterConstants.GAME_MAIL_TEMPLATE_ID) UUID id)
-      throws JsonProcessingException;
+      throws JacksonException;
 
   @DeleteMapping(value = GAME_MAIL_TEMPLATE_ID)
   @Operation(summary = "Deletes a game mail template using its ID")
@@ -152,7 +151,7 @@ public interface AdminGameMailTemplateController extends Controller {
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = ParameterConstants.GAME_MAIL_TEMPLATE_ID) UUID id,
       @RequestBody List<GameMailAttachmentRequest<?>> attachments)
-      throws JsonProcessingException;
+      throws JacksonException;
 
   @PostMapping
   @Operation(summary = "Creates a new game mail template")

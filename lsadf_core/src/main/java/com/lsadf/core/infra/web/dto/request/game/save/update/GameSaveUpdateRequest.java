@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.web.dto.request.game.save.update;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.domain.game.save.stage.Stage;
@@ -28,6 +28,7 @@ import org.jspecify.annotations.Nullable;
  * player's getNickname. Implementing classes should provide the functionality to manage and update
  * specific components of the game save.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public interface GameSaveUpdateRequest extends Request {
 
   /**
@@ -57,5 +58,5 @@ public interface GameSaveUpdateRequest extends Request {
    *
    * @return the getNickname of the user as a string
    */
-  String getNickname();
+  @Nullable String getNickname();
 }

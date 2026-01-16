@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 package com.lsadf.admin.application.unit.controller;
 
 import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.search.AdminSearchController;
 import com.lsadf.admin.application.search.AdminSearchControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
@@ -42,7 +42,6 @@ import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.common.Filter;
 import com.lsadf.core.infra.web.dto.request.search.SearchRequest;
 import com.lsadf.core.infra.web.dto.request.user.UserSortingParameter;
-import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -51,13 +50,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(
     value = {
@@ -96,6 +97,12 @@ class AdminSearchControllerTests {
   @MockitoBean(answers = Answers.RETURNS_DEEP_STUBS)
   private SearchService searchService;
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_ADMIN =
+      createMockJwt("paul.ochon@test.com", List.of("ADMIN", "USER"), "Paul OCHON");
+
   @Test
   @SneakyThrows
   void test_searchUsers_returns401_when_userNotAuthenticated() {
@@ -111,31 +118,28 @@ class AdminSearchControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_searchUsers_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/search/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchUsers_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/search/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -155,75 +159,62 @@ class AdminSearchControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_searchGameSaves_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/search/game_saves")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchGameSaves_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/search/game_saves")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchUsers_returns200_when_noBody() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/search/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchGameSaves_returns200_when_noBody() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/search/game_saves")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchUsers_returns200_when_orderByIsSet() {
     // when
     mockMvc
@@ -231,17 +222,14 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param(ORDER_BY, UserSortingParameter.ID_DESC.name()))
+                .param(ORDER_BY, UserSortingParameter.ID_DESC.name())
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchGameSaves_returns200_when_orderByIsSet() {
     // when
     mockMvc
@@ -252,17 +240,14 @@ class AdminSearchControllerTests {
                 .param(
                     ORDER_BY,
                     Collections.singletonList(UserSortingParameter.ID_DESC.name())
-                        .toArray(new String[0])))
+                        .toArray(new String[0]))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchUsers_returns400_when_invalidOrderBy() {
     // when
     mockMvc
@@ -270,17 +255,14 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param(ORDER_BY, "INVALID_ORDER_BY"))
+                .param(ORDER_BY, "INVALID_ORDER_BY")
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchGameSaves_returns400_when_invalidOrderBy() {
     // when
     mockMvc
@@ -288,17 +270,14 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/game_saves")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .param(ORDER_BY, "INVALID_ORDER_BY"))
+                .param(ORDER_BY, "INVALID_ORDER_BY")
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchUsers_returns400_when_nullFilterType() {
     // given
     List<Filter> filters = List.of(new Filter(null, "Test"));
@@ -309,17 +288,14 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchUsers_returns400_when_nullFilterValue() {
     // given
     List<Filter> filters = List.of(new Filter("Test", null));
@@ -330,17 +306,14 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchGameSaves_returns400_when_nullFilterType() {
     // given
     List<Filter> filters = List.of(new Filter(null, "Test"));
@@ -351,17 +324,14 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/game_saves")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchGameSaves_returns400_when_nullFilterValue() {
     // given
     List<Filter> filters = List.of(new Filter("Test", null));
@@ -372,17 +342,14 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/game_saves")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchUsers_returns200_when_validFilters() {
     // given
     List<Filter> filters = List.of(new Filter("Test", "Test"), new Filter("Test", "Test"));
@@ -393,17 +360,14 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_searchGameSaves_returns200_when_validFilters() {
     // given
     List<Filter> filters = List.of(new Filter("Test", "Test"), new Filter("Test", "Test"));
@@ -414,7 +378,8 @@ class AdminSearchControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/search/game_saves")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 package com.lsadf.admin.application.unit.controller;
 
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.game.mail.AdminGameMailController;
 import com.lsadf.admin.application.game.mail.AdminGameMailControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
@@ -44,7 +44,6 @@ import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.mail.DeleteGameMailsRequest;
 import com.lsadf.core.infra.web.dto.request.game.mail.SendGameMailRequest;
-import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.List;
 import java.util.UUID;
 import lombok.SneakyThrows;
@@ -55,13 +54,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(
     value = {
@@ -106,6 +107,12 @@ class AdminGameMailControllerTests {
   private static final UUID GAME_SAVE_ID = UUID.randomUUID();
   private static final UUID GAME_MAIL_TEMPLATE_ID = UUID.randomUUID();
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_ADMIN =
+      createMockJwt("paul.ochon@test.com", List.of("USER", "ADMIN"), "Paul OCHON");
+
   @Test
   @SneakyThrows
   void test_sendGameMailToGameSaves_returns_401_when_user_not_authenticated() {
@@ -126,7 +133,6 @@ class AdminGameMailControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_sendGameMailToGameSaves_returns_403_when_user_not_admin() {
     // given
     SendGameMailRequest request =
@@ -141,17 +147,14 @@ class AdminGameMailControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
   void test_sendGameMailToGameSaves_returns_200_when_successful() {
     // given
     SendGameMailRequest request =
@@ -168,7 +171,8 @@ class AdminGameMailControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -177,10 +181,6 @@ class AdminGameMailControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
   void test_sendGameMailToGameSaves_returns_200_when_successful_with_no_specified_gameSaveId() {
     // given
     SendGameMailRequest request =
@@ -194,7 +194,8 @@ class AdminGameMailControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -203,10 +204,6 @@ class AdminGameMailControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
   void test_sendGameMailToGameSaves_returns_404_when_template_not_found() {
     // given
     SendGameMailRequest request =
@@ -225,7 +222,8 @@ class AdminGameMailControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isNotFound());
 
@@ -234,10 +232,6 @@ class AdminGameMailControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
   void
       test_sendGameMailToGameSaves_returns_404_when_template_not_found_with_no_specified_gameSaveId() {
     // given
@@ -254,7 +248,8 @@ class AdminGameMailControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isNotFound());
 
@@ -264,10 +259,6 @@ class AdminGameMailControllerTests {
   @SneakyThrows
   @ParameterizedTest
   @MethodSource("provideInvalidRequests")
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
   void test_sendGameMailToGameSaves_returns_400_when_request_is_invalid(
       SendGameMailRequest request) {
     // when
@@ -276,7 +267,8 @@ class AdminGameMailControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/game_mail/send")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -307,24 +299,20 @@ class AdminGameMailControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_deleteGameMails_returns_403_when_user_not_admin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.delete("/api/v1/admin/game_mail")
                 .param("expired", "2025-12-10T00:00:00Z")
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
   void test_deleteGameMails_returns_200_when_successful_with_expired_timestamp() {
     // given
     when(gameMailCommandService.deleteExpiredGameMails(any())).thenReturn(0L);
@@ -334,7 +322,8 @@ class AdminGameMailControllerTests {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/game_mail/delete")
                 .param("expired", "2025-12-10T00:00:00Z")
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -343,10 +332,6 @@ class AdminGameMailControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
   void test_deleteGameMails_returns_200_when_successful_with_mail_ids() {
     // given
     List<UUID> mailIds = List.of(UUID.randomUUID(), UUID.randomUUID());
@@ -359,7 +344,8 @@ class AdminGameMailControllerTests {
             MockMvcRequestBuilders.post("/api/v1/admin/game_mail/delete")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request))
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -368,33 +354,27 @@ class AdminGameMailControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
   void test_deleteGameMails_returns_400_when_no_parameters_provided() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/game_mail/delete")
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      roles = {"ADMIN"},
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON")
   void test_deleteGameMails_returns_400_with_invalid_timestamp() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/game_mail/delete")
                 .param("expired", "invalid-timestamp")
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }

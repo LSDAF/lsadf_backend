@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.persistence.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverter;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.GameMailAttachmentConverterRegistry;
 import com.lsadf.core.infra.persistence.adapter.game.mail.converter.impl.GameMailAttachmentCurrencyConverter;
@@ -24,6 +22,8 @@ import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 public class JdbcCustomConverterConfiguration {
@@ -43,10 +43,10 @@ public class JdbcCustomConverterConfiguration {
 
   @Bean
   public GameMailAttachmentConverter<ItemRequest> itemGameMailAttachmentConverter(
-      GameMailAttachmentConverterRegistry converterRegistry, ObjectMapper objectMapper) {
+      GameMailAttachmentConverterRegistry converterRegistry, JsonMapper jsonMapper) {
     GameMailAttachmentConverter<ItemRequest> converter =
         new com.lsadf.core.infra.persistence.adapter.game.mail.converter.impl
-            .GameMailAttachmentItemConverter(objectMapper);
+            .GameMailAttachmentItemConverter(jsonMapper);
     converterRegistry.registerConverter(converter);
     return converter;
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,15 @@
  */
 package com.lsadf.core.infra.serializer;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import java.io.IOException;
 import java.util.Date;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-public class DateToLongSerializer extends JsonSerializer<Date> {
+public class DateToLongSerializer extends ValueSerializer<Date> {
   @Override
   public void serialize(
-      Date date, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-      throws IOException {
+      Date date, JsonGenerator jsonGenerator, SerializationContext serializerProvider) {
     jsonGenerator.writeNumber(date.getTime());
   }
 }

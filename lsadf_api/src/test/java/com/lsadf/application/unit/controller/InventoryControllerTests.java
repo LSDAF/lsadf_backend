@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 package com.lsadf.application.unit.controller;
 
 import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.game.inventory.InventoryController;
 import com.lsadf.application.controller.game.inventory.InventoryControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryEventPublisherPort;
@@ -46,8 +46,8 @@ import com.lsadf.core.domain.game.inventory.ItemType;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
-import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.Collections;
+import java.util.List;
 import java.util.function.Supplier;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -55,11 +55,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest({
   InventoryController.class,
@@ -99,6 +101,9 @@ class InventoryControllerTests {
 
   private static final String UUID = java.util.UUID.randomUUID().toString();
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
   private Supplier<ItemRequest> itemRequestSupplier =
       () ->
           ItemRequest.builder()
@@ -124,22 +129,22 @@ class InventoryControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getInventoryItems_returns400_when_nonUuidGameSaveId() {
     // when
     mockMvc
-        .perform(get("/api/v1/inventory/{gameSaveId}", "testtesttest"))
+        .perform(get("/api/v1/inventory/{gameSaveId}", "testtesttest").with(MOCK_JWT_USER))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getInventoryItems_returns200_when_authenticatedUserAndValidUuid() {
     // when
     mockMvc
-        .perform(get("/api/v1/inventory/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef"))
+        .perform(
+            get("/api/v1/inventory/{gameSaveId}", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isOk());
   }
@@ -159,30 +164,28 @@ class InventoryControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_createItemInInventory_returns400_when_gameSaveIdIsNonUuid() {
     // when
     mockMvc
-        .perform(post("/api/v1/inventory/{gameSaveId}/items", "toto"))
+        .perform(post("/api/v1/inventory/{gameSaveId}/items", "toto").with(MOCK_JWT_USER))
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser
   void test_createItemInInventory_returns400_when_null_payload() {
     // when
     mockMvc
         .perform(
             post("/api/v1/inventory/{gameSaveId}/items", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_createItemInInventory_returns400_when_invalidObject() {
     // when
     ItemRequest invalidItemRequest =
@@ -199,13 +202,13 @@ class InventoryControllerTests {
         .perform(
             post("/api/v1/inventory/{gameSaveId}/items", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(invalidItemRequest)))
+                .content(objectMapper.writeValueAsString(invalidItemRequest))
+                .with(MOCK_JWT_USER))
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_createItemInInventory_returns200_when_validObject() {
     // when
 
@@ -216,7 +219,8 @@ class InventoryControllerTests {
             post("/api/v1/inventory/{gameSaveId}/items", "36f27c2a-06e8-4bdb-bf59-56999116f5ef")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(itemRequest))
-                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         .andExpect(status().isOk());
   }
 
@@ -234,20 +238,19 @@ class InventoryControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_deleteItemFromInventory_returns400_when_invalidUuid() {
     mockMvc
         .perform(
             delete(
-                "/api/v1/inventory/{gameSaveId}/items/{clientId}",
-                "toto",
-                "7a22d36c-b2b1-4b70-bce1-a7a8573a557b"))
+                    "/api/v1/inventory/{gameSaveId}/items/{clientId}",
+                    "toto",
+                    "7a22d36c-b2b1-4b70-bce1-a7a8573a557b")
+                .with(MOCK_JWT_USER))
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_deleteItemFromInventory_returns200_when_validUuidAndItemId() {
     mockMvc
         .perform(
@@ -255,7 +258,8 @@ class InventoryControllerTests {
                     "/api/v1/inventory/{gameSaveId}/items/{clientId}",
                     "36f27c2a-06e8-4bdb-bf59-56999116f5ef",
                     "7a22d36c-b2b1-4b70-bce1-a7a8573a557b")
-                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         .andExpect(status().isOk());
   }
 
@@ -278,7 +282,6 @@ class InventoryControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateItemInInventory_returns400_when_invalidUuid() {
     ItemRequest itemRequest = itemRequestSupplier.get();
 
@@ -290,13 +293,13 @@ class InventoryControllerTests {
                     "7a22d36c-b2b1-4b70-bce1-a7a8573a557b")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(itemRequest)))
+                .content(objectMapper.writeValueAsString(itemRequest))
+                .with(MOCK_JWT_USER))
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateItemInInventory_returns400_when_invalidObject() {
     ItemRequest invalidItemRequest =
         ItemRequest.builder()
@@ -315,13 +318,13 @@ class InventoryControllerTests {
                     "7a22d36c-b2b1-4b70-bce1-a7a8573a557b")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(invalidItemRequest)))
+                .content(objectMapper.writeValueAsString(invalidItemRequest))
+                .with(MOCK_JWT_USER))
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateItemInInventory_returns400_when_null_object() {
     mockMvc
         .perform(
@@ -330,13 +333,13 @@ class InventoryControllerTests {
                     "36f27c2a-06e8-4bdb-bf59-56999116f5ef",
                     "7a22d36c-b2b1-4b70-bce1-a7a8573a557b")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateItemInInventory_returns200_when_validUuidAndItemId() {
     ItemRequest itemRequest = itemRequestSupplier.get();
 
@@ -349,7 +352,8 @@ class InventoryControllerTests {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(itemRequest))
-                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString()))
+                .header(X_GAME_SESSION_ID, java.util.UUID.randomUUID().toString())
+                .with(MOCK_JWT_USER))
         .andExpect(status().isOk());
   }
 }

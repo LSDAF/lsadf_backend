@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 package com.lsadf.admin.application.unit.controller;
 
 import static com.lsadf.core.infra.web.controller.ParameterConstants.ORDER_BY;
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 import static org.mockito.ArgumentMatchers.any;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.game.save.AdminGameSaveController;
 import com.lsadf.admin.application.game.save.AdminGameSaveControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
@@ -46,7 +46,7 @@ import com.lsadf.core.infra.web.dto.request.game.save.GameSaveSortingParameter;
 import com.lsadf.core.infra.web.dto.request.game.save.creation.AdminGameSaveCreationRequest;
 import com.lsadf.core.infra.web.dto.request.game.save.update.AdminGameSaveUpdateRequest;
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
-import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
@@ -59,13 +59,15 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(
     value = {
@@ -102,6 +104,12 @@ class AdminGameSaveControllerTests {
 
   @Autowired private GameSaveService gameSaveService;
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_ADMIN =
+      createMockJwt("paul.ochon@test.com", List.of("ADMIN", "USER"), "Paul OCHON");
+
   @BeforeEach
   void setUp() {
 
@@ -125,7 +133,6 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_deleteGameSave_returns403_when_userNotAdmin() {
     // when
     mockMvc
@@ -134,17 +141,14 @@ class AdminGameSaveControllerTests {
                     "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_deleteGameSave_returns400_when_gameSaveIdIsNotUuid() {
     // when
     mockMvc
@@ -152,17 +156,14 @@ class AdminGameSaveControllerTests {
             MockMvcRequestBuilders.delete(
                     "/api/v1/admin/game_save/id/{game_save_id}", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_deleteGameSave_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
@@ -171,7 +172,8 @@ class AdminGameSaveControllerTests {
                     "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -206,7 +208,6 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_generateNewGameSave_returns403_when_userNotAdmin() {
     // given
     CharacteristicsRequest characteristicsRequest = new CharacteristicsRequest(1L, 1L, 1L, 1L, 1L);
@@ -226,7 +227,8 @@ class AdminGameSaveControllerTests {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
@@ -307,10 +309,6 @@ class AdminGameSaveControllerTests {
   @ParameterizedTest
   @MethodSource("provideGenerateGameSaveInvalidArguments")
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_generateNewGameSave_returns400_when_invalidRequest(
       String id,
       String userEmail,
@@ -335,17 +333,14 @@ class AdminGameSaveControllerTests {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_generateNewGameSave_returns400_when_requestBodyIsNull() {
     // given
     AdminGameSaveCreationRequest request = null;
@@ -354,7 +349,8 @@ class AdminGameSaveControllerTests {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -385,10 +381,6 @@ class AdminGameSaveControllerTests {
   }
 
   @ParameterizedTest
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   @SneakyThrows
   @MethodSource("provideGenerateGameSaveValidArguments")
   void test_generateNewGameSave_returns200_when_authenticatedUserIsAdminAndValidInputs(
@@ -417,7 +409,8 @@ class AdminGameSaveControllerTests {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -439,7 +432,6 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getGameSave_returns403_when_userNotAdmin() {
     // when
     mockMvc
@@ -448,34 +440,28 @@ class AdminGameSaveControllerTests {
                     "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getGameSave_returns400_when_gameSaveIdIsNotUuid() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/game_save/id/{game_save_id}", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getGameSave_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
@@ -484,7 +470,8 @@ class AdminGameSaveControllerTests {
                     "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -504,24 +491,20 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getGameSaves_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getGameSaves_returns400_when_orderByIsInvalid() {
     // when
     mockMvc
@@ -529,34 +512,28 @@ class AdminGameSaveControllerTests {
             MockMvcRequestBuilders.get("/api/v1/admin/game_save")
                 .param(ORDER_BY, "INVALID_ORDER_BY")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getGameSaves_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getGameSaves_returns200_when_authenticatedUserIsAdminAndValidOrderBy() {
     // when
     mockMvc
@@ -564,7 +541,8 @@ class AdminGameSaveControllerTests {
             MockMvcRequestBuilders.get("/api/v1/admin/game_save")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .param(ORDER_BY, GameSaveSortingParameter.NICKNAME.name())
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -585,7 +563,6 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getUserGameSaves_returns403_when_userNotAdmin() {
     // when
     mockMvc
@@ -593,17 +570,14 @@ class AdminGameSaveControllerTests {
             MockMvcRequestBuilders.get(
                     "/api/v1/admin/game_save/user/{username}", "paul.ochon@test.com")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getUserGameSaves_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
@@ -611,24 +585,22 @@ class AdminGameSaveControllerTests {
             MockMvcRequestBuilders.get(
                     "/api/v1/admin/game_save/user/{username}", "paul.ochon@test.com")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getUserGameSaves_returns200_when_usernameIsNotEmail() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/game_save/user/{username}", "testtesttest")
                 .content(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -654,7 +626,6 @@ class AdminGameSaveControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_updateGameSave_returns403_when_userNotAdmin() {
     // given
     AdminGameSaveUpdateRequest request =
@@ -666,17 +637,14 @@ class AdminGameSaveControllerTests {
                     "/api/v1/admin/game_save/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_updateGameSave_returns400_when_gameSaveIdIsNotUuid() {
     // given
     AdminGameSaveUpdateRequest request =
@@ -686,7 +654,8 @@ class AdminGameSaveControllerTests {
         .perform(
             MockMvcRequestBuilders.post("/api/v1/admin/game_save/id/{game_save_id}", "testtesttest")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
@@ -700,10 +669,6 @@ class AdminGameSaveControllerTests {
   @ParameterizedTest
   @SneakyThrows
   @MethodSource("provideUpdateGameSaveInvalidArguments")
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_updateGameSave_returns400_when_invalidRequest(String nickname) {
     // given
     AdminGameSaveUpdateRequest request =
@@ -715,17 +680,14 @@ class AdminGameSaveControllerTests {
                     "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_updateGameSave_returns400_when_gameSaveUpdateRequestIsNull() {
     // given
     AdminGameSaveUpdateRequest request = null;
@@ -736,17 +698,14 @@ class AdminGameSaveControllerTests {
                     "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_updateGameSave_returns200_when_authenticatedUserIsAdmin() {
     // given
     AdminGameSaveUpdateRequest request =
@@ -758,7 +717,8 @@ class AdminGameSaveControllerTests {
                     "/api/v1/admin/game_save/id/{game_save_id}",
                     "3ab69f45-de06-4fce-bded-21d989fdad73")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }

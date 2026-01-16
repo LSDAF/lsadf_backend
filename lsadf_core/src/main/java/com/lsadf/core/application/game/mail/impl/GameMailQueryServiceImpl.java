@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.application.game.mail.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailQueryService;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
 import com.lsadf.core.domain.game.mail.GameMail;
@@ -24,6 +22,7 @@ import com.lsadf.core.exception.http.NotFoundException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.JacksonException;
 
 @RequiredArgsConstructor
 public class GameMailQueryServiceImpl implements GameMailQueryService {
@@ -36,7 +35,7 @@ public class GameMailQueryServiceImpl implements GameMailQueryService {
   }
 
   @Override
-  public GameMail getMailById(UUID id) throws JsonProcessingException {
+  public GameMail getMailById(UUID id) throws JacksonException {
     return gameMailRepositoryPort
         .findGameMailEntityById(id)
         .orElseThrow(() -> new NotFoundException("Game mail not found with id: " + id));

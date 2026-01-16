@@ -25,9 +25,3 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${keycloak.issuer-uri}
-  cloud:
-    openfeign:
-      client:
-        config:
-          keycloak:
-            url: ${keycloak.url}

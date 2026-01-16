@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.persistence.adapter.game.mail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailRepositoryPort;
 import com.lsadf.core.domain.game.mail.GameMail;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
@@ -36,6 +34,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.core.JacksonException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -49,7 +48,7 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
   private static final GameMailViewMapper gameMailViewMapper = GameMailViewMapper.INSTANCE;
 
   @Override
-  public Optional<GameMail> findGameMailEntityById(UUID mailId) throws JsonProcessingException {
+  public Optional<GameMail> findGameMailEntityById(UUID mailId) throws JacksonException {
     var viewEntityOptional = gameMailViewRepository.findById(mailId);
     if (viewEntityOptional.isEmpty()) {
       return Optional.empty();
@@ -110,7 +109,7 @@ public class GameMailRepositoryAdapter implements GameMailRepositoryPort {
   }
 
   private void enrichGameMailWithAttachments(GameMail gameMail, UUID mailTemplateId)
-      throws JsonProcessingException {
+      throws JacksonException {
     for (GameMailTemplateAttachmentEntity entity :
         gameMailAttachmentRepository.findByMailTemplateId(mailTemplateId)) {
       GameMailAttachmentType type = entity.getType();

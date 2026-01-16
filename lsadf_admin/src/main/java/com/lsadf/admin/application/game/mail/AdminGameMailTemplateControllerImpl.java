@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.admin.application.game.mail;
 
 import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateResponse;
 import static org.springframework.http.HttpStatus.OK;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailTemplateCommandService;
 import com.lsadf.core.application.game.mail.GameMailTemplateQueryService;
 import com.lsadf.core.application.game.mail.command.CreateNewTemplateAttachmentCommand;
@@ -41,6 +39,7 @@ import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.core.JacksonException;
 
 @RestController
 @Slf4j
@@ -64,7 +63,7 @@ public class AdminGameMailTemplateControllerImpl extends BaseController
 
   @Override
   public ResponseEntity<ApiResponse<GameMailTemplateResponse>> getTemplateById(Jwt jwt, UUID id)
-      throws JsonProcessingException {
+      throws JacksonException {
     validateUser(jwt);
 
     var result = gameMailTemplateQueryService.getMailTemplateById(id);
@@ -83,7 +82,7 @@ public class AdminGameMailTemplateControllerImpl extends BaseController
   public ResponseEntity<ApiResponse<GameMailTemplateResponse>>
       createNewTemplateAttachmentToTemplate(
           Jwt jwt, UUID id, List<GameMailAttachmentRequest<?>> attachments)
-          throws JsonProcessingException {
+          throws JacksonException {
     validateUser(jwt);
     for (GameMailAttachmentRequest<?> attachment : attachments) {
       CreateNewTemplateAttachmentCommand command =

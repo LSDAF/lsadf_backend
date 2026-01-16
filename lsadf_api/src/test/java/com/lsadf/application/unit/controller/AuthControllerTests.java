@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.lsadf.application.unit.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.auth.AuthController;
 import com.lsadf.application.controller.auth.AuthControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
@@ -36,7 +35,7 @@ import com.lsadf.core.application.game.save.stage.StageCachePort;
 import com.lsadf.core.application.game.save.stage.StageRepositoryPort;
 import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
-import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
+import com.lsadf.core.infra.web.client.keycloak.KeycloakRestClient;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.dto.request.user.login.UserRefreshLoginRequest;
@@ -45,12 +44,12 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.cloud.openfeign.FeignClientFactory;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(value = {AuthControllerImpl.class, AuthController.class, GlobalExceptionHandler.class})
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -72,8 +71,7 @@ import org.springframework.test.web.servlet.MockMvc;
       CurrencyCachePort.class,
       StageCachePort.class,
       CharacteristicsCachePort.class,
-      FeignClientFactory.class,
-      KeycloakClient.class
+      KeycloakRestClient.class
     })
 class AuthControllerTests {
 

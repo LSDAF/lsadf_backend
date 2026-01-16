@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.lsadf.core.unit.application.search;
 import static com.lsadf.core.infra.web.JsonAttributes.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 
 import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.search.SearchService;
@@ -40,10 +40,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class SearchServiceTests {
   @Mock UserService userService;
@@ -128,10 +131,10 @@ class SearchServiceTests {
     MockitoAnnotations.openMocks(this);
     this.searchService = new SearchServiceImpl(userService, gameSaveService);
     Stream<User> users = Stream.of(USER1, USER2, USER3);
-    when(userService.getUsers()).thenReturn(users);
+    lenient().when(userService.getUsers()).thenReturn(users);
 
     Stream<GameSave> gameSaves = Stream.of(GAME_SAVE_1, GAME_SAVE_2, GAME_SAVE_3);
-    when(gameSaveService.getGameSaves()).thenReturn(gameSaves.toList());
+    lenient().when(gameSaveService.getGameSaves()).thenReturn(gameSaves.toList());
   }
 
   @Test

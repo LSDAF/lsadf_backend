@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.valkey.stream.adapter;
 
 import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType.CURRENCY_UPDATED;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
@@ -27,6 +24,8 @@ import com.lsadf.core.infra.valkey.stream.producer.StreamProducer;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 @RequiredArgsConstructor
 public class CurrencyEventPublisherAdapter implements CurrencyEventPublisherPort {

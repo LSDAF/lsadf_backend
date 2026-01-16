@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,13 @@ import com.lsadf.core.domain.game.save.characteristics.Characteristics;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class CharacteristicsCommandServiceTests {
   private CharacteristicsCommandService characteristicsService;
@@ -87,6 +90,7 @@ class CharacteristicsCommandServiceTests {
     // Arrange
     Characteristics characteristics = new Characteristics(10L, 25L, null, null, null);
     Characteristics cachedCharacteristics = new Characteristics(1L, 2L, 3L, 4L, 5L);
+    when(cacheManager.isEnabled()).thenReturn(true);
     when(characteristicsCache.get(UUID.toString())).thenReturn(Optional.of(cachedCharacteristics));
     var command = UpdateCacheCharacteristicsCommand.fromCharacteristics(UUID, characteristics);
     // Act & Assert

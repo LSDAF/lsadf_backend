@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateRespon
 
 import com.lsadf.admin.application.constant.AdminApiPathConstants;
 import com.lsadf.core.infra.config.ServerProperties;
-import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
+import com.lsadf.core.infra.web.client.keycloak.KeycloakRestClient;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.response.ApiResponse;
@@ -35,15 +35,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class OAuth2ControllerImpl extends BaseController implements OAuth2Controller {
 
-  private final KeycloakClient keycloakClient;
+  private static final String CODE = "code";
+
+  private final KeycloakRestClient keycloakRestClient;
   private final KeycloakProperties keycloakProperties;
   private final ServerProperties serverProperties;
 
   public OAuth2ControllerImpl(
-      KeycloakClient keycloakClient,
+      KeycloakRestClient keycloakRestClient,
       KeycloakProperties keycloakProperties,
       ServerProperties serverProperties) {
-    this.keycloakClient = keycloakClient;
+    this.keycloakRestClient = keycloakRestClient;
     this.serverProperties = serverProperties;
     this.keycloakProperties = keycloakProperties;
   }
@@ -69,7 +71,7 @@ public class OAuth2ControllerImpl extends BaseController implements OAuth2Contro
                 + ":"
                 + serverProperties.getPort()
                 + AdminApiPathConstants.OAUTH2
-                + Constants.ApiPaths.CALLBACK;
+                + OAuth2Controller.Constants.ApiPaths.CALLBACK;
 
     String bodyString =
         "grant_type=authorization_code"
@@ -83,7 +85,7 @@ public class OAuth2ControllerImpl extends BaseController implements OAuth2Contro
             + redirectUri;
 
     JwtAuthenticationResponse jwt =
-        keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
+        keycloakRestClient.getToken(keycloakProperties.getRealm(), bodyString);
     log.info("Received token: {}", jwt);
     if (jwt == null) {
       return generateResponse(HttpStatus.INTERNAL_SERVER_ERROR);

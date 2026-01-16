@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.application.game.mail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.domain.game.mail.GameMail;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import tools.jackson.core.JacksonException;
 
 public interface GameMailRepositoryPort {
   /**
@@ -30,7 +29,7 @@ public interface GameMailRepositoryPort {
    * @param mailId the mail id
    * @return the mail with attachments
    */
-  Optional<GameMail> findGameMailEntityById(UUID mailId) throws JsonProcessingException;
+  Optional<GameMail> findGameMailEntityById(UUID mailId) throws JacksonException;
 
   /**
    * Find all mails for a specific game save

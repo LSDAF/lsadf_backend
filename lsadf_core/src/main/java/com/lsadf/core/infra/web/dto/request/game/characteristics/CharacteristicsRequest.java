@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.infra.web.dto.request.game.characteristics;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lsadf.core.infra.web.dto.request.Request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
@@ -34,6 +35,7 @@ import org.jspecify.annotations.Nullable;
  * the request handling mechanism.
  */
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record CharacteristicsRequest(
     @Nullable @Schema(description = "The attack level of the user", example = "100") @Positive
         Long attack,

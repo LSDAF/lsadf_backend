@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.valkey.stream.consumer.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.infra.valkey.cache.flush.FlushStatus;
 import com.lsadf.core.infra.valkey.stream.consumer.StreamConsumer;
 import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
@@ -28,6 +26,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.core.RedisTemplate;
+import tools.jackson.core.JacksonException;
 
 /**
  * Stream consumer that handles debounced persistence by managing ZSET timestamps for game save
@@ -70,7 +69,7 @@ public class GameStreamConsumer extends ValkeyStreamConsumer implements StreamCo
     ValkeyGameSaveUpdatedEvent event;
     try {
       event = gameValkeyEventSerializer.deserialize(eventData);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       log.error("Error deserializing game save event for debounced persistence", e);
       throw new EventHandlingException("Failed to deserialize game save event", e);
     }
@@ -84,7 +83,7 @@ public class GameStreamConsumer extends ValkeyStreamConsumer implements StreamCo
     EventHandler handler = optionalHandler.get();
     try {
       handler.handleEvent(event);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       log.error("Error handling event: {}", event, e);
       throw new EventHandlingException(e);
     }

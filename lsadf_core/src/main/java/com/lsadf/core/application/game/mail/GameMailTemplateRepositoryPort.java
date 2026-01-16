@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.application.game.mail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
 import com.lsadf.core.domain.game.mail.GameMailTemplate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import tools.jackson.core.JacksonException;
 
 public interface GameMailTemplateRepositoryPort {
 
@@ -30,7 +29,7 @@ public interface GameMailTemplateRepositoryPort {
 
   List<GameMailTemplate> getMailTemplates();
 
-  Optional<GameMailTemplate> getMailTemplateById(UUID id) throws JsonProcessingException;
+  Optional<GameMailTemplate> getMailTemplateById(UUID id) throws JacksonException;
 
   void deleteMailTemplateById(UUID id);
 
@@ -39,5 +38,5 @@ public interface GameMailTemplateRepositoryPort {
   boolean existsById(UUID mailTemplateId);
 
   void attachNewObjectToTemplate(UUID mailTemplateId, GameMailAttachmentType type, Object object)
-      throws JsonProcessingException;
+      throws JacksonException;
 }

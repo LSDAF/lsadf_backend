@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.persistence.adapter.game.mail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
 import com.lsadf.core.domain.game.mail.GameMailAttachment;
 import com.lsadf.core.domain.game.mail.GameMailAttachmentType;
@@ -32,6 +29,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -60,7 +59,7 @@ public class GameMailTemplateRepositoryAdapter implements GameMailTemplateReposi
   }
 
   @Override
-  public Optional<GameMailTemplate> getMailTemplateById(UUID id) throws JsonProcessingException {
+  public Optional<GameMailTemplate> getMailTemplateById(UUID id) throws JacksonException {
     GameMailTemplateEntity templateEntity = getGameMailTemplateEntityFromDatabase(id);
     GameMailTemplate gameMailTemplate = gameMailTemplateEntityMapper.map(templateEntity);
     enrichGameMailTemplateWithAttachments(gameMailTemplate);
@@ -85,8 +84,7 @@ public class GameMailTemplateRepositoryAdapter implements GameMailTemplateReposi
   @Override
   @Transactional
   public void attachNewObjectToTemplate(
-      UUID mailTemplateId, GameMailAttachmentType type, Object object)
-      throws JsonProcessingException {
+      UUID mailTemplateId, GameMailAttachmentType type, Object object) throws JacksonException {
     UUID newId = UUID.randomUUID();
     String json = object.toString();
     gameMailAttachmentRepository.createNewGameMailAttachment(newId, mailTemplateId, type, json);
@@ -99,7 +97,7 @@ public class GameMailTemplateRepositoryAdapter implements GameMailTemplateReposi
   }
 
   private void enrichGameMailTemplateWithAttachments(GameMailTemplate gameMailTemplate)
-      throws JsonProcessingException {
+      throws JacksonException {
     for (GameMailTemplateAttachmentEntity entity :
         gameMailAttachmentRepository.findByMailTemplateId(gameMailTemplate.getId())) {
       GameMailAttachmentType type = entity.getType();

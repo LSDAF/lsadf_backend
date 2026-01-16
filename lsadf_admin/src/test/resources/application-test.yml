@@ -19,6 +19,8 @@ db:
 jdbc:
   enabled: false
 
+api:
+  swagger-enabled: false
 
 
 valkey:

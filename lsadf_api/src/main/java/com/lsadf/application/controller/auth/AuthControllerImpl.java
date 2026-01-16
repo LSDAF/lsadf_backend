@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import static com.lsadf.core.infra.web.dto.response.ResponseUtils.generateRespon
 
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.core.infra.config.ServerProperties;
-import com.lsadf.core.infra.web.client.keycloak.KeycloakClient;
+import com.lsadf.core.infra.web.client.keycloak.KeycloakRestClient;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import com.lsadf.core.infra.web.controller.BaseController;
 import com.lsadf.core.infra.web.dto.request.user.login.UserLoginRequest;
@@ -33,7 +33,7 @@ import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
+import org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthControllerImpl extends BaseController implements AuthController {
 
   private final KeycloakProperties keycloakProperties;
-  private final KeycloakClient keycloakClient;
+  private final KeycloakRestClient keycloakRestClient;
   private final ServerProperties serverProperties;
   private final OAuth2ClientProperties.Provider keycloakProvider;
 
@@ -56,11 +56,11 @@ public class AuthControllerImpl extends BaseController implements AuthController
   private static final String SCOPES = "openid profile";
 
   public AuthControllerImpl(
-      KeycloakClient keycloakClient,
+      KeycloakRestClient keycloakRestClient,
       KeycloakProperties keycloakProperties,
       ServerProperties serverProperties,
       OAuth2ClientProperties oAuth2ClientProperties) {
-    this.keycloakClient = keycloakClient;
+    this.keycloakRestClient = keycloakRestClient;
     this.keycloakProperties = keycloakProperties;
     this.serverProperties = serverProperties;
     this.keycloakProvider = oAuth2ClientProperties.getProvider().get(KEYCLOAK);
@@ -100,7 +100,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
             + userLoginRequest.password();
 
     JwtAuthenticationResponse jwt =
-        keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
+        keycloakRestClient.getToken(keycloakProperties.getRealm(), bodyString);
 
     log.info("Received token: {}", jwt);
     return generateResponse(HttpStatus.OK, jwt);
@@ -124,7 +124,7 @@ public class AuthControllerImpl extends BaseController implements AuthController
             + userRefreshLoginRequest.refreshToken();
 
     JwtAuthenticationResponse response =
-        keycloakClient.getToken(keycloakProperties.getRealm(), bodyString);
+        keycloakRestClient.getToken(keycloakProperties.getRealm(), bodyString);
 
     log.info("Received token: {}", response);
     return generateResponse(HttpStatus.OK, response);

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package com.lsadf.application.unit.controller;
 
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,14 +38,15 @@ import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -77,6 +79,9 @@ class UserControllerTests {
   @MockitoBean(answers = Answers.RETURNS_DEEP_STUBS)
   private UserService userService;
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
   @Test
   @SneakyThrows
   void test_getUserInfo_returns401_when_userNotAuthenticated() {
@@ -89,11 +94,10 @@ class UserControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getUserInfo_returns200_when_userAuthenticated() {
     // when
     mockMvc
-        .perform(get("/api/v1/user/me"))
+        .perform(get("/api/v1/user/me").with(MOCK_JWT_USER))
         // then
         .andExpect(status().isOk());
   }

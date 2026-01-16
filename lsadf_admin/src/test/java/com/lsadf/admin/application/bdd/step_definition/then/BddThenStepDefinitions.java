@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package com.lsadf.admin.application.bdd.step_definition.then;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.admin.application.bdd.BddLoader;
 import com.lsadf.bdd.step_definition.then.*;
 import io.cucumber.datatable.DataTable;
@@ -23,6 +22,7 @@ import io.cucumber.java.en.Then;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import tools.jackson.core.JacksonException;
 
 /** Step definitions for the then steps in the BDD scenarios */
 @Slf4j(topic = "[THEN STEP DEFINITIONS]")
@@ -119,7 +119,7 @@ public class BddThenStepDefinitions extends BddLoader {
 
   @Then("^the response should have the following GameMailAttachments$")
   public void thenTheResponseShouldHaveFollowingGameMailAttachments(DataTable dataTable)
-      throws JsonProcessingException {
+      throws JacksonException {
     bddThenGameMailStepDefinitions.thenResponseShouldHaveFollowingGameMailAttachments(dataTable);
   }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.application.game.mail.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.application.game.mail.GameMailTemplateQueryService;
 import com.lsadf.core.application.game.mail.GameMailTemplateRepositoryPort;
 import com.lsadf.core.domain.game.mail.GameMailTemplate;
@@ -25,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.JacksonException;
 
 @RequiredArgsConstructor
 public class GameMailTemplateQueryServiceImpl implements GameMailTemplateQueryService {
@@ -37,7 +36,7 @@ public class GameMailTemplateQueryServiceImpl implements GameMailTemplateQuerySe
   }
 
   @Override
-  public GameMailTemplate getMailTemplateById(UUID id) throws JsonProcessingException {
+  public GameMailTemplate getMailTemplateById(UUID id) throws JacksonException {
     Optional<GameMailTemplate> optional = gameMailTemplateRepositoryPort.getMailTemplateById(id);
     if (optional.isEmpty()) {
       throw new NotFoundException("Game mail template with id " + id + " not found");

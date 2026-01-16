@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package com.lsadf.application.bdd;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.application.controller.auth.AuthController;
 import com.lsadf.application.controller.auth.AuthControllerImpl;
 import com.lsadf.application.controller.auth.OAuth2Controller;
@@ -89,12 +88,13 @@ import org.keycloak.admin.client.Keycloak;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.oauth2.client.reactive.ReactiveOAuth2ClientAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.reactive.ReactiveOAuth2ResourceServerAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.resttestclient.TestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
+import org.springframework.boot.security.autoconfigure.SecurityAutoConfiguration;
+import org.springframework.boot.security.oauth2.client.autoconfigure.reactive.ReactiveOAuth2ClientAutoConfiguration;
+import org.springframework.boot.security.oauth2.server.resource.autoconfigure.reactive.ReactiveOAuth2ResourceServerAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
@@ -104,9 +104,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.Network;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.postgresql.PostgreSQLContainer;
+import tools.jackson.databind.ObjectMapper;
 
 /** BDD Loader class for the Cucumber tests */
 @Slf4j
@@ -141,6 +142,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ExtendWith(MockitoExtension.class)
 @EnableConfigurationProperties
 @CucumberContextConfiguration
+@AutoConfigureTestRestTemplate
 @EnableJdbcRepositories(basePackages = "com.lsadf.core.infra.persistence")
 @EnableRedisRepositories(
     basePackages = "com.lsadf.core.infra.valkey.cache",
@@ -277,8 +279,8 @@ public class BddLoader {
           .withNetworkAliases("keycloak-bdd");
 
   @Container
-  private static final PostgreSQLContainer<?> postgreSqlContainer =
-      new PostgreSQLContainer<>("postgres:18.0-alpine")
+  private static final PostgreSQLContainer postgreSqlContainer =
+      new PostgreSQLContainer("postgres:18.0-alpine")
           .withDatabaseName("bdd")
           .withUsername("bdd")
           .withPassword("bdd")

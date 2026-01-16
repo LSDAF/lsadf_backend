@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.valkey.stream.consumer.handler.impl;
 
 import static com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveEventType.STAGE_UPDATED;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.application.game.save.stage.command.UpdateCacheStageCommand;
 import com.lsadf.core.domain.game.save.stage.Stage;
@@ -27,6 +24,8 @@ import com.lsadf.core.infra.valkey.stream.consumer.handler.EventHandler;
 import com.lsadf.core.infra.valkey.stream.event.game.ValkeyGameSaveUpdatedEvent;
 import com.lsadf.core.shared.event.Event;
 import com.lsadf.core.shared.event.EventType;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 public class StageUpdateEventHandler implements EventHandler {
 
@@ -44,7 +43,7 @@ public class StageUpdateEventHandler implements EventHandler {
   }
 
   @Override
-  public void handleEvent(Event event) throws JsonProcessingException {
+  public void handleEvent(Event event) throws JacksonException {
     ValkeyGameSaveUpdatedEvent valkeyGameSaveUpdatedEvent = (ValkeyGameSaveUpdatedEvent) event;
     Stage stage = objectMapper.convertValue(valkeyGameSaveUpdatedEvent.getPayload(), Stage.class);
     UpdateCacheStageCommand command =

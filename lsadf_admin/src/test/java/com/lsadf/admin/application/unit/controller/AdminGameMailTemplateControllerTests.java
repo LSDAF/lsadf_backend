@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.admin.application.unit.controller;
 
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.admin.application.game.mail.AdminGameMailTemplateController;
 import com.lsadf.admin.application.game.mail.AdminGameMailTemplateControllerImpl;
 import com.lsadf.core.application.game.inventory.InventoryRepositoryPort;
@@ -49,7 +48,6 @@ import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.mail.GameMailAttachmentRequest;
 import com.lsadf.core.infra.web.dto.request.game.mail.GameMailTemplateRequest;
-import com.lsadf.core.unit.config.WithMockJwtUser;
 import java.util.List;
 import java.util.UUID;
 import lombok.SneakyThrows;
@@ -63,11 +61,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Answers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(
     value = {
@@ -110,6 +110,12 @@ class AdminGameMailTemplateControllerTests {
 
   private static final UUID UUID = java.util.UUID.randomUUID();
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_ADMIN =
+      createMockJwt("paul.ochon@test.com", List.of("ADMIN", "USER"), "Paul OCHON");
+
   @BeforeEach
   void setup() {
     Mockito.reset(gameMailTemplateQueryService, gameMailTemplateCommandService);
@@ -117,108 +123,86 @@ class AdminGameMailTemplateControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getAllTemplates_whenNotAdmin() {
     // when
     mockMvc
-        .perform(get("/api/v1/admin/game_mail_template"))
+        .perform(get("/api/v1/admin/game_mail_template").with(MOCK_JWT_USER))
         // then
         .andExpect(status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getAllTemplates_whenErrorOccurs() {
     // given
     Mockito.when(gameMailTemplateQueryService.getMailTemplates())
         .thenThrow(new RuntimeException("Error"));
     // when
     mockMvc
-        .perform(get("/api/v1/admin/game_mail_template"))
+        .perform(get("/api/v1/admin/game_mail_template").with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isInternalServerError());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getTemplateById_whenNotAdmin() {
     // when
     mockMvc
-        .perform(get("/api/v1/admin/game_mail_template/{id}", UUID.toString()))
+        .perform(get("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_USER))
         // then
         .andExpect(status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getTemplateById_whenNotExistingId() {
     // given
     Mockito.when(gameMailTemplateQueryService.getMailTemplateById(UUID))
         .thenThrow(new NotFoundException("Error"));
     // when
     mockMvc
-        .perform(get("/api/v1/admin/game_mail_template/{id}", UUID.toString()))
+        .perform(get("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isNotFound());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getTemplateById_whenInvalidIdFormat() {
     // when
     mockMvc
-        .perform(get("/api/v1/admin/game_mail_template/{id}", "toto"))
+        .perform(get("/api/v1/admin/game_mail_template/{id}", "toto").with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getTemplateById_whenErrorOccurs() {
     // given
     Mockito.when(gameMailTemplateQueryService.getMailTemplateById(UUID))
         .thenThrow(new RuntimeException("Error"));
     // when
     mockMvc
-        .perform(get("/api/v1/admin/game_mail_template/{id}", UUID.toString()))
+        .perform(get("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isInternalServerError());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_deleteMailTemplateById_whenNotAdmin() {
     // when
     mockMvc
-        .perform(delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()))
+        .perform(
+            delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_USER))
         // then
         .andExpect(status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_deleteMailTemplateById_whenNotExistingId() {
     // given
     doThrow(new NotFoundException("Error"))
@@ -226,31 +210,24 @@ class AdminGameMailTemplateControllerTests {
         .deleteGameMailTemplateById(UUID);
     // when
     mockMvc
-        .perform(delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()))
+        .perform(
+            delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isNotFound());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_deleteMailTemplateById_whenInvalidIdFormat() {
     // when
     mockMvc
-        .perform(delete("/api/v1/admin/game_mail_template/{id}", "toto"))
+        .perform(delete("/api/v1/admin/game_mail_template/{id}", "toto").with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_deleteMailTemplateById_whenErrorOccurs() {
     // given
     doThrow(new RuntimeException("Error"))
@@ -258,14 +235,14 @@ class AdminGameMailTemplateControllerTests {
         .deleteGameMailTemplateById(UUID);
     // when
     mockMvc
-        .perform(delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()))
+        .perform(
+            delete("/api/v1/admin/game_mail_template/{id}", UUID.toString()).with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isInternalServerError());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_createNewMailTemplate_whenNotAdmin() {
     // given
     GameMailTemplateRequest request = new GameMailTemplateRequest("name", "subject", "body", 30);
@@ -274,17 +251,14 @@ class AdminGameMailTemplateControllerTests {
         .perform(
             post("/api/v1/admin/game_mail_template")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_createNewMailTemplate_whenErrorOccurs() {
     // given
     GameMailTemplateRequest request = new GameMailTemplateRequest("name", "subject", "body", 30);
@@ -295,7 +269,8 @@ class AdminGameMailTemplateControllerTests {
         .perform(
             post("/api/v1/admin/game_mail_template")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isInternalServerError());
   }
@@ -303,17 +278,14 @@ class AdminGameMailTemplateControllerTests {
   @ParameterizedTest
   @MethodSource("provideInvalidRequests")
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_createNewMailTemplate_whenInvalidRequest(GameMailTemplateRequest request) {
     // when
     mockMvc
         .perform(
             post("/api/v1/admin/game_mail_template")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isBadRequest());
   }
@@ -333,7 +305,6 @@ class AdminGameMailTemplateControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_createNewTemplateAttachmentToTemplate_whenNotAdmin() {
     GameMailAttachmentRequest<Currency> attachmentRequest =
         new GameMailAttachmentRequest<>(
@@ -346,17 +317,14 @@ class AdminGameMailTemplateControllerTests {
         .perform(
             put("/api/v1/admin/game_mail_template/{id}", UUID.toString())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(attachments)))
+                .content(objectMapper.writeValueAsString(attachments))
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_createNewTemplateAttachmentToTemplate_whenNotExistingTemplateId() {
     GameMailAttachmentRequest<Currency> attachmentRequest =
         new GameMailAttachmentRequest<>(
@@ -372,17 +340,14 @@ class AdminGameMailTemplateControllerTests {
         .perform(
             put("/api/v1/admin/game_mail_template/{id}", UUID.toString())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
+                .content(body)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isNotFound());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_createNewTemplateAttachmentToTemplate_whenInvalidTemplateIdFormat() {
     GameMailAttachmentRequest<Currency> attachmentRequest =
         new GameMailAttachmentRequest<>(
@@ -395,17 +360,14 @@ class AdminGameMailTemplateControllerTests {
         .perform(
             put("/api/v1/admin/game_mail_template/{id}", "toto")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
+                .content(body)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isBadRequest());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_createNewTemplateAttachmentToTemplate_whenErrorOccurs() {
     GameMailAttachmentRequest<Currency> attachmentRequest =
         new GameMailAttachmentRequest<>(
@@ -423,7 +385,8 @@ class AdminGameMailTemplateControllerTests {
         .perform(
             put("/api/v1/admin/game_mail_template/{id}", UUID.toString())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
+                .content(body)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(status().isInternalServerError());
   }

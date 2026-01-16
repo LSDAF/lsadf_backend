@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.infra.web.dto.request.game.save.creation;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lsadf.core.infra.web.dto.request.Request;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
@@ -43,6 +44,7 @@ import lombok.Builder;
  * validation rules. - `stage`: An object representing the user's progress in terms of current and
  * maximum stages. It is required and validated against consistency rules for stage progress.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 public record AdminGameSaveCreationRequest(
     @Valid @NotNull GameMetadataRequest metadata,

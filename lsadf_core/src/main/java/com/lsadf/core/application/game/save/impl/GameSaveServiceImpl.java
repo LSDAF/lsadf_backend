@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,7 @@ import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveUpdateReque
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Implementation of GameSaveService */
@@ -200,25 +201,38 @@ public class GameSaveServiceImpl implements GameSaveService {
           NotFoundException,
           UnauthorizedException,
           AlreadyTakenNicknameException {
-    if (gameMetadataService.existsByNickname(gameSaveUpdateRequest.getNickname())) {
-      throw new AlreadyTakenNicknameException(
-          "Nickname " + gameSaveUpdateRequest.getNickname() + " is already taken");
+    if (!gameMetadataService.existsById(saveId)) {
+      log.error("Game save with id {} not found", saveId);
+      throw new NotFoundException("Game save with id " + saveId + " not found");
     }
+    handleNicknameUpdate(saveId, gameSaveUpdateRequest.getNickname());
+    handleCharacteristicsUpdate(saveId, gameSaveUpdateRequest.getCharacteristics());
+    handleCurrencyUpdate(saveId, gameSaveUpdateRequest.getCurrency());
+    handleStageUpdate(saveId, gameSaveUpdateRequest.getStage());
 
-    if (gameSaveUpdateRequest.getCharacteristics() != null) {
-      Characteristics characteristicsUpdate = gameSaveUpdateRequest.getCharacteristics();
+    GameSave gameSave =
+        gameSaveRepositoryPort
+            .findById(saveId)
+            .orElseThrow(() -> new NotFoundException("Game save with id " + saveId + " not found"));
+    return enrichGameSaveWithCachedData(gameSave);
+  }
+
+  private void handleStageUpdate(UUID saveId, @Nullable Stage newStage) {
+    if (newStage != null) {
+      Stage stageUpdate = newStage;
       if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
-        UpdateCacheCharacteristicsCommand command =
-            UpdateCacheCharacteristicsCommand.fromCharacteristics(saveId, characteristicsUpdate);
-        characteristicsService.updateCacheCharacteristics(command);
+        UpdateCacheStageCommand command = UpdateCacheStageCommand.fromStage(saveId, stageUpdate);
+        stageService.updateCacheStage(command);
       } else {
-        PersistCharacteristicsCommand command =
-            PersistCharacteristicsCommand.fromCharacteristics(saveId, characteristicsUpdate);
-        characteristicsService.persistCharacteristics(command);
+        PersistStageCommand command = PersistStageCommand.fromStage(saveId, stageUpdate);
+        stageService.persistStage(command);
       }
     }
-    if (gameSaveUpdateRequest.getCurrency() != null) {
-      Currency currencyUpdate = gameSaveUpdateRequest.getCurrency();
+  }
+
+  private void handleCurrencyUpdate(UUID saveId, @Nullable Currency newCurrency) {
+    if (newCurrency != null) {
+      Currency currencyUpdate = newCurrency;
       if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
         UpdateCacheCurrencyCommand command =
             UpdateCacheCurrencyCommand.fromCurrency(saveId, currencyUpdate);
@@ -229,24 +243,31 @@ public class GameSaveServiceImpl implements GameSaveService {
         currencyService.persistCurrency(command);
       }
     }
-    if (gameSaveUpdateRequest.getStage() != null) {
-      Stage stageUpdate = gameSaveUpdateRequest.getStage();
+  }
+
+  private void handleCharacteristicsUpdate(
+      UUID saveId, @Nullable Characteristics newCharacteristics) {
+    if (newCharacteristics != null) {
       if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
-        UpdateCacheStageCommand command = UpdateCacheStageCommand.fromStage(saveId, stageUpdate);
-        stageService.updateCacheStage(command);
+        UpdateCacheCharacteristicsCommand command =
+            UpdateCacheCharacteristicsCommand.fromCharacteristics(saveId, newCharacteristics);
+        characteristicsService.updateCacheCharacteristics(command);
       } else {
-        PersistStageCommand command = PersistStageCommand.fromStage(saveId, stageUpdate);
-        stageService.persistStage(command);
+        PersistCharacteristicsCommand command =
+            PersistCharacteristicsCommand.fromCharacteristics(saveId, newCharacteristics);
+        characteristicsService.persistCharacteristics(command);
       }
     }
+  }
 
-    gameMetadataService.updateNickname(saveId, gameSaveUpdateRequest.getNickname());
-
-    GameSave gameSave =
-        gameSaveRepositoryPort
-            .findById(saveId)
-            .orElseThrow(() -> new NotFoundException("Game save with id " + saveId + " not found"));
-    return enrichGameSaveWithCachedData(gameSave);
+  private void handleNicknameUpdate(UUID saveId, @Nullable String newNickname)
+      throws AlreadyTakenNicknameException {
+    if (newNickname != null) {
+      if (gameMetadataService.existsByNickname(newNickname)) {
+        throw new AlreadyTakenNicknameException("Nickname " + newNickname + " is already taken");
+      }
+      gameMetadataService.updateNickname(saveId, newNickname);
+    }
   }
 
   @Override

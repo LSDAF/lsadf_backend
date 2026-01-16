@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.core.infra.valkey.stream.serializer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.core.shared.event.Event;
 import java.util.Map;
+import tools.jackson.core.JacksonException;
 
 public interface ValkeyEventSerializer<T extends Event> {
-  Map<String, String> serialize(T event) throws JsonProcessingException;
+  Map<String, String> serialize(T event) throws JacksonException;
 
-  T deserialize(Map<String, String> map) throws JsonProcessingException;
+  T deserialize(Map<String, String> map) throws JacksonException;
 }

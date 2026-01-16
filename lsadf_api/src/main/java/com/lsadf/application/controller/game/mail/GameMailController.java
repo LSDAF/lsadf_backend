@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.lsadf.application.controller.game.mail;
 
 import static com.lsadf.application.controller.game.mail.GameMailController.Constants.ApiPaths.GAME_MAIL_ID;
@@ -22,7 +21,6 @@ import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrat
 import static com.lsadf.core.infra.web.config.swagger.SwaggerAuthenticationStrategies.OAUTH2_AUTHENTICATION;
 import static com.lsadf.core.infra.web.controller.ParameterConstants.X_GAME_SESSION_ID;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lsadf.application.controller.constant.ApiPathConstants;
 import com.lsadf.application.controller.constant.SwaggerConstants;
 import com.lsadf.core.infra.web.controller.Controller;
@@ -41,6 +39,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.core.JacksonException;
 
 @RequestMapping(value = ApiPathConstants.GAME_MAIL)
 @Tag(name = SwaggerConstants.GAME_MAIL_CONTROLLER)
@@ -95,7 +94,7 @@ public interface GameMailController extends Controller {
   ResponseEntity<ApiResponse<GameMailResponse>> getGameMailById(
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = ParameterConstants.GAME_MAIL_ID) UUID mailId)
-      throws JsonProcessingException;
+      throws JacksonException;
 
   @DeleteMapping(value = GAME_SAVE_ID)
   @Operation(summary = "Deletes all read game mails for a game save")
@@ -146,7 +145,7 @@ public interface GameMailController extends Controller {
       @AuthenticationPrincipal Jwt jwt,
       @PathVariable(value = ParameterConstants.GAME_MAIL_ID) UUID gameMailId,
       @RequestHeader(X_GAME_SESSION_ID) UUID sessionId)
-      throws JsonProcessingException;
+      throws JacksonException;
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   class Constants {

@@ -33,11 +33,6 @@ cors:
   exposed-headers:
     - "*"
 
-server:
-  error:
-    whitelabel:
-      enabled: false
-
 
 spring:
   threads:
@@ -77,17 +72,9 @@ spring:
         jwt:
           issuer-uri: ${keycloak.issuer-uri} # Will be replaced by the real keycloak uri in the integration tests
   cloud:
-    openfeign:
-      client:
-        config:
-          default:
-            connect-timeout: 5000
-            read-timeout: 5000
-            logger-level: FULL
-          keycloak:
-            url: ${keycloak.url}
-          keycloak-admin:
-            url: ${keycloak.admin-url}
+    httpclient:
+      connect-timeout: 5000
+      read-timeout: 5000
 
 keycloak:
   admin:
@@ -158,3 +145,5 @@ async:
 logging:
   level:
     com.lsadf.core.infra.event: DEBUG
+
+spring.web.error.whitelabel.enabled: false

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,18 +33,21 @@ public record GameSaveNicknameUpdateRequest(
 
   @Override
   @Nullable
+  @jakarta.annotation.Nullable
   public Characteristics getCharacteristics() {
     return null;
   }
 
   @Override
   @Nullable
+  @jakarta.annotation.Nullable
   public Currency getCurrency() {
     return null;
   }
 
   @Override
   @Nullable
+  @jakarta.annotation.Nullable
   public Stage getStage() {
     return null;
   }

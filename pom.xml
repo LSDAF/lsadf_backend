@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright © 2024-2025 LSDAF
+    Copyright © 2024-2026 LSDAF
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.7</version>
+        <version>4.0.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.lsdaf</groupId>
@@ -44,35 +44,31 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <keycloak-spring-boot-starter.version>25.0.3</keycloak-spring-boot-starter.version>
-        <keycloak-admin-client.version>26.0.4</keycloak-admin-client.version>
+        <keycloak-admin-client.version>26.0.7</keycloak-admin-client.version>
         <java.version>25</java.version>
-        <assertj.version>3.24.2</assertj.version>
-        <spring-cloud-starter-openfeign.version>4.3.0</spring-cloud-starter-openfeign.version>
-        <cucumber.version>7.14.0</cucumber.version>
+        <cucumber.version>7.31.0</cucumber.version>
         <copy-rename-maven-plugin.version>1.0</copy-rename-maven-plugin.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <maven-javadoc.version>3.7.0</maven-javadoc.version>
         <postgresql.version>42.7.3</postgresql.version>
         <swagger.version>2.5.0</swagger.version>
         <jjwt.version>0.11.5</jjwt.version>
-        <commons-io.version>2.17.0</commons-io.version>
-        <commons-lang3.version>3.19.0</commons-lang3.version>
+        <commons-io.version>2.21.0</commons-io.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
         <commons-fileupload.version>1.6.0</commons-fileupload.version>
-        <zonky.version>2.5.0</zonky.version>
-        <zonky-embedded-postgres.version>2.0.7</zonky-embedded-postgres.version>
-        <azure-okhttp.version>1.11.18</azure-okhttp.version>
         <springdoc-openapi.version>1.7.0</springdoc-openapi.version>
-        <embedded-redis.version>1.4.2</embedded-redis.version>
-        <testcontainers-keycloak.version>3.5.1</testcontainers-keycloak.version>
+        <embedded-redis.version>1.4.3</embedded-redis.version>
+        <testcontainers-keycloak.version>4.0.1</testcontainers-keycloak.version>
         <commons-compress.version>1.27.1</commons-compress.version>
         <maven-surefire-report-plugin.version>3.5.2</maven-surefire-report-plugin.version>
         <spotless-maven-plugin.version>2.45.0</spotless-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <google-java-format.version>1.27.0</google-java-format.version>
-        <flyway.version>11.1.0</flyway.version>
         <license-maven-plugin.version>5.0.0</license-maven-plugin.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <jspecify.version>1.0.0</jspecify.version>
+        <testcontainers.version>2.0.3</testcontainers.version>
+        <rest-assured.version>6.0.0</rest-assured.version>
     </properties>
 
     <build>
@@ -95,7 +91,7 @@
                     <configuration>
                         <properties>
                             <owner>LSDAF</owner>
-                            <year>2024-2025</year>
+                            <year>2024-2026</year>
                         </properties>
                         <useDefaultExcludes>true</useDefaultExcludes>
                         <licenseSets>
@@ -137,18 +133,18 @@
             <plugin>
                 <groupId>org.openrewrite.maven</groupId>
                 <artifactId>rewrite-maven-plugin</artifactId>
-                <version>6.21.0</version>
+                <version>6.25.0</version>
                 <configuration>
                     <exportDatatables>true</exportDatatables>
                     <activeRecipes>
-                        <recipe>org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_5</recipe>
+                        <recipe>org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0</recipe>
                     </activeRecipes>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.openrewrite.recipe</groupId>
                         <artifactId>rewrite-spring</artifactId>
-                        <version>6.16.0</version>
+                        <version>6.20.0</version>
                     </dependency>
                 </dependencies>
             </plugin>

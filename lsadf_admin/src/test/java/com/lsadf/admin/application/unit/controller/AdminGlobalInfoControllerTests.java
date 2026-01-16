@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package com.lsadf.admin.application.unit.controller;
+
+import static com.lsadf.core.unit.config.MockAuthenticationFactory.createMockJwt;
 
 import com.lsadf.admin.application.info.AdminGlobalInfoController;
 import com.lsadf.admin.application.info.AdminGlobalInfoControllerImpl;
@@ -36,15 +38,16 @@ import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.application.info.GlobalInfoService;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.unit.config.WithMockJwtUser;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -86,6 +89,12 @@ class AdminGlobalInfoControllerTests {
   @MockitoBean(answers = Answers.RETURNS_DEEP_STUBS)
   private GlobalInfoService globalInfoService;
 
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_USER =
+      createMockJwt("paul.ochon@test.com", List.of("USER"), "Paul OCHON");
+
+  private static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor MOCK_JWT_ADMIN =
+      createMockJwt("paul.ochon@test.com", List.of("USER", "ADMIN"), "Paul OCHON");
+
   @Test
   @SneakyThrows
   void test_getGlobalInfo_returns401_when_userNotAuthenticated() {
@@ -101,31 +110,28 @@ class AdminGlobalInfoControllerTests {
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(username = "paul.ochon@test.com", name = "Paul OCHON")
   void test_getGlobalInfo_returns403_when_userNotAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/global_info")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_USER))
         // then
         .andExpect(MockMvcResultMatchers.status().isForbidden());
   }
 
   @Test
   @SneakyThrows
-  @WithMockJwtUser(
-      username = "paul.ochon@test.com",
-      name = "Paul OCHON",
-      roles = {"ADMIN"})
   void test_getGlobalInfo_returns200_when_authenticatedUserIsAdmin() {
     // when
     mockMvc
         .perform(
             MockMvcRequestBuilders.get("/api/v1/admin/global_info")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .with(MOCK_JWT_ADMIN))
         // then
         .andExpect(MockMvcResultMatchers.status().isOk());
   }

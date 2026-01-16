@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package com.lsadf.core.infra.web.config.security;
 
+import com.lsadf.core.domain.user.UserRole;
 import com.lsadf.core.infra.logging.interceptor.RequestLoggerInterceptor;
 import com.lsadf.core.infra.logging.properties.HttpLogProperties;
 import com.lsadf.core.infra.web.config.keycloak.KeycloakJwtAuthenticationConverter;
@@ -25,12 +26,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,7 +36,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -46,7 +43,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Import({OAuth2Properties.class})
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true, proxyTargetClass = true)
 public class SecurityConfiguration implements WebMvcConfigurer {
 
   private RequestLoggerInterceptor requestLoggerInterceptor;
@@ -60,7 +56,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     this.httpLogProperties = httpLogProperties;
   }
 
-  public static final String[] WHITELIST_URLS = {
+  protected static final String[] WHITELIST_URLS = {
     "/api-docs/**",
     "/swagger-ui/**",
     "/swagger-ui.html",
@@ -76,24 +72,22 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
   @Bean
   public SecurityFilterChain filterChain(
-      HttpSecurity security,
-      CorsFilter corsFilter,
-      JwtAuthenticationConverter customJwtAuthenticationProvider,
-      Customizer<
-              AuthorizeHttpRequestsConfigurer<HttpSecurity>
-                  .AuthorizationManagerRequestMatcherRegistry>
-          requestMatcherRegistry)
-      throws Exception {
+      HttpSecurity security, JwtAuthenticationConverter customJwtAuthenticationProvider) {
     security
-        .addFilter(corsFilter)
         .sessionManagement(
             configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .csrf(AbstractHttpConfigurer::disable)
         .httpBasic(AbstractHttpConfigurer::disable)
         .formLogin(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(requestMatcherRegistry)
-        //                .oauth2Login(oauth2 -> oauth2
-        //                        .loginPage("/oauth2/login"))
+        .authorizeHttpRequests(
+            configurer ->
+                configurer
+                    .requestMatchers(WHITELIST_URLS)
+                    .permitAll()
+                    .requestMatchers(ADMIN_URLS)
+                    .hasAuthority(UserRole.ADMIN.getRole())
+                    .anyRequest()
+                    .authenticated())
         .oauth2ResourceServer(
             oauth2 ->
                 oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(customJwtAuthenticationProvider)));

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024-2025 LSDAF
+ * Copyright © 2024-2026 LSDAF
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@ package com.lsadf.bdd.util;
 
 import static com.lsadf.bdd.config.BddFieldConstants.Item.*;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lsadf.bdd.config.BddFieldConstants;
 import com.lsadf.core.domain.game.inventory.Item;
 import com.lsadf.core.domain.game.inventory.ItemRarity;
@@ -79,7 +77,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -87,6 +85,8 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Consolidated utility class for BDD tests Contains common mapping methods used across all modules
@@ -734,7 +734,7 @@ public class BddUtils {
    * @return GameMailAttachment
    */
   public static GameMailAttachment<?> mapToGameMailAttachment(
-      Map<String, String> row, ObjectMapper objectMapper) throws JsonProcessingException {
+      Map<String, String> row, ObjectMapper objectMapper) throws JacksonException {
     String type = row.get(BddFieldConstants.GameMailAttachment.TYPE);
     String attachment = row.get(BddFieldConstants.GameMailAttachment.ATTACHMENT);
     Map<String, Object> attachmentMap = objectMapper.readValue(attachment, Map.class);
