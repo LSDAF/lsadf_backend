@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM maven:3.9-eclipse-temurin-25-noble AS compiler
+FROM dhi.io/maven:3-jdk25-debian13-dev AS compiler
 
 # Build argument to select module (default: lsadf_api)
 ARG MODULE=lsadf_api
