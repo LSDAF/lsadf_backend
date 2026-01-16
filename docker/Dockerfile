@@ -40,15 +40,14 @@ COPY --from=compiler /build/startup.sh .
 
 
 # Stage 3: Create the final image
-FROM dhi.io/eclipse-temurin:25-alpine3.23-dev AS app-image
+FROM eclipse-temurin:25-jre-noble AS app-image
 
 WORKDIR /app
-RUN addgroup --system lsadf \
+RUN mkdir logs && \
+    addgroup --system lsadf \
     && adduser --system --ingroup lsadf lsadf \
     && chown -R lsadf:lsadf . \
-    && chown -R lsadf:lsadf "$JAVA_HOME" \
-    && apk add --no-cache mkdir base64 \
-    && mkdir logs temp
+    && chown -R lsadf:lsadf "$JAVA_HOME"
 
 # Copy layers from the build stage
 COPY --chown=lsadf:lsadf --from=builder /build/extracted/dependencies/ ./
