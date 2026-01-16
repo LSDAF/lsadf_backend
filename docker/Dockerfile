@@ -38,6 +38,7 @@ COPY --from=compiler /build/${MODULE}/target/classes/logback-docker.xml logback-
 RUN java -Djarmode=tools -jar app.jar extract --layers --launcher --destination extracted
 COPY --from=compiler /build/startup.sh .
 RUN mkdir extracted/logs
+RUN mkdir extracted/temp
 
 
 # Stage 3: Create the final image
@@ -51,6 +52,7 @@ RUN addgroup --system lsadf \
 
 # Copy layers from the build stage
 COPY --chown=lsadf:lsadf --from=builder /build/extracted/logs/ ./
+COPY --chown=lsadf:lsadf --from=builder /build/extracted/temp/ ./
 COPY --chown=lsadf:lsadf --from=builder /build/extracted/dependencies/ ./
 COPY --chown=lsadf:lsadf --from=builder /build/extracted/spring-boot-loader/ ./
 COPY --chown=lsadf:lsadf --from=builder /build/extracted/snapshot-dependencies/ ./
