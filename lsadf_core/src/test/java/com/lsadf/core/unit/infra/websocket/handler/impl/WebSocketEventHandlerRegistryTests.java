@@ -18,10 +18,10 @@ package com.lsadf.core.unit.infra.websocket.handler.impl;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.impl.WebSocketEventHandlerRegistry;
-import com.lsadf.core.shared.event.Event;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ class WebSocketEventHandlerRegistryTests {
 
   @Mock private WebSocketSession session;
 
-  @Mock private Event event;
+  @Mock private WebSocketEvent event;
 
   private WebSocketEventHandlerRegistry registry;
 

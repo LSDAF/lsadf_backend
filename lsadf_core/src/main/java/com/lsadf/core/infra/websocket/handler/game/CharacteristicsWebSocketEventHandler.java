@@ -17,17 +17,18 @@ package com.lsadf.core.infra.websocket.handler.game;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.characteristics.command.UpdateCacheCharacteristicsCommand;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
-import com.lsadf.core.infra.websocket.event.game.CharacteristicsUpdateWebSocketEvent;
 import com.lsadf.core.infra.websocket.event.system.AckWebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
-import com.lsadf.core.shared.event.Event;
 import com.lsadf.core.shared.event.EventType;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
@@ -36,25 +37,29 @@ public class CharacteristicsWebSocketEventHandler implements WebSocketEventHandl
 
   private final CharacteristicsCommandService characteristicsCommandService;
   private final ObjectMapper objectMapper;
+  private final GameSessionQueryService gameSessionQueryService;
 
   @Override
-  public void handleEvent(WebSocketSession session, Event event) throws Exception {
-    CharacteristicsUpdateWebSocketEvent charEvent = (CharacteristicsUpdateWebSocketEvent) event;
-
-    log.info("Handling characteristics update for gameSaveId: {}", charEvent.getGameSaveId());
+  public void handleEvent(WebSocketSession session, WebSocketEvent event) throws Exception {
+    JsonNode json = event.getData();
+    var gameSession = gameSessionQueryService.findGameSessionById(event.getSessionId());
+    var gameSaveId = gameSession.getGameSaveId();
+    var attack = json.get("attack");
+    var attackLong = attack.asLong();
+    var critChance = json.get("critChance").asLong();
+    var critDamage = json.get("critDamage").asLong();
+    var health = json.get("health").asLong();
+    var resistance = json.get("resistance").asLong();
 
     UpdateCacheCharacteristicsCommand command =
         new UpdateCacheCharacteristicsCommand(
-            charEvent.getGameSaveId(),
-            charEvent.getPayload().attack(),
-            charEvent.getPayload().critChance(),
-            charEvent.getPayload().critDamage(),
-            charEvent.getPayload().health(),
-            charEvent.getPayload().resistance());
+            gameSaveId, attackLong, critChance, critDamage, health, resistance);
+
+    log.info("Handling characteristics update for gameSaveId: {}", gameSaveId);
 
     characteristicsCommandService.updateCacheCharacteristics(command);
 
-    sendAck(session, charEvent);
+    sendAck(session, event);
   }
 
   @Override
@@ -62,11 +67,14 @@ public class CharacteristicsWebSocketEventHandler implements WebSocketEventHandl
     return WebSocketEventType.CHARACTERISTICS_UPDATE;
   }
 
-  private void sendAck(WebSocketSession session, CharacteristicsUpdateWebSocketEvent event)
-      throws Exception {
+  private void sendAck(WebSocketSession session, WebSocketEvent event) throws Exception {
     AckWebSocketEvent ack =
         new AckWebSocketEvent(
-            event.getSessionId(), UUID.randomUUID(), event.getUserId(), event.getMessageId());
+            event.getSessionId(),
+            UUID.randomUUID(),
+            event.getUserId(),
+            event.getMessageId(),
+            event.getData());
 
     String json = objectMapper.writeValueAsString(ack);
     session.sendMessage(new TextMessage(json));

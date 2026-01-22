@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.websocket.event.system;
 
-import com.lsadf.core.infra.websocket.event.AWebSocketEvent;
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
 import java.util.UUID;
 import lombok.Getter;
@@ -23,7 +23,7 @@ import lombok.ToString;
 
 @Getter
 @ToString(callSuper = true)
-public class ErrorWebSocketEvent extends AWebSocketEvent {
+public class ErrorWebSocketEvent extends WebSocketEvent {
   private final String errorCode;
   private final String errorMessage;
   private final UUID originalMessageId;
@@ -35,7 +35,7 @@ public class ErrorWebSocketEvent extends AWebSocketEvent {
       String errorCode,
       String errorMessage,
       UUID originalMessageId) {
-    super(WebSocketEventType.ERROR, sessionId, messageId, userId);
+    super(WebSocketEventType.ERROR, System.currentTimeMillis(), sessionId, messageId, userId, null);
     this.errorCode = errorCode;
     this.errorMessage = errorMessage;
     this.originalMessageId = originalMessageId;

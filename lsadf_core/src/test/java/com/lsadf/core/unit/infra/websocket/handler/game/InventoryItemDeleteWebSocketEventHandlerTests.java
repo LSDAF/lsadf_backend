@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.lsadf.core.unit.infra.websocket.handler.game;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.session.GameSessionQueryService;
@@ -26,7 +30,7 @@ import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
-import com.lsadf.core.infra.websocket.handler.game.InventoryItemCreateWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.InventoryItemDeleteWebSocketEventHandler;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,17 +45,17 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
-class InventoryItemCreateWebSocketEventHandlerTests {
-
+class InventoryItemDeleteWebSocketEventHandlerTests {
   @Mock private InventoryService inventoryService;
-
   private final ObjectMapper objectMapper = new ObjectMapper();
-
+  @Mock private WebSocketSession session;
   @Mock private GameSessionQueryService gameSessionQueryService;
 
-  @Mock private WebSocketSession session;
-
-  private InventoryItemCreateWebSocketEventHandler handler;
+  private InventoryItemDeleteWebSocketEventHandler handler;
+  private UUID sessionId;
+  private UUID messageId;
+  private UUID userId;
+  private UUID gameSaveId;
 
   private static final ItemRequest itemRequest =
       ItemRequest.builder()
@@ -68,15 +72,10 @@ class InventoryItemCreateWebSocketEventHandlerTests {
                   new ItemStatDto(ItemStatistic.ATTACK_MULT, 25.0f)))
           .build();
 
-  private UUID sessionId;
-  private UUID messageId;
-  private UUID userId;
-  private UUID gameSaveId;
-
   @BeforeEach
   void setUp() {
     handler =
-        new InventoryItemCreateWebSocketEventHandler(
+        new InventoryItemDeleteWebSocketEventHandler(
             inventoryService, objectMapper, gameSessionQueryService);
     sessionId = UUID.randomUUID();
     messageId = UUID.randomUUID();
@@ -86,31 +85,31 @@ class InventoryItemCreateWebSocketEventHandlerTests {
 
   @Test
   void shouldReturnCorrectEventType() {
-    assertEquals(WebSocketEventType.INVENTORY_ITEM_CREATE, handler.getEventType());
+    assertEquals(WebSocketEventType.INVENTORY_ITEM_DELETE, handler.getEventType());
   }
 
   @Test
-  void shouldHandleInventoryItemCreate() throws Exception {
+  void shouldHandleInventoryItemDeletion() throws Exception {
     JsonNode dataNode = objectMapper.valueToTree(itemRequest);
     WebSocketEvent event =
         new WebSocketEvent(
-            WebSocketEventType.INVENTORY_ITEM_CREATE, sessionId, messageId, userId, dataNode);
+            WebSocketEventType.INVENTORY_ITEM_DELETE, sessionId, messageId, userId, dataNode);
 
     GameSession gameSession = mock(GameSession.class);
     when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
     when(gameSessionQueryService.findGameSessionById(any())).thenReturn(gameSession);
     handler.handleEvent(session, event);
 
-    verify(inventoryService).createItemInInventory(gameSaveId, itemRequest);
+    verify(inventoryService).deleteItemFromInventory(gameSaveId, itemRequest.getClientId());
     verify(session).sendMessage(any(TextMessage.class));
   }
 
   @Test
-  void shouldSendAckAfterSuccessfulCreate() throws Exception {
+  void shouldSendAckAfterSuccessfulDelete() throws Exception {
     JsonNode dataNode = objectMapper.valueToTree(itemRequest);
     WebSocketEvent event =
         new WebSocketEvent(
-            WebSocketEventType.INVENTORY_ITEM_CREATE, sessionId, messageId, userId, dataNode);
+            WebSocketEventType.INVENTORY_ITEM_DELETE, sessionId, messageId, userId, dataNode);
 
     GameSession gameSession = mock(GameSession.class);
     when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
@@ -131,7 +130,7 @@ class InventoryItemCreateWebSocketEventHandlerTests {
     JsonNode dataNode = objectMapper.valueToTree(itemRequest);
     WebSocketEvent event =
         new WebSocketEvent(
-            WebSocketEventType.INVENTORY_ITEM_CREATE, sessionId, messageId, userId, dataNode);
+            WebSocketEventType.INVENTORY_ITEM_DELETE, sessionId, messageId, userId, dataNode);
 
     GameSession gameSession = mock(GameSession.class);
     when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
@@ -139,7 +138,7 @@ class InventoryItemCreateWebSocketEventHandlerTests {
 
     doThrow(new RuntimeException("Service error"))
         .when(inventoryService)
-        .createItemInInventory(any(), any());
+        .deleteItemFromInventory(any(), any());
 
     assertThrows(RuntimeException.class, () -> handler.handleEvent(session, event));
 

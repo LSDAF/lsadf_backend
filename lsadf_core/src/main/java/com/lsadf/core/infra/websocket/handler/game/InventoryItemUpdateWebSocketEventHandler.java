@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.lsadf.core.infra.websocket.handler.game;
 
-import com.lsadf.core.application.game.save.stage.StageCommandService;
-import com.lsadf.core.application.game.save.stage.command.UpdateCacheStageCommand;
+import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.inventory.ItemCommand;
 import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.domain.game.inventory.ItemStatistic;
+import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
+import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
 import com.lsadf.core.infra.websocket.event.system.AckWebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
 import com.lsadf.core.shared.event.EventType;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,34 +39,57 @@ import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 @RequiredArgsConstructor
-public class StageWebSocketEventHandler implements WebSocketEventHandler {
+public class InventoryItemUpdateWebSocketEventHandler implements WebSocketEventHandler {
 
-  private final StageCommandService stageCommandService;
+  private final InventoryService inventoryService;
   private final ObjectMapper objectMapper;
   private final GameSessionQueryService gameSessionQueryService;
 
   @Override
   public void handleEvent(WebSocketSession session, WebSocketEvent event) throws Exception {
-    JsonNode node = event.getData();
+    JsonNode jsonNode = event.getData();
     var gameSession = gameSessionQueryService.findGameSessionById(event.getSessionId());
     var gameSaveId = gameSession.getGameSaveId();
-    var currentStage = node.get("currentStage").asLong();
-    var maxStage = node.get("maxStage").asLong();
-    var wave = node.get("wave").asLong();
+    var itemClientId = jsonNode.get("clientId").asString();
+    var type = jsonNode.get("type").asString();
+    var blueprintId = jsonNode.get("blueprintId").asString();
+    var rarity = jsonNode.get("rarity").asString();
+    var isEquipped = jsonNode.get("isEquipped").asBoolean();
+    var level = jsonNode.get("level").asInt();
+    var mainStatistic = jsonNode.get("mainStat").get("statistic");
+    var mainBaseValue = jsonNode.get("mainStat").get("baseValue").asFloat();
+    List<ItemStatDto> additionalStatList = new ArrayList<>();
+    jsonNode
+        .get("additionalStats")
+        .forEach(
+            node -> {
+              var statistic = node.get("statistic").asString();
+              var statisticEnum = ItemStatistic.fromString(statistic);
+              var baseValue = node.get("baseValue").asFloat();
+              additionalStatList.add(new ItemStatDto(statisticEnum, baseValue));
+            });
 
-    UpdateCacheStageCommand command =
-        new UpdateCacheStageCommand(gameSaveId, currentStage, maxStage, wave);
+    ItemCommand itemCommand =
+        new ItemRequest(
+            itemClientId,
+            type,
+            blueprintId,
+            rarity,
+            isEquipped,
+            level,
+            new ItemStatDto(ItemStatistic.fromString(mainStatistic.asString()), mainBaseValue),
+            additionalStatList);
 
-    log.info("Handling stage update for gameSaveId: {}", gameSaveId);
+    log.info("Updating inventory item for gameSaveId: {}", gameSaveId);
 
-    stageCommandService.updateCacheStage(command);
+    inventoryService.updateItemInInventory(gameSaveId, itemClientId, itemCommand);
 
     sendAck(session, event);
   }
 
   @Override
   public EventType getEventType() {
-    return WebSocketEventType.STAGE_UPDATE;
+    return WebSocketEventType.INVENTORY_ITEM_UPDATE;
   }
 
   private void sendAck(WebSocketSession session, WebSocketEvent event) throws Exception {

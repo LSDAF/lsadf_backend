@@ -20,9 +20,11 @@ import static org.mockito.Mockito.*;
 
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.characteristics.command.UpdateCacheCharacteristicsCommand;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.domain.game.session.GameSession;
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
-import com.lsadf.core.infra.websocket.event.game.CharacteristicsUpdateWebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +35,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,9 +43,11 @@ class CharacteristicsWebSocketEventHandlerTests {
 
   @Mock private CharacteristicsCommandService characteristicsCommandService;
 
-  @Mock private ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Mock private WebSocketSession session;
+
+  @Mock private GameSessionQueryService gameSessionQueryService;
 
   private CharacteristicsWebSocketEventHandler handler;
 
@@ -53,7 +58,9 @@ class CharacteristicsWebSocketEventHandlerTests {
 
   @BeforeEach
   void setUp() {
-    handler = new CharacteristicsWebSocketEventHandler(characteristicsCommandService, objectMapper);
+    handler =
+        new CharacteristicsWebSocketEventHandler(
+            characteristicsCommandService, objectMapper, gameSessionQueryService);
     sessionId = UUID.randomUUID();
     messageId = UUID.randomUUID();
     userId = UUID.randomUUID();
@@ -68,10 +75,14 @@ class CharacteristicsWebSocketEventHandlerTests {
   @Test
   void shouldHandleCharacteristicsUpdateEvent() throws Exception {
     CharacteristicsRequest request = new CharacteristicsRequest(10L, 20L, 30L, 40L, 50L);
-    CharacteristicsUpdateWebSocketEvent event =
-        new CharacteristicsUpdateWebSocketEvent(sessionId, messageId, userId, gameSaveId, request);
+    JsonNode dataNode = objectMapper.valueToTree(request);
+    WebSocketEvent event =
+        new WebSocketEvent(
+            WebSocketEventType.CHARACTERISTICS_UPDATE, sessionId, messageId, userId, dataNode);
 
-    when(objectMapper.writeValueAsString(any())).thenReturn("{}");
+    GameSession gameSession = mock(GameSession.class);
+    when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
+    when(gameSessionQueryService.findGameSessionById(any())).thenReturn(gameSession);
 
     handler.handleEvent(session, event);
 
@@ -93,10 +104,14 @@ class CharacteristicsWebSocketEventHandlerTests {
   @Test
   void shouldSendAckAfterSuccessfulUpdate() throws Exception {
     CharacteristicsRequest request = new CharacteristicsRequest(10L, 20L, 30L, 40L, 50L);
-    CharacteristicsUpdateWebSocketEvent event =
-        new CharacteristicsUpdateWebSocketEvent(sessionId, messageId, userId, gameSaveId, request);
+    JsonNode dataNode = objectMapper.valueToTree(request);
+    WebSocketEvent event =
+        new WebSocketEvent(
+            WebSocketEventType.CHARACTERISTICS_UPDATE, sessionId, messageId, userId, dataNode);
 
-    when(objectMapper.writeValueAsString(any())).thenReturn("{\"type\":\"ACK\"}");
+    GameSession gameSession = mock(GameSession.class);
+    when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
+    when(gameSessionQueryService.findGameSessionById(any())).thenReturn(gameSession);
 
     handler.handleEvent(session, event);
 
@@ -104,14 +119,21 @@ class CharacteristicsWebSocketEventHandlerTests {
     verify(session).sendMessage(messageCaptor.capture());
 
     TextMessage sentMessage = messageCaptor.getValue();
-    assertEquals("{\"type\":\"ACK\"}", sentMessage.getPayload());
+    JsonNode json = objectMapper.readTree(sentMessage.getPayload());
+    assertEquals("ACK", json.get("eventType").asString());
   }
 
   @Test
   void shouldPropagateExceptionWhenServiceFails() throws Exception {
     CharacteristicsRequest request = new CharacteristicsRequest(10L, 20L, 30L, 40L, 50L);
-    CharacteristicsUpdateWebSocketEvent event =
-        new CharacteristicsUpdateWebSocketEvent(sessionId, messageId, userId, gameSaveId, request);
+    JsonNode dataNode = objectMapper.valueToTree(request);
+    WebSocketEvent event =
+        new WebSocketEvent(
+            WebSocketEventType.CHARACTERISTICS_UPDATE, sessionId, messageId, userId, dataNode);
+
+    GameSession gameSession = mock(GameSession.class);
+    when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
+    when(gameSessionQueryService.findGameSessionById(any())).thenReturn(gameSession);
 
     doThrow(new RuntimeException("Service error"))
         .when(characteristicsCommandService)

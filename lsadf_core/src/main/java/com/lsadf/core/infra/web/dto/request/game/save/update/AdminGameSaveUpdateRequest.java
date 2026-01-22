@@ -27,7 +27,7 @@ import org.jspecify.annotations.Nullable;
 /**
  * Represents a request to update the game save in the admin context. This record implements the
  * {@link GameSaveUpdateRequest} interface, containing all necessary fields for a game save update,
- * such as user getNickname, characteristics, currency, and stage progress.
+ * such as user nickname, characteristics, currency, and stage progress.
  *
  * <p>The class is designed to be immutable and is annotated using the builder pattern to provide a
  * convenient way to construct instances.
@@ -36,7 +36,7 @@ import org.jspecify.annotations.Nullable;
  * annotations like {@link Nickname} for additional validation.
  *
  * <p>This class ensures all provided components of the game save (characteristics, currency, stage,
- * and getNickname) can be managed and updated efficiently in the system.
+ * and nickname) can be managed and updated efficiently in the system.
  */
 @Builder
 public record AdminGameSaveUpdateRequest(

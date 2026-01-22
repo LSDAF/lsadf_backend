@@ -15,12 +15,12 @@
  */
 package com.lsadf.core.infra.websocket.handler;
 
-import com.lsadf.core.shared.event.Event;
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.shared.event.EventType;
 import org.springframework.web.socket.WebSocketSession;
 
 public interface WebSocketEventHandler {
-  void handleEvent(WebSocketSession session, Event event) throws Exception;
+  void handleEvent(WebSocketSession session, WebSocketEvent event) throws Exception;
 
   EventType getEventType();
 }

@@ -25,7 +25,7 @@ import org.jspecify.annotations.Nullable;
 /**
  * Represents a request for updating a game save. This interface provides methods to retrieve
  * details about the game's save state, including characteristics, currency, stage progress, and the
- * player's getNickname. Implementing classes should provide the functionality to manage and update
+ * player's nickname. Implementing classes should provide the functionality to manage and update
  * specific components of the game save.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -54,9 +54,9 @@ public interface GameSaveUpdateRequest extends Request {
   @Nullable Stage getStage();
 
   /**
-   * Retrieves the getNickname associated with the game save update request.
+   * Retrieves the nickname associated with the game save update request.
    *
-   * @return the getNickname of the user as a string
+   * @return the nickname of the user as a string
    */
   @Nullable String getNickname();
 }

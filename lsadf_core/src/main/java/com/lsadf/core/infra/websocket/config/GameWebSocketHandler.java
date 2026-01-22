@@ -15,7 +15,7 @@
  */
 package com.lsadf.core.infra.websocket.config;
 
-import com.lsadf.core.infra.websocket.event.AWebSocketEvent;
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.system.ErrorWebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.impl.WebSocketEventHandlerRegistry;
 import com.lsadf.core.shared.event.Event;
@@ -49,7 +49,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler implements Websoc
       String payload = message.getPayload();
       log.debug("Received WebSocket message: {}", payload);
 
-      Event event = objectMapper.readValue(payload, AWebSocketEvent.class);
+      WebSocketEvent event = objectMapper.readValue(payload, WebSocketEvent.class);
 
       validateSession(session, event);
 
@@ -73,11 +73,11 @@ public class GameWebSocketHandler extends TextWebSocketHandler implements Websoc
   }
 
   private void validateSession(WebSocketSession session, Event event) {
-    if (!(event instanceof AWebSocketEvent)) {
+    if (!(event instanceof WebSocketEvent)) {
       throw new IllegalArgumentException("Event must be a WebSocket event");
     }
 
-    AWebSocketEvent wsEvent = (AWebSocketEvent) event;
+    WebSocketEvent wsEvent = (WebSocketEvent) event;
     Jwt jwt = (Jwt) session.getAttributes().get("jwt");
     String userId = jwt.getSubject();
 

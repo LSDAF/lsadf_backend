@@ -20,26 +20,37 @@ import com.lsadf.core.shared.event.EventType;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.ToString;
+import org.jspecify.annotations.Nullable;
+import tools.jackson.databind.JsonNode;
 
 @Getter
 @ToString(callSuper = true)
-public abstract class AWebSocketEvent extends AEvent {
-  protected final UUID sessionId;
-  protected final UUID messageId;
-  protected final UUID userId;
+public class WebSocketEvent extends AEvent {
+  private final UUID sessionId;
+  private final UUID messageId;
+  private final UUID userId;
+  private final transient @Nullable JsonNode data;
 
-  protected AWebSocketEvent(EventType eventType, UUID sessionId, UUID messageId, UUID userId) {
-    super(eventType);
-    this.sessionId = sessionId;
-    this.messageId = messageId;
-    this.userId = userId;
-  }
-
-  protected AWebSocketEvent(
-      EventType eventType, Long timestamp, UUID sessionId, UUID messageId, UUID userId) {
+  public WebSocketEvent(
+      EventType eventType,
+      Long timestamp,
+      UUID sessionId,
+      UUID messageId,
+      UUID userId,
+      @Nullable JsonNode data) {
     super(eventType, timestamp);
     this.sessionId = sessionId;
     this.messageId = messageId;
     this.userId = userId;
+    this.data = data;
+  }
+
+  public WebSocketEvent(
+      EventType eventType, UUID sessionId, UUID messageId, UUID userId, @Nullable JsonNode data) {
+    super(eventType, System.currentTimeMillis());
+    this.sessionId = sessionId;
+    this.messageId = messageId;
+    this.userId = userId;
+    this.data = data;
   }
 }

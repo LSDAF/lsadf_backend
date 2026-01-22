@@ -13,22 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.lsadf.core.infra.websocket.handler.game;
 
 import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.inventory.ItemCommand;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.domain.game.inventory.ItemStatistic;
+import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
+import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
-import com.lsadf.core.infra.websocket.event.game.InventoryItemCreateWebSocketEvent;
-import com.lsadf.core.infra.websocket.event.game.InventoryItemDeleteWebSocketEvent;
-import com.lsadf.core.infra.websocket.event.game.InventoryItemUpdateWebSocketEvent;
 import com.lsadf.core.infra.websocket.event.system.AckWebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
-import com.lsadf.core.shared.event.Event;
 import com.lsadf.core.shared.event.EventType;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
@@ -37,16 +43,48 @@ public class InventoryItemCreateWebSocketEventHandler implements WebSocketEventH
 
   private final InventoryService inventoryService;
   private final ObjectMapper objectMapper;
+  private final GameSessionQueryService gameSessionQueryService;
 
   @Override
-  public void handleEvent(WebSocketSession session, Event event) throws Exception {
-    InventoryItemCreateWebSocketEvent invEvent = (InventoryItemCreateWebSocketEvent) event;
+  public void handleEvent(WebSocketSession session, WebSocketEvent event) throws Exception {
+    JsonNode jsonNode = event.getData();
+    var gameSession = gameSessionQueryService.findGameSessionById(event.getSessionId());
+    var gameSaveId = gameSession.getGameSaveId();
+    var itemClientId = jsonNode.get("clientId").asString();
+    var type = jsonNode.get("type").asString();
+    var blueprintId = jsonNode.get("blueprintId").asString();
+    var rarity = jsonNode.get("rarity").asString();
+    var isEquipped = jsonNode.get("isEquipped").asBoolean();
+    var level = jsonNode.get("level").asInt();
+    var mainStatistic = jsonNode.get("mainStat").get("statistic");
+    var mainBaseValue = jsonNode.get("mainStat").get("baseValue").asFloat();
+    List<ItemStatDto> additionalStatList = new ArrayList<>();
+    jsonNode
+        .get("additionalStats")
+        .forEach(
+            node -> {
+              var statistic = node.get("statistic").asString();
+              var statisticEnum = ItemStatistic.fromString(statistic);
+              var baseValue = node.get("baseValue").asFloat();
+              additionalStatList.add(new ItemStatDto(statisticEnum, baseValue));
+            });
 
-    log.info("Creating inventory item for gameSaveId: {}", invEvent.getGameSaveId());
+    ItemCommand itemCommand =
+        new ItemRequest(
+            itemClientId,
+            type,
+            blueprintId,
+            rarity,
+            isEquipped,
+            level,
+            new ItemStatDto(ItemStatistic.fromString(mainStatistic.asString()), mainBaseValue),
+            additionalStatList);
 
-    inventoryService.createItemInInventory(invEvent.getGameSaveId(), invEvent.getPayload());
+    log.info("Updating inventory item for gameSaveId: {}", gameSaveId);
 
-    sendAck(session, invEvent);
+    inventoryService.createItemInInventory(gameSaveId, itemCommand);
+
+    sendAck(session, event);
   }
 
   @Override
@@ -54,80 +92,14 @@ public class InventoryItemCreateWebSocketEventHandler implements WebSocketEventH
     return WebSocketEventType.INVENTORY_ITEM_CREATE;
   }
 
-  private void sendAck(WebSocketSession session, InventoryItemCreateWebSocketEvent event)
-      throws Exception {
+  private void sendAck(WebSocketSession session, WebSocketEvent event) throws Exception {
     AckWebSocketEvent ack =
         new AckWebSocketEvent(
-            event.getSessionId(), UUID.randomUUID(), event.getUserId(), event.getMessageId());
-
-    String json = objectMapper.writeValueAsString(ack);
-    session.sendMessage(new TextMessage(json));
-  }
-}
-
-@Slf4j
-@RequiredArgsConstructor
-class InventoryItemUpdateWebSocketEventHandler implements WebSocketEventHandler {
-
-  private final InventoryService inventoryService;
-  private final ObjectMapper objectMapper;
-
-  @Override
-  public void handleEvent(WebSocketSession session, Event event) throws Exception {
-    InventoryItemUpdateWebSocketEvent invEvent = (InventoryItemUpdateWebSocketEvent) event;
-
-    log.info("Updating inventory item for gameSaveId: {}", invEvent.getGameSaveId());
-
-    inventoryService.updateItemInInventory(
-        invEvent.getGameSaveId(), invEvent.getItemClientId(), invEvent.getPayload());
-
-    sendAck(session, invEvent);
-  }
-
-  @Override
-  public EventType getEventType() {
-    return WebSocketEventType.INVENTORY_ITEM_UPDATE;
-  }
-
-  private void sendAck(WebSocketSession session, InventoryItemUpdateWebSocketEvent event)
-      throws Exception {
-    AckWebSocketEvent ack =
-        new AckWebSocketEvent(
-            event.getSessionId(), UUID.randomUUID(), event.getUserId(), event.getMessageId());
-
-    String json = objectMapper.writeValueAsString(ack);
-    session.sendMessage(new TextMessage(json));
-  }
-}
-
-@Slf4j
-@RequiredArgsConstructor
-class InventoryItemDeleteWebSocketEventHandler implements WebSocketEventHandler {
-
-  private final InventoryService inventoryService;
-  private final ObjectMapper objectMapper;
-
-  @Override
-  public void handleEvent(WebSocketSession session, Event event) throws Exception {
-    InventoryItemDeleteWebSocketEvent invEvent = (InventoryItemDeleteWebSocketEvent) event;
-
-    log.info("Deleting inventory item for gameSaveId: {}", invEvent.getGameSaveId());
-
-    inventoryService.deleteItemFromInventory(invEvent.getGameSaveId(), invEvent.getItemClientId());
-
-    sendAck(session, invEvent);
-  }
-
-  @Override
-  public EventType getEventType() {
-    return WebSocketEventType.INVENTORY_ITEM_DELETE;
-  }
-
-  private void sendAck(WebSocketSession session, InventoryItemDeleteWebSocketEvent event)
-      throws Exception {
-    AckWebSocketEvent ack =
-        new AckWebSocketEvent(
-            event.getSessionId(), UUID.randomUUID(), event.getUserId(), event.getMessageId());
+            event.getSessionId(),
+            UUID.randomUUID(),
+            event.getUserId(),
+            event.getMessageId(),
+            objectMapper.valueToTree(event));
 
     String json = objectMapper.writeValueAsString(ack);
     session.sendMessage(new TextMessage(json));

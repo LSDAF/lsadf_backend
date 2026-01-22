@@ -17,10 +17,10 @@
 package com.lsadf.core.infra.websocket.config;
 
 import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.application.game.save.GameSaveService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.*;
 import com.lsadf.core.infra.websocket.handler.impl.WebSocketEventHandlerRegistry;
@@ -45,31 +45,55 @@ public class WebSocketHandlerConfiguration {
 
   @Bean
   public CharacteristicsWebSocketEventHandler characteristicsWebSocketEventHandler(
-      CharacteristicsCommandService characteristicsCommandService, ObjectMapper objectMapper) {
-    return new CharacteristicsWebSocketEventHandler(characteristicsCommandService, objectMapper);
+      CharacteristicsCommandService characteristicsCommandService,
+      ObjectMapper objectMapper,
+      GameSessionQueryService gameSessionQueryService) {
+    return new CharacteristicsWebSocketEventHandler(
+        characteristicsCommandService, objectMapper, gameSessionQueryService);
   }
 
   @Bean
   public CurrencyWebSocketEventHandler currencyWebSocketEventHandler(
-      CurrencyCommandService currencyCommandService, ObjectMapper objectMapper) {
-    return new CurrencyWebSocketEventHandler(currencyCommandService, objectMapper);
-  }
-
-  @Bean
-  public GameSaveWebSocketEventHandler gameSaveWebSocketEventHandler(
-      GameSaveService gameSaveService, ObjectMapper objectMapper) {
-    return new GameSaveWebSocketEventHandler(gameSaveService, objectMapper);
+      CurrencyCommandService currencyCommandService,
+      ObjectMapper objectMapper,
+      GameSessionQueryService gameSessionQueryService) {
+    return new CurrencyWebSocketEventHandler(
+        currencyCommandService, objectMapper, gameSessionQueryService);
   }
 
   @Bean
   public InventoryItemCreateWebSocketEventHandler inventoryItemCreateWebSocketEventHandler(
-      InventoryService inventoryService, ObjectMapper objectMapper) {
-    return new InventoryItemCreateWebSocketEventHandler(inventoryService, objectMapper);
+      InventoryService inventoryService,
+      ObjectMapper objectMapper,
+      GameSessionQueryService gameSessionQueryService) {
+    return new InventoryItemCreateWebSocketEventHandler(
+        inventoryService, objectMapper, gameSessionQueryService);
+  }
+
+  @Bean
+  public InventoryItemUpdateWebSocketEventHandler inventoryItemUpdateWebSocketEventHandler(
+      InventoryService inventoryService,
+      ObjectMapper objectMapper,
+      GameSessionQueryService gameSessionQueryService) {
+    return new InventoryItemUpdateWebSocketEventHandler(
+        inventoryService, objectMapper, gameSessionQueryService);
+  }
+
+  @Bean
+  public InventoryItemDeleteWebSocketEventHandler inventoryItemDeleteWebSocketEventHandler(
+      InventoryService inventoryService,
+      ObjectMapper objectMapper,
+      GameSessionQueryService gameSessionQueryService) {
+    return new InventoryItemDeleteWebSocketEventHandler(
+        inventoryService, objectMapper, gameSessionQueryService);
   }
 
   @Bean
   public StageWebSocketEventHandler stageWebSocketEventHandler(
-      StageCommandService stageCommandService, ObjectMapper objectMapper) {
-    return new StageWebSocketEventHandler(stageCommandService, objectMapper);
+      StageCommandService stageCommandService,
+      ObjectMapper objectMapper,
+      GameSessionQueryService gameSessionQueryService) {
+    return new StageWebSocketEventHandler(
+        stageCommandService, objectMapper, gameSessionQueryService);
   }
 }

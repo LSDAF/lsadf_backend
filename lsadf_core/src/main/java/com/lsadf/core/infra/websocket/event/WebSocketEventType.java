@@ -28,7 +28,6 @@ public enum WebSocketEventType implements EventType {
   INVENTORY_ITEM_CREATE("websocket.inventory.item.create"),
   INVENTORY_ITEM_UPDATE("websocket.inventory.item.update"),
   INVENTORY_ITEM_DELETE("websocket.inventory.item.delete"),
-  GAME_SAVE_UPDATE_NICKNAME("websocket.game_save.update.nickname"),
   ERROR("websocket.error"),
   ACK("websocket.ack");
 

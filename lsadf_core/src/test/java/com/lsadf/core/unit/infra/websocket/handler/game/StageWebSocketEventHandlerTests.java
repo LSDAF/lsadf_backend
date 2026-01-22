@@ -20,9 +20,11 @@ import static org.mockito.Mockito.*;
 
 import com.lsadf.core.application.game.save.stage.StageCommandService;
 import com.lsadf.core.application.game.save.stage.command.UpdateCacheStageCommand;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.domain.game.session.GameSession;
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
-import com.lsadf.core.infra.websocket.event.game.StageUpdateWebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +35,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,9 +43,11 @@ class StageWebSocketEventHandlerTests {
 
   @Mock private StageCommandService stageCommandService;
 
-  @Mock private ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Mock private WebSocketSession session;
+
+  @Mock private GameSessionQueryService gameSessionQueryService;
 
   private StageWebSocketEventHandler handler;
 
@@ -53,7 +58,8 @@ class StageWebSocketEventHandlerTests {
 
   @BeforeEach
   void setUp() {
-    handler = new StageWebSocketEventHandler(stageCommandService, objectMapper);
+    handler =
+        new StageWebSocketEventHandler(stageCommandService, objectMapper, gameSessionQueryService);
     sessionId = UUID.randomUUID();
     messageId = UUID.randomUUID();
     userId = UUID.randomUUID();
@@ -68,10 +74,13 @@ class StageWebSocketEventHandlerTests {
   @Test
   void shouldHandleStageUpdateEvent() throws Exception {
     StageRequest request = new StageRequest(5L, 10L, 3L);
-    StageUpdateWebSocketEvent event =
-        new StageUpdateWebSocketEvent(sessionId, messageId, userId, gameSaveId, request);
+    JsonNode dataNode = objectMapper.valueToTree(request);
+    WebSocketEvent event =
+        new WebSocketEvent(WebSocketEventType.STAGE_UPDATE, sessionId, messageId, userId, dataNode);
 
-    when(objectMapper.writeValueAsString(any())).thenReturn("{}");
+    GameSession gameSession = mock(GameSession.class);
+    when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
+    when(gameSessionQueryService.findGameSessionById(any())).thenReturn(gameSession);
 
     handler.handleEvent(session, event);
 
@@ -91,10 +100,13 @@ class StageWebSocketEventHandlerTests {
   @Test
   void shouldSendAckAfterSuccessfulUpdate() throws Exception {
     StageRequest request = new StageRequest(5L, 10L, 3L);
-    StageUpdateWebSocketEvent event =
-        new StageUpdateWebSocketEvent(sessionId, messageId, userId, gameSaveId, request);
+    JsonNode dataNode = objectMapper.valueToTree(request);
+    WebSocketEvent event =
+        new WebSocketEvent(WebSocketEventType.STAGE_UPDATE, sessionId, messageId, userId, dataNode);
 
-    when(objectMapper.writeValueAsString(any())).thenReturn("{\"type\":\"ACK\"}");
+    GameSession gameSession = mock(GameSession.class);
+    when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
+    when(gameSessionQueryService.findGameSessionById(any())).thenReturn(gameSession);
 
     handler.handleEvent(session, event);
 
@@ -102,14 +114,20 @@ class StageWebSocketEventHandlerTests {
     verify(session).sendMessage(messageCaptor.capture());
 
     TextMessage sentMessage = messageCaptor.getValue();
-    assertEquals("{\"type\":\"ACK\"}", sentMessage.getPayload());
+    JsonNode sentJson = objectMapper.readTree(sentMessage.getPayload());
+    assertEquals("ACK", sentJson.get("eventType").asString());
   }
 
   @Test
   void shouldPropagateExceptionWhenServiceFails() throws Exception {
     StageRequest request = new StageRequest(5L, 10L, 3L);
-    StageUpdateWebSocketEvent event =
-        new StageUpdateWebSocketEvent(sessionId, messageId, userId, gameSaveId, request);
+    JsonNode dataNode = objectMapper.valueToTree(request);
+    WebSocketEvent event =
+        new WebSocketEvent(WebSocketEventType.STAGE_UPDATE, sessionId, messageId, userId, dataNode);
+
+    GameSession gameSession = mock(GameSession.class);
+    when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
+    when(gameSessionQueryService.findGameSessionById(any())).thenReturn(gameSession);
 
     doThrow(new RuntimeException("Service error"))
         .when(stageCommandService)

@@ -20,10 +20,10 @@ import static com.lsadf.core.infra.websocket.event.WebSocketEventType.CURRENCY_U
 
 import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.currency.command.UpdateCacheCurrencyCommand;
-import com.lsadf.core.infra.websocket.event.game.CurrencyUpdateWebsSocketEvent;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.system.AckWebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
-import com.lsadf.core.shared.event.Event;
 import com.lsadf.core.shared.event.EventType;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -38,24 +38,26 @@ public class CurrencyWebSocketEventHandler implements WebSocketEventHandler {
 
   private final CurrencyCommandService currencyCommandService;
   private final ObjectMapper objectMapper;
+  private final GameSessionQueryService gameSessionQueryService;
 
   @Override
-  public void handleEvent(WebSocketSession session, Event event) throws Exception {
-    CurrencyUpdateWebsSocketEvent currencyEvent = (CurrencyUpdateWebsSocketEvent) event;
+  public void handleEvent(WebSocketSession session, WebSocketEvent event) throws Exception {
+    var payload = event.getData();
+    var gameSession = gameSessionQueryService.findGameSessionById(event.getSessionId());
+    var gameSaveId = gameSession.getGameSaveId();
 
-    log.info("Handling currency update for gameSaveId: {}", currencyEvent.getGameSaveId());
+    var gold = payload.get("gold").asLong();
+    var diamond = payload.get("diamond").asLong();
+    var emerald = payload.get("emerald").asLong();
+    var amethyst = payload.get("amethyst").asLong();
 
     UpdateCacheCurrencyCommand command =
-        new UpdateCacheCurrencyCommand(
-            currencyEvent.getGameSaveId(),
-            currencyEvent.getPayload().gold(),
-            currencyEvent.getPayload().diamond(),
-            currencyEvent.getPayload().emerald(),
-            currencyEvent.getPayload().amethyst());
+        new UpdateCacheCurrencyCommand(gameSaveId, gold, diamond, emerald, amethyst);
 
+    log.info("Handling currency update for gameSaveId: {}", gameSaveId);
     currencyCommandService.updateCacheCurrency(command);
 
-    sendAck(session, currencyEvent);
+    sendAck(session, event);
   }
 
   @Override
@@ -63,11 +65,14 @@ public class CurrencyWebSocketEventHandler implements WebSocketEventHandler {
     return CURRENCY_UPDATE;
   }
 
-  private void sendAck(WebSocketSession session, CurrencyUpdateWebsSocketEvent event)
-      throws Exception {
+  private void sendAck(WebSocketSession session, WebSocketEvent event) throws Exception {
     AckWebSocketEvent ackEvent =
         new AckWebSocketEvent(
-            event.getSessionId(), UUID.randomUUID(), event.getUserId(), event.getMessageId());
+            event.getSessionId(),
+            UUID.randomUUID(),
+            event.getUserId(),
+            event.getMessageId(),
+            objectMapper.valueToTree(event));
 
     String ackPayload = objectMapper.writeValueAsString(ackEvent);
     session.sendMessage(new TextMessage(ackPayload));

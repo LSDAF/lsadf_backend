@@ -19,8 +19,8 @@ import static org.mockito.Mockito.*;
 
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.websocket.config.GameWebSocketHandler;
-import com.lsadf.core.infra.websocket.event.AWebSocketEvent;
-import com.lsadf.core.infra.websocket.event.game.CharacteristicsUpdateWebSocketEvent;
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
+import com.lsadf.core.infra.websocket.event.WebSocketEventType;
 import com.lsadf.core.infra.websocket.event.system.ErrorWebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.impl.WebSocketEventHandlerRegistry;
 import com.lsadf.core.shared.event.Event;
@@ -37,6 +37,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
@@ -80,40 +81,38 @@ class GameWebSocketHandlerTests {
     UUID userId = UUID.fromString("00000000-0000-0000-0000-000000000123");
     UUID sessionId = UUID.randomUUID();
     UUID messageId = UUID.randomUUID();
-    UUID gameSaveId = UUID.randomUUID();
 
     CharacteristicsRequest characteristicsRequest =
         new CharacteristicsRequest(10L, 20L, 30L, 40L, 50L);
-    CharacteristicsUpdateWebSocketEvent event =
-        new CharacteristicsUpdateWebSocketEvent(
-            sessionId, messageId, userId, gameSaveId, characteristicsRequest);
+    JsonNode dataNode = objectMapper.valueToTree(characteristicsRequest);
+    WebSocketEvent event =
+        new WebSocketEvent(
+            WebSocketEventType.CHARACTERISTICS_UPDATE, sessionId, messageId, userId, dataNode);
 
     String payload = "{\"type\":\"CHARACTERISTICS_UPDATE\"}";
     TextMessage message = new TextMessage(payload);
 
     when(jwt.getSubject()).thenReturn(userId.toString());
-    when(objectMapper.readValue(payload, AWebSocketEvent.class)).thenReturn(event);
+    when(objectMapper.readValue(payload, WebSocketEvent.class)).thenReturn(event);
 
     handler.handleTextMessage(session, message);
 
-    verify(objectMapper).readValue(payload, AWebSocketEvent.class);
+    verify(objectMapper).readValue(payload, WebSocketEvent.class);
     verify(eventHandlerRegistry).handleEvent(session, event);
   }
 
   @Test
   void shouldRejectMessageWhenUserIdMismatch() throws Exception {
     UUID userId = UUID.fromString("00000000-0000-0000-0000-000000000123");
-    UUID differentUserId = UUID.fromString("00000000-0000-0000-0000-000000000456");
     UUID sessionId = UUID.randomUUID();
     UUID messageId = UUID.randomUUID();
-    UUID gameSaveId = UUID.randomUUID();
 
     CharacteristicsRequest characteristicsRequest =
         new CharacteristicsRequest(10L, 20L, 30L, 40L, 50L);
-    CharacteristicsUpdateWebSocketEvent event =
-        new CharacteristicsUpdateWebSocketEvent(
-            sessionId, messageId, differentUserId, gameSaveId, characteristicsRequest);
-
+    JsonNode dataNode = objectMapper.valueToTree(characteristicsRequest);
+    WebSocketEvent event =
+        new WebSocketEvent(
+            WebSocketEventType.CHARACTERISTICS_UPDATE, sessionId, messageId, userId, dataNode);
     String payload = "{\"type\":\"CHARACTERISTICS_UPDATE\"}";
     TextMessage message = new TextMessage(payload);
 

@@ -35,8 +35,8 @@ import lombok.Builder;
  * mechanism.
  *
  * <p>Fields: - `id`: The UUID of the game save. It is optional and may be null. - `userEmail`: The
- * email address of the user associated with the game save. It is required. - `getNickname`: The
- * getNickname of the user within the game save. It is optional but validated to meet specific rules
+ * email address of the user associated with the game save. It is required. - `nickname`: The
+ * nickname of the user within the game save. It is optional but validated to meet specific rules
  * for nicknames. - `characteristics`: An object containing the user's in-game characteristics such
  * as attack, critical chance, critical damage, health, and resistance. It is required and must
  * follow specific validation rules. - `currency`: An object specifying the user's in-game

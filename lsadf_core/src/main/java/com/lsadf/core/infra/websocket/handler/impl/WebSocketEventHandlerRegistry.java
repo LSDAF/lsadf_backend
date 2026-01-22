@@ -15,8 +15,8 @@
  */
 package com.lsadf.core.infra.websocket.handler.impl;
 
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
-import com.lsadf.core.shared.event.Event;
 import com.lsadf.core.shared.event.EventType;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +35,7 @@ public class WebSocketEventHandlerRegistry {
     }
   }
 
-  public void handleEvent(WebSocketSession session, Event event) throws Exception {
+  public void handleEvent(WebSocketSession session, WebSocketEvent event) throws Exception {
     EventType eventType = event.getEventType();
     WebSocketEventHandler handler = handlers.get(eventType);
 

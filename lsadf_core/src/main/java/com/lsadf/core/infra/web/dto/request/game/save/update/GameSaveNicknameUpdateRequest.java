@@ -26,10 +26,15 @@ import org.jspecify.annotations.Nullable;
 
 @Builder
 public record GameSaveNicknameUpdateRequest(
-    @Nickname @Schema(description = "Nickname of the user", example = "test") String getNickname)
+    @Nickname @Schema(description = "Nickname of the user", example = "test") String nickname)
     implements GameSaveUpdateRequest {
 
   @Serial private static final long serialVersionUID = -6478222007381338108L;
+
+  @Override
+  public String getNickname() {
+    return nickname;
+  }
 
   @Override
   @Nullable

@@ -13,57 +13,59 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.lsadf.core.infra.websocket.handler.game;
 
-import com.lsadf.core.application.game.save.GameSaveService;
-import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveNicknameUpdateRequest;
-import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveUpdateRequest;
+import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
-import com.lsadf.core.infra.websocket.event.game.GameSaveUpdateNicknameWebSocketEvent;
 import com.lsadf.core.infra.websocket.event.system.AckWebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
-import com.lsadf.core.shared.event.Event;
 import com.lsadf.core.shared.event.EventType;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 @RequiredArgsConstructor
-public class GameSaveWebSocketEventHandler implements WebSocketEventHandler {
+public class InventoryItemDeleteWebSocketEventHandler implements WebSocketEventHandler {
 
-  private final GameSaveService gameSaveService;
+  private final InventoryService inventoryService;
   private final ObjectMapper objectMapper;
+  private final GameSessionQueryService gameSessionQueryService;
 
   @Override
-  public void handleEvent(WebSocketSession session, Event event) throws Exception {
-    GameSaveUpdateNicknameWebSocketEvent gsEvent = (GameSaveUpdateNicknameWebSocketEvent) event;
+  public void handleEvent(WebSocketSession session, WebSocketEvent event) throws Exception {
+    JsonNode jsonNode = event.getData();
+    var gameSession = gameSessionQueryService.findGameSessionById(event.getSessionId());
+    var gameSaveId = gameSession.getGameSaveId();
+    var itemClientId = jsonNode.get("clientId").asString();
 
-    log.info("Updating game save nickname for gameSaveId: {}", gsEvent.getGameSaveId());
+    log.info("Updating inventory item for gameSaveId: {}", gameSaveId);
 
-    GameSaveUpdateRequest request =
-        GameSaveNicknameUpdateRequest.builder()
-            .getNickname(gsEvent.getPayload().getNickname())
-            .build();
+    inventoryService.deleteItemFromInventory(gameSaveId, itemClientId);
 
-    gameSaveService.updateGameSave(gsEvent.getGameSaveId(), request);
-
-    sendAck(session, gsEvent);
+    sendAck(session, event);
   }
 
   @Override
   public EventType getEventType() {
-    return WebSocketEventType.GAME_SAVE_UPDATE_NICKNAME;
+    return WebSocketEventType.INVENTORY_ITEM_DELETE;
   }
 
-  private void sendAck(WebSocketSession session, GameSaveUpdateNicknameWebSocketEvent event)
-      throws Exception {
+  private void sendAck(WebSocketSession session, WebSocketEvent event) throws Exception {
     AckWebSocketEvent ack =
         new AckWebSocketEvent(
-            event.getSessionId(), UUID.randomUUID(), event.getUserId(), event.getMessageId());
+            event.getSessionId(),
+            UUID.randomUUID(),
+            event.getUserId(),
+            event.getMessageId(),
+            objectMapper.valueToTree(event));
 
     String json = objectMapper.writeValueAsString(ack);
     session.sendMessage(new TextMessage(json));
