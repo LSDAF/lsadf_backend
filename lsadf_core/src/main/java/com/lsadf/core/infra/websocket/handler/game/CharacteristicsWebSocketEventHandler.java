@@ -15,6 +15,8 @@
  */
 package com.lsadf.core.infra.websocket.handler.game;
 
+import static com.lsadf.core.infra.web.JsonAttributes.*;
+
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.characteristics.command.UpdateCacheCharacteristicsCommand;
 import com.lsadf.core.application.game.session.GameSessionQueryService;
@@ -44,12 +46,12 @@ public class CharacteristicsWebSocketEventHandler implements WebSocketEventHandl
     JsonNode json = event.getData();
     var gameSession = gameSessionQueryService.findGameSessionById(event.getSessionId());
     var gameSaveId = gameSession.getGameSaveId();
-    var attack = json.get("attack");
+    var attack = json.get(ATTACK);
     var attackLong = attack.asLong();
-    var critChance = json.get("critChance").asLong();
-    var critDamage = json.get("critDamage").asLong();
-    var health = json.get("health").asLong();
-    var resistance = json.get("resistance").asLong();
+    var critChance = json.get(CRIT_CHANCE_CAMEL_CASE).asLong();
+    var critDamage = json.get(CRIT_DAMAGE_CAMEL_CASE).asLong();
+    var health = json.get(HEALTH).asLong();
+    var resistance = json.get(RESISTANCE).asLong();
 
     UpdateCacheCharacteristicsCommand command =
         new UpdateCacheCharacteristicsCommand(

@@ -16,6 +16,8 @@
 
 package com.lsadf.core.infra.websocket.handler.game;
 
+import static com.lsadf.core.infra.web.JsonAttributes.CLIENT_ID_CAMEL_CASE;
+
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
@@ -44,7 +46,7 @@ public class InventoryItemDeleteWebSocketEventHandler implements WebSocketEventH
     JsonNode jsonNode = event.getData();
     var gameSession = gameSessionQueryService.findGameSessionById(event.getSessionId());
     var gameSaveId = gameSession.getGameSaveId();
-    var itemClientId = jsonNode.get("clientId").asString();
+    var itemClientId = jsonNode.get(CLIENT_ID_CAMEL_CASE).asString();
 
     log.info("Updating inventory item for gameSaveId: {}", gameSaveId);
 

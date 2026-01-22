@@ -16,6 +16,7 @@
 
 package com.lsadf.core.infra.websocket.handler.game;
 
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 import static com.lsadf.core.infra.websocket.event.WebSocketEventType.CURRENCY_UPDATE;
 
 import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
@@ -46,10 +47,10 @@ public class CurrencyWebSocketEventHandler implements WebSocketEventHandler {
     var gameSession = gameSessionQueryService.findGameSessionById(event.getSessionId());
     var gameSaveId = gameSession.getGameSaveId();
 
-    var gold = payload.get("gold").asLong();
-    var diamond = payload.get("diamond").asLong();
-    var emerald = payload.get("emerald").asLong();
-    var amethyst = payload.get("amethyst").asLong();
+    var gold = payload.get(GOLD).asLong();
+    var diamond = payload.get(DIAMOND).asLong();
+    var emerald = payload.get(EMERALD).asLong();
+    var amethyst = payload.get(AMETHYST).asLong();
 
     UpdateCacheCurrencyCommand command =
         new UpdateCacheCurrencyCommand(gameSaveId, gold, diamond, emerald, amethyst);

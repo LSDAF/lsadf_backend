@@ -16,6 +16,8 @@
 
 package com.lsadf.core.infra.websocket.handler.game;
 
+import static com.lsadf.core.infra.web.JsonAttributes.*;
+
 import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.inventory.ItemCommand;
 import com.lsadf.core.application.game.session.GameSessionQueryService;
@@ -50,22 +52,22 @@ public class InventoryItemCreateWebSocketEventHandler implements WebSocketEventH
     JsonNode jsonNode = event.getData();
     var gameSession = gameSessionQueryService.findGameSessionById(event.getSessionId());
     var gameSaveId = gameSession.getGameSaveId();
-    var itemClientId = jsonNode.get("clientId").asString();
-    var type = jsonNode.get("type").asString();
-    var blueprintId = jsonNode.get("blueprintId").asString();
-    var rarity = jsonNode.get("rarity").asString();
-    var isEquipped = jsonNode.get("isEquipped").asBoolean();
-    var level = jsonNode.get("level").asInt();
-    var mainStatistic = jsonNode.get("mainStat").get("statistic");
-    var mainBaseValue = jsonNode.get("mainStat").get("baseValue").asFloat();
+    var itemClientId = jsonNode.get(CLIENT_ID_CAMEL_CASE).asString();
+    var type = jsonNode.get(TYPE).asString();
+    var blueprintId = jsonNode.get(BLUEPRINT_ID_CAMEL_CASE).asString();
+    var rarity = jsonNode.get(RARITY).asString();
+    var isEquipped = jsonNode.get(IS_EQUIPPED_CAMEL_CASE).asBoolean();
+    var level = jsonNode.get(LEVEL).asInt();
+    var mainStatistic = jsonNode.get(MAIN_STAT_CAMEL_CASE).get(STATISTIC);
+    var mainBaseValue = jsonNode.get(MAIN_STAT_CAMEL_CASE).get(BASE_VALUE_CAMEL_CASE).asFloat();
     List<ItemStatDto> additionalStatList = new ArrayList<>();
     jsonNode
-        .get("additionalStats")
+        .get(ADDITIONAL_STATS_CAMEL_CASE)
         .forEach(
             node -> {
-              var statistic = node.get("statistic").asString();
+              var statistic = node.get(STATISTIC).asString();
               var statisticEnum = ItemStatistic.fromString(statistic);
-              var baseValue = node.get("baseValue").asFloat();
+              var baseValue = node.get(BASE_VALUE_CAMEL_CASE).asFloat();
               additionalStatList.add(new ItemStatDto(statisticEnum, baseValue));
             });
 
