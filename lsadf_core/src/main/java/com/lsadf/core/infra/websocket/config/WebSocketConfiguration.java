@@ -16,7 +16,10 @@
 package com.lsadf.core.infra.websocket.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
@@ -24,16 +27,22 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @Configuration
 @EnableWebSocket
 @RequiredArgsConstructor
+@Import(WebSocketHandlerConfiguration.class)
 public class WebSocketConfiguration implements WebSocketConfigurer {
 
   private final GameWebSocketHandler gameWebSocketHandler;
-  private final WebSocketAuthInterceptor authInterceptor;
+  private final JwtDecoder jwtDecoder;
+
+  @Bean
+  public WebSocketAuthInterceptor webSocketAuthInterceptor() {
+    return new WebSocketAuthInterceptor(jwtDecoder);
+  }
 
   @Override
   public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
     registry
         .addHandler(gameWebSocketHandler, "/ws/game")
-        .addInterceptors(authInterceptor)
+        .addInterceptors(webSocketAuthInterceptor())
         .setAllowedOrigins("*");
   }
 }
