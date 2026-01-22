@@ -26,13 +26,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.messaging.Message;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.messaging.access.intercept.MessageMatcherDelegatingAuthorizationManager;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
@@ -43,6 +48,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Import({OAuth2Properties.class})
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableWebSocketSecurity
 public class SecurityConfiguration implements WebMvcConfigurer {
 
   private RequestLoggerInterceptor requestLoggerInterceptor;
@@ -69,6 +75,12 @@ public class SecurityConfiguration implements WebMvcConfigurer {
   };
 
   public static final String ADMIN_URLS = "/api/v1/admin/**";
+
+  @Bean
+  AuthorizationManager<Message<?>> messageAuthorizationManager(
+      MessageMatcherDelegatingAuthorizationManager.Builder messages) {
+    return AuthorityAuthorizationManager.hasAuthority(UserRole.USER.getRole());
+  }
 
   @Bean
   public SecurityFilterChain filterChain(
