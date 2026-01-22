@@ -29,7 +29,6 @@ import com.lsadf.core.infra.web.config.security.CorsConfiguration;
 import com.lsadf.core.infra.web.config.security.SecurityConfiguration;
 import com.lsadf.core.infra.web.config.swagger.SwaggerConfiguration;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
-import com.lsadf.core.infra.websocket.config.WebSocketConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -60,6 +59,5 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   AsyncConfiguration.class,
   EventConfiguration.class,
   TaskExecutorConfiguration.class,
-  WebSocketConfiguration.class
 })
 public class LsadfAdminConfiguration {}
