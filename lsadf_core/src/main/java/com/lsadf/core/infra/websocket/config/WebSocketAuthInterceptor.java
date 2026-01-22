@@ -41,7 +41,7 @@ public class WebSocketAuthInterceptor implements HandshakeInterceptor {
       throws Exception {
     try {
       String token = extractToken(request);
-      if (token == null) {
+      if (token == null || token.isEmpty()) {
         log.warn("No token found in WebSocket handshake");
         return false;
       }

@@ -44,7 +44,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler implements Websoc
   }
 
   @Override
-  protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+  public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
     try {
       String payload = message.getPayload();
       log.debug("Received WebSocket message: {}", payload);
