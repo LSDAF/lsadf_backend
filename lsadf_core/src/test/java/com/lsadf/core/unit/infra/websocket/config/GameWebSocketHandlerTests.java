@@ -19,6 +19,7 @@ import static org.mockito.Mockito.*;
 
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.websocket.config.GameWebSocketHandler;
+import com.lsadf.core.infra.websocket.event.AWebSocketEvent;
 import com.lsadf.core.infra.websocket.event.game.CharacteristicsUpdateWebSocketEvent;
 import com.lsadf.core.infra.websocket.event.system.ErrorWebSocketEvent;
 import com.lsadf.core.infra.websocket.handler.impl.WebSocketEventHandlerRegistry;
@@ -91,11 +92,11 @@ class GameWebSocketHandlerTests {
     TextMessage message = new TextMessage(payload);
 
     when(jwt.getSubject()).thenReturn(userId.toString());
-    when(objectMapper.readValue(payload, Event.class)).thenReturn(event);
+    when(objectMapper.readValue(payload, AWebSocketEvent.class)).thenReturn(event);
 
     handler.handleTextMessage(session, message);
 
-    verify(objectMapper).readValue(payload, Event.class);
+    verify(objectMapper).readValue(payload, AWebSocketEvent.class);
     verify(eventHandlerRegistry).handleEvent(session, event);
   }
 

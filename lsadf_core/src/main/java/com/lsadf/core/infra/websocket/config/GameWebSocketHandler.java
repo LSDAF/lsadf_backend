@@ -49,7 +49,7 @@ public class GameWebSocketHandler extends TextWebSocketHandler implements Websoc
       String payload = message.getPayload();
       log.debug("Received WebSocket message: {}", payload);
 
-      Event event = objectMapper.readValue(payload, Event.class);
+      Event event = objectMapper.readValue(payload, AWebSocketEvent.class);
 
       validateSession(session, event);
 
