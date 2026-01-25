@@ -46,9 +46,12 @@ import com.lsadf.core.domain.game.inventory.ItemType;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
-import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
-import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
-import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemCreateWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemDeleteWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemUpdateWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.CharacteristicsWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.StageWebSocketEventHandler;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
@@ -95,6 +98,9 @@ import tools.jackson.databind.ObjectMapper;
       CurrencyWebSocketEventHandler.class,
       StageWebSocketEventHandler.class,
       CharacteristicsWebSocketEventHandler.class,
+      InventoryItemUpdateWebSocketEventHandler.class,
+      InventoryItemCreateWebSocketEventHandler.class,
+      InventoryItemDeleteWebSocketEventHandler.class
     })
 class InventoryControllerTests {
 

@@ -39,9 +39,12 @@ import com.lsadf.core.infra.web.client.keycloak.KeycloakRestClient;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.dto.request.user.login.UserRefreshLoginRequest;
-import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
-import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
-import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemCreateWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemDeleteWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemUpdateWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.CharacteristicsWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.StageWebSocketEventHandler;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -77,7 +80,10 @@ import tools.jackson.databind.ObjectMapper;
       KeycloakRestClient.class,
       CurrencyWebSocketEventHandler.class,
       CharacteristicsWebSocketEventHandler.class,
-      StageWebSocketEventHandler.class
+      StageWebSocketEventHandler.class,
+      InventoryItemUpdateWebSocketEventHandler.class,
+      InventoryItemCreateWebSocketEventHandler.class,
+      InventoryItemDeleteWebSocketEventHandler.class
     })
 class AuthControllerTests {
 

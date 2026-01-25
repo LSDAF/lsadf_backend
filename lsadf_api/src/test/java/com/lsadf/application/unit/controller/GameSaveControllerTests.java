@@ -39,9 +39,12 @@ import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveNicknameUpdateRequest;
-import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
-import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
-import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemCreateWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemDeleteWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemUpdateWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.CharacteristicsWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.StageWebSocketEventHandler;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -82,7 +85,10 @@ import tools.jackson.databind.ObjectMapper;
       CharacteristicsCachePort.class,
       CurrencyWebSocketEventHandler.class,
       CharacteristicsWebSocketEventHandler.class,
-      StageWebSocketEventHandler.class
+      StageWebSocketEventHandler.class,
+      InventoryItemUpdateWebSocketEventHandler.class,
+      InventoryItemCreateWebSocketEventHandler.class,
+      InventoryItemDeleteWebSocketEventHandler.class
     })
 class GameSaveControllerTests {
 
