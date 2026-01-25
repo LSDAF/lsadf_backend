@@ -17,6 +17,8 @@
 package com.lsadf.core.infra.websocket.config;
 
 import com.lsadf.core.application.cache.CacheManager;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
 import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.infra.websocket.event.EventRequestValidator;
@@ -67,6 +69,23 @@ public class WebSocketHandlerConfiguration {
         webSocketEventFactory,
         cacheManager,
         currencyEventPublisherPort,
+        requestValidator);
+  }
+
+  @Bean
+  public CharacteristicsWebSocketEventHandler characteristicsWebSocketEventHandler(
+      CharacteristicsCommandService characteristicsCommandService,
+      ObjectMapper objectMapper,
+      CacheManager cacheManager,
+      WebSocketEventFactory webSocketEventFactory,
+      EventRequestValidator requestValidator,
+      CharacteristicsEventPublisherPort characteristicsEventPublisherPort) {
+    return new CharacteristicsWebSocketEventHandler(
+        characteristicsCommandService,
+        objectMapper,
+        webSocketEventFactory,
+        cacheManager,
+        characteristicsEventPublisherPort,
         requestValidator);
   }
 

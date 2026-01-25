@@ -39,6 +39,7 @@ import com.lsadf.core.infra.web.client.keycloak.KeycloakRestClient;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.dto.request.user.login.UserRefreshLoginRequest;
+import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -73,7 +74,8 @@ import tools.jackson.databind.ObjectMapper;
       StageCachePort.class,
       CharacteristicsCachePort.class,
       KeycloakRestClient.class,
-      CurrencyWebSocketEventHandler.class
+      CurrencyWebSocketEventHandler.class,
+      CharacteristicsWebSocketEventHandler.class
     })
 class AuthControllerTests {
 

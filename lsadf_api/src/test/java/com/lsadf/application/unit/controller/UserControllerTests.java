@@ -38,6 +38,7 @@ import com.lsadf.core.application.game.session.GameSessionCachePort;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
+import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -72,7 +73,8 @@ import org.springframework.test.web.servlet.MockMvc;
       CurrencyCachePort.class,
       StageCachePort.class,
       CharacteristicsCachePort.class,
-      CurrencyWebSocketEventHandler.class
+      CurrencyWebSocketEventHandler.class,
+      CharacteristicsWebSocketEventHandler.class
     })
 class UserControllerTests {
 

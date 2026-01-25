@@ -46,6 +46,7 @@ import com.lsadf.core.domain.game.inventory.ItemType;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
+import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
 import java.util.Collections;
 import java.util.List;
@@ -90,7 +91,8 @@ import tools.jackson.databind.ObjectMapper;
       StageCachePort.class,
       CharacteristicsCachePort.class,
       GameSessionQueryService.class,
-      CurrencyWebSocketEventHandler.class
+      CurrencyWebSocketEventHandler.class,
+      CharacteristicsWebSocketEventHandler.class
     })
 class InventoryControllerTests {
 

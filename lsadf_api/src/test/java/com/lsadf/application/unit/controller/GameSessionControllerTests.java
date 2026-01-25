@@ -43,6 +43,7 @@ import com.lsadf.core.application.game.session.GameSessionQueryService;
 import com.lsadf.core.application.game.session.GameSessionRepositoryPort;
 import com.lsadf.core.domain.game.session.GameSession;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
+import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -85,7 +86,8 @@ import tools.jackson.databind.ObjectMapper;
       CurrencyCachePort.class,
       StageCachePort.class,
       CharacteristicsCachePort.class,
-      CurrencyWebSocketEventHandler.class
+      CurrencyWebSocketEventHandler.class,
+      CharacteristicsWebSocketEventHandler.class
     })
 class GameSessionControllerTests {
 
