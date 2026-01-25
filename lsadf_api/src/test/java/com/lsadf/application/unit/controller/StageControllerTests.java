@@ -43,6 +43,7 @@ import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
 import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
 import java.util.List;
 import java.util.UUID;
 import lombok.SneakyThrows;
@@ -81,7 +82,8 @@ import tools.jackson.databind.ObjectMapper;
       StageEventPublisherPort.class,
       GameSessionQueryService.class,
       CurrencyWebSocketEventHandler.class,
-      CharacteristicsWebSocketEventHandler.class
+      StageWebSocketEventHandler.class,
+      CharacteristicsWebSocketEventHandler.class,
     })
 class StageControllerTests {
 

@@ -45,6 +45,7 @@ import com.lsadf.core.domain.game.session.GameSession;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -87,7 +88,8 @@ import tools.jackson.databind.ObjectMapper;
       StageCachePort.class,
       CharacteristicsCachePort.class,
       CurrencyWebSocketEventHandler.class,
-      CharacteristicsWebSocketEventHandler.class
+      StageWebSocketEventHandler.class,
+      CharacteristicsWebSocketEventHandler.class,
     })
 class GameSessionControllerTests {
 

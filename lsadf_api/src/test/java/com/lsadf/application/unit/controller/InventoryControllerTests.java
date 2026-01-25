@@ -48,6 +48,7 @@ import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.request.game.inventory.ItemRequest;
 import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
@@ -92,7 +93,8 @@ import tools.jackson.databind.ObjectMapper;
       CharacteristicsCachePort.class,
       GameSessionQueryService.class,
       CurrencyWebSocketEventHandler.class,
-      CharacteristicsWebSocketEventHandler.class
+      StageWebSocketEventHandler.class,
+      CharacteristicsWebSocketEventHandler.class,
     })
 class InventoryControllerTests {
 

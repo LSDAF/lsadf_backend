@@ -47,6 +47,7 @@ import com.lsadf.core.exception.http.NotFoundException;
 import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,7 +87,8 @@ import tools.jackson.databind.ObjectMapper;
       CharacteristicsEventPublisherPort.class,
       GameSessionQueryService.class,
       CurrencyWebSocketEventHandler.class,
-      CharacteristicsWebSocketEventHandler.class
+      StageWebSocketEventHandler.class,
+      CharacteristicsWebSocketEventHandler.class,
     })
 class GameMailControllerTests {
 

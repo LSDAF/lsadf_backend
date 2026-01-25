@@ -41,6 +41,7 @@ import com.lsadf.core.infra.web.controller.advice.GlobalExceptionHandler;
 import com.lsadf.core.infra.web.dto.request.game.save.update.GameSaveNicknameUpdateRequest;
 import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
@@ -80,7 +81,8 @@ import tools.jackson.databind.ObjectMapper;
       StageCachePort.class,
       CharacteristicsCachePort.class,
       CurrencyWebSocketEventHandler.class,
-      CharacteristicsWebSocketEventHandler.class
+      CharacteristicsWebSocketEventHandler.class,
+      StageWebSocketEventHandler.class
     })
 class GameSaveControllerTests {
 

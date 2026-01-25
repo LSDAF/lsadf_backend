@@ -41,6 +41,7 @@ import com.lsadf.core.infra.web.dto.request.user.login.UserLoginRequest;
 import com.lsadf.core.infra.web.dto.request.user.login.UserRefreshLoginRequest;
 import com.lsadf.core.infra.websocket.handler.game.CharacteristicsWebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -75,7 +76,8 @@ import tools.jackson.databind.ObjectMapper;
       CharacteristicsCachePort.class,
       KeycloakRestClient.class,
       CurrencyWebSocketEventHandler.class,
-      CharacteristicsWebSocketEventHandler.class
+      CharacteristicsWebSocketEventHandler.class,
+      StageWebSocketEventHandler.class
     })
 class AuthControllerTests {
 
