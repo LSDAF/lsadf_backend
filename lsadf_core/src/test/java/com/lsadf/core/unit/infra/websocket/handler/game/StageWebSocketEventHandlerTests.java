@@ -29,7 +29,7 @@ import com.lsadf.core.infra.websocket.event.EventRequestValidator;
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventFactory;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
-import com.lsadf.core.infra.websocket.handler.game.StageWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.StageWebSocketEventHandler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

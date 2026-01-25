@@ -29,7 +29,7 @@ import com.lsadf.core.infra.websocket.event.EventRequestValidator;
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventFactory;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
-import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.CurrencyWebSocketEventHandler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -71,7 +71,7 @@ class CurrencyWebSocketEventHandlerTests {
 
   private CurrencyWebSocketEventHandler handler;
 
-  private Map<String, Object> SESSION_ATTRIBUTES;
+  private Map<String, Object> sessionAttributes;
 
   @BeforeEach
   void setUp() {
@@ -83,10 +83,10 @@ class CurrencyWebSocketEventHandlerTests {
             cacheManager,
             currencyEventPublisherPort,
             requestValidator);
-    SESSION_ATTRIBUTES = new HashMap<>();
-    SESSION_ATTRIBUTES.put(GAME_SESSION_ID, UUID.randomUUID());
-    SESSION_ATTRIBUTES.put(GAME_SAVE_ID, UUID.randomUUID());
-    SESSION_ATTRIBUTES.put(USER_EMAIL, "toto@test.com");
+    sessionAttributes = new HashMap<>();
+    sessionAttributes.put(GAME_SESSION_ID, UUID.randomUUID());
+    sessionAttributes.put(GAME_SAVE_ID, UUID.randomUUID());
+    sessionAttributes.put(USER_EMAIL, "toto@test.com");
   }
 
   @Test
@@ -100,7 +100,7 @@ class CurrencyWebSocketEventHandlerTests {
     JsonNode node = objectMapper.valueToTree(request);
     WebSocketEvent event =
         new WebSocketEvent(WebSocketEventType.CURRENCY_UPDATE, UUID.randomUUID(), node);
-    when(session.getAttributes()).thenReturn(SESSION_ATTRIBUTES);
+    when(session.getAttributes()).thenReturn(sessionAttributes);
     when(cacheManager.isEnabled()).thenReturn(true);
 
     handler.handleEvent(session, event);
@@ -108,9 +108,9 @@ class CurrencyWebSocketEventHandlerTests {
     ArgumentCaptor<Currency> commandCaptor = ArgumentCaptor.forClass(Currency.class);
     verify(currencyEventPublisherPort)
         .publishCurrencyUpdatedEvent(
-            eq(SESSION_ATTRIBUTES.get(USER_EMAIL).toString()),
-                eq((UUID) SESSION_ATTRIBUTES.get(GAME_SAVE_ID)),
-            commandCaptor.capture(), eq((UUID) SESSION_ATTRIBUTES.get(GAME_SESSION_ID)));
+            eq(sessionAttributes.get(USER_EMAIL).toString()),
+                eq((UUID) sessionAttributes.get(GAME_SAVE_ID)),
+            commandCaptor.capture(), eq((UUID) sessionAttributes.get(GAME_SESSION_ID)));
 
     Currency currency = commandCaptor.getValue();
     assertEquals(100L, currency.gold());
@@ -127,7 +127,7 @@ class CurrencyWebSocketEventHandlerTests {
     JsonNode node = objectMapper.valueToTree(request);
     WebSocketEvent event =
         new WebSocketEvent(WebSocketEventType.CURRENCY_UPDATE, UUID.randomUUID(), node);
-    when(session.getAttributes()).thenReturn(SESSION_ATTRIBUTES);
+    when(session.getAttributes()).thenReturn(sessionAttributes);
     handler.handleEvent(session, event);
 
     ArgumentCaptor<TextMessage> messageCaptor = ArgumentCaptor.forClass(TextMessage.class);
@@ -144,7 +144,7 @@ class CurrencyWebSocketEventHandlerTests {
     JsonNode node = objectMapper.valueToTree(request);
     WebSocketEvent event =
         new WebSocketEvent(WebSocketEventType.CURRENCY_UPDATE, UUID.randomUUID(), node);
-    when(session.getAttributes()).thenReturn(SESSION_ATTRIBUTES);
+    when(session.getAttributes()).thenReturn(sessionAttributes);
     doThrow(new IllegalArgumentException("Validation failed"))
         .when(requestValidator)
         .validate(request);
@@ -158,7 +158,7 @@ class CurrencyWebSocketEventHandlerTests {
     JsonNode node = objectMapper.readTree("{}");
     WebSocketEvent event =
         new WebSocketEvent(WebSocketEventType.CURRENCY_UPDATE, UUID.randomUUID(), node);
-    when(session.getAttributes()).thenReturn(SESSION_ATTRIBUTES);
+    when(session.getAttributes()).thenReturn(sessionAttributes);
 
     Exception exception = assertThrows(Exception.class, () -> handler.handleEvent(session, event));
     assertTrue(exception.getMessage().contains("Missing required currency fields"));

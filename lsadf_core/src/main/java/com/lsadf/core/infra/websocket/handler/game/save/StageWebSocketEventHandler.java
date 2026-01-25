@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.websocket.handler.game;
+package com.lsadf.core.infra.websocket.handler.game.save;
 
 import static com.lsadf.core.infra.web.JsonAttributes.*;
-import static com.lsadf.core.infra.websocket.event.WebSocketEventType.CURRENCY_UPDATE;
+import static com.lsadf.core.infra.websocket.event.WebSocketEventType.STAGE_UPDATE;
 
 import com.lsadf.core.application.cache.CacheManager;
-import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
-import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
-import com.lsadf.core.application.game.save.currency.command.PersistCurrencyCommand;
-import com.lsadf.core.domain.game.save.currency.Currency;
-import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
-import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequestMapper;
+import com.lsadf.core.application.game.save.stage.StageCommandService;
+import com.lsadf.core.application.game.save.stage.StageEventPublisherPort;
+import com.lsadf.core.application.game.save.stage.command.PersistStageCommand;
+import com.lsadf.core.domain.game.save.stage.Stage;
+import com.lsadf.core.infra.web.dto.request.game.stage.StageRequest;
+import com.lsadf.core.infra.web.dto.request.game.stage.StageRequestMapper;
 import com.lsadf.core.infra.websocket.event.EventRequestValidator;
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventFactory;
@@ -44,16 +44,16 @@ import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CurrencyWebSocketEventHandler implements WebSocketEventHandler {
+public class StageWebSocketEventHandler implements WebSocketEventHandler {
 
-  private final CurrencyCommandService currencyCommandService;
+  private final StageCommandService stageCommandService;
   private final ObjectMapper objectMapper;
   private final WebSocketEventFactory eventFactory;
   private final CacheManager cacheManager;
-  private final CurrencyEventPublisherPort currencyEventPublisherPort;
+  private final StageEventPublisherPort stageEventPublisherPort;
   private final EventRequestValidator requestValidator;
 
-  private static final CurrencyRequestMapper requestModelMapper = CurrencyRequestMapper.INSTANCE;
+  private static final StageRequestMapper requestModelMapper = StageRequestMapper.INSTANCE;
 
   @Override
   public void handleEvent(WebSocketSession session, WebSocketEvent event) throws Exception {
@@ -65,19 +65,19 @@ public class CurrencyWebSocketEventHandler implements WebSocketEventHandler {
     try {
       JsonNode data = event.getData();
       if (data == null || data.isEmpty()) {
-        throw new IllegalArgumentException("Missing required currency fields");
+        throw new IllegalArgumentException("Missing required stage fields");
       }
-      CurrencyRequest payload = objectMapper.treeToValue(data, CurrencyRequest.class);
+      StageRequest payload = objectMapper.treeToValue(data, StageRequest.class);
       requestValidator.validate(payload);
-      Currency currency = requestModelMapper.map(payload);
-      log.info("Handling currency update, payload: {}", payload);
-      updateCurrency(userEmail, gameSaveId, gameSessionID, currency);
+      Stage stage = requestModelMapper.map(payload);
+      log.info("Handling stage update, payload: {}", payload);
+      updateStage(userEmail, gameSaveId, gameSessionID, stage);
 
       sendAck(session, event);
     } catch (Exception e) {
-      log.error("Error processing currency update", e);
+      log.error("Error processing stage update", e);
       ErrorWebSocketEvent errorEvent =
-          eventFactory.createErrorEvent(event, "Error while updating currency: " + e.getMessage());
+          eventFactory.createErrorEvent(event, "Error while updating stage: " + e.getMessage());
       TextMessage textMessage = new TextMessage(objectMapper.writeValueAsBytes(errorEvent));
       session.sendMessage(textMessage);
       throw e;
@@ -86,7 +86,7 @@ public class CurrencyWebSocketEventHandler implements WebSocketEventHandler {
 
   @Override
   public EventType getEventType() {
-    return CURRENCY_UPDATE;
+    return STAGE_UPDATE;
   }
 
   private void sendAck(WebSocketSession session, WebSocketEvent event) throws Exception {
@@ -100,14 +100,12 @@ public class CurrencyWebSocketEventHandler implements WebSocketEventHandler {
         "Sent ACK for eventType: {} with eventId: {}", event.getEventType(), event.getMessageId());
   }
 
-  private void updateCurrency(
-      String userEmail, UUID gameSaveId, UUID gameSessionId, Currency currency) {
+  private void updateStage(String userEmail, UUID gameSaveId, UUID gameSessionId, Stage stage) {
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
-      currencyEventPublisherPort.publishCurrencyUpdatedEvent(
-          userEmail, gameSaveId, currency, gameSessionId);
+      stageEventPublisherPort.publishStageUpdatedEvent(userEmail, gameSaveId, stage, gameSessionId);
     } else {
-      var command = PersistCurrencyCommand.fromCurrency(gameSaveId, currency);
-      currencyCommandService.persistCurrency(command);
+      var command = PersistStageCommand.fromStage(gameSaveId, stage);
+      stageCommandService.persistStage(command);
     }
   }
 }

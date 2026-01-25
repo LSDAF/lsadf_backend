@@ -17,6 +17,7 @@
 package com.lsadf.core.infra.websocket.config;
 
 import com.lsadf.core.application.cache.CacheManager;
+import com.lsadf.core.application.game.inventory.InventoryService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
 import com.lsadf.core.application.game.save.characteristics.CharacteristicsEventPublisherPort;
 import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
@@ -27,7 +28,12 @@ import com.lsadf.core.infra.websocket.event.EventRequestValidator;
 import com.lsadf.core.infra.websocket.event.WebSocketEventFactory;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandlerRegistry;
-import com.lsadf.core.infra.websocket.handler.game.*;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemCreateWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemDeleteWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.inventory.InventoryItemUpdateWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.CharacteristicsWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.CurrencyWebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.game.save.StageWebSocketEventHandler;
 import jakarta.validation.Validator;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
@@ -106,6 +112,35 @@ public class WebSocketHandlerConfiguration {
         cacheManager,
         stageEventPublisherPort,
         requestValidator);
+  }
+
+  @Bean
+  public InventoryItemCreateWebSocketEventHandler inventoryItemCreateWebSocketEventHandler(
+      InventoryService inventoryService,
+      ObjectMapper objectMapper,
+      WebSocketEventFactory eventFactory,
+      EventRequestValidator requestValidator) {
+    return new InventoryItemCreateWebSocketEventHandler(
+        inventoryService, objectMapper, eventFactory, requestValidator);
+  }
+
+  @Bean
+  public InventoryItemDeleteWebSocketEventHandler inventoryItemDeleteWebSocketEventHandler(
+      InventoryService inventoryService,
+      ObjectMapper objectMapper,
+      WebSocketEventFactory eventFactory) {
+    return new InventoryItemDeleteWebSocketEventHandler(
+        inventoryService, objectMapper, eventFactory);
+  }
+
+  @Bean
+  public InventoryItemUpdateWebSocketEventHandler inventoryItemUpdateWebSocketEventHandler(
+      InventoryService inventoryService,
+      ObjectMapper objectMapper,
+      WebSocketEventFactory eventFactory,
+      EventRequestValidator requestValidator) {
+    return new InventoryItemUpdateWebSocketEventHandler(
+        inventoryService, objectMapper, eventFactory, requestValidator);
   }
 
   @Bean

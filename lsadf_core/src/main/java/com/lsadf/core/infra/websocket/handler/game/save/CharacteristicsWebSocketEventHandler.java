@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lsadf.core.infra.websocket.handler.game;
+package com.lsadf.core.infra.websocket.handler.game.save;
 
 import static com.lsadf.core.infra.web.JsonAttributes.*;
 import static com.lsadf.core.infra.websocket.event.WebSocketEventType.CHARACTERISTICS_UPDATE;
