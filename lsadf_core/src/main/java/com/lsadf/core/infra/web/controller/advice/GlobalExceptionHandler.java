@@ -292,4 +292,5 @@ public class GlobalExceptionHandler {
     return generateResponse(
         HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error: " + e.getMessage(), null);
   }
+
 }

@@ -15,15 +15,16 @@
  */
 package com.lsadf.core.unit.infra.websocket.config;
 
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 import static org.mockito.Mockito.*;
 
 import com.lsadf.core.infra.web.dto.request.game.characteristics.CharacteristicsRequest;
 import com.lsadf.core.infra.websocket.config.GameWebSocketHandler;
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
+import com.lsadf.core.infra.websocket.event.WebSocketEventFactory;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
-import com.lsadf.core.infra.websocket.event.system.ErrorWebSocketEvent;
-import com.lsadf.core.infra.websocket.handler.impl.WebSocketEventHandlerRegistry;
-import com.lsadf.core.shared.event.Event;
+import com.lsadf.core.infra.websocket.handler.WebSocketEventHandlerRegistry;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -32,40 +33,47 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.json.JsonMapper;
 
 @ExtendWith(MockitoExtension.class)
 class GameWebSocketHandlerTests {
 
   @Mock private WebSocketEventHandlerRegistry eventHandlerRegistry;
 
-  @Mock private ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper =
+      JsonMapper.builder()
+          .propertyNamingStrategy(new PropertyNamingStrategies.SnakeCaseStrategy())
+          .build();
 
   @Mock private WebSocketSession session;
 
   @Mock private Jwt jwt;
 
+  @Spy private WebSocketEventFactory eventFactory;
+
   private GameWebSocketHandler handler;
   private Map<String, Object> sessionAttributes;
 
-  private static final String USER_ID = "user123";
-  private static final String SESSION_ID = "session123";
-
   @BeforeEach
   void setUp() {
-    handler = new GameWebSocketHandler(eventHandlerRegistry, objectMapper);
+    handler = new GameWebSocketHandler(eventHandlerRegistry, objectMapper, eventFactory);
     sessionAttributes = new HashMap<>();
     sessionAttributes.put("jwt", jwt);
+    sessionAttributes.put(USER_EMAIL, "toto@test.com");
+    sessionAttributes.put(GAME_SESSION_ID, UUID.randomUUID());
+    sessionAttributes.put(GAME_SAVE_ID, UUID.randomUUID());
 
     lenient().when(session.getAttributes()).thenReturn(sessionAttributes);
-    lenient().when(session.getId()).thenReturn(SESSION_ID);
-    lenient().when(jwt.getSubject()).thenReturn(USER_ID);
   }
 
   @Test
@@ -73,72 +81,32 @@ class GameWebSocketHandlerTests {
     handler.afterConnectionEstablished(session);
 
     verify(session).getAttributes();
-    verify(jwt).getSubject();
   }
 
   @Test
   void shouldHandleTextMessageSuccessfully() throws Exception {
-    UUID userId = UUID.fromString("00000000-0000-0000-0000-000000000123");
-    UUID sessionId = UUID.randomUUID();
-    UUID messageId = UUID.randomUUID();
-
     CharacteristicsRequest characteristicsRequest =
         new CharacteristicsRequest(10L, 20L, 30L, 40L, 50L);
-    JsonNode dataNode = objectMapper.valueToTree(characteristicsRequest);
-    WebSocketEvent event =
-        new WebSocketEvent(
-            WebSocketEventType.CHARACTERISTICS_UPDATE, sessionId, messageId, userId, dataNode);
+    JsonNode node = objectMapper.valueToTree(characteristicsRequest);
+    var event =
+        new WebSocketEvent(WebSocketEventType.CHARACTERISTICS_UPDATE, UUID.randomUUID(), node);
 
-    String payload = "{\"type\":\"CHARACTERISTICS_UPDATE\"}";
+    String payload = objectMapper.writeValueAsString(event);
     TextMessage message = new TextMessage(payload);
-
-    when(jwt.getSubject()).thenReturn(userId.toString());
-    when(objectMapper.readValue(payload, WebSocketEvent.class)).thenReturn(event);
 
     handler.handleTextMessage(session, message);
 
-    verify(objectMapper).readValue(payload, WebSocketEvent.class);
-    verify(eventHandlerRegistry).handleEvent(session, event);
-  }
-
-  @Test
-  void shouldRejectMessageWhenUserIdMismatch() throws Exception {
-    UUID userId = UUID.fromString("00000000-0000-0000-0000-000000000123");
-    UUID sessionId = UUID.randomUUID();
-    UUID messageId = UUID.randomUUID();
-
-    CharacteristicsRequest characteristicsRequest =
-        new CharacteristicsRequest(10L, 20L, 30L, 40L, 50L);
-    JsonNode dataNode = objectMapper.valueToTree(characteristicsRequest);
-    WebSocketEvent event =
-        new WebSocketEvent(
-            WebSocketEventType.CHARACTERISTICS_UPDATE, sessionId, messageId, userId, dataNode);
-    String payload = "{\"type\":\"CHARACTERISTICS_UPDATE\"}";
-    TextMessage message = new TextMessage(payload);
-
-    when(jwt.getSubject()).thenReturn(userId.toString());
-    when(objectMapper.readValue(payload, Event.class)).thenReturn(event);
-    when(objectMapper.writeValueAsString(any(ErrorWebSocketEvent.class))).thenReturn("{}");
-
-    handler.handleTextMessage(session, message);
-
-    verify(eventHandlerRegistry, never()).handleEvent(any(), any());
-    ArgumentCaptor<TextMessage> messageCaptor = ArgumentCaptor.forClass(TextMessage.class);
-    verify(session).sendMessage(messageCaptor.capture());
+    verify(eventHandlerRegistry).handleEvent(eq(session), any());
   }
 
   @Test
   void shouldSendErrorEventWhenExceptionOccurs() throws Exception {
     String payload = "{\"invalid\":\"json\"}";
-    TextMessage message = new TextMessage(payload);
-
-    when(objectMapper.readValue(payload, Event.class))
-        .thenThrow(new RuntimeException("Parse error"));
-    when(objectMapper.writeValueAsString(any(ErrorWebSocketEvent.class))).thenReturn("{}");
+    TextMessage message = new TextMessage(payload.getBytes(StandardCharsets.UTF_8));
 
     handler.handleTextMessage(session, message);
 
-    ArgumentCaptor<TextMessage> messageCaptor = ArgumentCaptor.forClass(TextMessage.class);
+    ArgumentCaptor<BinaryMessage> messageCaptor = ArgumentCaptor.forClass(BinaryMessage.class);
     verify(session).sendMessage(messageCaptor.capture());
     verify(eventHandlerRegistry, never()).handleEvent(any(), any());
   }
@@ -155,10 +123,9 @@ class GameWebSocketHandlerTests {
   @Test
   void shouldHandleTransportError() throws Exception {
     Throwable exception = new RuntimeException("Transport error");
-    when(objectMapper.writeValueAsString(any(ErrorWebSocketEvent.class))).thenReturn("{}");
 
     handler.handleTransportError(session, exception);
 
-    verify(session).sendMessage(any(TextMessage.class));
+    verify(session).sendMessage(any(BinaryMessage.class));
   }
 }

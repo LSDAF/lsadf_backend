@@ -16,14 +16,15 @@
 
 package com.lsadf.core.infra.websocket.config;
 
-import com.lsadf.core.application.game.inventory.InventoryService;
-import com.lsadf.core.application.game.save.characteristics.CharacteristicsCommandService;
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
-import com.lsadf.core.application.game.save.stage.StageCommandService;
-import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
+import com.lsadf.core.infra.websocket.event.EventRequestValidator;
+import com.lsadf.core.infra.websocket.event.WebSocketEventFactory;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
+import com.lsadf.core.infra.websocket.handler.WebSocketEventHandlerRegistry;
 import com.lsadf.core.infra.websocket.handler.game.*;
-import com.lsadf.core.infra.websocket.handler.impl.WebSocketEventHandlerRegistry;
+import jakarta.validation.Validator;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,10 +32,14 @@ import tools.jackson.databind.ObjectMapper;
 
 @Configuration
 public class WebSocketHandlerConfiguration {
+
   @Bean
   public GameWebSocketHandler gameWebSocketHandler(
-      WebSocketEventHandlerRegistry webSocketEventHandlerRegistry, ObjectMapper objectMapper) {
-    return new GameWebSocketHandler(webSocketEventHandlerRegistry, objectMapper);
+      WebSocketEventHandlerRegistry webSocketEventHandlerRegistry,
+      ObjectMapper objectMapper,
+      WebSocketEventFactory webSocketEventFactory) {
+    return new GameWebSocketHandler(
+        webSocketEventHandlerRegistry, objectMapper, webSocketEventFactory);
   }
 
   @Bean
@@ -44,56 +49,29 @@ public class WebSocketHandlerConfiguration {
   }
 
   @Bean
-  public CharacteristicsWebSocketEventHandler characteristicsWebSocketEventHandler(
-      CharacteristicsCommandService characteristicsCommandService,
-      ObjectMapper objectMapper,
-      GameSessionQueryService gameSessionQueryService) {
-    return new CharacteristicsWebSocketEventHandler(
-        characteristicsCommandService, objectMapper, gameSessionQueryService);
+  public EventRequestValidator eventRequestValidator(Validator validator) {
+    return new EventRequestValidator(validator);
   }
 
   @Bean
   public CurrencyWebSocketEventHandler currencyWebSocketEventHandler(
       CurrencyCommandService currencyCommandService,
       ObjectMapper objectMapper,
-      GameSessionQueryService gameSessionQueryService) {
+      CacheManager cacheManager,
+      WebSocketEventFactory webSocketEventFactory,
+      EventRequestValidator requestValidator,
+      CurrencyEventPublisherPort currencyEventPublisherPort) {
     return new CurrencyWebSocketEventHandler(
-        currencyCommandService, objectMapper, gameSessionQueryService);
+        currencyCommandService,
+        objectMapper,
+        webSocketEventFactory,
+        cacheManager,
+        currencyEventPublisherPort,
+        requestValidator);
   }
 
   @Bean
-  public InventoryItemCreateWebSocketEventHandler inventoryItemCreateWebSocketEventHandler(
-      InventoryService inventoryService,
-      ObjectMapper objectMapper,
-      GameSessionQueryService gameSessionQueryService) {
-    return new InventoryItemCreateWebSocketEventHandler(
-        inventoryService, objectMapper, gameSessionQueryService);
-  }
-
-  @Bean
-  public InventoryItemUpdateWebSocketEventHandler inventoryItemUpdateWebSocketEventHandler(
-      InventoryService inventoryService,
-      ObjectMapper objectMapper,
-      GameSessionQueryService gameSessionQueryService) {
-    return new InventoryItemUpdateWebSocketEventHandler(
-        inventoryService, objectMapper, gameSessionQueryService);
-  }
-
-  @Bean
-  public InventoryItemDeleteWebSocketEventHandler inventoryItemDeleteWebSocketEventHandler(
-      InventoryService inventoryService,
-      ObjectMapper objectMapper,
-      GameSessionQueryService gameSessionQueryService) {
-    return new InventoryItemDeleteWebSocketEventHandler(
-        inventoryService, objectMapper, gameSessionQueryService);
-  }
-
-  @Bean
-  public StageWebSocketEventHandler stageWebSocketEventHandler(
-      StageCommandService stageCommandService,
-      ObjectMapper objectMapper,
-      GameSessionQueryService gameSessionQueryService) {
-    return new StageWebSocketEventHandler(
-        stageCommandService, objectMapper, gameSessionQueryService);
+  public WebSocketEventFactory webSocketEventFactory() {
+    return new WebSocketEventFactory();
   }
 }

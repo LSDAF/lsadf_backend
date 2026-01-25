@@ -15,56 +15,78 @@
  */
 package com.lsadf.core.unit.infra.websocket.handler.game;
 
+import static com.lsadf.core.infra.web.JsonAttributes.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.lsadf.core.application.cache.CacheManager;
 import com.lsadf.core.application.game.save.currency.CurrencyCommandService;
-import com.lsadf.core.application.game.save.currency.command.UpdateCacheCurrencyCommand;
+import com.lsadf.core.application.game.save.currency.CurrencyEventPublisherPort;
 import com.lsadf.core.application.game.session.GameSessionQueryService;
-import com.lsadf.core.domain.game.session.GameSession;
+import com.lsadf.core.domain.game.save.currency.Currency;
 import com.lsadf.core.infra.web.dto.request.game.currency.CurrencyRequest;
+import com.lsadf.core.infra.websocket.event.EventRequestValidator;
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
+import com.lsadf.core.infra.websocket.event.WebSocketEventFactory;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
 import com.lsadf.core.infra.websocket.handler.game.CurrencyWebSocketEventHandler;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.json.JsonMapper;
 
 @ExtendWith(MockitoExtension.class)
 class CurrencyWebSocketEventHandlerTests {
 
   @Mock private CurrencyCommandService currencyCommandService;
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper objectMapper =
+      JsonMapper.builder()
+          .propertyNamingStrategy(new PropertyNamingStrategies.SnakeCaseStrategy())
+          .build();
 
   @Mock private GameSessionQueryService gameSessionQueryService;
 
   @Mock private WebSocketSession session;
 
+  @Mock private CacheManager cacheManager;
+
+  @Spy private WebSocketEventFactory eventFactory;
+
+  @Mock private CurrencyEventPublisherPort currencyEventPublisherPort;
+
+  @Mock private EventRequestValidator requestValidator;
+
   private CurrencyWebSocketEventHandler handler;
 
-  private UUID sessionId;
-  private UUID messageId;
-  private UUID userId;
-  private UUID gameSaveId;
+  private Map<String, Object> SESSION_ATTRIBUTES;
 
   @BeforeEach
   void setUp() {
     handler =
         new CurrencyWebSocketEventHandler(
-            currencyCommandService, objectMapper, gameSessionQueryService);
-    sessionId = UUID.randomUUID();
-    messageId = UUID.randomUUID();
-    userId = UUID.randomUUID();
-    gameSaveId = UUID.randomUUID();
+            currencyCommandService,
+            objectMapper,
+            eventFactory,
+            cacheManager,
+            currencyEventPublisherPort,
+            requestValidator);
+    SESSION_ATTRIBUTES = new HashMap<>();
+    SESSION_ATTRIBUTES.put(GAME_SESSION_ID, UUID.randomUUID());
+    SESSION_ATTRIBUTES.put(GAME_SAVE_ID, UUID.randomUUID());
+    SESSION_ATTRIBUTES.put(USER_EMAIL, "toto@test.com");
   }
 
   @Test
@@ -75,27 +97,26 @@ class CurrencyWebSocketEventHandlerTests {
   @Test
   void shouldHandleCurrencyUpdateEvent() throws Exception {
     CurrencyRequest request = new CurrencyRequest(100L, 200L, 300L, 400L);
-    JsonNode dataNode = objectMapper.valueToTree(request);
+    JsonNode node = objectMapper.valueToTree(request);
     WebSocketEvent event =
-        new WebSocketEvent(
-            WebSocketEventType.CURRENCY_UPDATE, sessionId, messageId, userId, dataNode);
-
-    GameSession gameSession = mock(GameSession.class);
-    when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
-    when(gameSessionQueryService.findGameSessionById(any())).thenReturn(gameSession);
+        new WebSocketEvent(WebSocketEventType.CURRENCY_UPDATE, UUID.randomUUID(), node);
+    when(session.getAttributes()).thenReturn(SESSION_ATTRIBUTES);
+    when(cacheManager.isEnabled()).thenReturn(true);
 
     handler.handleEvent(session, event);
 
-    ArgumentCaptor<UpdateCacheCurrencyCommand> commandCaptor =
-        ArgumentCaptor.forClass(UpdateCacheCurrencyCommand.class);
-    verify(currencyCommandService).updateCacheCurrency(commandCaptor.capture());
+    ArgumentCaptor<Currency> commandCaptor = ArgumentCaptor.forClass(Currency.class);
+    verify(currencyEventPublisherPort)
+        .publishCurrencyUpdatedEvent(
+            eq(SESSION_ATTRIBUTES.get(USER_EMAIL).toString()),
+                eq((UUID) SESSION_ATTRIBUTES.get(GAME_SAVE_ID)),
+            commandCaptor.capture(), eq((UUID) SESSION_ATTRIBUTES.get(GAME_SESSION_ID)));
 
-    UpdateCacheCurrencyCommand command = commandCaptor.getValue();
-    assertEquals(gameSaveId, command.gameSaveId());
-    assertEquals(100L, command.gold());
-    assertEquals(200L, command.diamond());
-    assertEquals(300L, command.emerald());
-    assertEquals(400L, command.amethyst());
+    Currency currency = commandCaptor.getValue();
+    assertEquals(100L, currency.gold());
+    assertEquals(200L, currency.diamond());
+    assertEquals(300L, currency.emerald());
+    assertEquals(400L, currency.amethyst());
 
     verify(session).sendMessage(any(TextMessage.class));
   }
@@ -103,15 +124,10 @@ class CurrencyWebSocketEventHandlerTests {
   @Test
   void shouldSendAckAfterSuccessfulUpdate() throws Exception {
     CurrencyRequest request = new CurrencyRequest(100L, 200L, 300L, 400L);
-    JsonNode dataNode = objectMapper.valueToTree(request);
+    JsonNode node = objectMapper.valueToTree(request);
     WebSocketEvent event =
-        new WebSocketEvent(
-            WebSocketEventType.CURRENCY_UPDATE, sessionId, messageId, userId, dataNode);
-
-    GameSession gameSession = mock(GameSession.class);
-    when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
-    when(gameSessionQueryService.findGameSessionById(any())).thenReturn(gameSession);
-
+        new WebSocketEvent(WebSocketEventType.CURRENCY_UPDATE, UUID.randomUUID(), node);
+    when(session.getAttributes()).thenReturn(SESSION_ATTRIBUTES);
     handler.handleEvent(session, event);
 
     ArgumentCaptor<TextMessage> messageCaptor = ArgumentCaptor.forClass(TextMessage.class);
@@ -119,27 +135,32 @@ class CurrencyWebSocketEventHandlerTests {
 
     TextMessage sentMessage = messageCaptor.getValue();
     JsonNode sentNode = objectMapper.readTree(sentMessage.getPayload());
-    assertEquals("ACK", sentNode.get("eventType").asString());
+    assertEquals("ACK", sentNode.get(EVENT_TYPE).asString());
   }
 
   @Test
-  void shouldPropagateExceptionWhenServiceFails() throws Exception {
-    CurrencyRequest request = new CurrencyRequest(100L, 200L, 300L, 400L);
-    JsonNode dataNode = objectMapper.valueToTree(request);
+  void shouldThrowExceptionForInvalidRequest() throws Exception {
+    CurrencyRequest request = new CurrencyRequest(-100L, 200L, 300L, 400L);
+    JsonNode node = objectMapper.valueToTree(request);
     WebSocketEvent event =
-        new WebSocketEvent(
-            WebSocketEventType.CHARACTERISTICS_UPDATE, sessionId, messageId, userId, dataNode);
+        new WebSocketEvent(WebSocketEventType.CURRENCY_UPDATE, UUID.randomUUID(), node);
+    when(session.getAttributes()).thenReturn(SESSION_ATTRIBUTES);
+    doThrow(new IllegalArgumentException("Validation failed"))
+        .when(requestValidator)
+        .validate(request);
 
-    GameSession gameSession = mock(GameSession.class);
-    when(gameSession.getGameSaveId()).thenReturn(gameSaveId);
-    when(gameSessionQueryService.findGameSessionById(any())).thenReturn(gameSession);
+    Exception exception = assertThrows(Exception.class, () -> handler.handleEvent(session, event));
+    assertTrue(exception.getMessage().contains("Validation failed"));
+  }
 
-    doThrow(new RuntimeException("Service error"))
-        .when(currencyCommandService)
-        .updateCacheCurrency(any());
+  @Test
+  void shouldThrowErrorWhenEmptyRequest() throws Exception {
+    JsonNode node = objectMapper.readTree("{}");
+    WebSocketEvent event =
+        new WebSocketEvent(WebSocketEventType.CURRENCY_UPDATE, UUID.randomUUID(), node);
+    when(session.getAttributes()).thenReturn(SESSION_ATTRIBUTES);
 
-    assertThrows(RuntimeException.class, () -> handler.handleEvent(session, event));
-
-    verify(session, never()).sendMessage(any());
+    Exception exception = assertThrows(Exception.class, () -> handler.handleEvent(session, event));
+    assertTrue(exception.getMessage().contains("Missing required currency fields"));
   }
 }

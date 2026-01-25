@@ -20,23 +20,17 @@ import com.lsadf.core.infra.websocket.event.WebSocketEventType;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.ToString;
+import org.jspecify.annotations.Nullable;
 
 @Getter
 @ToString(callSuper = true)
 public class ErrorWebSocketEvent extends WebSocketEvent {
-  private final String errorCode;
   private final String errorMessage;
-  private final UUID originalMessageId;
+  private final @Nullable UUID originalMessageId;
 
   public ErrorWebSocketEvent(
-      UUID sessionId,
-      UUID messageId,
-      UUID userId,
-      String errorCode,
-      String errorMessage,
-      UUID originalMessageId) {
-    super(WebSocketEventType.ERROR, System.currentTimeMillis(), sessionId, messageId, userId, null);
-    this.errorCode = errorCode;
+      UUID messageId, String errorMessage, @Nullable UUID originalMessageId) {
+    super(WebSocketEventType.ERROR, messageId, null);
     this.errorMessage = errorMessage;
     this.originalMessageId = originalMessageId;
   }

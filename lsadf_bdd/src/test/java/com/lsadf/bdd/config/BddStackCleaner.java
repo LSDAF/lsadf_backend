@@ -22,16 +22,23 @@ import java.util.Stack;
 public class BddStackCleaner {
 
   private final List<Stack<?>> stackList;
+  private final List<List<?>> listList;
 
   public BddStackCleaner() {
     stackList = new ArrayList<>();
+    listList = new ArrayList<>();
   }
 
   public void clearStacks() {
     stackList.forEach(Stack::clear);
+    listList.forEach(List::clear);
   }
 
   public void addStack(Stack<?> stack) {
     stackList.add(stack);
+  }
+
+  public void addList(List<?> list) {
+    listList.add(list);
   }
 }

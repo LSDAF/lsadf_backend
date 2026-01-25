@@ -22,14 +22,17 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum WebSocketEventType implements EventType {
-  STAGE_UPDATE("websocket.stage.update"),
-  CURRENCY_UPDATE("websocket.currency.update"),
-  CHARACTERISTICS_UPDATE("websocket.characteristics.update"),
-  INVENTORY_ITEM_CREATE("websocket.inventory.item.create"),
-  INVENTORY_ITEM_UPDATE("websocket.inventory.item.update"),
-  INVENTORY_ITEM_DELETE("websocket.inventory.item.delete"),
-  ERROR("websocket.error"),
-  ACK("websocket.ack");
+  STAGE_UPDATE,
+  CURRENCY_UPDATE,
+  CHARACTERISTICS_UPDATE,
+  INVENTORY_ITEM_CREATE,
+  INVENTORY_ITEM_UPDATE,
+  INVENTORY_ITEM_DELETE,
+  ERROR,
+  ACK;
 
-  private final String value;
+  @Override
+  public String getValue() {
+    return name();
+  }
 }

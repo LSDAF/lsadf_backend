@@ -15,26 +15,22 @@
  */
 package com.lsadf.core.infra.websocket.event.system;
 
+import static com.lsadf.core.infra.websocket.event.WebSocketEventType.ACK;
+
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
-import com.lsadf.core.infra.websocket.event.WebSocketEventType;
 import java.util.UUID;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.jspecify.annotations.Nullable;
-import tools.jackson.databind.JsonNode;
 
 @Getter
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class AckWebSocketEvent extends WebSocketEvent {
   private final UUID originalMessageId;
 
-  public AckWebSocketEvent(
-      UUID sessionId,
-      UUID messageId,
-      UUID userId,
-      UUID originalMessageId,
-      @Nullable JsonNode json) {
-    super(WebSocketEventType.ACK, System.currentTimeMillis(), sessionId, messageId, userId, json);
+  public AckWebSocketEvent(UUID messageId, UUID originalMessageId) {
+    super(ACK, messageId, null);
     this.originalMessageId = originalMessageId;
   }
 }

@@ -103,6 +103,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.testcontainers.containers.Network;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -220,6 +221,8 @@ public class BddLoader {
 
   @Autowired protected GameSaveService gameSaveService;
 
+  @Autowired protected org.springframework.security.oauth2.jwt.JwtDecoder jwtDecoder;
+
   // BDD Specific Stacks & Maps
 
   @Autowired protected Stack<List<GameSave>> gameSaveListStack;
@@ -257,6 +260,12 @@ public class BddLoader {
   @Autowired protected Stack<Boolean> booleanStack;
 
   @Autowired protected Stack<JwtAuthenticationResponse> jwtAuthenticationResponseStack;
+
+  @Autowired protected Stack<org.springframework.web.socket.WebSocketSession> webSocketSessionStack;
+
+  @Autowired protected List<tools.jackson.databind.JsonNode> webSocketReceivedMessages;
+
+  @Autowired protected TextWebSocketHandler webSocketHandler;
 
   // Properties
   @Autowired protected ValkeyCacheExpirationProperties valkeyCacheExpirationProperties;

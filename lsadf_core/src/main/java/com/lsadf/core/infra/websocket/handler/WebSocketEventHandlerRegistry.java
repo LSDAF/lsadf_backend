@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.websocket.handler.impl;
+package com.lsadf.core.infra.websocket.handler;
 
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
-import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
 import com.lsadf.core.shared.event.EventType;
 import java.util.HashMap;
 import java.util.List;

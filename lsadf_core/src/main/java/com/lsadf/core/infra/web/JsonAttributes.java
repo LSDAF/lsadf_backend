@@ -41,6 +41,11 @@ public final class JsonAttributes {
   public static final String TYPE = "type";
   public static final String VALUE = "value";
 
+  public static final String EVENT_TYPE = "event_type";
+  public static final String SESSION_ID = "session_id";
+  public static final String MESSAGE_ID = "message_id";
+  public static final String TIMESTAMP = "timestamp";
+
   public static final String USER_EMAIL = "user_email";
   public static final String USER_EMAIL_CAMEL_CASE = "userEmail";
 
@@ -131,4 +136,5 @@ public final class JsonAttributes {
   public static final String MAIL_IDS = "mail_ids";
   public static final String TEMPLATE = "template";
   public static final String OBJECT = "object";
+  public static final String GAME_SESSION_ID = "game_session_id";
 }

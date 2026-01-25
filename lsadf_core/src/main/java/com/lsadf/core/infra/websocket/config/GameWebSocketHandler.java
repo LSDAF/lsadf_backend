@@ -15,18 +15,24 @@
  */
 package com.lsadf.core.infra.websocket.config;
 
+import static com.lsadf.core.infra.web.JsonAttributes.*;
+
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
+import com.lsadf.core.infra.websocket.event.WebSocketEventFactory;
+import com.lsadf.core.infra.websocket.event.WebSocketEventType;
 import com.lsadf.core.infra.websocket.event.system.ErrorWebSocketEvent;
-import com.lsadf.core.infra.websocket.handler.impl.WebSocketEventHandlerRegistry;
-import com.lsadf.core.shared.event.Event;
+import com.lsadf.core.infra.websocket.handler.WebSocketEventHandlerRegistry;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.oauth2.jwt.Jwt;
+import org.jspecify.annotations.Nullable;
+import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
@@ -35,29 +41,42 @@ public class GameWebSocketHandler extends TextWebSocketHandler implements Websoc
 
   private final WebSocketEventHandlerRegistry eventHandlerRegistry;
   private final ObjectMapper objectMapper;
+  private final WebSocketEventFactory eventFactory;
 
   @Override
   public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-    Jwt jwt = (Jwt) session.getAttributes().get("jwt");
-    String userId = jwt.getSubject();
-    log.info("WebSocket connection established for user: {} session: {}", userId, session.getId());
+    var attributes = session.getAttributes();
+    String userEmail = attributes.get(USER_EMAIL).toString();
+    UUID gameSessionId = (UUID) attributes.get(GAME_SESSION_ID);
+    UUID gameSaveId = (UUID) attributes.get(GAME_SESSION_ID);
+    log.info(
+        "WebSocket connection established for user: {} session: {}, game save id: {}",
+        userEmail,
+        gameSessionId,
+        gameSaveId);
   }
 
   @Override
-  public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+  public void handleTextMessage(WebSocketSession session, TextMessage message) {
+    WebSocketEvent event = null;
     try {
-      String payload = message.getPayload();
-      log.debug("Received WebSocket message: {}", payload);
+      String buffer = message.getPayload();
+      log.debug("Received WebSocket message: {}", buffer);
 
-      WebSocketEvent event = objectMapper.readValue(payload, WebSocketEvent.class);
-
-      validateSession(session, event);
+      tools.jackson.databind.JsonNode jsonNode = objectMapper.readTree(buffer);
+      WebSocketEventType eventType =
+          WebSocketEventType.valueOf(jsonNode.get(EVENT_TYPE).asString());
+      UUID messageId = UUID.fromString(jsonNode.get(MESSAGE_ID).asString());
+      Long timestamp = jsonNode.get(TIMESTAMP).asLong();
+      JsonNode data = jsonNode.get(DATA);
+      event = new WebSocketEvent(eventType, messageId, timestamp, data);
 
       eventHandlerRegistry.handleEvent(session, event);
-
+    } catch (JacksonException e) {
+      log.error("JSON parsing error", e);
     } catch (Exception e) {
       log.error("Error handling WebSocket message", e);
-      sendErrorEvent(session, e, null);
+      sendErrorEvent(session, e, event);
     }
   }
 
@@ -72,33 +91,16 @@ public class GameWebSocketHandler extends TextWebSocketHandler implements Websoc
     sendErrorEvent(session, exception, null);
   }
 
-  private void validateSession(WebSocketSession session, Event event) {
-    if (!(event instanceof WebSocketEvent)) {
-      throw new IllegalArgumentException("Event must be a WebSocket event");
-    }
-
-    WebSocketEvent wsEvent = (WebSocketEvent) event;
-    Jwt jwt = (Jwt) session.getAttributes().get("jwt");
-    String userId = jwt.getSubject();
-
-    if (!userId.equals(wsEvent.getUserId().toString())) {
-      throw new SecurityException("User ID mismatch");
-    }
-  }
-
-  private void sendErrorEvent(WebSocketSession session, Throwable error, UUID originalMessageId) {
+  private void sendErrorEvent(
+      WebSocketSession session, Throwable error, @Nullable WebSocketEvent event) {
     try {
       ErrorWebSocketEvent errorEvent =
-          new ErrorWebSocketEvent(
-              UUID.randomUUID(),
-              UUID.randomUUID(),
-              UUID.fromString("00000000-0000-0000-0000-000000000000"),
-              "ERROR",
-              error.getMessage(),
-              originalMessageId);
+          (event != null)
+              ? eventFactory.createErrorEvent(event, error.getMessage())
+              : eventFactory.createErrorEvent(error.getMessage());
 
-      String json = objectMapper.writeValueAsString(errorEvent);
-      session.sendMessage(new TextMessage(json));
+      byte[] json = objectMapper.writeValueAsBytes(errorEvent);
+      session.sendMessage(new BinaryMessage(json));
     } catch (Exception e) {
       log.error("Failed to send error event", e);
     }

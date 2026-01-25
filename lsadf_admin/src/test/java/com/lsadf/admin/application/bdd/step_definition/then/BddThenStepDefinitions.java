@@ -39,6 +39,7 @@ public class BddThenStepDefinitions extends BddLoader {
   @Autowired private BddThenUserStepDefinitions bddThenUserStepDefinitions;
   @Autowired private BddThenItemStepDefinitions bddThenItemStepDefinitions;
   @Autowired private BddThenGlobalInfoStepDefinitions bddThenGlobalInfoStepDefinitions;
+  @Autowired private BddThenWebSocketStepDefinitions bddThenWebSocketStepDefinitions;
 
   @Then("^the zset flush pending cache should be empty$")
   public void thenTheZsetFlushPendingCacheShouldBeEmpty() {

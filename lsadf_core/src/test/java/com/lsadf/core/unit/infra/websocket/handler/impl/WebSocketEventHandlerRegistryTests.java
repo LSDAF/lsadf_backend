@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 import com.lsadf.core.infra.websocket.event.WebSocketEvent;
 import com.lsadf.core.infra.websocket.event.WebSocketEventType;
 import com.lsadf.core.infra.websocket.handler.WebSocketEventHandler;
-import com.lsadf.core.infra.websocket.handler.impl.WebSocketEventHandlerRegistry;
+import com.lsadf.core.infra.websocket.handler.WebSocketEventHandlerRegistry;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

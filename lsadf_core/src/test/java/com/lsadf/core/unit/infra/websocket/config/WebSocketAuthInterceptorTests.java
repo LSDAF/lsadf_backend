@@ -15,17 +15,22 @@
  */
 package com.lsadf.core.unit.infra.websocket.config;
 
+import static com.lsadf.core.infra.web.JsonAttributes.USER_EMAIL;
+import static com.lsadf.core.infra.web.JsonAttributes.USER_ROLES;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.lsadf.core.infra.websocket.config.WebSocketAuthInterceptor;
+import com.lsadf.core.infra.web.config.auth.TokenUtils;
+import com.lsadf.core.infra.websocket.interceptor.WebSocketAuthInterceptor;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -50,7 +55,8 @@ class WebSocketAuthInterceptorTests {
   private WebSocketAuthInterceptor interceptor;
   private Map<String, Object> attributes;
 
-  private static final String USER_ID = "user123";
+  private static final String USER_ID = "toto@test.com";
+  private static final List<String> ROLES = List.of("ROLE_USER");
   private static final String VALID_TOKEN = "valid.jwt.token";
 
   @BeforeEach
@@ -64,14 +70,19 @@ class WebSocketAuthInterceptorTests {
     URI uri = new URI("ws://localhost:8080/ws?token=" + VALID_TOKEN);
     when(request.getURI()).thenReturn(uri);
     when(jwtDecoder.decode(VALID_TOKEN)).thenReturn(jwt);
-    when(jwt.getSubject()).thenReturn(USER_ID);
 
-    boolean result = interceptor.beforeHandshake(request, response, wsHandler, attributes);
+    try (MockedStatic<TokenUtils> tokenUtilsMockedStatic = mockStatic(TokenUtils.class)) {
+      tokenUtilsMockedStatic.when(() -> TokenUtils.getUsernameFromJwt(jwt)).thenReturn(USER_ID);
 
-    assertTrue(result);
-    assertEquals(jwt, attributes.get("jwt"));
-    assertEquals(USER_ID, attributes.get("userId"));
-    verify(jwtDecoder).decode(VALID_TOKEN);
+      tokenUtilsMockedStatic.when(() -> TokenUtils.getRolesFromJwt(jwt)).thenReturn(ROLES);
+
+      boolean result = interceptor.beforeHandshake(request, response, wsHandler, attributes);
+
+      assertTrue(result);
+      assertEquals(USER_ID, attributes.get(USER_EMAIL));
+      assertEquals(ROLES, attributes.get(USER_ROLES));
+      verify(jwtDecoder).decode(VALID_TOKEN);
+    }
   }
 
   @Test
@@ -118,7 +129,6 @@ class WebSocketAuthInterceptorTests {
         new URI("ws://localhost:8080/ws?param1=value1&token=" + VALID_TOKEN + "&param2=value2");
     when(request.getURI()).thenReturn(uri);
     when(jwtDecoder.decode(VALID_TOKEN)).thenReturn(jwt);
-    when(jwt.getSubject()).thenReturn(USER_ID);
 
     boolean result = interceptor.beforeHandshake(request, response, wsHandler, attributes);
 

@@ -71,7 +71,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     "/api/oauth2/callback",
     "/error",
     "/actuator",
-    "/actuator/**"
+    "/actuator/**",
+    "/ws/game"
   };
 
   public static final String ADMIN_URLS = "/api/v1/admin/**";

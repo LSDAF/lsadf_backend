@@ -40,6 +40,7 @@ public class BddThenStepDefinitions extends BddLoader {
   @Autowired private BddThenUserInfoStepDefinitions bddThenUserInfoStepDefinitions;
   @Autowired private BddThenUserStepDefinitions bddThenUserStepDefinitions;
   @Autowired private BddThenGameMailStepDefinitions bddThenGameMailStepDefinitions;
+  @Autowired private BddThenWebSocketStepDefinitions bddThenWebSocketStepDefinitions;
 
   @Then("^the response status code should be (.*)$")
   public void thenResponseStatusCodeShouldBe(int statusCode) {
@@ -100,5 +101,25 @@ public class BddThenStepDefinitions extends BddLoader {
   @Then("^the response should not contain any attachments$")
   public void thenResponseShouldNotContainAnyGameMailAttachments() {
     bddThenGameMailStepDefinitions.thenResponseShouldNotContainAttachments();
+  }
+
+  @Then("^the WebSocket connection should have received (\\d+) ACK messages$")
+  public void thenWebSocketShouldHaveReceivedAckMessages(int expectedCount) {
+    bddThenWebSocketStepDefinitions.thenWebSocketShouldHaveReceivedAckMessages(expectedCount);
+  }
+
+  @Then("^the WebSocket connection should receive an ERROR message$")
+  public void thenWebSocketShouldReceiveError() {
+    bddThenWebSocketStepDefinitions.thenWebSocketShouldReceiveError();
+  }
+
+  @Then("^the WebSocket connection should receive an ACK message$")
+  public void thenTheWebsocketShouldReceiveAck() {
+    bddThenWebSocketStepDefinitions.thenWebSocketShouldReceiveAck();
+  }
+
+  @Then("^a (.*) should be thrown$")
+  public void thenAnExceptionShouldBeThrown(String exceptionName) {
+    bddThenWebSocketStepDefinitions.thenAnExceptionShouldBeThrown(exceptionName);
   }
 }

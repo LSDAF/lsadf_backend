@@ -15,6 +15,9 @@
  */
 package com.lsadf.core.infra.websocket.config;
 
+import com.lsadf.core.application.game.session.GameSessionQueryService;
+import com.lsadf.core.infra.websocket.interceptor.WebSocketAuthInterceptor;
+import com.lsadf.core.infra.websocket.interceptor.WebSocketGameSessionValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,17 +35,25 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
   private final GameWebSocketHandler gameWebSocketHandler;
   private final JwtDecoder jwtDecoder;
+  private final GameSessionQueryService gameSessionQueryService;
 
   @Bean
   public WebSocketAuthInterceptor webSocketAuthInterceptor() {
     return new WebSocketAuthInterceptor(jwtDecoder);
   }
 
+  @Bean
+  public WebSocketGameSessionValidator webSocketGameSessionValidator(
+      GameSessionQueryService gameSessionQueryService) {
+    return new WebSocketGameSessionValidator(gameSessionQueryService);
+  }
+
   @Override
   public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
     registry
         .addHandler(gameWebSocketHandler, "/ws/game")
-        .addInterceptors(webSocketAuthInterceptor())
+        .addInterceptors(
+            webSocketAuthInterceptor(), webSocketGameSessionValidator(gameSessionQueryService))
         .setAllowedOrigins("*");
   }
 }

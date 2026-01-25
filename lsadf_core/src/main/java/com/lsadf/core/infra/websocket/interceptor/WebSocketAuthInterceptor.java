@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.infra.websocket.config;
+package com.lsadf.core.infra.websocket.interceptor;
 
+import static com.lsadf.core.infra.web.JsonAttributes.USER_EMAIL;
+import static com.lsadf.core.infra.web.JsonAttributes.USER_ROLES;
+
+import com.lsadf.core.infra.web.config.auth.TokenUtils;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,10 +51,11 @@ public class WebSocketAuthInterceptor implements HandshakeInterceptor {
       }
 
       Jwt jwt = jwtDecoder.decode(token);
-      attributes.put("jwt", jwt);
-      attributes.put("userId", jwt.getSubject());
+      String userEmail = TokenUtils.getUsernameFromJwt(jwt);
+      attributes.put(USER_EMAIL, userEmail);
+      attributes.put(USER_ROLES, TokenUtils.getRolesFromJwt(jwt));
 
-      log.info("WebSocket authentication successful for user: {}", jwt.getSubject());
+      log.info("WebSocket authentication successful for user: {}", userEmail);
       return true;
 
     } catch (Exception e) {

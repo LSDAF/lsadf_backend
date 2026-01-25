@@ -35,9 +35,7 @@ import com.lsadf.core.infra.web.dto.response.game.session.GameSessionResponse;
 import com.lsadf.core.infra.web.dto.response.info.GlobalInfoResponse;
 import com.lsadf.core.infra.web.dto.response.jwt.JwtAuthenticationResponse;
 import com.lsadf.core.infra.web.dto.response.user.UserResponse;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +43,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /** Configuration class for BDD tests */
 @TestConfiguration
@@ -65,7 +65,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
   BddThenItemStepDefinitions.class,
   BddThenStageStepDefinitions.class,
   BddThenUserInfoStepDefinitions.class,
-  BddThenUserStepDefinitions.class
+  BddThenUserStepDefinitions.class,
+  BddThenWebSocketStepDefinitions.class
 })
 public class BddTestsConfiguration {
 
@@ -231,6 +232,36 @@ public class BddTestsConfiguration {
     var stack = new Stack<ApiResponse<?>>();
     stackCleaner.addStack(stack);
     return stack;
+  }
+
+  @Bean
+  public Stack<org.springframework.web.socket.WebSocketSession> webSocketSessionStack(
+      BddStackCleaner stackCleaner) {
+    var stack = new Stack<org.springframework.web.socket.WebSocketSession>();
+    stackCleaner.addStack(stack);
+    return stack;
+  }
+
+  @Bean
+  public java.util.List<JsonNode> webSocketReceivedMessages(BddStackCleaner stackCleaner) {
+    List<JsonNode> list = Collections.synchronizedList(new ArrayList<>());
+    stackCleaner.addList(list);
+    return list;
+  }
+
+  @Bean
+  public org.springframework.web.socket.handler.TextWebSocketHandler webSocketHandler(
+      ObjectMapper objectMapper, java.util.List<JsonNode> receivedMessages) {
+    return new org.springframework.web.socket.handler.TextWebSocketHandler() {
+      @Override
+      protected void handleTextMessage(
+          org.springframework.web.socket.WebSocketSession session,
+          org.springframework.web.socket.TextMessage message)
+          throws Exception {
+        JsonNode jsonNode = objectMapper.readTree(message.getPayload());
+        receivedMessages.add(jsonNode);
+      }
+    };
   }
 
   @Bean
