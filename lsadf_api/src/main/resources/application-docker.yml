@@ -1,5 +1,7 @@
 server:
   port: ${LSADF_API_PORT}
+  host-name: ${LSADF_API_HOSTNAME}
+  https: true
 
 async:
   enabled: true
