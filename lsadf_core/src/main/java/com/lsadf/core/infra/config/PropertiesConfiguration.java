@@ -16,6 +16,7 @@
 package com.lsadf.core.infra.config;
 
 import com.lsadf.core.infra.clock.ClockProperties;
+import com.lsadf.core.infra.kubernetes.config.KubernetesProperties;
 import com.lsadf.core.infra.logging.properties.ConfigurationDisplayProperties;
 import com.lsadf.core.infra.logging.properties.HttpLogProperties;
 import com.lsadf.core.infra.persistence.config.JdbcProperties;
@@ -165,5 +166,11 @@ public class PropertiesConfiguration {
   @ConfigurationProperties(prefix = "scheduling.game-mail-cleanup")
   public GameMailCleanupProperties expiredGameMailCleanupProperties() {
     return new GameMailCleanupProperties();
+  }
+
+  @Bean
+  @ConfigurationProperties(prefix = "kubernetes")
+  public KubernetesProperties kubernetesProperties() {
+    return new KubernetesProperties();
   }
 }

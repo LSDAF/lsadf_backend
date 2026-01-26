@@ -58,3 +58,7 @@ scheduling:
 
 async:
   enabled: false
+
+
+kubernetes:
+  enabled: false

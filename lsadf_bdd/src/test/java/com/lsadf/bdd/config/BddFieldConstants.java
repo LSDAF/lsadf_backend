@@ -126,6 +126,7 @@ public class BddFieldConstants {
     public static final String END_TIME = "endTime";
     public static final String CANCELLED = "cancelled";
     public static final String VERSION = "version";
+    public static final String HOSTNAME = "hostname";
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)

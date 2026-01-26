@@ -68,11 +68,11 @@ public class GameSessionRepositoryAdapter implements GameSessionRepositoryPort {
   @Override
   @Transactional
   public GameSession createNewGameSession(
-      UUID id, UUID gameSaveId, Instant endTime, boolean cancelled) {
+      UUID id, UUID gameSaveId, Instant endTime, boolean cancelled, String hostname) {
     Optional<GameSessionViewEntity> optional =
         gameSessionViewRepository.findLatestActiveGameSessionByGameSaveId(gameSaveId);
     optional.ifPresent(gameSession -> cancelGameSession(gameSession.getId()));
-    gameSessionRepository.createNewGameSession(id, gameSaveId, endTime, cancelled, 1);
+    gameSessionRepository.createNewGameSession(id, gameSaveId, endTime, cancelled, hostname, 1);
     return gameSessionViewRepository
         .findLatestActiveGameSessionByGameSaveId(gameSaveId)
         .map(gameSessionViewMapper::map)

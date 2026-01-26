@@ -281,6 +281,7 @@ public class BddUtils {
     String endTimeString = row.get(BddFieldConstants.GameSession.END_TIME);
     String cancelledString = row.get(BddFieldConstants.GameSession.CANCELLED);
     boolean cancelled = Boolean.parseBoolean(cancelledString);
+    String hostname = row.get(BddFieldConstants.GameSession.HOSTNAME);
     var versionString = row.get(BddFieldConstants.GameSession.VERSION);
     int version;
     Optional<Integer> versionOptional =
@@ -297,6 +298,7 @@ public class BddUtils {
         .id(gameSessionId)
         .gameSaveId(gameSaveId)
         .cancelled(cancelled)
+        .hostname(hostname)
         .endTime(endTime)
         .build();
   }
@@ -585,6 +587,11 @@ public class BddUtils {
     Integer version = versionString != null ? Integer.parseInt(versionString) : null;
     if (version != null) {
       builder.version(version);
+    }
+
+    String hostname = row.get(BddFieldConstants.GameSession.HOSTNAME);
+    if (hostname != null) {
+      builder.hostname(hostname);
     }
 
     return builder.build();

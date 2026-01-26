@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.game.session;
+package com.lsadf.core.infra.kubernetes.service;
 
-import com.lsadf.core.shared.model.Model;
-import java.time.Instant;
-import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
-@Getter
-@AllArgsConstructor
-public class GameSession implements Model {
-  private final UUID id;
-  private final UUID gameSaveId;
-  private final String userEmail;
-  private final Instant endTime;
-  private final boolean cancelled;
-  private final Instant updatedAt;
-  private final int version;
-  private final String hostname;
+@Slf4j
+public class LocalPodSelector implements PodSelector {
+
+  private static final String LOCALHOST = "localhost";
+
+  @Override
+  public String selectPodName() {
+    log.debug("Resolving hostname for local/docker environment");
+    return LOCALHOST;
+  }
 }

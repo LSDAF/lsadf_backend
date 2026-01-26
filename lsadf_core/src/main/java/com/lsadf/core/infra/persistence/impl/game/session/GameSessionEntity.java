@@ -52,6 +52,9 @@ public class GameSessionEntity implements Identifiable, Dateable {
   @Column(GAME_SESSION_UPDATED_AT)
   private Date updatedAt;
 
+  @Column(GAME_SESSION_HOSTNAME)
+  private String hostname;
+
   public UUID getId() {
     return this.id.sessionId;
   }
@@ -76,5 +79,6 @@ public class GameSessionEntity implements Identifiable, Dateable {
     public static final String GAME_SESSION_CREATED_AT = "tgse_created_at";
     public static final String GAME_SESSION_UPDATED_AT = "tgse_updated_at";
     public static final String GAME_SESSION_VERSION = "tgse_version";
+    public static final String GAME_SESSION_HOSTNAME = "tgse_hostname";
   }
 }

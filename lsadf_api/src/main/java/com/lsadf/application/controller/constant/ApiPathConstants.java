@@ -27,6 +27,7 @@ public final class ApiPathConstants {
   public static final String CURRENCY = "/api/v1/currency";
   public static final String GAME_SAVE = "/api/v1/game_save";
   public static final String GAME_SESSION = "/api/v1/game_session";
+  public static final String GAME_SESSION_V2 = "/api/v2/game_session";
   public static final String INVENTORY = "/api/v1/inventory";
   public static final String GAME_MAIL = "/api/v1/game_mail";
   public static final String OAUTH2 = "/api/oauth2";

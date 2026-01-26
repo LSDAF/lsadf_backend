@@ -94,8 +94,8 @@ Feature: Stage Controller BDD tests
       | f81b710d-3e02-4871-a86f-390377798dd1 | 666          | 667      | 10   |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       | localhost |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -116,8 +116,8 @@ Feature: Stage Controller BDD tests
       | gameSaveId                           | currentStage | maxStage | wave |
       | f81b710d-3e02-4871-a86f-390377798dd1 | 666          | 667      | 5    |
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       | localhost |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -138,8 +138,8 @@ Feature: Stage Controller BDD tests
       | id                                   | userEmail           | gold    | maxStage | currentStage | wave | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
       | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 10   | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       | localhost |
 
 
     And the cache is disabled
@@ -159,8 +159,8 @@ Feature: Stage Controller BDD tests
       | id                                   | userEmail            | gold    | maxStage | currentStage | wave | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
       | f81b710d-3e02-4871-a86f-390377798dd1 | paul.itesse@test.com | 5630280 | 10       | 10           | 10   | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       | localhost |
 
 
     When the user logs in with the following credentials
@@ -178,8 +178,8 @@ Feature: Stage Controller BDD tests
       | id                                   | userEmail           | gold    | maxStage | currentStage | wave | diamond | emerald | amethyst | attack | critChance | critDamage | health | resistance |
       | f81b710d-3e02-4871-a86f-390377798dd1 | paul.ochon@test.com | 5630280 | 10       | 10           | 10   | 10      | 10      | 10       | 1100   | 1200       | 1300       | 1400   | 1500       |
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | f81b710d-3e02-4871-a86f-390377798dd1 | false     | 1       | localhost |
 
 
     When the user logs in with the following credentials

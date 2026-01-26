@@ -33,6 +33,8 @@ import com.lsadf.application.controller.game.save.stage.StageController;
 import com.lsadf.application.controller.game.save.stage.StageControllerImpl;
 import com.lsadf.application.controller.game.session.GameSessionController;
 import com.lsadf.application.controller.game.session.GameSessionControllerImpl;
+import com.lsadf.application.controller.game.session.GameSessionV2Controller;
+import com.lsadf.application.controller.game.session.GameSessionV2ControllerImpl;
 import com.lsadf.application.controller.user.UserController;
 import com.lsadf.application.controller.user.UserControllerImpl;
 import com.lsadf.bdd.config.BddTestsConfiguration;
@@ -139,6 +141,8 @@ import tools.jackson.databind.ObjectMapper;
       GameSessionControllerImpl.class,
       GameMailController.class,
       GameMailControllerImpl.class,
+      GameSessionV2Controller.class,
+      GameSessionV2ControllerImpl.class
     })
 @ExtendWith(MockitoExtension.class)
 @EnableConfigurationProperties

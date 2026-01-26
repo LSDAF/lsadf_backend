@@ -24,6 +24,7 @@ import com.lsadf.core.application.game.session.command.InitializeSessionCommand;
 import com.lsadf.core.application.game.session.command.UpdateSessionEndTimeCommand;
 import com.lsadf.core.domain.game.session.GameSession;
 import com.lsadf.core.exception.http.NotFoundException;
+import com.lsadf.core.infra.kubernetes.service.PodSelector;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +35,7 @@ public class GameSessionCommandServiceImpl implements GameSessionCommandService 
   private final CacheManager cacheManager;
   private final GameSessionCachePort gameSessionCachePort;
   private final GameSaveService gameSaveService;
+  private final PodSelector podSelector;
 
   @Override
   public GameSession initializeGameSession(InitializeSessionCommand command) {
@@ -42,10 +44,11 @@ public class GameSessionCommandServiceImpl implements GameSessionCommandService 
       throw new NotFoundException("Game save with id " + gameSaveId + " not found");
     }
 
+    String hostname = podSelector.selectPodName();
     UUID uuid = UUID.randomUUID();
     GameSession gameSession =
         gameSessionRepositoryPort.createNewGameSession(
-            uuid, command.gameSaveId(), command.endTime(), false);
+            uuid, command.gameSaveId(), command.endTime(), false, hostname);
     if (Boolean.TRUE.equals(cacheManager.isEnabled())) {
       gameSessionCachePort.set(gameSession.getId().toString(), gameSession);
     }

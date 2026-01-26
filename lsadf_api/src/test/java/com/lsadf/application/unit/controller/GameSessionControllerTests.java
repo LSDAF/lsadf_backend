@@ -124,7 +124,8 @@ class GameSessionControllerTests {
           Instant.now().plus(10, ChronoUnit.HOURS),
           false,
           Instant.now(),
-          1);
+          1,
+          "localhost");
 
   @BeforeEach
   void setUp() {

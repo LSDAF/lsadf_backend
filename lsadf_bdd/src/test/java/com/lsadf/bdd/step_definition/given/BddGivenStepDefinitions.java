@@ -249,6 +249,9 @@ public class BddGivenStepDefinitions {
               gameSessionEntity.getGameSaveId(),
               gameSessionEntity.getEndTime(),
               gameSessionEntity.isCancelled(),
+              gameSessionEntity.getHostname() != null
+                  ? gameSessionEntity.getHostname()
+                  : "localhost",
               gameSessionEntity.getVersion());
         });
 

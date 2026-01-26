@@ -22,6 +22,7 @@ import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-public record GameSessionResponse(UUID id, Instant endTime, int version) implements Response {
+public record GameSessionResponse(UUID id, Instant endTime, int version, String hostname)
+    implements Response {
   @Serial private static final long serialVersionUID = 8978198279370168906L;
 }

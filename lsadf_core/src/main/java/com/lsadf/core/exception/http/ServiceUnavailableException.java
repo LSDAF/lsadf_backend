@@ -13,23 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lsadf.core.domain.game.session;
 
-import com.lsadf.core.shared.model.Model;
-import java.time.Instant;
-import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+package com.lsadf.core.exception.http;
 
-@Getter
-@AllArgsConstructor
-public class GameSession implements Model {
-  private final UUID id;
-  private final UUID gameSaveId;
-  private final String userEmail;
-  private final Instant endTime;
-  private final boolean cancelled;
-  private final Instant updatedAt;
-  private final int version;
-  private final String hostname;
+/** ServiceUnavailableException */
+public class ServiceUnavailableException extends RuntimeException {
+  public ServiceUnavailableException(String message) {
+    super(message);
+  }
 }

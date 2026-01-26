@@ -49,6 +49,9 @@ public class GameSessionHash implements Hash<UUID> {
   @Column(value = GAME_SESSION_VERSION)
   private int version;
 
+  @Column(value = GAME_SESSION_HOSTNAME)
+  private String hostname;
+
   @TimeToLive private Long expiration;
 
   @Override
@@ -64,5 +67,6 @@ public class GameSessionHash implements Hash<UUID> {
     public static final String GAME_SESSION_END_TIME = "endTime";
     public static final String GAME_SESSION_HASH_KEY = "game_session";
     public static final String GAME_SESSION_VERSION = "version";
+    public static final String GAME_SESSION_HOSTNAME = "hostname";
   }
 }

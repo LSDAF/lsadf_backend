@@ -58,6 +58,7 @@ import com.lsadf.core.application.shared.CachePort;
 import com.lsadf.core.application.user.UserService;
 import com.lsadf.core.application.user.impl.UserServiceImpl;
 import com.lsadf.core.domain.game.save.characteristics.Characteristics;
+import com.lsadf.core.infra.kubernetes.service.PodSelector;
 import com.lsadf.core.infra.web.config.keycloak.properties.KeycloakProperties;
 import org.keycloak.admin.client.Keycloak;
 import org.springframework.context.annotation.Bean;
@@ -189,9 +190,14 @@ public class ApplicationServiceConfiguration {
       GameSessionRepositoryPort gameSessionRepositoryPort,
       CacheManager cacheManager,
       GameSessionCachePort gameSessionCachePort,
-      GameSaveService gameSaveService) {
+      GameSaveService gameSaveService,
+      PodSelector podSelector) {
     return new GameSessionCommandServiceImpl(
-        gameSessionRepositoryPort, cacheManager, gameSessionCachePort, gameSaveService);
+        gameSessionRepositoryPort,
+        cacheManager,
+        gameSessionCachePort,
+        gameSaveService,
+        podSelector);
   }
 
   @Bean

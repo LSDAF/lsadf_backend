@@ -147,3 +147,5 @@ logging:
     com.lsadf.core.infra.event: DEBUG
 
 spring.web.error.whitelabel.enabled: false
+kubernetes:
+  enabled: false

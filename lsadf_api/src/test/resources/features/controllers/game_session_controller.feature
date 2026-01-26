@@ -55,8 +55,8 @@ Feature: Game Session Controller BDD tests
 
   Scenario: A user refreshes his gameSession for his game save
     Given the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | false     | 2       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | false     | 2       | localhost |
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
@@ -66,8 +66,8 @@ Feature: Game Session Controller BDD tests
     Then the response status code should be 200
 
     And the response should have the following GameSessionResponse
-      | id                                   | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 3       |
+      | id                                   | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 3       | localhost |
 
   Scenario: A user refreshes his gameSession for a non-existing game save
     When the user logs in with the following credentials
@@ -80,8 +80,8 @@ Feature: Game Session Controller BDD tests
 
   Scenario: A user refreshes his gameSession for a non-owned game save
     Given the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | fcb07fb7-3e67-4b0f-b014-d8c285fa0879 | cbe75715-80ea-4296-b045-27c3e78d95bc | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | fcb07fb7-3e67-4b0f-b014-d8c285fa0879 | cbe75715-80ea-4296-b045-27c3e78d95bc | false     | 1       | localhost |
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
@@ -92,8 +92,8 @@ Feature: Game Session Controller BDD tests
 
   Scenario: A user refreshes an already cancelled game session
     Given the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | true      | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | true      | 1       | localhost |
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |
@@ -104,8 +104,8 @@ Feature: Game Session Controller BDD tests
 
   Scenario: A user refreshes an expired game session
     Given the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version | endTime                 |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | false     | 1       | 2020-01-01T00:00:00.00Z |
+      | id                                   | gameSaveId                           | cancelled | version | endTime                 | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | false     | 1       | 2020-01-01T00:00:00.00Z | localhost |
     When the user logs in with the following credentials
       | username            | password |
       | paul.ochon@test.com | toto1234 |

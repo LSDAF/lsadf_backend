@@ -8,3 +8,6 @@ valkey:
 keycloak:
   admin-url: ${KEYCLOAK_ADMIN_URI}
   url: ${KEYCLOAK_URI}
+
+kubernetes:
+  enabled: false

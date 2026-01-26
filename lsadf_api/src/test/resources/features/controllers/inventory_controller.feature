@@ -83,8 +83,8 @@ Feature: Inventory Controller BDD tests
       | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -106,8 +106,8 @@ Feature: Inventory Controller BDD tests
       | 36f27c2a-06e8-4bdb-bf59-56999116f5ef__11111111-1111-1111-1111-111111111111 | 11111111-1111-1111-1111-111111111111 | boots    | leg_boo_01  | LEGENDARY  | true       | 20    | 100               | attack_add        | 200                      | attack_mult              | 300                      | attack_mult              | 400                      | attack_mult              |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -126,8 +126,8 @@ Feature: Inventory Controller BDD tests
       | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-2   | 600    | 700        | 800        | 900    | 1000       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -145,8 +145,8 @@ Feature: Inventory Controller BDD tests
       | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -164,8 +164,8 @@ Feature: Inventory Controller BDD tests
       | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -184,8 +184,8 @@ Feature: Inventory Controller BDD tests
       | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     And the following items to the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7
       | clientId                                                                   | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
@@ -211,8 +211,8 @@ Feature: Inventory Controller BDD tests
       | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-2   | 600    | 700        | 800        | 900    | 1000       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     And the following items to the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7
       | clientId                                                                   | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
@@ -238,8 +238,8 @@ Feature: Inventory Controller BDD tests
       | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-2   | 600    | 700        | 800        | 900    | 1000       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     And the following items to the inventory of the game save with id 13a1ce35-e2de-4c35-9d62-d5aa47eeab98
       | clientId                                                                   | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
@@ -264,8 +264,8 @@ Feature: Inventory Controller BDD tests
       | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     And the following items to the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7
       | clientId                                                                   | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
@@ -290,8 +290,8 @@ Feature: Inventory Controller BDD tests
       | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     When the user logs in with the following credentials
       | username            | password |
@@ -308,8 +308,8 @@ Feature: Inventory Controller BDD tests
       | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     And the following items to the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7
       | clientId                                                                   | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
@@ -337,8 +337,8 @@ Feature: Inventory Controller BDD tests
       | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-1   | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     And the following items to the inventory of the game save with id bce12af4-9f70-47d7-b357-e6ea2b8d7bb7
       | clientId                                                                   | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |
@@ -367,8 +367,8 @@ Feature: Inventory Controller BDD tests
       | 13a1ce35-e2de-4c35-9d62-d5aa47eeab98 | paul.itesse@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 1000     | 10   | test-2   | 600    | 700        | 800        | 900    | 1000       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | bce12af4-9f70-47d7-b357-e6ea2b8d7bb7 | false     | 1       | localhost |
 
     And the following items to the inventory of the game save with id 13a1ce35-e2de-4c35-9d62-d5aa47eeab98
       | clientId                                                                   | id                                   | itemType   | blueprintId | itemRarity | isEquipped | level | mainStatBaseValue | mainStatStatistic | additionalStat1BaseValue | additionalStat1Statistic | additionalStat2BaseValue | additionalStat2Statistic | additionalStat3BaseValue | additionalStat3Statistic |

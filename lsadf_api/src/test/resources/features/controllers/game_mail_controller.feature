@@ -27,9 +27,9 @@ Feature: Game Mail Controller BDD tests
       | 9d68fe00-7449-4d90-9fa9-d3f77193be9f | paul.ochon@test.com | 1000 | 1000    | 1000    | 1000     | 1000         | 10   | 1000     | 1100   | 1200       | 1300       | 1400   | 1500       |
 
     And the following game sessions
-      | id                                   | gameSaveId                           | cancelled | version |
-      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | false     | 1       |
-      | e2f9b827-6c3a-4c9f-8e5b-3c4d7f1a9d2b | 9d68fe00-7449-4d90-9fa9-d3f77193be9f | false     | 1       |
+      | id                                   | gameSaveId                           | cancelled | version | hostname  |
+      | 6025d3de-49ee-4ca1-98c0-28cb49f85e87 | 0530e1fe-3428-4edd-bb32-cb563419d0bd | false     | 1       | localhost |
+      | e2f9b827-6c3a-4c9f-8e5b-3c4d7f1a9d2b | 9d68fe00-7449-4d90-9fa9-d3f77193be9f | false     | 1       | localhost |
 
     And the following game email templates
       | id                                   | name             | subject               | body                                                               | expirationDays |

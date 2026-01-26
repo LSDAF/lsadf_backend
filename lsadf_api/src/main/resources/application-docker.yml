@@ -27,3 +27,8 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${keycloak.issuer-uri}
+
+kubernetes:
+  enabled: true
+  namespace: ${POD_NAMESPACE}
+  pod-name: ${POD_NAME}

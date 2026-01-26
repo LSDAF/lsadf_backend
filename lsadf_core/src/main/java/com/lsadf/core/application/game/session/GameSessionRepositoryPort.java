@@ -28,7 +28,8 @@ public interface GameSessionRepositoryPort {
 
   GameSession findLatestActiveGameSessionByGameSaveId(UUID gameSaveId);
 
-  GameSession createNewGameSession(UUID id, UUID gameSaveId, Instant endTime, boolean cancelled);
+  GameSession createNewGameSession(
+      UUID id, UUID gameSaveId, Instant endTime, boolean cancelled, String hostname);
 
   GameSession updateGameSessionEndTime(UUID sessionId, Instant endTime);
 }

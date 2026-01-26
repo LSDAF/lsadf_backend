@@ -29,12 +29,13 @@ import org.springframework.stereotype.Repository;
 public interface GameSessionRepository extends JdbcRepository<GameSessionEntity> {
   @Modifying
   @Query(
-      "insert into t_game_session_tgse (tgse_id, tgme_id, tgse_end_time, tgse_cancelled, tgse_version) values (:tgse_id, :tgme_id, :tgse_end_time, :tgse_cancelled, :tgse_version)")
+      "insert into t_game_session_tgse (tgse_id, tgme_id, tgse_end_time, tgse_cancelled, tgse_hostname, tgse_version) values (:tgse_id, :tgme_id, :tgse_end_time, :tgse_cancelled, :tgse_hostname, :tgse_version)")
   void createNewGameSession(
       @Param(GAME_SESSION_ID) UUID id,
       @Param(GAME_SESSION_GAME_METADATA_ID) UUID gameSaveId,
       @Param(GAME_SESSION_END_TIME) Instant endTime,
       @Param(GAME_SESSION_CANCELLED) boolean cancelled,
+      @Param(GAME_SESSION_HOSTNAME) String hostname,
       @Param(GAME_SESSION_VERSION) Integer version);
 
   @Modifying
@@ -45,12 +46,14 @@ public interface GameSessionRepository extends JdbcRepository<GameSessionEntity>
                   tgse_id,
                   tgme_id,
                   tgse_end_time,
+                  tgse_hostname,
                   tgse_version
               )
               select
                   :tgse_id,
                   tgme_id,
                   :tgse_end_time,
+                  tgse_hostname,
                   tgse_version + 1
               from t_game_session_tgse
                   where tgse_id=:tgse_id
