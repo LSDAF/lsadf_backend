@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lsadf.bdd.util.BddUtils;
 import com.lsadf.core.application.game.inventory.InventoryService;
+import com.lsadf.core.domain.game.inventory.Item;
 import com.lsadf.core.infra.web.dto.common.game.inventory.ItemStatDto;
 import com.lsadf.core.infra.web.dto.response.game.inventory.ItemResponse;
 import io.cucumber.datatable.DataTable;
@@ -62,5 +63,58 @@ public class BddThenItemStepDefinitions {
       assertThat(actual.additionalStats())
           .contains(expected.additionalStats().toArray(new ItemStatDto[0]));
     }
+  }
+
+  public void thenTheInventoryItemWithClientIdShouldExistInDatabaseForGameSave(
+      String clientId, String gameSaveId) {
+    UUID uuid = UUID.fromString(gameSaveId);
+    Set<Item> items = inventoryService.getInventoryItems(uuid);
+
+    Optional<Item> foundItem =
+        items.stream().filter(item -> item.getClientId().equals(clientId)).findFirst();
+
+    assertThat(foundItem)
+        .as("Item with clientId %s should exist in game save %s", clientId, gameSaveId)
+        .isPresent();
+
+    log.info("Verified item with clientId {} exists in game save {}", clientId, gameSaveId);
+  }
+
+  public void thenTheInventoryItemWithClientIdShouldNotExistInDatabaseForGameSave(
+      String clientId, String gameSaveId) {
+    UUID uuid = UUID.fromString(gameSaveId);
+    Set<Item> items = inventoryService.getInventoryItems(uuid);
+
+    Optional<Item> foundItem =
+        items.stream().filter(item -> item.getClientId().equals(clientId)).findFirst();
+
+    assertThat(foundItem)
+        .as("Item with clientId %s should not exist in game save %s", clientId, gameSaveId)
+        .isEmpty();
+
+    log.info("Verified item with clientId {} does not exist in game save {}", clientId, gameSaveId);
+  }
+
+  public void thenTheInventoryItemWithClientIdShouldHaveLevelForGameSave(
+      String clientId, int expectedLevel, String gameSaveId) {
+    UUID uuid = UUID.fromString(gameSaveId);
+    Set<Item> items = inventoryService.getInventoryItems(uuid);
+
+    Optional<Item> foundItem =
+        items.stream().filter(item -> item.getClientId().equals(clientId)).findFirst();
+
+    assertThat(foundItem)
+        .as("Item with clientId %s should exist in game save %s", clientId, gameSaveId)
+        .isPresent();
+
+    assertThat(foundItem.get().getLevel())
+        .as("Item with clientId %s should have level %d", clientId, expectedLevel)
+        .isEqualTo(expectedLevel);
+
+    log.info(
+        "Verified item with clientId {} has level {} in game save {}",
+        clientId,
+        expectedLevel,
+        gameSaveId);
   }
 }

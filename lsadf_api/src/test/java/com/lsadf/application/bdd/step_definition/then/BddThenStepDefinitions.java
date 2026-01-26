@@ -122,4 +122,25 @@ public class BddThenStepDefinitions extends BddLoader {
   public void thenAnExceptionShouldBeThrown(String exceptionName) {
     bddThenWebSocketStepDefinitions.thenAnExceptionShouldBeThrown(exceptionName);
   }
+
+  @Then("^the inventory item with clientId (.*) should exist in database for game save (.*)$")
+  public void thenTheInventoryItemWithClientIdShouldExistInDatabaseForGameSave(
+      String clientId, String gameSaveId) {
+    bddThenItemStepDefinitions.thenTheInventoryItemWithClientIdShouldExistInDatabaseForGameSave(
+        clientId, gameSaveId);
+  }
+
+  @Then("^the inventory item with clientId (.*) should not exist in database for game save (.*)$")
+  public void thenTheInventoryItemWithClientIdShouldNotExistInDatabaseForGameSave(
+      String clientId, String gameSaveId) {
+    bddThenItemStepDefinitions.thenTheInventoryItemWithClientIdShouldNotExistInDatabaseForGameSave(
+        clientId, gameSaveId);
+  }
+
+  @Then("^the inventory item with clientId (.*) should have level (\\d+) for game save (.*)$")
+  public void thenTheInventoryItemWithClientIdShouldHaveLevelForGameSave(
+      String clientId, int expectedLevel, String gameSaveId) {
+    bddThenItemStepDefinitions.thenTheInventoryItemWithClientIdShouldHaveLevelForGameSave(
+        clientId, expectedLevel, gameSaveId);
+  }
 }

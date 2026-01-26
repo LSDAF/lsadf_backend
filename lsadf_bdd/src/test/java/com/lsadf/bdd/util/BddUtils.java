@@ -908,7 +908,9 @@ public class BddUtils {
                     ? null
                     : Float.parseFloat(row.get(ADDITIONAL_STAT_1_BASE_VALUE)))
             .build();
-    additionalItemStatEntities.add(entity1);
+    if (entity1.getStatistic() != null && entity1.getBaseValue() != null) {
+      additionalItemStatEntities.add(entity1);
+    }
 
     AdditionalItemStatEntity entity2 =
         AdditionalItemStatEntity.builder()
@@ -922,7 +924,10 @@ public class BddUtils {
                     ? null
                     : Float.parseFloat(row.get(ADDITIONAL_STAT_2_BASE_VALUE)))
             .build();
-    additionalItemStatEntities.add(entity2);
+
+    if (entity2.getStatistic() != null && entity2.getBaseValue() != null) {
+      additionalItemStatEntities.add(entity2);
+    }
 
     AdditionalItemStatEntity entity3 =
         AdditionalItemStatEntity.builder()
@@ -936,7 +941,9 @@ public class BddUtils {
                     ? null
                     : Float.parseFloat(row.get(ADDITIONAL_STAT_3_BASE_VALUE)))
             .build();
-    additionalItemStatEntities.add(entity3);
+    if (entity3.getStatistic() != null && entity3.getBaseValue() != null) {
+      additionalItemStatEntities.add(entity3);
+    }
 
     return additionalItemStatEntities;
   }
@@ -993,21 +1000,38 @@ public class BddUtils {
         BddUtils.mapToItemStat(
             row.get(BddFieldConstants.Item.MAIN_STAT_STATISTIC),
             row.get(BddFieldConstants.Item.MAIN_STAT_BASE_VALUE));
-    ItemStat additionalStat1 =
-        BddUtils.mapToItemStat(
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_STATISTIC),
-            row.get(ADDITIONAL_STAT_1_BASE_VALUE));
-    ItemStat additionalStat2 =
-        BddUtils.mapToItemStat(
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_STATISTIC),
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_BASE_VALUE));
-    ItemStat additionalStat3 =
-        BddUtils.mapToItemStat(
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_STATISTIC),
-            row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_BASE_VALUE));
 
-    List<ItemStatDto> additionalStats =
-        List.of(additionalStat1, additionalStat2, additionalStat3).stream()
+    List<ItemStat> additionalStats = new ArrayList<>();
+
+    var additionalStat1Stat = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_1_STATISTIC);
+    var additionalStat1BaseValue = row.get(ADDITIONAL_STAT_1_BASE_VALUE);
+
+    if (additionalStat1Stat != null && additionalStat1BaseValue != null) {
+      ItemStat additionalStat1 =
+          BddUtils.mapToItemStat(additionalStat1Stat, additionalStat1BaseValue);
+      additionalStats.add(additionalStat1);
+    }
+
+    var additionalStat2Stat = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_STATISTIC);
+    var additionalStat2BaseValue = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_2_BASE_VALUE);
+
+    if (additionalStat2Stat != null && additionalStat2BaseValue != null) {
+      ItemStat additionalStat2 =
+          BddUtils.mapToItemStat(additionalStat2Stat, additionalStat2BaseValue);
+      additionalStats.add(additionalStat2);
+    }
+
+    var additionalStat3Stat = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_STATISTIC);
+    var additionalStat3BaseValue = row.get(BddFieldConstants.Item.ADDITIONAL_STAT_3_BASE_VALUE);
+
+    if (additionalStat3Stat != null && additionalStat3BaseValue != null) {
+      ItemStat additionalStat3 =
+          BddUtils.mapToItemStat(additionalStat3Stat, additionalStat3BaseValue);
+      additionalStats.add(additionalStat3);
+    }
+
+    List<ItemStatDto> additionalStatsDto =
+        additionalStats.stream()
             .map(itemStat -> new ItemStatDto(itemStat.getStatistic(), itemStat.getBaseValue()))
             .toList();
     ItemStatDto mainStatDto = new ItemStatDto(mainStat.getStatistic(), mainStat.getBaseValue());
@@ -1020,7 +1044,7 @@ public class BddUtils {
         isEquipped,
         level,
         mainStatDto,
-        additionalStats);
+        additionalStatsDto);
   }
 
   /**
