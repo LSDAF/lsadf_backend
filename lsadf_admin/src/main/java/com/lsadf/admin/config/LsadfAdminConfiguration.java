@@ -18,7 +18,7 @@ package com.lsadf.admin.config;
 import com.lsadf.core.infra.clock.ClockConfiguration;
 import com.lsadf.core.infra.config.*;
 import com.lsadf.core.infra.event.config.EventConfiguration;
-import com.lsadf.core.infra.kubernetes.config.KubernetesConfiguration;
+import com.lsadf.core.infra.kubernetes.config.PodSelectorConfiguration;
 import com.lsadf.core.infra.logging.LoggingConfiguration;
 import com.lsadf.core.infra.persistence.config.DataSourceConfiguration;
 import com.lsadf.core.infra.persistence.config.JdbcConfiguration;
@@ -60,6 +60,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
   AsyncConfiguration.class,
   EventConfiguration.class,
   TaskExecutorConfiguration.class,
-  KubernetesConfiguration.class
+  PodSelectorConfiguration.class
 })
 public class LsadfAdminConfiguration {}

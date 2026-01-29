@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Slf4j
-public class KubernetesConfiguration {
+public class PodSelectorConfiguration {
 
   @Bean
   @ConditionalOnProperty(prefix = "kubernetes", havingValue = "true", value = "enabled")
