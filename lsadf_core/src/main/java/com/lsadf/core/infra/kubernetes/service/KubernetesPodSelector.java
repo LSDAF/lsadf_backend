@@ -41,13 +41,11 @@ public class KubernetesPodSelector implements PodSelector {
         log.error("Didn't manage to get pod name from environment variable POD_NAME");
         throw new ServiceUnavailableException("Pod name environment variable POD_NAME not set");
       }
+      log.info("Current pod name: {}", podName);
 
       String labelSelector = buildLabelSelector(podName);
       V1PodList podList =
-          coreV1Api
-              .listNamespacedPod(kubernetesProperties.getNamespace())
-              .labelSelector(labelSelector)
-              .execute();
+          coreV1Api.listNamespacedPod(kubernetesProperties.getNamespace()).execute();
       List<String> readyPods =
           podList.getItems().stream()
               .filter(this::isPodReady)
